@@ -1,0 +1,60 @@
+baseURL: https://anuragbuildsthings.com/
+languageCode: en-us
+title: Anurag Builds Things
+theme: PaperMod
+
+paginate: 10
+
+params:
+  env: production
+  defaultTheme: auto
+  ShowReadingTime: true
+  ShowToc: true
+  ShowCodeCopyButtons: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  mainSections:
+    - projects
+    - experiments
+    - notes
+
+  homeInfoParams:
+    Title: "Anurag Builds Things"
+    Content: >
+      Projects, experiments, and systems built in public.
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/anurag4dsb"
+    - name: youtube
+      url: "https://www.youtube.com/@AnuragBuildsThings"
+
+menu:
+  main:
+    - identifier: projects
+      name: Projects
+      url: /projects/
+      weight: 10
+    - identifier: experiments
+      name: Experiments
+      url: /experiments/
+      weight: 20
+    - identifier: notes
+      name: Notes
+      url: /notes/
+      weight: 30
+    - identifier: blog
+      name: Blog
+      url: /blog/
+      weight: 40
+    - identifier: search
+      name: Search
+      url: /search/
+      weight: 50
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
