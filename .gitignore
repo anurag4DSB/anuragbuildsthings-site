@@ -12,3 +12,6 @@
 public/
 resources/
 .hugo_build.lock
+
+.planning
+quarto-web
