@@ -20,15 +20,15 @@ params:
     - notes
 
   homeInfoParams:
-    Title: "Anurag Builds Things"
-    Content: >
-      Projects, experiments, and systems built in public.
+    Title: "Projects, experiments, and systems built in public."
 
   socialIcons:
     - name: github
       url: "https://github.com/anurag4dsb"
     - name: youtube
       url: "https://www.youtube.com/@AnuragBuildsThings"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/mittalanu/"
 
 menu:
   main:
