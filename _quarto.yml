@@ -1,0 +1,50 @@
+project:
+  type: website
+  resources:
+    - CNAME
+  render:
+    - "*.qmd"
+    - "posts/"
+    - "!quarto-web/"
+    - "!.planning/"
+
+website:
+  title: "Anurag Builds Things"
+  site-url: "https://anuragbuildsthings.com/"
+  description: "Projects, experiments, and systems built in public."
+  open-graph: true
+  search:
+    location: navbar
+    type: overlay
+  navbar:
+    background: light
+    search: true
+    tools:
+      - icon: github
+        href: https://github.com/anurag4dsb
+        aria-label: GitHub
+      - icon: youtube
+        href: https://www.youtube.com/@AnuragBuildsThings
+        aria-label: YouTube
+      - icon: linkedin
+        href: https://www.linkedin.com/in/mittalanu/
+        aria-label: LinkedIn
+  back-to-top-navigation: true
+  page-navigation: true
+
+format:
+  html:
+    theme:
+      light: [cosmo, styles.css]
+      dark: [darkly, styles.css]
+    toc: true
+    toc-location: right
+    code-copy: true
+    code-overflow: wrap
+    mainfont: "Source Sans Pro"
+    fontsize: 1em
+    highlight-style: github
+    date-format: "MMM YYYY"
+
+execute:
+  freeze: auto

@@ -1,9 +1,8 @@
 ---
 title: "Self-Supervised Learning"
-date: 2026-03-18T18:00:00
-draft: false
-tags: [self-supervised-learning, representation-learning, fundamentals]
-summary: "Core intuition behind self-supervised learning: why it works, when to use it, and how it connects to real systems."
+date: 2026-03-18
+categories: [self-supervised-learning, representation-learning, fundamentals]
+description: "Core intuition behind self-supervised learning: why it works, when to use it, and how it connects to real systems."
 ---
 
 ## What It Is

@@ -1,9 +1,8 @@
 ---
 title: "Learning Representations Without Labels (SimCLR)"
-date: 2026-03-18T20:00:00
-draft: false
-tags: [self-supervised-learning, contrastive-learning, computer-vision]
-summary: "Implementing SimCLR from scratch to learn visual representations without labels using contrastive learning on CIFAR-10."
+date: 2026-03-18
+categories: [self-supervised-learning, contrastive-learning, computer-vision]
+description: "Implementing SimCLR from scratch to learn visual representations without labels using contrastive learning on CIFAR-10."
 ---
 
 ## Goal

@@ -1,9 +1,8 @@
 ---
 title: "Why Augmentations Matter in Contrastive Learning"
-date: 2026-03-18T19:00:00
-draft: false
-tags: [self-supervised-learning, contrastive-learning, augmentations]
-summary: "Testing how different augmentation strategies affect representation quality in SimCLR-style contrastive learning."
+date: 2026-03-18
+categories: [self-supervised-learning, contrastive-learning, augmentations]
+description: "Testing how different augmentation strategies affect representation quality in SimCLR-style contrastive learning."
 ---
 
 ## Status

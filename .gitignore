@@ -8,10 +8,15 @@
 .idea/
 .vscode/
 
-# Hugo
-public/
-resources/
-.hugo_build.lock
+# Quarto
+/_site/
+/.quarto/
+_freeze/
 
-.planning
+# Planning
+.planning/
+
+# Local reference
 quarto-web
+
+**/*.quarto_ipynb

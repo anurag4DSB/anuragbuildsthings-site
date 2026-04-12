@@ -1,0 +1,67 @@
+/*-- scss:defaults --*/
+
+/* Google Fonts — Source Sans Pro */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+
+/*-- scss:rules --*/
+
+/* ── Light mode ── */
+.quarto-light {
+  --bs-body-bg: #ffffff;
+}
+
+/* ── Navbar — no divider ── */
+.navbar {
+  border-bottom: none;
+}
+
+/* ── Listing cards ── */
+.quarto-grid-item {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Category tags ── */
+.listing-categories .listing-category {
+  font-size: 0.8em;
+}
+
+/* ── Title block ── */
+.quarto-title-block {
+  margin-bottom: 1.5rem;
+}
+
+/* ── Blog listing — tighter date column ── */
+div.quarto-post .metadata {
+  flex-basis: 8em;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 1em;
+}
+
+div.quarto-post .body {
+  flex-grow: 1;
+}
+
+div.quarto-post .listing-description {
+  font-size: 1em;
+}
+
+div.quarto-post .body .listing-categories {
+  font-size: 0.95em;
+}
+
+
+/* ── Dark mode ── */
+.quarto-dark {
+  --bs-body-bg: #181818;
+  --bs-body-color: #cccccc;
+}
+
+.quarto-dark .navbar {
+  border-bottom: none;
+}
+
+.quarto-dark .quarto-grid-item {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}

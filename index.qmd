@@ -1,0 +1,20 @@
+---
+title: "Anurag Builds Things"
+title-block-banner: false
+include-in-header:
+  - text: |
+      <style>#title-block-header { display: none; }</style>
+listing:
+  contents: posts
+  type: default
+  sort: "date desc"
+  sort-ui: false
+  filter-ui: false
+  categories: unnumbered
+  feed: true
+  fields: [title, description, date, categories]
+page-layout: full
+toc: false
+---
+
+## Projects, experiments, and systems built in public.
