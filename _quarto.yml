@@ -13,7 +13,10 @@ website:
   site-url: "https://anuragbuildsthings.com/"
   description: "Projects, experiments, and systems built in public."
   open-graph: true
-  google-analytics: "G-2QD3FPQKQ8"
+  llms-txt: true
+  google-analytics:
+    tracking-id: "G-2QD3FPQKQ8"
+  cookie-consent: true
   search:
     location: navbar
     type: overlay
