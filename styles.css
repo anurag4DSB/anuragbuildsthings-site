@@ -26,9 +26,20 @@
   color: #000000 !important;
 }
 
-.navbar .quarto-navigation-tool:hover {
+.navbar .quarto-navigation-tool:hover .bi-youtube {
+  color: #FF0000 !important;
+}
+
+.navbar .quarto-navigation-tool:hover .bi-linkedin {
+  color: #0A66C2 !important;
+}
+
+.navbar .quarto-navigation-tool:hover .bi-github {
+  color: #ffffff !important;
+}
+
+.quarto-light .navbar .quarto-navigation-tool:hover .bi-github {
   color: #000000 !important;
-  opacity: 0.7;
 }
 
 /* ── Listing cards ── */
@@ -138,10 +149,6 @@ div.quarto-post .body .listing-categories {
   color: #ffffff !important;
 }
 
-.quarto-dark .navbar .quarto-navigation-tool:hover {
-  color: #ffffff !important;
-  opacity: 0.7;
-}
 
 .quarto-dark .quarto-grid-item {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
