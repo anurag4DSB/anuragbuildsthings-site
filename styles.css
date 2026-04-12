@@ -43,6 +43,7 @@
 
 #quarto-document-content > section.level2 > h2 {
   padding-bottom: 1rem;
+  border-bottom: 1px solid #dee2e6;
 }
 
 
