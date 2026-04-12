@@ -10,9 +10,13 @@
   --bs-body-bg: #ffffff;
 }
 
-/* ── Navbar — no divider ── */
+/* ── Navbar — no divider, black title ── */
 .navbar {
   border-bottom: none;
+}
+
+.navbar .navbar-brand {
+  color: #000000 !important;
 }
 
 /* ── Listing cards ── */
@@ -29,6 +33,11 @@
 /* ── Title block ── */
 .quarto-title-block {
   margin-bottom: 1.5rem;
+}
+
+/* ── Homepage header spacing ── */
+#quarto-document-content > section > h2 {
+  padding-bottom: 1rem;
 }
 
 /* ── Blog listing — tighter date column ── */
@@ -49,6 +58,7 @@ div.quarto-post .listing-description {
 
 div.quarto-post .body .listing-categories {
   font-size: 0.95em;
+  padding-top: 0.5rem;
 }
 
 
@@ -60,6 +70,10 @@ div.quarto-post .body .listing-categories {
 
 .quarto-dark .navbar {
   border-bottom: none;
+}
+
+.quarto-dark .navbar .navbar-brand {
+  color: #ffffff !important;
 }
 
 .quarto-dark .quarto-grid-item {

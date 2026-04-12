@@ -9,7 +9,7 @@ project:
     - "!.planning/"
 
 website:
-  title: "Anurag Builds Things"
+  title: "Anurag builds things"
   site-url: "https://anuragbuildsthings.com/"
   description: "Projects, experiments, and systems built in public."
   open-graph: true

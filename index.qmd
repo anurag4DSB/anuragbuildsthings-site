@@ -1,5 +1,5 @@
 ---
-title: "Anurag Builds Things"
+title: "Anurag builds things"
 title-block-banner: false
 include-in-header:
   - text: |
@@ -10,7 +10,8 @@ listing:
   sort: "date desc"
   sort-ui: false
   filter-ui: false
-  categories: unnumbered
+  # TODO: re-enable categories once there are more posts. Consider moving to navbar or horizontal bar above listing.
+  categories: false
   feed: true
   fields: [title, description, date, categories]
 page-layout: full
