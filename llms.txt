@@ -1,0 +1,10 @@
+# Anurag builds things
+
+> Projects, experiments, and systems built in public.
+
+## Pages
+
+- [Why Augmentations Matter in Contrastive Learning](https://anuragbuildsthings.com/posts/why-augmentations-matter.llms.md)
+- [Self-Supervised Learning](https://anuragbuildsthings.com/posts/self-supervised-learning.llms.md)
+- [Anurag builds things](https://anuragbuildsthings.com/index.llms.md)
+- [Learning Representations Without Labels (SimCLR)](https://anuragbuildsthings.com/posts/ssl-representation.llms.md)

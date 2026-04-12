@@ -1,0 +1,128 @@
+[
+  {
+    "objectID": "posts/why-augmentations-matter.html",
+    "href": "posts/why-augmentations-matter.html",
+    "title": "Why Augmentations Matter in Contrastive Learning",
+    "section": "",
+    "text": "Planned experiment – not yet executed."
+  },
+  {
+    "objectID": "posts/why-augmentations-matter.html#status",
+    "href": "posts/why-augmentations-matter.html#status",
+    "title": "Why Augmentations Matter in Contrastive Learning",
+    "section": "",
+    "text": "Planned experiment – not yet executed."
+  },
+  {
+    "objectID": "posts/why-augmentations-matter.html#hypothesis",
+    "href": "posts/why-augmentations-matter.html#hypothesis",
+    "title": "Why Augmentations Matter in Contrastive Learning",
+    "section": "Hypothesis",
+    "text": "Hypothesis\nAugmentations are the most critical design choice in contrastive learning. They define what invariances the model learns – get them wrong and the representations are useless, regardless of architecture or training budget."
+  },
+  {
+    "objectID": "posts/why-augmentations-matter.html#setup",
+    "href": "posts/why-augmentations-matter.html#setup",
+    "title": "Why Augmentations Matter in Contrastive Learning",
+    "section": "Setup",
+    "text": "Setup\nTrain SimCLR on CIFAR-10 with different augmentation configurations and measure linear probe accuracy:\n\n\n\nConfig\nAugmentations\n\n\n\n\nMinimal\nRandom crop only\n\n\nModerate\nCrop + horizontal flip + grayscale\n\n\nFull\nCrop + color jitter + flip + grayscale + blur\n\n\nAggressive\nFull + extreme crop ratios + strong color distortion\n\n\n\nAll other hyperparameters held constant (ResNet-18, batch 512, 200 epochs, temperature 0.5)."
+  },
+  {
+    "objectID": "posts/why-augmentations-matter.html#expected-outcome",
+    "href": "posts/why-augmentations-matter.html#expected-outcome",
+    "title": "Why Augmentations Matter in Contrastive Learning",
+    "section": "Expected Outcome",
+    "text": "Expected Outcome\n\nMinimal augmentations will produce weak representations – the contrastive task becomes too easy (trivial shortcuts like position matching)\nFull augmentations will force the model to learn semantic features, producing the strongest embeddings\nAggressive augmentations may hurt early training by making the pretext task too hard"
+  },
+  {
+    "objectID": "posts/why-augmentations-matter.html#why-this-matters",
+    "href": "posts/why-augmentations-matter.html#why-this-matters",
+    "title": "Why Augmentations Matter in Contrastive Learning",
+    "section": "Why This Matters",
+    "text": "Why This Matters\nMost SSL papers treat augmentations as a hyperparameter table in the appendix. In practice, they are the experiment. The augmentation pipeline implicitly defines what the model treats as “same” vs “different” – which is the entire learning signal in contrastive methods.\nUnderstanding this connection between augmentations and learned invariances is essential before scaling to harder domains (video, medical imaging) where the right invariances are less obvious."
+  },
+  {
+    "objectID": "posts/self-supervised-learning.html",
+    "href": "posts/self-supervised-learning.html",
+    "title": "Self-Supervised Learning",
+    "section": "",
+    "text": "Self-supervised learning (SSL) trains models on unlabeled data by generating supervision from the data itself. Instead of human-provided labels, the model solves a pretext task – a proxy objective that forces it to learn useful structure.\nExamples of pretext tasks:\n\nContrastive: pull augmented views of the same image together, push different images apart (SimCLR, MoCo)\nMasked prediction: mask part of the input and predict it (BERT, MAE)\nPredictive: predict future frames, next tokens, or missing patches"
+  },
+  {
+    "objectID": "posts/self-supervised-learning.html#what-it-is",
+    "href": "posts/self-supervised-learning.html#what-it-is",
+    "title": "Self-Supervised Learning",
+    "section": "",
+    "text": "Self-supervised learning (SSL) trains models on unlabeled data by generating supervision from the data itself. Instead of human-provided labels, the model solves a pretext task – a proxy objective that forces it to learn useful structure.\nExamples of pretext tasks:\n\nContrastive: pull augmented views of the same image together, push different images apart (SimCLR, MoCo)\nMasked prediction: mask part of the input and predict it (BERT, MAE)\nPredictive: predict future frames, next tokens, or missing patches"
+  },
+  {
+    "objectID": "posts/self-supervised-learning.html#intuition",
+    "href": "posts/self-supervised-learning.html#intuition",
+    "title": "Self-Supervised Learning",
+    "section": "Intuition",
+    "text": "Intuition\nLabels are expensive. Structure is free.\nImages have spatial coherence. Text has sequential coherence. Video has temporal coherence. SSL exploits these natural regularities to learn representations that capture what matters in the data – without anyone telling the model what to look for.\nThe key insight: a model that can solve a hard pretext task (e.g., reconstruct a masked image region) must have learned something meaningful about the domain."
+  },
+  {
+    "objectID": "posts/self-supervised-learning.html#simple-example",
+    "href": "posts/self-supervised-learning.html#simple-example",
+    "title": "Self-Supervised Learning",
+    "section": "Simple Example",
+    "text": "Simple Example\nTake an image. Crop it twice, apply different augmentations. The model must learn that both crops came from the same source. To do this, it has to understand content (what’s in the image) and ignore style (color jitter, rotation, scale).\nThe result: an encoder that maps semantically similar inputs to nearby points in embedding space – without ever seeing a label."
+  },
+  {
+    "objectID": "posts/self-supervised-learning.html#why-it-matters",
+    "href": "posts/self-supervised-learning.html#why-it-matters",
+    "title": "Self-Supervised Learning",
+    "section": "Why It Matters",
+    "text": "Why It Matters\n\nScale: unlabeled data is orders of magnitude more available than labeled data\nTransfer: SSL representations often transfer better than supervised ones to new domains\nFoundation models: GPT, CLIP, DINO – the most capable models are pretrained with self-supervision\nCost: eliminates the annotation bottleneck, especially for domains where labeling requires expertise (medical imaging, satellite data)\n\nSSL is not a niche technique. It is the default pretraining paradigm for modern AI systems."
+  },
+  {
+    "objectID": "posts/ssl-representation.html",
+    "href": "posts/ssl-representation.html",
+    "title": "Learning Representations Without Labels (SimCLR)",
+    "section": "",
+    "text": "Learn visual representations without labels using contrastive learning. Specifically, implement SimCLR (Simple Framework for Contrastive Learning of Visual Representations) from scratch and evaluate the quality of learned embeddings on CIFAR-10."
+  },
+  {
+    "objectID": "posts/ssl-representation.html#goal",
+    "href": "posts/ssl-representation.html#goal",
+    "title": "Learning Representations Without Labels (SimCLR)",
+    "section": "",
+    "text": "Learn visual representations without labels using contrastive learning. Specifically, implement SimCLR (Simple Framework for Contrastive Learning of Visual Representations) from scratch and evaluate the quality of learned embeddings on CIFAR-10."
+  },
+  {
+    "objectID": "posts/ssl-representation.html#plan",
+    "href": "posts/ssl-representation.html#plan",
+    "title": "Learning Representations Without Labels (SimCLR)",
+    "section": "Plan",
+    "text": "Plan\nImplement SimCLR on CIFAR-10 and validate:\n\nCan the model learn useful representations without labels?\nHow sensitive is performance to augmentations?\nHow does batch size affect learning?"
+  },
+  {
+    "objectID": "posts/ssl-representation.html#initial-setup",
+    "href": "posts/ssl-representation.html#initial-setup",
+    "title": "Learning Representations Without Labels (SimCLR)",
+    "section": "Initial Setup",
+    "text": "Initial Setup\n\nEncoder: ResNet-18\nProjection head: 2-layer MLP\nLoss: NT-Xent\nDataset: CIFAR-10\n\nHyperparameters will be tuned incrementally during experiments."
+  },
+  {
+    "objectID": "posts/ssl-representation.html#what-i-expect",
+    "href": "posts/ssl-representation.html#what-i-expect",
+    "title": "Learning Representations Without Labels (SimCLR)",
+    "section": "What I Expect",
+    "text": "What I Expect\n\nAugmentations will be critical for learning meaningful representations\nLarger batch sizes may improve performance (more negative samples)\nTraining stability may depend on temperature and normalization"
+  },
+  {
+    "objectID": "posts/ssl-representation.html#next-steps",
+    "href": "posts/ssl-representation.html#next-steps",
+    "title": "Learning Representations Without Labels (SimCLR)",
+    "section": "Next Steps",
+    "text": "Next Steps\n\nImplement data pipeline and augmentations\nImplement NT-Xent loss\nRun first small-scale training"
+  },
+  {
+    "objectID": "posts/ssl-representation.html#references",
+    "href": "posts/ssl-representation.html#references",
+    "title": "Learning Representations Without Labels (SimCLR)",
+    "section": "References",
+    "text": "References\n\nSimCLR Paper (Chen et al., 2020)\nLARS Optimizer (You et al., 2017)"
+  }
+]

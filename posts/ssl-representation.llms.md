@@ -1,0 +1,53 @@
+# Learning Representations Without Labels (SimCLR)
+
+self-supervised-learning
+
+contrastive-learning
+
+computer-vision
+
+Implementing SimCLR from scratch to learn visual representations without labels using contrastive learning on CIFAR-10.
+
+Published
+
+Mar 2026
+
+## Goal
+
+Learn visual representations without labels using contrastive learning. Specifically, implement SimCLR (Simple Framework for Contrastive Learning of Visual Representations) from scratch and evaluate the quality of learned embeddings on CIFAR-10.
+
+## Plan
+
+Implement SimCLR on CIFAR-10 and validate:
+
+- Can the model learn useful representations without labels?
+- How sensitive is performance to augmentations?
+- How does batch size affect learning?
+
+## Initial Setup
+
+- Encoder: ResNet-18
+- Projection head: 2-layer MLP
+- Loss: NT-Xent
+- Dataset: CIFAR-10
+
+Hyperparameters will be tuned incrementally during experiments.
+
+## What I Expect
+
+- Augmentations will be critical for learning meaningful representations
+- Larger batch sizes may improve performance (more negative samples)
+- Training stability may depend on temperature and normalization
+
+## Next Steps
+
+- Implement data pipeline and augmentations
+- Implement NT-Xent loss
+- Run first small-scale training
+
+## References
+
+- [SimCLR Paper (Chen et al., 2020)](https://arxiv.org/abs/2002.05709)
+- [LARS Optimizer (You et al., 2017)](https://arxiv.org/abs/1708.03888)
+
+Back to top
