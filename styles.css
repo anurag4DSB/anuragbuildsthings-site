@@ -48,10 +48,11 @@
 
 /* ── Blog listing — tighter date column ── */
 div.quarto-post .metadata {
-  flex-basis: 8em;
+  flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
   font-size: 1em;
+  padding-right: 1.5em;
 }
 
 div.quarto-post .body {
@@ -67,6 +68,155 @@ div.quarto-post .body .listing-categories {
   padding-top: 0.5rem;
 }
 
+
+/* ── Copy page button group ── */
+.copy-page-group {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  flex-shrink: 0;
+  margin-top: 0.3em;
+}
+
+/* ── Post title — h1 and copy button in one row ── */
+.title-copy-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.title-copy-row h1.title {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Right column: published date + copy button on one line ── */
+.title-right-col {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.75em;
+}
+
+/* ── Published date — inline next to copy button ── */
+.title-right-col .quarto-title-meta {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4em;
+  margin: 0;
+}
+
+.title-right-col .quarto-title-meta-heading {
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+.title-right-col .quarto-title-meta-contents p {
+  margin: 0;
+  font-size: 0.85em;
+}
+
+.copy-page-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.35em 0.9em;
+  background: transparent;
+  border: none;
+  border-right: 1px solid #d1d5db;
+  border-radius: 9999px 0 0 9999px;
+  color: inherit;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.copy-page-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.copy-page-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35em 0.6em;
+  background: transparent;
+  border: none;
+  border-radius: 0 9999px 9999px 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.copy-page-chevron:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.copy-page-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 260px;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  padding: 0.35rem;
+  z-index: 1000;
+}
+
+.copy-page-menu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7em;
+  padding: 0.6em 0.7em;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  color: #e0e0e0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.8125rem;
+}
+
+.copy-page-menu-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.copy-page-menu-item svg {
+  flex-shrink: 0;
+  margin-top: 0.15em;
+  opacity: 0.7;
+}
+
+.copy-page-menu-item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.copy-page-menu-item strong {
+  font-weight: 500;
+  font-size: 0.8125rem;
+  color: #ffffff;
+}
+
+.copy-page-menu-item span {
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 0.1em;
+}
 
 /* ── Dark mode ── */
 .quarto-dark {
@@ -85,3 +235,4 @@ div.quarto-post .body .listing-categories {
 .quarto-dark .quarto-grid-item {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
+
