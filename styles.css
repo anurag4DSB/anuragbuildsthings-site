@@ -10,6 +10,12 @@
   --bs-body-bg: #ffffff;
 }
 
+/* ── Navbar search icon — match social icon size ── */
+.aa-DetachedSearchButton svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
 /* ── Navbar — no divider, consistent height ── */
 .navbar {
   border-bottom: none;
@@ -18,6 +24,11 @@
 
 .navbar .navbar-brand {
   color: #000000 !important;
+}
+
+.navbar .quarto-navigation-tool:hover {
+  color: #000000 !important;
+  opacity: 0.7;
 }
 
 /* ── Listing cards ── */
@@ -125,6 +136,11 @@ div.quarto-post .body .listing-categories {
 
 .quarto-dark .navbar .navbar-brand {
   color: #ffffff !important;
+}
+
+.quarto-dark .navbar .quarto-navigation-tool:hover {
+  color: #ffffff !important;
+  opacity: 0.7;
 }
 
 .quarto-dark .quarto-grid-item {
