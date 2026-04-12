@@ -42,7 +42,7 @@ format:
       light: [cosmo, styles.css]
       dark: [darkly, styles.css]
     toc: true
-    toc-location: right
+    toc-location: left
     code-copy: true
     code-overflow: wrap
     mainfont: "Source Sans Pro"

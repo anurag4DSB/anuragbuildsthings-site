@@ -119,6 +119,10 @@ div.quarto-post .body .listing-categories {
   border-bottom: none;
 }
 
+.quarto-dark #quarto-sidebar {
+  background: transparent !important;
+}
+
 .quarto-dark .navbar .navbar-brand {
   color: #ffffff !important;
 }
