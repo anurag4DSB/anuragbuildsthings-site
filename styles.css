@@ -10,9 +10,10 @@
   --bs-body-bg: #ffffff;
 }
 
-/* ── Navbar — no divider, black title ── */
+/* ── Navbar — no divider, consistent height ── */
 .navbar {
   border-bottom: none;
+  padding: 8px 16px !important;
 }
 
 .navbar .navbar-brand {
@@ -35,10 +36,15 @@
   margin-bottom: 1.5rem;
 }
 
-/* ── Homepage header spacing ── */
-#quarto-document-content > section > h2 {
+/* ── Homepage header spacing — match listing width ── */
+#quarto-document-content > section.level2 {
+  max-width: calc(100% - 2em);
+}
+
+#quarto-document-content > section.level2 > h2 {
   padding-bottom: 1rem;
 }
+
 
 /* ── Blog listing — tighter date column ── */
 div.quarto-post .metadata {

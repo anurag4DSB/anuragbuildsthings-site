@@ -3,7 +3,10 @@ title: "Anurag builds things"
 title-block-banner: false
 include-in-header:
   - text: |
-      <style>#title-block-header { display: none; }</style>
+      <style>
+        #title-block-header { display: none; }
+        .anchorjs-link { display: none !important; }
+      </style>
 listing:
   contents: posts
   type: default
