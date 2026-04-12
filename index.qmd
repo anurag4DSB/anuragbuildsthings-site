@@ -7,6 +7,17 @@ include-in-header:
         #title-block-header { display: none; }
         .anchorjs-link { display: none !important; }
       </style>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var section = document.querySelector('section.level2');
+          var listing = document.querySelector('#listing-listing');
+          if (section && listing) {
+            new ResizeObserver(function() {
+              section.style.width = listing.offsetWidth + 'px';
+            }).observe(listing);
+          }
+        });
+      </script>
 listing:
   contents: posts
   type: default
