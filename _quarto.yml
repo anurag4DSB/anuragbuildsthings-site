@@ -16,7 +16,8 @@ website:
   llms-txt: true
   google-analytics:
     tracking-id: "G-2QD3FPQKQ8"
-  cookie-consent: true
+    anonymize-ip: true
+    storage: none
   search:
     location: navbar
     type: overlay
