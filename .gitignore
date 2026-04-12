@@ -19,4 +19,7 @@ _freeze/
 # Local reference
 quarto-web
 
+# Playwright
+.playwright-mcp/
+
 **/*.quarto_ipynb
