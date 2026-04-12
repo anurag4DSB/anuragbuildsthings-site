@@ -10,7 +10,7 @@
 <atom:link href="https://anuragbuildsthings.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Projects, experiments, and systems built in public.</description>
 <generator>quarto-1.9.37</generator>
-<lastBuildDate>Tue, 17 Mar 2026 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 18 Mar 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Self-Supervised Learning</title>
   <link>https://anuragbuildsthings.com/posts/self-supervised-learning.html</link>
@@ -59,7 +59,7 @@
   <category>representation-learning</category>
   <category>fundamentals</category>
   <guid>https://anuragbuildsthings.com/posts/self-supervised-learning.html</guid>
-  <pubDate>Tue, 17 Mar 2026 23:00:00 GMT</pubDate>
+  <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Learning Representations Without Labels (SimCLR)</title>
@@ -124,7 +124,7 @@
   <category>contrastive-learning</category>
   <category>computer-vision</category>
   <guid>https://anuragbuildsthings.com/posts/ssl-representation.html</guid>
-  <pubDate>Tue, 17 Mar 2026 23:00:00 GMT</pubDate>
+  <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Why Augmentations Matter in Contrastive Learning</title>
@@ -195,7 +195,7 @@
   <category>contrastive-learning</category>
   <category>augmentations</category>
   <guid>https://anuragbuildsthings.com/posts/why-augmentations-matter.html</guid>
-  <pubDate>Tue, 17 Mar 2026 23:00:00 GMT</pubDate>
+  <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
