@@ -56,6 +56,23 @@
   margin-bottom: 1.5rem;
 }
 
+.quarto-title-meta > div {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+.quarto-title-meta-heading,
+.quarto-title-meta-contents p {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: #6c757d !important;
+  text-transform: uppercase;
+  opacity: 1 !important;
+  margin: 0;
+}
+
 /* ── Homepage header spacing ── */
 
 #quarto-document-content > section.level2 > h2 {
