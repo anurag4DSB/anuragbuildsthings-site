@@ -4,30 +4,106 @@ title-block-banner: false
 include-in-header:
   - text: |
       <style>
-        #title-block-header { display: none; }
+        #title-block-header { display: none !important; }
         .anchorjs-link { display: none !important; }
+        .quarto-post.image-right { display: grid !important; grid-template-columns: 140px 1fr !important; }
+        .quarto-listing .list .quarto-post:nth-child(odd),
+        .quarto-listing .list .quarto-post:nth-child(even) {
+          background: transparent !important;
+        }
       </style>
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          var section = document.querySelector('section.level2');
-          var listing = document.querySelector('#listing-listing');
-          if (section && listing) {
-            new ResizeObserver(function() {
-              section.style.width = listing.offsetWidth + 'px';
-            }).observe(listing);
-          }
-        });
-      </script>
 listing:
+  id: log
   contents: posts
   type: default
   sort: "date desc"
   sort-ui: false
   filter-ui: false
-  # TODO: re-enable categories once there are more posts. Consider moving to navbar or horizontal bar above listing.
   categories: false
   feed: true
   fields: [title, description, date, categories]
 page-layout: full
 toc: false
 ---
+
+```{=html}
+<p class="standfirst">A research log on machine learning systems &mdash; written in public, for the next person who has to build one.</p>
+
+<div class="status-strip">
+  <div class="status-cell">
+    <div class="label">Currently<span class="pulse"></span></div>
+    <div class="value">Augmentation ablations &middot; run 04</div>
+  </div>
+  <div class="status-cell">
+    <div class="label">Last shipped</div>
+    <div class="value">SimCLR from scratch</div>
+  </div>
+  <div class="status-cell">
+    <div class="label">Cadence</div>
+    <div class="value">Fortnightly</div>
+  </div>
+  <div class="status-cell right">
+    <div class="label">Index</div>
+    <div class="value count-target">3 entries</div>
+  </div>
+</div>
+
+<div class="section-head">
+  <div class="filter-chord">
+    <button class="chip on" data-cat="all">All</button>
+    <button class="chip" data-cat="self-supervised-learning">Self-supervised</button>
+    <button class="chip" data-cat="contrastive-learning">Contrastive</button>
+    <button class="chip" data-cat="representation-learning">Representation</button>
+    <button class="chip" data-cat="augmentations">Augmentations</button>
+    <button class="chip" data-cat="computer-vision">Computer vision</button>
+    <button class="chip" data-cat="fundamentals">Fundamentals</button>
+  </div>
+</div>
+```
+
+::: {#log}
+:::
+
+```{=html}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const log = document.getElementById('listing-log');
+  const target = document.querySelector('.count-target');
+  if (!log) return;
+
+  function recount () {
+    const visible = log.querySelectorAll('.quarto-post:not([style*="display: none"])').length;
+    if (target) target.textContent = visible + (visible === 1 ? ' entry' : ' entries');
+  }
+
+  function wire () {
+    const chips = document.querySelectorAll('.filter-chord .chip');
+    const posts = log.querySelectorAll('.quarto-post');
+    if (!posts.length) return false;
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('on'));
+        chip.classList.add('on');
+        const cat = chip.dataset.cat;
+        posts.forEach(p => {
+          const inline = Array.from(p.querySelectorAll('.listing-category'))
+            .map(el => el.textContent.trim().toLowerCase());
+          p.style.display = (cat === 'all' || inline.includes(cat)) ? '' : 'none';
+        });
+        recount();
+      });
+    });
+    recount();
+    return true;
+  }
+
+  // Try immediately, then watch for Quarto's listing JS to inject rows
+  if (!wire()) {
+    const obs = new MutationObserver(() => {
+      if (wire()) obs.disconnect();
+    });
+    obs.observe(log, { childList: true, subtree: true });
+  }
+});
+</script>
+```

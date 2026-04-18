@@ -2,6 +2,7 @@ project:
   type: website
   resources:
     - CNAME
+    - post-enhance.js
   render:
     - "*.qmd"
     - "posts/"
@@ -46,11 +47,12 @@ format:
     toc-location: left
     code-copy: true
     code-overflow: wrap
-    mainfont: "Newsreader"
     monofont: "JetBrains Mono"
     fontsize: 1em
-    highlight-style: github
+    highlight-style: github-dark
     date-format: "MMM YYYY"
+    include-after-body:
+      - post-enhance-include.html
 
 execute:
   freeze: auto

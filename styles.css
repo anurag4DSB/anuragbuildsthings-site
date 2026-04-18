@@ -241,6 +241,12 @@ div.quarto-post .listing-date {
   color: var(--ink-2) !important;
   text-transform: uppercase;
 }
+div.quarto-post .metadata a,
+div.quarto-post .body a {
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+  color: inherit !important;
+}
 div.quarto-post .body { flex-grow: 1; }
 div.quarto-post .listing-title {
   font-family: var(--display) !important;
@@ -334,6 +340,14 @@ blockquote {
 /* Scheme toggle — hide (we're committing to dark) */
 .quarto-color-scheme-toggle { display: none !important; }
 
+/* Responsive */
+@media (max-width: 768px) {
+  div.quarto-post { grid-template-columns: 1fr !important; gap: 8px !important; }
+  .quarto-title .title { font-size: 44px !important; }
+  .status-strip { grid-template-columns: 1fr 1fr; }
+  .status-cell.right { justify-items: start; text-align: left; }
+}
+
 /* Back-to-top */
 #quarto-back-to-top {
   background: var(--paper-up) !important;
@@ -347,8 +361,363 @@ blockquote {
 }
 #quarto-back-to-top:hover { color: var(--signal) !important; border-color: var(--signal) !important; }
 
-/* Responsive */
-@media (max-width: 768px) {
-  div.quarto-post { grid-template-columns: 1fr !important; gap: 8px !important; }
-  .quarto-title .title { font-size: 44px !important; }
+/* ── Phase 2A · homepage shell ────────────────────────────── */
+
+/* TOC breathing room */
+#TOC, .sidebar nav[role="doc-toc"] {
+  padding-left: 12px;
+}
+
+/* Hide Quarto's auto title-block on the homepage (we render our own standfirst) */
+body:has(.standfirst) #title-block-header { display: none !important; }
+
+/* Reset Quarto's default listing zebra/image-right that bleeds through on row 1 */
+.quarto-listing .list .quarto-post {
+  background: transparent !important;
+}
+.quarto-post.image-right {
+  grid-template-columns: 140px 1fr !important;
+}
+.quarto-post.image-right > .body { order: 2; }
+.quarto-post.image-right > .metadata { order: 1; }
+
+/* Footer — small mono signature */
+.nav-footer, .page-footer {
+  border-top: 1px solid var(--rule) !important;
+  background: transparent !important;
+  color: var(--ink-3) !important;
+  font-family: var(--mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 32px 0 !important;
+  margin-top: 64px;
+}
+.nav-footer a, .page-footer a {
+  color: var(--ink-3) !important;
+  border-bottom: 0 !important;
+}
+.nav-footer a:hover, .page-footer a:hover { color: var(--signal) !important; }
+
+/* Stand-first */
+.standfirst {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(28px, 3.5vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+  max-width: 28ch;
+  text-wrap: balance;
+  margin: 64px 0 48px;
+}
+
+/* Status strip */
+.status-strip {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 24px;
+  padding: 16px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 56px;
+}
+.status-cell { display: grid; gap: 4px; }
+.status-cell.right { justify-items: end; text-align: right; }
+.status-cell .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.status-cell .value {
+  font-family: var(--ui);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.pulse {
+  display: inline-block;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0 0 rgba(200,226,92,0.35);
+  animation: instrument-pulse 2s infinite cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes instrument-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(200,226,92,0.35); }
+  70%  { box-shadow: 0 0 0 6px rgba(200,226,92,0); }
+  100% { box-shadow: 0 0 0 0 rgba(200,226,92,0); }
+}
+
+/* Section head + filter chord */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  margin-bottom: 0;
+}
+.section-head > .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.filter-chord {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.filter-chord .chip {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border: 1px solid var(--rule-hi);
+  background: transparent;
+  padding: 5px 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+.filter-chord .chip:hover { color: var(--ink); border-color: var(--ink-3); }
+.filter-chord .chip.on {
+  background: var(--signal);
+  color: var(--signal-ink);
+  border-color: var(--signal);
+}
+
+/* ── Phase 2B · post page ─────────────────────────────────── */
+
+/* On post pages, the title block gets a different treatment:
+   - Title stays big serif italic (already styled)
+   - Description (dek) sits directly under, no label
+   - Meta becomes a single thin mono line: date · reading time · N notes
+   - Categories become quiet inline links, NOT chips
+*/
+
+/* Distinguish post pages: they have .quarto-title-meta-heading "Published".
+   Strategy: hide Quarto's default labels and rebuild a single meta line via JS.
+   Until JS runs, hide the verbose stack. */
+body:not(:has(.standfirst)) .quarto-title-block .quarto-title-meta {
+  display: block !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: 0 !important;
+}
+body:not(:has(.standfirst)) .quarto-title-meta > div {
+  display: none !important;
+}
+body:not(:has(.standfirst)) .post-meta-line {
+  display: block !important;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 16px;
+  margin-top: 24px;
+  border-top: 1px solid var(--rule);
+}
+body:not(:has(.standfirst)) .post-meta-line .dot {
+  margin: 0 10px;
+  color: var(--ink-3);
+  opacity: 0.5;
+}
+body:not(:has(.standfirst)) .post-meta-line .reading-time {
+  color: var(--ink-2);
+}
+
+/* Post-page categories: quiet inline links, not chips */
+body:not(:has(.standfirst)) .quarto-title .quarto-categories {
+  display: flex !important;
+  gap: 0 !important;
+  flex-wrap: wrap;
+  margin: 0.5rem 0 0 !important;
+  padding: 0 !important;
+}
+body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category {
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-family: var(--mono) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: lowercase !important;
+  color: var(--ink-2) !important;
+  background: transparent !important;
+}
+body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category {
+  padding: 0 14px 0 0 !important;  /* breathing room between items */
+}
+body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category::before {
+  content: "·";
+  color: var(--ink-3);
+  margin: 0 14px 0 0;
+  opacity: 0.5;
+}
+body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category:first-child::before {
+  content: "filed:";
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-right: 14px;
+  opacity: 1;
+}
+body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category:last-child {
+  padding-right: 0 !important;
+}
+body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category a {
+  color: var(--ink-2) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid transparent !important;
+  padding-bottom: 1px !important;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category a:hover {
+  color: var(--signal) !important;
+  border-bottom-color: var(--signal) !important;
+}
+
+/* Tighter title on post pages — body, not display, scale */
+body:not(:has(.standfirst)) .quarto-title .title {
+  font-size: clamp(40px, 5.5vw, 64px) !important;
+  font-style: normal !important;
+  font-weight: 300 !important;
+  max-width: 22ch !important;
+  letter-spacing: -0.024em !important;
+  margin-bottom: 1rem !important;
+}
+body:not(:has(.standfirst)) .quarto-title-block .description {
+  font-style: italic !important;
+  font-family: var(--display) !important;
+  font-weight: 300 !important;
+  font-size: 22px !important;
+  line-height: 1.35 !important;
+  color: var(--ink-2) !important;
+  max-width: 52ch !important;
+  margin: 0.5rem 0 0 !important;
+}
+body:not(:has(.standfirst)) .quarto-title-block { margin-bottom: 4rem !important; }
+
+/* Body prose — slightly tighter measure on post pages */
+body:not(:has(.standfirst)) main.content p,
+body:not(:has(.standfirst)) main.content ul,
+body:not(:has(.standfirst)) main.content ol {
+  max-width: 64ch;
+}
+body:not(:has(.standfirst)) main.content li::marker {
+  color: var(--ink-3);
+}
+body:not(:has(.standfirst)) main.content h2 {
+  font-size: 28px !important;
+  margin: 3rem 0 1.25rem !important;
+  padding-top: 1.75rem !important;
+}
+
+/* Code block refinements */
+div.sourceCode {
+  position: relative;
+  margin: 1.5rem 0 !important;
+}
+div.sourceCode pre { margin: 0 !important; padding: 18px 20px !important; }
+div.sourceCode code { font-size: 13px !important; line-height: 1.55 !important; }
+
+/* Copy button — ghost on hover */
+.code-copy-button {
+  background: transparent !important;
+  color: var(--ink-3) !important;
+  border: 1px solid transparent !important;
+  border-radius: 0 !important;
+  padding: 4px 8px !important;
+  font-family: var(--mono) !important;
+  font-size: 11px !important;
+  opacity: 0;
+  transition: opacity 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+div.sourceCode:hover .code-copy-button { opacity: 1; }
+.code-copy-button:hover {
+  color: var(--signal) !important;
+  border-color: var(--rule-hi) !important;
+}
+.code-copy-button-checked { color: var(--signal) !important; opacity: 1 !important; }
+
+/* Figure captions */
+figure.figure { margin: 2rem 0 !important; }
+figure .figure-caption, figcaption {
+  font-family: var(--mono) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3) !important;
+  margin-top: 8px !important;
+  padding-top: 8px;
+  border-top: 1px solid var(--rule);
+  max-width: 64ch;
+}
+
+/* Margin notes — pull into right sidebar gutter */
+.column-margin {
+  font-family: var(--ui) !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+  color: var(--ink-2) !important;
+  border-left: 1px solid var(--rule);
+  padding-left: 12px;
+}
+
+/* ── Post footer — prev/next + filed under ──────────────── */
+.post-footer {
+  margin-top: 5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.post-footer .post-nav {
+  display: block;
+  text-decoration: none !important;
+  border: 0 !important;
+  padding: 16px 0;
+  color: var(--ink-2) !important;
+  transition: color 120ms ease;
+}
+.post-footer .post-nav:hover { color: var(--signal) !important; }
+.post-footer .post-nav.next { text-align: right; }
+.post-footer .post-nav .post-nav-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: block;
+  margin-bottom: 8px;
+}
+.post-footer .post-nav .post-nav-title {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.2;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.post-footer .post-nav:hover .post-nav-title { color: var(--signal); }
+.post-footer .post-nav.empty { opacity: 0.3; pointer-events: none; }
+.post-footer .post-nav.empty .post-nav-title { color: var(--ink-3); }
+
+@media (max-width: 700px) {
+  .post-footer { grid-template-columns: 1fr; }
+  .post-footer .post-nav.next { text-align: left; }
 }
