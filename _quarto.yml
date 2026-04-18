@@ -3,6 +3,10 @@ project:
   resources:
     - CNAME
     - post-enhance.js
+    - favicon-32.png
+    - favicon-192.png
+    - favicon-512.png
+    - og-default.png
   render:
     - "*.qmd"
     - "posts/"
@@ -13,6 +17,7 @@ website:
   title: "Anurag builds things"
   site-url: "https://anuragbuildsthings.com/"
   description: "Projects, experiments, and systems built in public."
+  image: og-default.png
   open-graph: true
   llms-txt: true
   google-analytics:
@@ -26,6 +31,9 @@ website:
     background: light
     search: true
     tools:
+      - icon: rss
+        href: /index.xml
+        aria-label: RSS feed
       - icon: youtube
         href: https://www.youtube.com/@AnuragBuildsThings
         aria-label: YouTube
@@ -35,6 +43,29 @@ website:
       - icon: github
         href: https://github.com/anurag4dsb
         aria-label: GitHub
+  page-footer:
+    border: false
+    left: |
+      <div class="footer-col">
+        <span class="footer-col-label">The log</span>
+        <p>A research log on machine learning systems —</p>
+        <p>written in public, for the next person who has</p>
+        <p>to build one.</p>
+      </div>
+    center: |
+      <div class="footer-col">
+        <span class="footer-col-label">Subscribe</span>
+        <p><a href="/index.xml">RSS feed</a></p>
+        <p><a href="https://www.youtube.com/@AnuragBuildsThings">YouTube</a></p>
+        <p><a href="https://github.com/anurag4dsb">GitHub</a></p>
+      </div>
+    right: |
+      <div class="footer-col">
+        <span class="footer-col-label">Colophon</span>
+        <p>Built with <a href="https://quarto.org">Quarto</a></p>
+        <p>Type: Newsreader, Source Serif, JetBrains Mono</p>
+        <p>© 2026 Anurag Mittal</p>
+      </div>
   back-to-top-navigation: true
   page-navigation: true
 
@@ -43,6 +74,11 @@ format:
     theme:
       light: [cosmo, styles.css]
       dark: [darkly, styles.css]
+    include-in-header:
+      text: |
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+        <link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png">
     toc: true
     toc-location: left
     code-copy: true

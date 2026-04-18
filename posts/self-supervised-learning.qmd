@@ -3,6 +3,8 @@ title: "Self-Supervised Learning"
 date: 2026-03-18
 categories: [self-supervised-learning, representation-learning, fundamentals]
 description: "Core intuition behind self-supervised learning: why it works, when to use it, and how it connects to real systems."
+image: figures/fig-ssl-overview.png
+image-alt: "Four pretext tasks: contrastive, masked, predictive, denoising."
 ---
 
 ## What It Is

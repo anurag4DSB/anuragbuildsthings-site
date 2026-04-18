@@ -16,12 +16,14 @@ listing:
   id: log
   contents: posts
   type: default
+  image-align: right
+  image-height: "100px"
   sort: "date desc"
   sort-ui: false
   filter-ui: false
   categories: false
   feed: true
-  fields: [title, description, date, categories]
+  fields: [image, date, title, description, categories]
 page-layout: full
 toc: false
 ---
