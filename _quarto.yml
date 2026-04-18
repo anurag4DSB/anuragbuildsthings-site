@@ -46,7 +46,8 @@ format:
     toc-location: left
     code-copy: true
     code-overflow: wrap
-    mainfont: "Source Sans Pro"
+    mainfont: "Newsreader"
+    monofont: "JetBrains Mono"
     fontsize: 1em
     highlight-style: github
     date-format: "MMM YYYY"

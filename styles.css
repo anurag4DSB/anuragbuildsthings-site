@@ -1,154 +1,354 @@
 /*-- scss:defaults --*/
 
-/* Google Fonts — Source Sans Pro */
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+/* ────────────────────────────────────────────────────────────────
+   INSTRUMENT — a Quarto theme for anuragbuildsthings.com
+   Drop-in replacement for styles.css.
+   Ported from the Instrument design system.
+   ──────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400..600&family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&display=swap');
+
+/* Bootstrap variable overrides (SCSS defaults) ─────────────────── */
+$body-bg:        #0c0d0b !default;
+$body-color:     #ecece4 !default;
+$link-color:     #c8e25c !default;
+$link-hover-color: #ecece4 !default;
+$border-color:   #22251f !default;
+$font-family-sans-serif: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif !default;
+$font-family-serif:      'Newsreader', Georgia, 'Times New Roman', serif !default;
+$font-family-monospace:  'JetBrains Mono', ui-monospace, Menlo, monospace !default;
+$headings-font-family:   'Fraunces', 'Newsreader', Georgia, serif !default;
+$headings-font-weight:   300 !default;
+$headings-color:         #ecece4 !default;
+$navbar-light-bg:        #0c0d0b !default;
+$navbar-dark-bg:         #0c0d0b !default;
 
 /*-- scss:rules --*/
 
-/* ── Light mode ── */
-.quarto-light {
-  --bs-body-bg: #ffffff;
+/* ── Tokens ───────────────────────────────────────────────────── */
+:root {
+  --paper:       #0c0d0b;
+  --paper-up:    #131511;
+  --paper-up-2:  #1a1d19;
+  --ink:         #ecece4;
+  --ink-2:       #9da29a;
+  --ink-3:       #5e635c;
+  --rule:        #22251f;
+  --rule-hi:     #32362f;
+  --signal:      #c8e25c;
+  --signal-ink:  #0c0d0b;
+  --tint-warm:   #e68a56;
+  --tint-cool:   #7aa0d6;
+  --display: 'Fraunces', 'Newsreader', Georgia, serif;
+  --text:    'Newsreader', Georgia, 'Times New Roman', serif;
+  --ui:      'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, Menlo, monospace;
 }
 
-/* ── Navbar search icon — match social icon size ── */
-.aa-DetachedSearchButton svg {
-  width: 16px !important;
-  height: 16px !important;
+/* Force dark regardless of toggle ─────────────────────────────── */
+html, body, .quarto-light, .quarto-dark {
+  background: var(--paper) !important;
+  color: var(--ink) !important;
 }
+body {
+  font-family: var(--text);
+  font-size: 18px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01","cv11","tnum";
+}
+::selection { background: var(--signal); color: var(--signal-ink); }
 
-/* ── Navbar — no divider, consistent height ── */
+/* ── Navbar ───────────────────────────────────────────────────── */
 .navbar {
-  border-bottom: none;
-  padding: 8px 16px !important;
+  background: var(--paper) !important;
+  border-bottom: 1px solid var(--rule) !important;
+  padding: 14px 24px !important;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
-
-.navbar .navbar-brand {
-  color: #000000 !important;
+.navbar .navbar-brand,
+.navbar .navbar-title {
+  font-family: var(--ui) !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  letter-spacing: -0.005em !important;
+  text-transform: none !important;
+  color: var(--ink) !important;
 }
-
-.navbar .quarto-navigation-tool:hover .bi-youtube {
-  color: #FF0000 !important;
+.navbar .quarto-navigation-tool,
+.navbar .aa-DetachedSearchButton {
+  color: var(--ink-2) !important;
+  transition: color 120ms ease;
 }
+.navbar .quarto-navigation-tool:hover { color: var(--signal) !important; }
+.navbar .quarto-navigation-tool:hover .bi-youtube { color: var(--tint-warm) !important; }
+.navbar .quarto-navigation-tool:hover .bi-linkedin { color: var(--tint-cool) !important; }
+.navbar .quarto-navigation-tool:hover .bi-github { color: var(--ink) !important; }
 
-.navbar .quarto-navigation-tool:hover .bi-linkedin {
-  color: #0A66C2 !important;
+/* ── Title block ──────────────────────────────────────────────── */
+.quarto-title-block { margin-bottom: 3rem; }
+.quarto-title-block .quarto-title-meta { margin-top: 1.25rem; }
+.quarto-title-block .quarto-categories { margin: 0.75rem 0 1.25rem !important; }
+.quarto-title-block .description, .quarto-title-block p.subtitle {
+  font-family: var(--text) !important;
+  font-size: 20px !important;
+  line-height: 1.5 !important;
+  color: var(--ink-2) !important;
+  font-style: normal !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  margin: 0.5rem 0 1.5rem !important;
+  max-width: 60ch;
 }
-
-.navbar .quarto-navigation-tool:hover .bi-github {
-  color: #ffffff !important;
+.quarto-title .title {
+  font-family: var(--display) !important;
+  font-weight: 300 !important;
+  font-style: italic;
+  font-size: clamp(48px, 7vw, 88px) !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.028em !important;
+  color: var(--ink) !important;
+  max-width: 18ch;
+  text-wrap: balance;
+  margin-bottom: 1rem;
 }
-
-.quarto-light .navbar .quarto-navigation-tool:hover .bi-github {
-  color: #000000 !important;
-}
-
-/* ── Listing cards ── */
-.quarto-grid-item {
-  border: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-/* ── Category tags — consistent across homepage and posts ── */
-.listing-categories .listing-category,
-.quarto-categories .quarto-category,
-.quarto-categories .quarto-category a {
-  font-size: 0.8rem !important;
-  font-weight: 600 !important;
-  border-color: #6c757d !important;
-  color: #6c757d !important;
-}
-
-.quarto-categories .quarto-category {
-  padding: 1.92px 6.4px !important;
-  opacity: 1 !important;
-}
-
-.quarto-categories .quarto-category a,
-.quarto-categories .quarto-category a:hover,
-.quarto-categories .quarto-category a:visited,
-.quarto-categories .quarto-category a:active {
-  color: inherit !important;
-  font-weight: inherit !important;
-  text-decoration: none !important;
-  -webkit-text-stroke: 0 !important;
-}
-
-/* ── Title block ── */
-.quarto-title-block {
-  margin-bottom: 1.5rem;
-}
-
-.quarto-title-meta > div {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  gap: 0.5em;
-}
-
+.quarto-title .subtitle,
 .quarto-title-meta-heading,
 .quarto-title-meta-contents p {
-  font-size: 0.8rem !important;
-  font-weight: 600 !important;
-  color: #6c757d !important;
-  text-transform: uppercase;
-  opacity: 1 !important;
-  margin: 0;
+  font-family: var(--mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-3) !important;
 }
 
-/* ── Homepage listing — breathing room below nav ── */
-.quarto-listing {
-  margin-top: 2rem;
+/* ── Body prose ──────────────────────────────────────────────── */
+main.content, #quarto-document-content {
+  font-family: var(--text);
+  font-size: 19px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+main.content p { margin: 0 0 1rem; max-width: 66ch; }
+main.content em { color: var(--signal); font-style: italic; }
+main.content strong { color: var(--ink); font-weight: 500; }
+main.content h1, main.content h2, main.content h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.018em;
+  max-width: 30ch;
+  text-wrap: balance;
+}
+main.content h2 {
+  font-style: italic;
+  font-size: 32px;
+  margin: 2.5rem 0 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+main.content h3 { font-size: 22px; margin: 2rem 0 0.75rem; }
+main.content a { color: var(--signal); text-decoration: none; border-bottom: 1px solid rgba(200,226,92,0.3); }
+main.content a:hover { border-bottom-color: var(--signal); }
+main.content ul, main.content ol { max-width: 66ch; }
+main.content li { margin-bottom: 0.4rem; }
+
+/* Inline & block code */
+code, pre {
+  font-family: var(--mono) !important;
+  font-size: 0.85em;
+}
+main.content :not(pre) > code {
+  color: var(--signal);
+  background: var(--paper-up);
+  border: 1px solid var(--rule);
+  padding: 2px 6px;
+  border-radius: 0;
+}
+pre, div.sourceCode {
+  background: var(--paper-up) !important;
+  border: 1px solid var(--rule) !important;
+  border-radius: 0 !important;
+  padding: 16px !important;
 }
 
-
-/* ── Blog listing — tighter date column ── */
-div.quarto-post .metadata {
-  flex-basis: auto;
-  flex-grow: 0;
-  flex-shrink: 0;
-  font-size: 1em;
-  padding-right: 1.5em;
+/* ── Sidebar TOC ─────────────────────────────────────────────── */
+#TOC, #quarto-margin-sidebar, .sidebar nav {
+  font-family: var(--mono) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.04em;
+}
+#TOC .toc-title, #quarto-margin-sidebar .toc-title {
+  font-family: var(--mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-3) !important;
+  font-weight: 400 !important;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+#TOC ul, .sidebar nav ul { list-style: none; padding-left: 0; }
+#TOC a, .sidebar nav a {
+  color: var(--ink-2) !important;
+  text-decoration: none !important;
+  padding: 6px 0 !important;
+  display: block;
+  border-top: 1px solid var(--rule);
+  border-left: 2px solid transparent;
+  padding-left: 10px !important;
+  transition: color 120ms ease;
+}
+#TOC a:hover, .sidebar nav a:hover { color: var(--signal) !important; }
+#TOC a.active, .sidebar nav a.active {
+  color: var(--ink) !important;
+  border-left-color: var(--signal);
 }
 
-div.quarto-post .body {
-  flex-grow: 1;
-}
+/* ── Listing (homepage log) ──────────────────────────────────── */
+.quarto-listing { margin-top: 2rem; }
 
 div.quarto-post {
-  border-bottom-color: #6c757d !important;
+  border-top: 1px solid var(--rule) !important;
+  border-bottom: 0 !important;
+  padding: 24px 0 !important;
+  display: grid !important;
+  grid-template-columns: 140px 1fr !important;
+  gap: 24px !important;
+  transition: background 200ms ease;
 }
+div.quarto-post .metadata { grid-column: 1; grid-row: 1; }
+div.quarto-post .body     { grid-column: 2; grid-row: 1; min-width: 0; }
+div.quarto-post:hover { background: rgba(200,226,92,0.025); }
+div.quarto-post:hover .listing-title a { color: var(--signal) !important; }
+div.quarto-post:hover .listing-date { color: var(--signal) !important; }
 
+div.quarto-post .metadata {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  flex: none;
+}
+div.quarto-post .listing-date {
+  font-family: var(--mono) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.04em;
+  color: var(--ink-2) !important;
+  text-transform: uppercase;
+}
+div.quarto-post .body { flex-grow: 1; }
+div.quarto-post .listing-title {
+  font-family: var(--display) !important;
+  font-weight: 400 !important;
+  font-size: 28px !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.018em !important;
+  margin-bottom: 0.5rem !important;
+  max-width: 28ch;
+  text-wrap: balance;
+}
+div.quarto-post .listing-title a {
+  color: var(--ink) !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  transition: color 120ms ease;
+}
 div.quarto-post .listing-description {
-  font-size: 1em;
+  font-family: var(--text);
+  font-size: 17px !important;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 60ch;
+}
+div.quarto-post .listing-description a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border: 0 !important;
 }
 
-div.quarto-post .body .listing-categories {
-  font-size: 0.95em;
-  padding-top: 0.5rem;
-}
-
-
-
-/* ── Dark mode ── */
-.quarto-dark {
-  --bs-body-bg: #181818;
-  --bs-body-color: #cccccc;
-}
-
-.quarto-dark .navbar {
-  border-bottom: none;
-}
-
-.quarto-dark #quarto-sidebar {
+/* ── Category chips ─────────────────────────────────────────── */
+.listing-categories, .quarto-categories { gap: 8px !important; flex-wrap: wrap; padding-top: 0.75rem !important; }
+.listing-categories .listing-category,
+.quarto-categories .quarto-category {
+  font-family: var(--mono) !important;
+  font-size: 9.5px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  border: 1px solid var(--rule-hi) !important;
+  color: var(--ink-2) !important;
+  padding: 4px 12px !important;
+  border-radius: 0 !important;
   background: transparent !important;
+  opacity: 1 !important;
+  white-space: nowrap;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.listing-categories .listing-category:hover,
+.quarto-categories .quarto-category:hover {
+  color: var(--signal) !important;
+  border-color: var(--signal) !important;
 }
 
-.quarto-dark .navbar .navbar-brand {
-  color: #ffffff !important;
+/* ── Callouts ───────────────────────────────────────────────── */
+.callout {
+  border-radius: 0 !important;
+  border: 0 !important;
+  border-left: 2px solid var(--rule-hi) !important;
+  background: var(--paper-up) !important;
+  padding: 12px 16px !important;
+  margin: 1.5rem 0 !important;
 }
-
-
-.quarto-dark .quarto-grid-item {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+.callout.callout-style-default .callout-title {
+  font-family: var(--mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  color: var(--ink-3) !important;
 }
+.callout-note { border-left-color: var(--tint-cool) !important; }
+.callout-note .callout-title { color: var(--tint-cool) !important; }
+.callout-warning, .callout-caution { border-left-color: var(--tint-warm) !important; }
+.callout-warning .callout-title, .callout-caution .callout-title { color: var(--tint-warm) !important; }
+.callout-tip, .callout-important { border-left-color: var(--signal) !important; }
+.callout-tip .callout-title, .callout-important .callout-title { color: var(--signal) !important; }
 
+/* ── Misc ──────────────────────────────────────────────────── */
+hr { border-color: var(--rule) !important; }
+blockquote {
+  border-left: 2px solid var(--rule-hi) !important;
+  color: var(--ink-2) !important;
+  padding-left: 1rem !important;
+  font-style: italic;
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--rule-hi); }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* Scheme toggle — hide (we're committing to dark) */
+.quarto-color-scheme-toggle { display: none !important; }
+
+/* Back-to-top */
+#quarto-back-to-top {
+  background: var(--paper-up) !important;
+  border: 1px solid var(--rule) !important;
+  color: var(--ink-2) !important;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 0 !important;
+}
+#quarto-back-to-top:hover { color: var(--signal) !important; border-color: var(--signal) !important; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  div.quarto-post { grid-template-columns: 1fr !important; gap: 8px !important; }
+  .quarto-title .title { font-size: 44px !important; }
+}
