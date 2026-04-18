@@ -13,6 +13,11 @@ include-in-header:
           background: transparent !important;
         }
       </style>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          document.body.classList.add('home');
+        });
+      </script>
 listing:
   id: log
   contents: posts
@@ -25,7 +30,7 @@ listing:
   categories: false
   feed: true
   fields: [image, date, title, description, categories]
-page-layout: full
+page-layout: custom
 toc: false
 ---
 
@@ -106,7 +111,7 @@ toc: false
 ```{=html}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const log = document.getElementById('listing-log');
+  const log = document.getElementById('log');
   const target = document.querySelector('.count-target');
   if (!log) return;
 

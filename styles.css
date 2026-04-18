@@ -541,6 +541,7 @@ blockquote {
 
 /* Responsive — listing collapses to single column */
 @media (max-width: 768px) {
+
   .quarto-listing .quarto-post,
   .quarto-listing .quarto-post.image-right-align,
   .quarto-post.image-right {
@@ -1163,6 +1164,7 @@ figcaption {
 
 /* ── Print stylesheet ─────────────────────────────────────── */
 @media print {
+
   #quarto-header,
   .navbar,
   .nav-footer,
@@ -1200,7 +1202,12 @@ figcaption {
     color: black !important;
   }
 
-  h1, h2, h3, h4, h5, h6,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
   .title,
   .quarto-title h1 {
     color: black !important;
@@ -1509,6 +1516,7 @@ figcaption {
   text-transform: uppercase;
   color: var(--ink-3);
 }
+
 .util-strip-inner {
   max-width: 1400px;
   margin: 0 auto;
@@ -1517,14 +1525,25 @@ figcaption {
   justify-content: space-between;
   align-items: center;
 }
+
 .util-strip .util-mark {
   color: var(--signal);
   margin-right: 8px;
   font-size: 8px;
 }
-.util-strip .util-path { color: var(--ink-2); }
-.util-strip .util-sep { margin: 0 8px; opacity: 0.5; }
-.util-strip .util-meta { color: var(--ink-3); }
+
+.util-strip .util-path {
+  color: var(--ink-2);
+}
+
+.util-strip .util-sep {
+  margin: 0 8px;
+  opacity: 0.5;
+}
+
+.util-strip .util-meta {
+  color: var(--ink-3);
+}
 
 /* ── Masthead ──────────────────────────────────────────────── */
 .masthead {
@@ -1532,6 +1551,7 @@ figcaption {
   background: var(--paper);
   padding: 18px 0 16px;
 }
+
 .masthead-row {
   max-width: 1400px;
   margin: 0 auto;
@@ -1548,6 +1568,7 @@ figcaption {
   align-items: center;
   gap: 14px;
 }
+
 .brand-mark {
   font-family: var(--mono);
   font-size: 13px;
@@ -1557,7 +1578,13 @@ figcaption {
   padding: 4px 8px;
   letter-spacing: 0;
 }
-.brand-stack { display: flex; flex-direction: column; gap: 2px; }
+
+.brand-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .brand-name {
   font-family: var(--ui);
   font-size: 15px;
@@ -1566,6 +1593,7 @@ figcaption {
   letter-spacing: -0.005em;
   line-height: 1;
 }
+
 .brand-tag {
   font-family: var(--mono);
   font-size: 9.5px;
@@ -1582,7 +1610,14 @@ figcaption {
   gap: 24px;
   align-items: end;
 }
-.m-cell { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+
+.m-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
 .m-label {
   font-family: var(--mono);
   font-size: 9.5px;
@@ -1594,6 +1629,7 @@ figcaption {
   gap: 6px;
   line-height: 1;
 }
+
 .m-value {
   font-family: var(--mono);
   font-size: 12px;
@@ -1604,13 +1640,17 @@ figcaption {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .m-value a {
   color: var(--ink) !important;
   text-decoration: none !important;
   border: 0 !important;
   transition: color 120ms ease;
 }
-.m-value a:hover { color: var(--signal) !important; }
+
+.m-value a:hover {
+  color: var(--signal) !important;
+}
 
 /* Right nav */
 .masthead-nav {
@@ -1621,6 +1661,7 @@ figcaption {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+
 .masthead-nav a {
   color: var(--ink-2) !important;
   text-decoration: none !important;
@@ -1628,6 +1669,7 @@ figcaption {
   padding-bottom: 1px !important;
   transition: color 120ms ease, border-color 120ms ease;
 }
+
 .masthead-nav a:hover {
   color: var(--signal) !important;
   border-bottom-color: var(--signal) !important;
@@ -1647,10 +1689,12 @@ figcaption {
   padding: 0 24px;
   text-wrap: balance;
 }
+
 .hero-standfirst .line {
   display: block;
   color: var(--ink);
 }
+
 .hero-standfirst .line.accent {
   color: var(--signal);
 }
@@ -1665,7 +1709,9 @@ figcaption {
   padding: 0 24px;
 }
 
-body.home .standfirst { display: none; }
+body.home .standfirst {
+  display: none;
+}
 
 /* Section head, listing, and log get the same frame */
 body.home .section-head,
@@ -1691,6 +1737,7 @@ body.home .quarto-listing .quarto-post .listing-categories {
   padding-top: 8px !important;
   padding-bottom: 0 !important;
 }
+
 body.home .quarto-listing .quarto-post .listing-category {
   border: 0 !important;
   background: transparent !important;
@@ -1703,6 +1750,7 @@ body.home .quarto-listing .quarto-post .listing-category {
   white-space: nowrap;
   transition: color 120ms ease;
 }
+
 body.home .quarto-listing .quarto-post .listing-category:hover {
   color: var(--signal) !important;
   border: 0 !important;
@@ -1714,12 +1762,14 @@ body.home .quarto-listing .quarto-post .listing-category:hover {
     grid-template-columns: auto 1fr;
     gap: 24px;
   }
+
   .masthead-nav {
     grid-column: 1 / -1;
     justify-content: flex-start;
     border-top: 1px solid var(--rule);
     padding-top: 12px;
   }
+
   .masthead-cells {
     grid-column: 1 / -1;
     grid-template-columns: repeat(3, 1fr);
@@ -1730,8 +1780,80 @@ body.home .quarto-listing .quarto-post .listing-category:hover {
 }
 
 @media (max-width: 700px) {
-  .masthead-row { grid-template-columns: 1fr; gap: 16px; }
-  .masthead-cells { grid-template-columns: repeat(2, 1fr); }
-  .hero-standfirst { font-size: 36px !important; }
-  .util-strip-inner { font-size: 9px; padding: 6px 16px; }
+  .masthead-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .masthead-cells {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-standfirst {
+    font-size: 36px !important;
+  }
+
+  .util-strip-inner {
+    font-size: 9px;
+    padding: 6px 16px;
+  }
+}
+
+/* ── Homepage (page-layout: custom) ────────────────────────── */
+
+/* Custom layout gives us a blank canvas — give it max-width and breathing room */
+body.home .page-layout-custom {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+/* Masthead flush to top of the custom container */
+body.home .masthead {
+  margin: 0 -2.5rem 3rem;
+  /* bleed to edges */
+  padding: 16px 2.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Full-height cells + dividers */
+.masthead-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.brand-block {
+  padding-right: 28px;
+  border-right: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+}
+
+.masthead-cells {
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  padding-left: 0;
+}
+
+.m-cell {
+  position: relative;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.m-cell+.m-cell {
+  border-left: 1px solid var(--rule);
+}
+
+.masthead-nav {
+  padding-left: 24px;
+  border-left: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
 }
