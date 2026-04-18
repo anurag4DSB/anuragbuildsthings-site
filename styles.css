@@ -1943,3 +1943,35 @@ body.home header.masthead nav.masthead-nav {
   max-width: 100% !important;
   height: auto !important;
 }
+
+/* Post page: dress up the navbar to match home brand block */
+body:not(.home) .navbar-brand {
+  font-family: var(--serif) !important;
+  font-size: 1.1rem !important;
+  letter-spacing: 0.02em !important;
+  color: var(--ink) !important;
+}
+
+body:not(.home) .navbar {
+  border-bottom: 1px solid #2a2e27 !important;
+  padding: 14px 32px !important;
+}
+
+body:not(.home) .navbar .navbar-brand::before {
+  content: "[A] ";
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--signal);
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+body:not(.home) .navbar .navbar-brand::after {
+  content: " · research log";
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-left: 10px;
+}
