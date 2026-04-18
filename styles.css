@@ -1494,3 +1494,244 @@ figcaption {
   color: var(--signal) !important;
   border-color: var(--signal) !important;
 }
+
+/* ════════════════════════════════════════════════════════════
+   HOMEPAGE — Instrument masthead
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Top utility strip ─────────────────────────────────────── */
+.util-strip {
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.util-strip-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 8px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.util-strip .util-mark {
+  color: var(--signal);
+  margin-right: 8px;
+  font-size: 8px;
+}
+.util-strip .util-path { color: var(--ink-2); }
+.util-strip .util-sep { margin: 0 8px; opacity: 0.5; }
+.util-strip .util-meta { color: var(--ink-3); }
+
+/* ── Masthead ──────────────────────────────────────────────── */
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  padding: 18px 0 16px;
+}
+.masthead-row {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 36px;
+  align-items: center;
+}
+
+/* Brand block — left */
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand-mark {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  border: 1px solid var(--rule-hi);
+  padding: 4px 8px;
+  letter-spacing: 0;
+}
+.brand-stack { display: flex; flex-direction: column; gap: 2px; }
+.brand-name {
+  font-family: var(--ui);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  line-height: 1;
+}
+.brand-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  line-height: 1;
+}
+
+/* Status cells — middle */
+.masthead-cells {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  align-items: end;
+}
+.m-cell { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.m-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+}
+.m-value {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.m-value a {
+  color: var(--ink) !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  transition: color 120ms ease;
+}
+.m-value a:hover { color: var(--signal) !important; }
+
+/* Right nav */
+.masthead-nav {
+  display: flex;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.masthead-nav a {
+  color: var(--ink-2) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid transparent !important;
+  padding-bottom: 1px !important;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.masthead-nav a:hover {
+  color: var(--signal) !important;
+  border-bottom-color: var(--signal) !important;
+}
+
+/* ── Hero standfirst (replaces .standfirst on home) ────────── */
+.hero-standfirst {
+  font-family: var(--ui) !important;
+  font-weight: 300 !important;
+  font-style: normal !important;
+  font-size: clamp(40px, 6vw, 72px) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.022em !important;
+  color: var(--ink) !important;
+  margin: 64px auto 32px !important;
+  max-width: 1400px;
+  padding: 0 24px;
+  text-wrap: balance;
+}
+.hero-standfirst .line {
+  display: block;
+  color: var(--ink);
+}
+.hero-standfirst .line.accent {
+  color: var(--signal);
+}
+
+.hero-dek {
+  font-family: var(--text) !important;
+  font-size: 18px !important;
+  line-height: 1.55 !important;
+  color: var(--ink-2) !important;
+  max-width: 1400px;
+  margin: 0 auto 64px !important;
+  padding: 0 24px;
+}
+
+body.home .standfirst { display: none; }
+
+/* Section head, listing, and log get the same frame */
+body.home .section-head,
+body.home #log,
+body.home .quarto-listing {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+body.home .section-head {
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
+/* ── Fix listing categories: quiet inline tags, not chips ──── */
+body.home .quarto-listing .quarto-post .listing-categories {
+  gap: 14px !important;
+  padding-top: 8px !important;
+  padding-bottom: 0 !important;
+}
+body.home .quarto-listing .quarto-post .listing-category {
+  border: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  font-family: var(--mono) !important;
+  font-size: 10.5px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: lowercase !important;
+  color: var(--ink-3) !important;
+  white-space: nowrap;
+  transition: color 120ms ease;
+}
+body.home .quarto-listing .quarto-post .listing-category:hover {
+  color: var(--signal) !important;
+  border: 0 !important;
+}
+
+/* ── Responsive: collapse status cells gracefully ─────────── */
+@media (max-width: 1100px) {
+  .masthead-row {
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+  }
+  .masthead-nav {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+    border-top: 1px solid var(--rule);
+    padding-top: 12px;
+  }
+  .masthead-cells {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--rule);
+    padding-top: 12px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 700px) {
+  .masthead-row { grid-template-columns: 1fr; gap: 16px; }
+  .masthead-cells { grid-template-columns: repeat(2, 1fr); }
+  .hero-standfirst { font-size: 36px !important; }
+  .util-strip-inner { font-size: 9px; padding: 6px 16px; }
+}

@@ -5,6 +5,7 @@ include-in-header:
   - text: |
       <style>
         #title-block-header { display: none !important; }
+        #quarto-header { display: none !important; }
         .anchorjs-link { display: none !important; }
         .quarto-post.image-right { display: grid !important; grid-template-columns: 140px 1fr !important; }
         .quarto-listing .list .quarto-post:nth-child(odd),
@@ -29,27 +30,63 @@ toc: false
 ---
 
 ```{=html}
-<p class="standfirst">A research log on machine learning systems &mdash; written in public, for the next person who has to build one.</p>
 
-<div class="status-strip">
-  <div class="status-cell">
-    <div class="label">Currently<span class="pulse"></span></div>
-    <div class="value">Augmentation ablations &middot; run 04</div>
-  </div>
-  <div class="status-cell">
-    <div class="label">Last shipped</div>
-    <div class="value">SimCLR from scratch</div>
-  </div>
-  <div class="status-cell">
-    <div class="label">Cadence</div>
-    <div class="value">Fortnightly</div>
-  </div>
-  <div class="status-cell right">
-    <div class="label">Index</div>
-    <div class="value count-target">3 entries</div>
-  </div>
-</div>
+<!-- ── Masthead with status cells ─────────────────────────── -->
+<header class="masthead">
+  <div class="masthead-row">
+    <div class="brand-block">
+      <div class="brand-mark">[A]</div>
+      <div class="brand-stack">
+        <div class="brand-name">anuragbuildsthings</div>
+        <div class="brand-tag">v26 · research log</div>
+      </div>
+    </div>
 
+    <div class="masthead-cells">
+      <div class="m-cell">
+        <div class="m-label">Now running<span class="pulse"></span></div>
+        <div class="m-value">SimCLR · run 8512</div>
+      </div>
+      <div class="m-cell">
+        <div class="m-label">Last updated</div>
+        <div class="m-value">18 Apr 2026 · 14:42</div>
+      </div>
+      <div class="m-cell">
+        <div class="m-label">Entries</div>
+        <div class="m-value count-target">3 published · 2 drafts</div>
+      </div>
+      <div class="m-cell">
+        <div class="m-label">Cadence</div>
+        <div class="m-value">Fortnightly</div>
+      </div>
+      <div class="m-cell">
+        <div class="m-label">Feed</div>
+        <div class="m-value"><a href="/index.xml">RSS</a> · <a href="/llms.txt">LLMS</a></div>
+      </div>
+    </div>
+
+    <nav class="masthead-nav">
+      <a href="https://www.youtube.com/@AnuragBuildsThings" aria-label="YouTube">YT</a>
+      <a href="https://www.linkedin.com/in/mittalanu/" aria-label="LinkedIn">LI</a>
+      <a href="https://github.com/anurag4dsb" aria-label="GitHub">GH</a>
+      <a href="/about.html">ABOUT</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── Hero standfirst ────────────────────────────────────── -->
+<h1 class="hero-standfirst">
+  <span class="line">A research log on</span>
+  <span class="line">machine learning systems —</span>
+  <span class="line accent">written in public.</span>
+</h1>
+
+<p class="hero-dek">
+  Every experiment, every note, every YouTube lecture — posted the week it happens.
+  No roadmaps. No thought leadership. Just the curves and what they mean.
+</p>
+
+<!-- ── Listing section ────────────────────────────────────── -->
 <div class="section-head">
   <div class="filter-chord">
     <button class="chip on" data-cat="all">All</button>
@@ -99,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return true;
   }
 
-  // Try immediately, then watch for Quarto's listing JS to inject rows
   if (!wire()) {
     const obs = new MutationObserver(() => {
       if (wire()) obs.disconnect();
