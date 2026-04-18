@@ -1868,3 +1868,78 @@ body.home .quarto-listing .quarto-post {
 body.home .quarto-listing .quarto-post:first-child {
   border-top: 1px solid var(--rule-hi) !important;
 }
+
+/* ── Masthead final dividers ──────── */
+
+/* Kill the cell gap so borders sit flush */
+body.home .masthead-cells {
+  gap: 0 !important;
+}
+
+body.home header.masthead div.brand-block {
+  border-right: 1px solid #d0d4ca !important;
+  padding-right: 32px !important;
+  margin-right: 0 !important;
+}
+
+body.home header.masthead div.m-cell {
+  border-right: 1px solid #d0d4ca !important;
+  padding: 0 28px !important;
+  border-left: 0 !important;
+  margin: 0 !important;
+}
+
+body.home header.masthead div.m-cell:last-child {
+  border-right: 0 !important;
+}
+
+body.home header.masthead nav.masthead-nav {
+  border-left: 1px solid #d0d4ca !important;
+  padding-left: 32px !important;
+  margin-left: 0 !important;
+}
+
+/* ── Post listing dividers ──────── */
+.quarto-listing .list .quarto-post {
+  border-top: 1px solid #2a2e27 !important;
+  padding: 28px 0 !important;
+}
+
+.quarto-listing .list .quarto-post:first-child {
+  border-top: 0 !important;
+}
+
+/* ── Post row column dividers ──────── */
+.quarto-listing .list .quarto-post {
+  display: grid !important;
+  grid-template-columns: 120px 1fr 260px !important;
+  gap: 0 !important;
+  align-items: center !important;
+  padding: 32px 0 !important;
+}
+
+.quarto-listing .list .quarto-post>.metadata {
+  grid-column: 1 !important;
+  padding: 0 28px 0 4px !important;
+  border-right: 1px solid #2a2e27 !important;
+  align-self: center !important;
+}
+
+.quarto-listing .list .quarto-post>.body {
+  grid-column: 2 !important;
+  padding: 0 32px !important;
+  border-right: 1px solid #2a2e27 !important;
+}
+
+.quarto-listing .list .quarto-post>.thumbnail {
+  grid-column: 3 !important;
+  padding: 0 4px 0 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+}
+
+.quarto-listing .list .quarto-post>.thumbnail img {
+  max-width: 100% !important;
+  height: auto !important;
+}
