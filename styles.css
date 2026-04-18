@@ -35,7 +35,7 @@ $navbar-dark-bg: #0c0d0b !default;
   --ink-3: #5e635c;
   --ink-4: #3a3d36;
   --surface: #131511;
-  --rule: #22251f;
+  --rule: #32362f;
   --rule-hi: #32362f;
   --signal: #c8e25c;
   --signal-ink: #0c0d0b;
@@ -311,7 +311,7 @@ div.sourceCode {
 .quarto-listing .quarto-post.image-right-align,
 .quarto-post.image-right {
   display: grid !important;
-  grid-template-columns: 90px 1fr 180px !important;
+  grid-template-columns: 90px 1fr 280px !important;
   gap: 1.75rem !important;
   align-items: center !important;
   padding: 1.4rem 0 !important;
@@ -419,11 +419,11 @@ div.sourceCode {
 
 .quarto-listing .quarto-post .thumbnail img,
 .quarto-listing .quarto-post .thumbnail .thumbnail-image {
-  width: 180px;
-  height: 95px;
+  width: 280px;
+  height: 158px;
   max-height: none;
   object-fit: cover;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--rule-hi);
   display: block;
 }
 
@@ -1856,4 +1856,15 @@ body.home .masthead {
   border-left: 1px solid var(--rule);
   display: flex;
   align-items: center;
+}
+
+
+/* Stronger border between listing rows — the site's main navigation surface */
+body.home .quarto-listing .quarto-post {
+  border-top: 1px solid var(--rule-hi) !important;
+  padding: 2rem 0 !important;
+}
+
+body.home .quarto-listing .quarto-post:first-child {
+  border-top: 1px solid var(--rule-hi) !important;
 }

@@ -23,7 +23,7 @@ listing:
   contents: posts
   type: default
   image-align: right
-  image-height: "100px"
+  image-height: "158px"
   sort: "date desc"
   sort-ui: false
   filter-ui: false
