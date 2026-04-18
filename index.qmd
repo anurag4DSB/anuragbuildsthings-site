@@ -31,5 +31,3 @@ listing:
 page-layout: full
 toc: false
 ---
-
-## Projects, experiments, and systems built in public.

@@ -95,11 +95,9 @@
   margin: 0;
 }
 
-/* ── Homepage header spacing ── */
-
-#quarto-document-content > section.level2 > h2 {
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #6c757d;
+/* ── Homepage listing — breathing room below nav ── */
+.quarto-listing {
+  margin-top: 2rem;
 }
 
 
