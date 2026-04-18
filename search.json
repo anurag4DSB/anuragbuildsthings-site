@@ -77,6 +77,13 @@
     "text": "Why It Matters\n\nScale: unlabeled data is orders of magnitude more available than labeled data\nTransfer: SSL representations often transfer better than supervised ones to new domains\nFoundation models: GPT, CLIP, DINO – the most capable models are pretrained with self-supervision\nCost: eliminates the annotation bottleneck, especially for domains where labeling requires expertise (medical imaging, satellite data)\n\nSSL is not a niche technique. It is the default pretraining paradigm for modern AI systems."
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Anurag builds things",
+    "section": "",
+    "text": "Self-Supervised Learning\n\n\n\nself-supervised-learning\n\nrepresentation-learning\n\nfundamentals\n\n\n\nCore intuition behind self-supervised learning: why it works, when to use it, and how it connects to real systems.\n\n\n\n\n\nMar 2026\n\n\n\n\n\n\n\nLearning Representations Without Labels (SimCLR)\n\n\n\nself-supervised-learning\n\ncontrastive-learning\n\ncomputer-vision\n\n\n\nImplementing SimCLR from scratch to learn visual representations without labels using contrastive learning on CIFAR-10.\n\n\n\n\n\nMar 2026\n\n\n\n\n\n\n\nWhy Augmentations Matter in Contrastive Learning\n\n\n\nself-supervised-learning\n\ncontrastive-learning\n\naugmentations\n\n\n\nTesting how different augmentation strategies affect representation quality in SimCLR-style contrastive learning.\n\n\n\n\n\nMar 2026\n\n\n\n\n\nNo matching items\n Back to top"
+  },
+  {
     "objectID": "posts/ssl-representation.html",
     "href": "posts/ssl-representation.html",
     "title": "Learning Representations Without Labels (SimCLR)",

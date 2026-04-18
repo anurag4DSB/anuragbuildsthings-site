@@ -1,7 +1,5 @@
 # Anurag builds things
 
-## Projects, experiments, and systems built in public.
-
 ### [Self-Supervised Learning](posts/self-supervised-learning.llms.md)
 
 Core intuition behind self-supervised learning: why it works, when to use it, and how it connects to real systems.
