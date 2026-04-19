@@ -140,14 +140,44 @@
     }
   }
 
+  // ── 3. Swap navbar wordmark ↔ post title on scroll ──────────────
+  function wireNavTitleSwap() {
+    if (document.body.classList.contains('home')) return;
+    const navTitle = document.querySelector('.navbar-title');
+    const h1 = document.querySelector('#title-block-header h1.title');
+    if (!navTitle || !h1) return;
+
+    const brandText = navTitle.textContent;
+    const postText = h1.textContent.trim();
+    if (!postText) return;
+
+    let current = 'brand';
+    const setText = which => {
+      if (current === which) return;
+      current = which;
+      navTitle.classList.add('swapping');
+      setTimeout(() => {
+        navTitle.textContent = which === 'brand' ? brandText : postText;
+        navTitle.classList.remove('swapping');
+      }, 140);
+    };
+
+    const io = new IntersectionObserver(entries => {
+      setText(entries[0].isIntersecting ? 'brand' : 'post');
+    }, { rootMargin: '-80px 0px 0px 0px', threshold: 0 });
+    io.observe(h1);
+  }
+
   // Run after DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       buildMetaLine();
       buildPrevNext();
+      wireNavTitleSwap();
     });
   } else {
     buildMetaLine();
     buildPrevNext();
+    wireNavTitleSwap();
   }
 })();

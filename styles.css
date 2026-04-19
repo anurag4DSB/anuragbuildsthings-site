@@ -93,6 +93,21 @@ body {
 .navbar .navbar-title {
   font-style: italic !important;
   color: var(--signal) !important;
+  max-width: min(60ch, 50vw);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 140ms ease;
+}
+
+.navbar .navbar-title.swapping {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar .navbar-title {
+    transition: none !important;
+  }
 }
 
 .navbar .navbar-brand {
