@@ -93,20 +93,36 @@ body {
 .navbar .navbar-title {
   font-style: italic !important;
   color: var(--signal) !important;
-  max-width: min(60ch, 50vw);
+}
+
+.post-title-dock {
+  position: absolute;
+  left: var(--dock-left, 24px);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--display) !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  font-size: 18px !important;
+  color: var(--signal) !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: opacity 140ms ease;
+  max-width: calc(100vw - var(--dock-left, 24px) - 200px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
 }
 
-.navbar .navbar-title.swapping {
-  opacity: 0;
+.post-title-dock.visible {
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .navbar .navbar-title {
-    transition: none !important;
+  .post-title-dock {
+    transition: none;
   }
 }
 

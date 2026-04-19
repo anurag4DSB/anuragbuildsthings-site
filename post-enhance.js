@@ -140,30 +140,36 @@
     }
   }
 
-  // ── 3. Swap navbar wordmark ↔ post title on scroll ──────────────
-  function wireNavTitleSwap() {
+  // ── 3. Dock post title into navbar at H1's x-position ───────────
+  function wirePostTitleDock() {
     if (document.body.classList.contains('home')) return;
-    const navTitle = document.querySelector('.navbar-title');
+    const navContainer = document.querySelector('.navbar-container.container-fluid') || document.querySelector('.navbar');
     const h1 = document.querySelector('#title-block-header h1.title');
-    if (!navTitle || !h1) return;
+    if (!navContainer || !h1) return;
 
-    const brandText = navTitle.textContent;
-    const postText = h1.textContent.trim();
-    if (!postText) return;
+    const title = h1.textContent.trim();
+    if (!title) return;
 
-    let current = 'brand';
-    const setText = which => {
-      if (current === which) return;
-      current = which;
-      navTitle.classList.add('swapping');
-      setTimeout(() => {
-        navTitle.textContent = which === 'brand' ? brandText : postText;
-        navTitle.classList.remove('swapping');
-      }, 140);
+    const dock = document.createElement('span');
+    dock.className = 'post-title-dock';
+    dock.setAttribute('aria-hidden', 'true');
+    dock.textContent = title;
+    navContainer.appendChild(dock);
+
+    const alignEl = document.querySelector('main.content') || h1;
+    const navbarEl = document.querySelector('.navbar');
+    const updateDockLeft = () => {
+      const rect = alignEl.getBoundingClientRect();
+      const navRect = (navbarEl || navContainer).getBoundingClientRect();
+      dock.style.setProperty('--dock-left', (rect.left - navRect.left) + 'px');
     };
+    updateDockLeft();
+
+    const ro = new ResizeObserver(updateDockLeft);
+    ro.observe(document.body);
 
     const io = new IntersectionObserver(entries => {
-      setText(entries[0].isIntersecting ? 'brand' : 'post');
+      dock.classList.toggle('visible', !entries[0].isIntersecting);
     }, { rootMargin: '-80px 0px 0px 0px', threshold: 0 });
     io.observe(h1);
   }
@@ -173,11 +179,11 @@
     document.addEventListener('DOMContentLoaded', () => {
       buildMetaLine();
       buildPrevNext();
-      wireNavTitleSwap();
+      wirePostTitleDock();
     });
   } else {
     buildMetaLine();
     buildPrevNext();
-    wireNavTitleSwap();
+    wirePostTitleDock();
   }
 })();
