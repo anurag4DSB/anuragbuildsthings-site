@@ -90,6 +90,12 @@ body {
   color: var(--ink) !important;
 }
 
+.navbar .navbar-brand {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
 .navbar .quarto-navigation-tool,
 .navbar .aa-DetachedSearchButton {
   color: var(--ink-2) !important;
@@ -1724,11 +1730,11 @@ body.home .quarto-listing .quarto-post:first-child {
   font-family: var(--mono);
   font-size: 18px;
   font-weight: 500;
+  line-height: 1;
   color: var(--signal);
   border: 1px solid var(--rule-hi);
   padding: 4px 8px;
   letter-spacing: 0;
-  vertical-align: middle;
 }
 
 /* body:not(.home) .navbar .navbar-brand::after {
