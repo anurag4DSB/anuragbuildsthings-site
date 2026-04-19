@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect width="64" height="64" fill="#0c0d0b"></rect>
-  <text x="32" y="44" font-family="&#39;Newsreader&#39;, Georgia, serif" font-style="italic" font-weight="300" font-size="44" fill="#ecece4" text-anchor="middle">A</text>
-  <circle cx="50" cy="14" r="3" fill="#c8e25c"></circle>
+  <rect width="64" height="64" fill="#0b0c0a"></rect>
+  <text x="32" y="44" text-anchor="middle" font-family="ui-monospace, SF Mono, Menlo, Consolas, monospace" font-weight="600" font-size="36" fill="#c8ff4e">[A]</text>
 </svg>

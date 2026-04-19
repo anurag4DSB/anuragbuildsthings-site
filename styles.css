@@ -1573,7 +1573,7 @@ figcaption {
   font-family: var(--mono);
   font-size: 13px;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--signal);
   border: 1px solid var(--rule-hi);
   padding: 4px 8px;
   letter-spacing: 0;
@@ -1958,15 +1958,18 @@ body:not(.home) .navbar {
 }
 
 body:not(.home) .navbar .navbar-brand::before {
-  content: "[A] ";
+  content: "[A]";
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 13px;
+  font-weight: 500;
   color: var(--signal);
-  margin-right: 10px;
+  border: 1px solid var(--rule-hi);
+  padding: 4px 8px;
+  letter-spacing: 0;
   vertical-align: middle;
 }
 
-body:not(.home) .navbar .navbar-brand::after {
+/* body:not(.home) .navbar .navbar-brand::after {
   content: " · research log";
   font-family: var(--mono);
   font-size: 0.7rem;
@@ -1974,4 +1977,4 @@ body:not(.home) .navbar .navbar-brand::after {
   letter-spacing: 0.12em;
   color: var(--muted);
   margin-left: 10px;
-}
+} */
