@@ -14,7 +14,7 @@ project:
     - "!.planning/"
 
 website:
-  title: "Anurag builds things"
+  title: "anurag builds things"
   site-url: "https://anuragbuildsthings.com/"
   description: "Projects, experiments, and systems built in public."
   image: og-default.png

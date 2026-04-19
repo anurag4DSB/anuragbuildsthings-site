@@ -82,12 +82,17 @@ body {
 
 .navbar .navbar-brand,
 .navbar .navbar-title {
-  font-family: var(--ui) !important;
+  font-family: var(--display) !important;
   font-weight: 500 !important;
-  font-size: 20px !important;
+  font-size: 22px !important;
   letter-spacing: -0.005em !important;
   text-transform: none !important;
   color: var(--ink) !important;
+}
+
+.navbar .navbar-title {
+  font-style: italic !important;
+  color: var(--signal) !important;
 }
 
 .navbar .navbar-brand {
@@ -95,6 +100,7 @@ body {
   align-items: center !important;
   gap: 10px !important;
 }
+
 
 .navbar .quarto-navigation-tool,
 .navbar .aa-DetachedSearchButton {
@@ -1725,8 +1731,8 @@ body.home .quarto-listing .quarto-post:first-child {
   padding: 14px 32px !important;
 }
 
-.navbar .navbar-brand::before {
-  content: "[A]";
+/* .navbar .navbar-brand::before {
+  content: "[a]";
   font-family: var(--mono);
   font-size: 18px;
   font-weight: 500;
@@ -1735,7 +1741,7 @@ body.home .quarto-listing .quarto-post:first-child {
   border: 1px solid var(--rule-hi);
   padding: 4px 8px;
   letter-spacing: 0;
-}
+} */
 
 /* body:not(.home) .navbar .navbar-brand::after {
   content: " · research log";
