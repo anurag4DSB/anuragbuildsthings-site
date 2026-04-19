@@ -5,7 +5,6 @@ include-in-header:
   - text: |
       <style>
         #title-block-header { display: none !important; }
-        #quarto-header { display: none !important; }
         .anchorjs-link { display: none !important; }
         .quarto-post.image-right { display: grid !important; grid-template-columns: 140px 1fr !important; }
         .quarto-listing .list .quarto-post:nth-child(odd),
@@ -35,49 +34,6 @@ toc: false
 ---
 
 ```{=html}
-
-<!-- ── Masthead with status cells ─────────────────────────── -->
-<header class="masthead">
-  <div class="masthead-row">
-    <div class="brand-block">
-      <div class="brand-mark">[A]</div>
-      <div class="brand-stack">
-        <div class="brand-name">anuragbuildsthings</div>
-        <div class="brand-tag">v26 · research log</div>
-      </div>
-    </div>
-
-    <div class="masthead-cells">
-      <div class="m-cell">
-        <div class="m-label">Now running<span class="pulse"></span></div>
-        <div class="m-value">SimCLR · run 8512</div>
-      </div>
-      <div class="m-cell">
-        <div class="m-label">Last updated</div>
-        <div class="m-value">18 Apr 2026 · 14:42</div>
-      </div>
-      <div class="m-cell">
-        <div class="m-label">Entries</div>
-        <div class="m-value count-target">3 published · 2 drafts</div>
-      </div>
-      <div class="m-cell">
-        <div class="m-label">Cadence</div>
-        <div class="m-value">Fortnightly</div>
-      </div>
-      <div class="m-cell">
-        <div class="m-label">Feed</div>
-        <div class="m-value"><a href="/index.xml">RSS</a> · <a href="/llms.txt">LLMS</a></div>
-      </div>
-    </div>
-
-    <nav class="masthead-nav">
-      <a href="https://www.youtube.com/@AnuragBuildsThings" aria-label="YouTube">YT</a>
-      <a href="https://www.linkedin.com/in/mittalanu/" aria-label="LinkedIn">LI</a>
-      <a href="https://github.com/anurag4dsb" aria-label="GitHub">GH</a>
-      <a href="/about.html">ABOUT</a>
-    </nav>
-  </div>
-</header>
 
 <!-- ── Hero standfirst ────────────────────────────────────── -->
 <h1 class="hero-standfirst">
@@ -112,13 +68,7 @@ toc: false
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const log = document.getElementById('log');
-  const target = document.querySelector('.count-target');
   if (!log) return;
-
-  function recount () {
-    const visible = log.querySelectorAll('.quarto-post:not([style*="display: none"])').length;
-    if (target) target.textContent = visible + (visible === 1 ? ' entry' : ' entries');
-  }
 
   function wire () {
     const chips = document.querySelectorAll('.filter-chord .chip');
@@ -134,10 +84,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .map(el => el.textContent.trim().toLowerCase());
           p.style.display = (cat === 'all' || inline.includes(cat)) ? '' : 'none';
         });
-        recount();
       });
     });
-    recount();
     return true;
   }
 
