@@ -96,6 +96,10 @@ body {
   transition: color 120ms ease;
 }
 
+.navbar .quarto-navigation-tool .bi {
+  font-size: 22px !important;
+}
+
 .navbar .quarto-navigation-tool:hover {
   color: var(--signal) !important;
 }
