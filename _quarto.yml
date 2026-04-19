@@ -29,6 +29,7 @@ website:
     type: overlay
   navbar:
     background: light
+    pinned: true
     search: true
     tools:
       - icon: rss
