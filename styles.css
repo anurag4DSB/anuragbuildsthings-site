@@ -101,10 +101,9 @@ body {
   top: 50%;
   transform: translateY(-50%);
   font-family: var(--display) !important;
-  font-style: italic !important;
   font-weight: 400 !important;
-  font-size: 22px !important;
-  color: var(--signal) !important;
+  font-size: 18px !important;
+  color: var(--ink) !important;
   letter-spacing: -0.01em !important;
   text-transform: none !important;
   white-space: nowrap;
