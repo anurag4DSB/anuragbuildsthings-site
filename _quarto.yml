@@ -32,9 +32,6 @@ website:
     pinned: true
     search: true
     tools:
-      - icon: rss
-        href: /index.xml
-        aria-label: RSS feed
       - icon: youtube
         href: https://www.youtube.com/@AnuragBuildsThings
         aria-label: YouTube

@@ -144,6 +144,35 @@ body {
   transition: color 120ms ease;
 }
 
+/* Keep tools + search grouped on the far right, never wrapping
+   Brand shrinks (with ellipsis) before either icon group wraps */
+.navbar-container.container-fluid {
+  flex-wrap: nowrap !important;
+}
+.navbar-container.container-fluid .navbar-brand-container {
+  min-width: 0 !important;
+  flex-shrink: 1 !important;
+}
+.navbar-container.container-fluid .quarto-navbar-tools,
+.navbar-container.container-fluid #quarto-search {
+  flex-shrink: 0 !important;
+}
+.navbar-container.container-fluid .quarto-navbar-tools {
+  margin-left: auto !important;
+}
+.navbar-container.container-fluid #quarto-search {
+  margin-left: 4px !important;
+}
+.navbar .navbar-brand {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+.navbar .navbar-title {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-width: 0 !important;
+}
+
 .navbar .quarto-navigation-tool .bi {
   font-size: 22px !important;
 }

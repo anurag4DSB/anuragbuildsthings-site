@@ -47,54 +47,7 @@ toc: false
   No roadmaps. No thought leadership. Just the curves and what they mean.
 </p>
 
-<!-- ── Listing section ────────────────────────────────────── -->
-<div class="section-head">
-  <div class="filter-chord">
-    <button class="chip on" data-cat="all">All</button>
-    <button class="chip" data-cat="self-supervised-learning">Self-supervised</button>
-    <button class="chip" data-cat="contrastive-learning">Contrastive</button>
-    <button class="chip" data-cat="representation-learning">Representation</button>
-    <button class="chip" data-cat="augmentations">Augmentations</button>
-    <button class="chip" data-cat="computer-vision">Computer vision</button>
-    <button class="chip" data-cat="fundamentals">Fundamentals</button>
-  </div>
-</div>
 ```
 
 ::: {#log}
 :::
-
-```{=html}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const log = document.getElementById('log');
-  if (!log) return;
-
-  function wire () {
-    const chips = document.querySelectorAll('.filter-chord .chip');
-    const posts = log.querySelectorAll('.quarto-post');
-    if (!posts.length) return false;
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        chips.forEach(c => c.classList.remove('on'));
-        chip.classList.add('on');
-        const cat = chip.dataset.cat;
-        posts.forEach(p => {
-          const inline = Array.from(p.querySelectorAll('.listing-category'))
-            .map(el => el.textContent.trim().toLowerCase());
-          p.style.display = (cat === 'all' || inline.includes(cat)) ? '' : 'none';
-        });
-      });
-    });
-    return true;
-  }
-
-  if (!wire()) {
-    const obs = new MutationObserver(() => {
-      if (wire()) obs.disconnect();
-    });
-    obs.observe(log, { childList: true, subtree: true });
-  }
-});
-</script>
-```
