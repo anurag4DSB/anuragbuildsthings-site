@@ -142,9 +142,10 @@
 
   // ── 3. Dock post title into navbar at H1's x-position ───────────
   function wirePostTitleDock() {
-    if (document.body.classList.contains('home')) return;
+    const titleBlock = document.querySelector('#title-block-header');
+    if (!titleBlock || getComputedStyle(titleBlock).display === 'none') return;
     const navContainer = document.querySelector('.navbar-container.container-fluid') || document.querySelector('.navbar');
-    const h1 = document.querySelector('#title-block-header h1.title');
+    const h1 = titleBlock.querySelector('h1.title');
     if (!navContainer || !h1) return;
 
     const title = h1.textContent.trim();
