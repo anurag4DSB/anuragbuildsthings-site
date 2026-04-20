@@ -125,6 +125,12 @@ body {
   }
 }
 
+@media (max-width: 1200px) {
+  .post-title-dock {
+    display: none;
+  }
+}
+
 .navbar .navbar-brand {
   display: inline-flex !important;
   align-items: center !important;
@@ -1087,7 +1093,7 @@ figcaption {
   background: var(--surface) !important;
   border-top: 1px solid var(--ink-4) !important;
   padding: 4rem 2.5rem 3rem !important;
-  margin-top: 6rem !important;
+  margin-top: 0rem !important;
   color: var(--ink-3) !important;
 }
 
@@ -1621,7 +1627,7 @@ figcaption {
   line-height: 1.55 !important;
   color: var(--ink-2) !important;
   max-width: 1400px;
-  margin: 0 auto 64px !important;
+  margin: 0 auto 0px !important;
   padding: 0 24px;
 }
 
