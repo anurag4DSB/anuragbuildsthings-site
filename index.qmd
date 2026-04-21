@@ -6,7 +6,6 @@ include-in-header:
       <style>
         #title-block-header { display: none !important; }
         .anchorjs-link { display: none !important; }
-        .quarto-post.image-right { display: grid !important; grid-template-columns: 140px 1fr !important; }
         .quarto-listing .list .quarto-post:nth-child(odd),
         .quarto-listing .list .quarto-post:nth-child(even) {
           background: transparent !important;
