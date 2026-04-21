@@ -985,44 +985,40 @@ body:not(:has(.standfirst)) .post-meta-line .reading-time {
   color: var(--ink-2);
 }
 
-/* Post-page categories: quiet inline links, not chips */
-body:not(:has(.standfirst)) .quarto-title .quarto-categories {
+/* Post-page categories: chips like the home listing */
+body:not(:has(.standfirst)) .quarto-title-block .quarto-categories {
   display: flex !important;
-  column-gap: 22px !important;
-  row-gap: 4px !important;
+  gap: 8px !important;
   flex-wrap: wrap;
-  margin: 52px 0 0 !important;
+  margin: 12px 0 0 !important;
   padding: 0 !important;
 }
 
-body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category {
-  border: 0 !important;
-  padding: 0 !important;
+body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-category {
+  border: 1px solid var(--rule-hi) !important;
+  background: transparent !important;
+  padding: 4px 12px !important;
   margin: 0 !important;
   font-family: var(--mono) !important;
-  font-size: 11px !important;
-  letter-spacing: 0.06em !important;
-  text-transform: lowercase !important;
+  font-size: 9.5px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
   color: var(--ink-2) !important;
-  background: transparent !important;
-}
-
-
-body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category:last-child {
-  padding-right: 0 !important;
-}
-
-body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category a {
-  color: var(--ink-2) !important;
-  text-decoration: none !important;
-  border-bottom: 1px solid transparent !important;
-  padding-bottom: 1px !important;
+  white-space: nowrap;
   transition: color 120ms ease, border-color 120ms ease;
 }
 
-body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category a:hover {
+body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-category:hover {
   color: var(--signal) !important;
-  border-bottom-color: var(--signal) !important;
+  border-color: var(--signal) !important;
+}
+
+body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-category a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* Tighter title on post pages — body, not display, scale */
@@ -1042,7 +1038,7 @@ body:not(:has(.standfirst)) .quarto-title-block .description {
   font-size: 22px !important;
   line-height: 1.35 !important;
   color: var(--ink-2) !important;
-  margin: 0.5rem 0 0 !important;
+  margin: 3.25rem 0 0 !important;
 }
 
 body:not(:has(.standfirst)) .quarto-title-block {
