@@ -1209,14 +1209,21 @@ figcaption {
 .nav-footer .nav-footer-left,
 .nav-footer .nav-footer-center,
 .nav-footer .nav-footer-right {
-  font-family: var(--text) !important;
-  font-size: 16px !important;
-  letter-spacing: 0 !important;
+  font-family: var(--mono) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
   line-height: 1.65 !important;
-  text-transform: none !important;
+  text-transform: uppercase !important;
   min-height: 0 !important;
   margin: 0 !important;
-  color: var(--ink-3) !important;
+  color: var(--ink-2) !important;
+}
+
+.nav-footer .back-to-top-arrow {
+  font-size: 12px;
+  display: inline-block;
+  vertical-align: -1px;
+  margin-right: 2px;
 }
 
 .nav-footer .footer-col-label {

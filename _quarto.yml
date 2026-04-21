@@ -47,13 +47,9 @@ website:
       <div class="footer-col">
         <p>For the next person who has to build one.</p>
       </div>
-    center: |
-      <div class="footer-col">
-        <p>Anurag Mittal © 2026</p>
-      </div>
     right: |
       <div class="footer-col">
-        <p><a href="#top">Back to top</a></p>
+        <p><a href="#top"><span class="back-to-top-arrow">⬆</span>Back to top</a></p>
       </div>
   back-to-top-navigation: false
   page-navigation: true
