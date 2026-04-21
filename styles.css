@@ -513,6 +513,8 @@ div.sourceCode {
   grid-column: 1;
   grid-row: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .quarto-listing .quarto-post .listing-title {
@@ -521,7 +523,7 @@ div.sourceCode {
   font-size: 28px !important;
   line-height: 1.15 !important;
   letter-spacing: -0.018em !important;
-  margin: 0 0 0.5rem 0 !important;
+  margin: 0 0 44px 0 !important;
   max-width: none;
   text-wrap: balance;
 }
@@ -539,6 +541,11 @@ div.sourceCode {
   line-height: 1.55;
   color: var(--ink-2);
   max-width: 60ch;
+  margin: 0 !important;
+}
+
+.quarto-listing .quarto-post .listing-description p {
+  margin: 0 !important;
 }
 
 .quarto-listing .quarto-post .listing-description a {
@@ -695,7 +702,7 @@ blockquote {
   .quarto-post.image-right,
   .quarto-listing .list .quarto-post {
     grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    gap: 8px !important;
   }
 
   .quarto-listing .quarto-post .metadata,
@@ -963,7 +970,8 @@ body:not(:has(.standfirst)) .post-meta-line .reading-time {
 /* Post-page categories: quiet inline links, not chips */
 body:not(:has(.standfirst)) .quarto-title .quarto-categories {
   display: flex !important;
-  gap: 0 !important;
+  column-gap: 22px !important;
+  row-gap: 4px !important;
   flex-wrap: wrap;
   margin: 52px 0 0 !important;
   padding: 0 !important;
@@ -971,7 +979,7 @@ body:not(:has(.standfirst)) .quarto-title .quarto-categories {
 
 body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category {
   border: 0 !important;
-  padding: 0 14px 0 0 !important;
+  padding: 0 !important;
   margin: 0 !important;
   font-family: var(--mono) !important;
   font-size: 11px !important;
@@ -981,21 +989,6 @@ body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category {
   background: transparent !important;
 }
 
-body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category::before {
-  content: "·";
-  color: var(--ink-3);
-  margin: 0 14px 0 0;
-  opacity: 0.5;
-}
-
-body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category:first-child::before {
-  content: "filed:";
-  color: var(--ink-3);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-right: 14px;
-  opacity: 1;
-}
 
 body:not(:has(.standfirst)) .quarto-title .quarto-categories .quarto-category:last-child {
   padding-right: 0 !important;
@@ -1756,7 +1749,8 @@ body.home .section-head {
 
 /* ── Fix listing categories: quiet inline tags, not chips ──── */
 body.home .quarto-listing .quarto-post .listing-categories {
-  gap: 14px !important;
+  column-gap: 14px !important;
+  row-gap: 4px !important;
   padding-top: 8px !important;
   padding-bottom: 0 !important;
 }
@@ -1769,7 +1763,7 @@ body.home .quarto-listing .quarto-post .listing-category {
   font-size: 10.5px !important;
   letter-spacing: 0.06em !important;
   text-transform: lowercase !important;
-  color: var(--ink-3) !important;
+  color: var(--ink-2) !important;
   white-space: nowrap;
   transition: color 120ms ease;
 }
@@ -1875,7 +1869,7 @@ body.home .quarto-listing .quarto-post:first-child {
 @media (max-width: 600px) {
   .quarto-listing .list .quarto-post {
     grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    gap: 8px !important;
   }
 
   .quarto-listing .list .quarto-post > .body,
