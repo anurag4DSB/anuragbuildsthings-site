@@ -909,7 +909,7 @@ body:not(:has(.standfirst)) .post-meta-line {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-3);
-  margin-top: 24px;
+  margin-top: 8px;
   margin-bottom: 24px;
 }
 
