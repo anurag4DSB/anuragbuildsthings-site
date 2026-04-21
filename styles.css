@@ -144,33 +144,35 @@ body {
   transition: color 120ms ease;
 }
 
-/* Keep tools + search grouped on the far right, never wrapping
-   Brand shrinks (with ellipsis) before either icon group wraps */
+/* Brand left, icons grouped right. The .navbar-icon-group wrapper is
+   inserted by post-enhance-include.html so the two icon clusters wrap
+   to the next row together instead of search dropping alone. */
 .navbar-container.container-fluid {
-  flex-wrap: nowrap !important;
+  flex-wrap: wrap !important;
+  row-gap: 6px !important;
 }
 .navbar-container.container-fluid .navbar-brand-container {
-  min-width: 0 !important;
-  flex-shrink: 1 !important;
-}
-.navbar-container.container-fluid .quarto-navbar-tools,
-.navbar-container.container-fluid #quarto-search {
   flex-shrink: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  order: 0 !important;
 }
-.navbar-container.container-fluid .quarto-navbar-tools {
-  margin-left: auto !important;
+.navbar-container.container-fluid {
+  justify-content: space-between !important;
+}
+.navbar-container.container-fluid .navbar-icon-group {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  flex: 0 0 auto !important;
 }
 .navbar-container.container-fluid #quarto-search {
-  margin-left: 4px !important;
+  margin-left: 0 !important;
 }
-.navbar .navbar-brand {
-  min-width: 0 !important;
-  overflow: hidden !important;
-}
+.navbar .navbar-brand,
 .navbar .navbar-title {
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  min-width: 0 !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
 }
 
 .navbar .quarto-navigation-tool .bi {
