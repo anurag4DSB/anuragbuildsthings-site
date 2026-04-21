@@ -451,10 +451,6 @@ div.sourceCode {
   color: var(--signal) !important;
 }
 
-.quarto-listing .quarto-post:hover .listing-date {
-  color: var(--signal) !important;
-}
-
 /* Date row — sits below body in column 1 */
 .quarto-listing .quarto-post .metadata {
   grid-column: 1;
