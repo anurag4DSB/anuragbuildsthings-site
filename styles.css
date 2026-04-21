@@ -528,7 +528,7 @@ div.sourceCode {
   font-size: 28px !important;
   line-height: 1.15 !important;
   letter-spacing: -0.018em !important;
-  margin: 0 0 44px 0 !important;
+  margin: 0 0 8px 0 !important;
   max-width: none;
   text-wrap: balance;
 }
@@ -957,14 +957,14 @@ body:not(:has(.standfirst)) .post-meta-line {
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
   margin-top: 8px;
   margin-bottom: 24px;
 }
 
 body:not(:has(.standfirst)) .post-meta-line .dot {
   margin: 0 10px;
-  color: var(--ink-3);
+  color: var(--ink-2);
   opacity: 0.5;
 }
 

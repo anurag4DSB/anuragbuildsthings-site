@@ -84,7 +84,7 @@ format:
     monofont: "JetBrains Mono"
     fontsize: 1em
     highlight-style: github-dark
-    date-format: "MMM YYYY"
+    date-format: "DD MMM YYYY"
     include-after-body:
       - post-enhance-include.html
 
