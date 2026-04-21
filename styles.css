@@ -472,7 +472,7 @@ div.sourceCode {
   line-height: 1.15 !important;
   letter-spacing: -0.018em !important;
   margin: 0 0 0.5rem 0 !important;
-  max-width: 28ch;
+  max-width: none;
   text-wrap: balance;
 }
 
@@ -522,9 +522,10 @@ div.sourceCode {
   width: 100% !important;
   height: 100% !important;
   max-height: none;
-  object-fit: cover;
+  object-fit: contain;
   border: 1px solid var(--rule-hi);
   display: block;
+  background: var(--bg);
 }
 
 .quarto-listing .quarto-post .thumbnail:empty {
@@ -1813,7 +1814,7 @@ body.home .quarto-listing .quarto-post:first-child {
 .quarto-listing .list .quarto-post>.thumbnail img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important;
+  object-fit: contain !important;
   margin: 0 !important;
 }
 
