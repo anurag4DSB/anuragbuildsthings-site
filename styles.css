@@ -145,6 +145,17 @@ body {
   transition: color 120ms ease;
 }
 
+.navbar .aa-DetachedSearchButton svg,
+.navbar .aa-DetachedSearchButton .aa-SubmitIcon {
+  color: var(--ink-2) !important;
+  fill: currentColor !important;
+}
+
+.navbar .aa-DetachedSearchButton:hover svg,
+.navbar .aa-DetachedSearchButton:hover .aa-SubmitIcon {
+  color: var(--signal) !important;
+}
+
 /* Brand left, icons grouped right. The .navbar-icon-group wrapper is
    inserted by post-enhance-include.html so the two icon clusters wrap
    to the next row together instead of search dropping alone. */
@@ -1191,8 +1202,8 @@ figcaption {
 /* ── Site footer (page-footer) ────────────────────────────── */
 .nav-footer {
   background: var(--surface) !important;
-  border-top: 1px solid var(--ink-4) !important;
-  padding: 3rem 2.5rem 3rem !important;
+  border-top: 0 !important;
+  padding: 14px 32px !important;
   margin-top: 0rem !important;
   color: var(--ink-3) !important;
 }
@@ -1211,6 +1222,8 @@ figcaption {
   letter-spacing: 0 !important;
   line-height: 1.65 !important;
   text-transform: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
   color: var(--ink-3) !important;
 }
 
@@ -1224,7 +1237,7 @@ figcaption {
 }
 
 .nav-footer a {
-  color: var(--ink-2) !important;
+  color: inherit !important;
   text-decoration: none !important;
   border-bottom: 1px solid transparent !important;
   padding-bottom: 1px !important;

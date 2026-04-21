@@ -55,7 +55,7 @@ website:
       <div class="footer-col">
         <p><a href="#top">Back to top</a></p>
       </div>
-  back-to-top-navigation: true
+  back-to-top-navigation: false
   page-navigation: true
 
 format:
