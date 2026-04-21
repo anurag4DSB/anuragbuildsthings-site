@@ -290,7 +290,6 @@ main.content h2 {
   font-size: 32px;
   margin: 2.5rem 0 1rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--rule);
 }
 
 main.content h3 {
@@ -910,9 +909,8 @@ body:not(:has(.standfirst)) .post-meta-line {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-3);
-  padding-top: 16px;
   margin-top: 24px;
-  border-top: 1px solid var(--rule);
+  margin-bottom: 24px;
 }
 
 body:not(:has(.standfirst)) .post-meta-line .dot {
@@ -1000,7 +998,7 @@ body:not(:has(.standfirst)) .quarto-title-block .description {
 }
 
 body:not(:has(.standfirst)) .quarto-title-block {
-  margin-bottom: 4rem !important;
+  margin-bottom: 0 !important;
 }
 
 body:not(:has(.standfirst)) main.content li::marker {
@@ -1009,7 +1007,7 @@ body:not(:has(.standfirst)) main.content li::marker {
 
 body:not(:has(.standfirst)) main.content h2 {
   font-size: 28px !important;
-  margin: 3rem 0 1.25rem !important;
+  margin: 0 0 1.25rem !important;
   padding-top: 1.75rem !important;
 }
 
