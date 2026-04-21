@@ -227,7 +227,6 @@ body {
   text-transform: none !important;
   letter-spacing: 0 !important;
   margin: 0.5rem 0 1.5rem !important;
-  max-width: 60ch;
 }
 
 .quarto-title .title {
@@ -997,7 +996,6 @@ body:not(:has(.standfirst)) .quarto-title-block .description {
   font-size: 22px !important;
   line-height: 1.35 !important;
   color: var(--ink-2) !important;
-  max-width: 52ch !important;
   margin: 0.5rem 0 0 !important;
 }
 
