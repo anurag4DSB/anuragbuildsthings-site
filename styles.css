@@ -427,7 +427,7 @@ div.sourceCode {
 .quarto-listing .quarto-post.image-right-align,
 .quarto-post.image-right {
   display: grid !important;
-  grid-template-columns: 1fr 340px !important;
+  grid-template-columns: minmax(0, 1fr) clamp(160px, 30%, 340px) !important;
   grid-template-rows: auto auto !important;
   column-gap: 1.75rem !important;
   row-gap: 0.5rem !important;
@@ -664,32 +664,47 @@ blockquote {
   display: none !important;
 }
 
-/* Responsive — listing collapses to single column */
-@media (max-width: 768px) {
+/* Responsive — stack to single column only when even the min-width
+   thumbnail (180 px) would crush the body */
+@media (max-width: 600px) {
 
   .quarto-listing .quarto-post,
   .quarto-listing .quarto-post.image-right-align,
-  .quarto-post.image-right {
+  .quarto-post.image-right,
+  .quarto-listing .list .quarto-post {
     grid-template-columns: 1fr !important;
     gap: 12px !important;
   }
 
   .quarto-listing .quarto-post .metadata,
   .quarto-listing .quarto-post .body,
-  .quarto-listing .quarto-post .thumbnail {
-    grid-column: 1;
-    grid-row: auto;
+  .quarto-listing .quarto-post .thumbnail,
+  .quarto-listing .list .quarto-post > .body,
+  .quarto-listing .list .quarto-post > .metadata,
+  .quarto-listing .list .quarto-post > .thumbnail {
+    grid-column: 1 !important;
+    grid-row: auto !important;
   }
 
-  .quarto-listing .quarto-post .thumbnail {
-    justify-content: flex-start;
+  .quarto-listing .quarto-post .thumbnail,
+  .quarto-listing .list .quarto-post > .thumbnail {
+    justify-content: flex-start !important;
+    align-self: auto !important;
+    padding: 0 !important;
+  }
+
+  .quarto-listing .quarto-post .thumbnail > a,
+  .quarto-listing .list .quarto-post > .thumbnail > a {
+    height: auto !important;
   }
 
   .quarto-listing .quarto-post .thumbnail img,
-  .quarto-listing .quarto-post .thumbnail .thumbnail-image {
-    width: 100%;
-    height: auto;
-    max-height: 180px;
+  .quarto-listing .quarto-post .thumbnail .thumbnail-image,
+  .quarto-listing .list .quarto-post > .thumbnail img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 220px !important;
+    object-fit: contain !important;
   }
 
   .quarto-title .title {
@@ -1788,7 +1803,7 @@ body.home .quarto-listing .quarto-post:first-child {
 /* ── Post row column dividers ──────── */
 .quarto-listing .list .quarto-post {
   display: grid !important;
-  grid-template-columns: 1fr 340px !important;
+  grid-template-columns: minmax(0, 1fr) clamp(160px, 30%, 340px) !important;
   grid-template-rows: auto auto !important;
   column-gap: 0 !important;
   row-gap: 0.5rem !important;
@@ -1831,6 +1846,34 @@ body.home .quarto-listing .quarto-post:first-child {
   height: 100% !important;
   object-fit: contain !important;
   margin: 0 !important;
+}
+
+/* Narrow-viewport stack — declared after .list rules so it wins source
+   order and collapses both grids to a single column. */
+@media (max-width: 600px) {
+  .quarto-listing .list .quarto-post {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .quarto-listing .list .quarto-post > .body,
+  .quarto-listing .list .quarto-post > .metadata,
+  .quarto-listing .list .quarto-post > .thumbnail {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    padding: 0 !important;
+  }
+
+  .quarto-listing .list .quarto-post > .thumbnail {
+    justify-content: flex-start !important;
+    align-self: auto !important;
+  }
+
+  .quarto-listing .list .quarto-post > .thumbnail > a,
+  .quarto-listing .list .quarto-post > .thumbnail img {
+    height: auto !important;
+    max-height: 220px !important;
+  }
 }
 
 /* Dress up the navbar to match home brand block (applied site-wide) */
