@@ -491,6 +491,7 @@ div.sourceCode {
   color: var(--ink-3);
   align-self: start;
   padding-top: 0;
+  margin-top: 0;
 }
 
 .quarto-listing .quarto-post .listing-date {
@@ -516,6 +517,10 @@ div.sourceCode {
   display: flex;
   flex-direction: column;
 }
+
+.quarto-listing .quarto-post .body .listing-title { order: 1; }
+.quarto-listing .quarto-post .body .listing-description { order: 2; }
+.quarto-listing .quarto-post .body .listing-categories { order: 3; }
 
 .quarto-listing .quarto-post .listing-title {
   font-family: var(--display) !important;
