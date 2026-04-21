@@ -1006,12 +1006,8 @@ body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-categ
   text-transform: uppercase !important;
   color: var(--ink-2) !important;
   white-space: nowrap;
-  transition: color 120ms ease, border-color 120ms ease;
-}
-
-body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-category:hover {
-  color: var(--signal) !important;
-  border-color: var(--signal) !important;
+  pointer-events: none;
+  cursor: default;
 }
 
 body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-category a {
