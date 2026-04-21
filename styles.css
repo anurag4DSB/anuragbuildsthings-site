@@ -1756,21 +1756,22 @@ body.home .quarto-listing .quarto-post .listing-categories {
 }
 
 body.home .quarto-listing .quarto-post .listing-category {
-  border: 0 !important;
+  border: 1px solid var(--rule-hi) !important;
   background: transparent !important;
-  padding: 0 !important;
+  padding: 4px 12px !important;
   font-family: var(--mono) !important;
-  font-size: 10.5px !important;
-  letter-spacing: 0.06em !important;
-  text-transform: lowercase !important;
+  font-size: 9.5px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
   color: var(--ink-2) !important;
   white-space: nowrap;
-  transition: color 120ms ease;
+  transition: color 120ms ease, border-color 120ms ease;
 }
 
 body.home .quarto-listing .quarto-post .listing-category:hover {
   color: var(--signal) !important;
-  border: 0 !important;
+  border-color: var(--signal) !important;
 }
 
 @media (max-width: 700px) {
