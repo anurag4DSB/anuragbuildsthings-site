@@ -1776,14 +1776,12 @@ body.home .quarto-listing .quarto-post:first-child {
   grid-column: 1 !important;
   grid-row: 1 !important;
   padding: 0 32px 0 4px !important;
-  border-right: 1px solid #2a2e27 !important;
 }
 
 .quarto-listing .list .quarto-post>.metadata {
   grid-column: 1 !important;
   grid-row: 2 !important;
   padding: 0 32px 0 4px !important;
-  border-right: 1px solid #2a2e27 !important;
   align-self: start !important;
 }
 
