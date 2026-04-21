@@ -238,7 +238,7 @@ body {
   letter-spacing: -0.028em !important;
   color: var(--ink) !important;
   max-width: 18ch;
-  text-wrap: balance;
+  text-wrap: pretty;
   margin-bottom: 1rem;
 }
 
@@ -282,7 +282,6 @@ main.content h3 {
   font-weight: 400;
   color: var(--ink);
   letter-spacing: -0.018em;
-  text-wrap: balance;
 }
 
 main.content h2 {
