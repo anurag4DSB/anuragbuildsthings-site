@@ -6,7 +6,7 @@
    Ported from the Instrument design system.
    ──────────────────────────────────────────────────────────────── */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400..600&family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@200..800&family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400..600&family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&display=swap');
 
 /* Bootstrap variable overrides (SCSS defaults) ─────────────────── */
 $body-bg: #0c0d0b !default;
@@ -44,7 +44,8 @@ $navbar-dark-bg: #0c0d0b !default;
   --display: 'Fraunces', 'Newsreader', Georgia, serif;
   --text: 'Newsreader', Georgia, 'Times New Roman', serif;
   --ui: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --mono: 'Atkinson Hyperlegible Mono', ui-monospace, Menlo, monospace;
+  --mono-code: 'JetBrains Mono', ui-monospace, Menlo, monospace;
 }
 
 /* Force dark regardless of toggle ─────────────────────────────── */
@@ -319,7 +320,7 @@ main.content li {
 /* Inline & block code */
 code,
 pre {
-  font-family: var(--mono) !important;
+  font-family: var(--mono-code) !important;
   font-size: 0.85em;
 }
 
@@ -1205,10 +1206,11 @@ figcaption {
 .nav-footer .nav-footer-left,
 .nav-footer .nav-footer-center,
 .nav-footer .nav-footer-right {
-  font-family: var(--mono) !important;
-  font-size: 12px !important;
-  letter-spacing: 0.04em !important;
-  line-height: 1.7 !important;
+  font-family: var(--text) !important;
+  font-size: 16px !important;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+  text-transform: none !important;
   color: var(--ink-3) !important;
 }
 

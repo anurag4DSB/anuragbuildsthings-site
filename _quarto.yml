@@ -45,24 +45,15 @@ website:
     border: false
     left: |
       <div class="footer-col">
-        <span class="footer-col-label">The log</span>
-        <p>A research log on machine learning systems —</p>
-        <p>written in public, for the next person who has</p>
-        <p>to build one.</p>
+        <p>For the next person who has to build one.</p>
       </div>
     center: |
       <div class="footer-col">
-        <span class="footer-col-label">Subscribe</span>
-        <p><a href="/index.xml">RSS feed</a></p>
-        <p><a href="https://www.youtube.com/@AnuragBuildsThings">YouTube</a></p>
-        <p><a href="https://github.com/anurag4dsb">GitHub</a></p>
+        <p>Anurag Mittal © 2026</p>
       </div>
     right: |
       <div class="footer-col">
-        <span class="footer-col-label">Colophon</span>
-        <p>Built with <a href="https://quarto.org">Quarto</a></p>
-        <p>Type: Newsreader, Source Serif, JetBrains Mono</p>
-        <p>© 2026 Anurag Mittal</p>
+        <p><a href="#top">Back to top</a></p>
       </div>
   back-to-top-navigation: true
   page-navigation: true
