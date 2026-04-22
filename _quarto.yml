@@ -3,6 +3,7 @@ project:
   resources:
     - CNAME
     - post-enhance.js
+    - palette.js
     - favicon-32.png
     - favicon-192.png
     - favicon-512.png
@@ -74,6 +75,7 @@ format:
     date-format: "DD MMM YYYY"
     include-after-body:
       - post-enhance-include.html
+      - palette-include.html
 
 execute:
   freeze: auto

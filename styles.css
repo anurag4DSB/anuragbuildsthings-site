@@ -1972,3 +1972,244 @@ body.home .quarto-listing .quarto-post:first-child {
   color: var(--muted);
   margin-left: 10px;
 } */
+
+/* ── Command palette ────────────────────────────────────────── */
+.palette-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 80px 20px 40px;
+}
+
+.palette-overlay[data-open="true"] {
+  display: flex;
+}
+
+.palette-overlay .palette {
+  position: relative;
+  width: min(720px, 100%);
+  background: var(--paper-up);
+  border: 1px solid var(--rule-hi);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.7);
+  animation: palette-enter 160ms ease-out;
+}
+
+@keyframes palette-enter {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.palette-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.palette-head .palette-icon {
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+
+.palette-head input {
+  all: unset;
+  flex: 1;
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--ink);
+  caret-color: var(--signal);
+  min-width: 0;
+}
+
+.palette-head input::placeholder {
+  color: var(--ink-2);
+}
+
+.palette-head .kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 16px;
+  background: var(--paper-up-2);
+  border: 1px solid var(--rule-hi);
+  padding: 0 5px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-2);
+  border-radius: 2px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.palette-scopes {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 0 20px;
+  background: #0d0e0c;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.palette-scopes::-webkit-scrollbar { display: none; }
+
+.palette-scopes button {
+  all: unset;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+}
+
+.palette-scopes button.on {
+  color: var(--ink);
+  border-bottom-color: var(--signal);
+}
+
+.palette-scopes .count {
+  color: var(--ink-2);
+  margin-left: 6px;
+  font-size: 9.5px;
+}
+
+.palette-list {
+  max-height: 50vh;
+  overflow: auto;
+}
+
+.palette-list .p-empty {
+  padding: 32px 20px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.p-group {
+  padding: 10px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.p-group:first-child { border-top: 0; }
+
+.p-group-lbl {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding: 4px 20px 8px;
+}
+
+.p-item {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+
+.p-item:hover,
+.p-item.sel {
+  background: #181c17;
+}
+
+.p-item.sel {
+  border-left-color: var(--signal);
+}
+
+.p-ico {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-2);
+}
+
+.p-title {
+  font-family: var(--text);
+  font-size: 16px;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.p-title em {
+  background: rgba(200, 226, 92, 0.18);
+  color: var(--signal);
+  font-style: normal;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.p-meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-2);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.palette-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-top: 1px solid var(--rule);
+  background: #0d0e0c;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-2);
+  letter-spacing: 0.06em;
+}
+
+.palette-foot .keys span {
+  margin-right: 14px;
+}
+
+.palette-foot .keys kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 16px;
+  background: var(--paper-up-2);
+  border: 1px solid var(--rule-hi);
+  padding: 0 5px;
+  color: var(--ink-2);
+  margin-right: 4px;
+  border-radius: 2px;
+  font-size: 9.5px;
+  font-family: inherit;
+  line-height: 1;
+}
+
+@media (max-width: 700px) {
+  .palette-overlay { padding: 40px 12px; }
+  .palette-foot .keys span:nth-child(n+3) { display: none; }
+}
+
+/* Hide Quarto's default overlay search (we use the palette instead) */
+.quarto-search-results-popup,
+.aa-DetachedOverlay,
+.aa-Panel {
+  display: none !important;
+}
