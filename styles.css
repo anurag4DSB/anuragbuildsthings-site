@@ -213,6 +213,12 @@ body.nav-fixed {
 .navbar-container.container-fluid #quarto-search {
   margin-left: 0 !important;
 }
+.navbar-container.container-fluid #quarto-search .aa-Autocomplete {
+  width: auto !important;
+}
+.navbar-container.container-fluid #quarto-search .aa-DetachedSearchButton {
+  padding-right: 0 !important;
+}
 .navbar .navbar-brand,
 .navbar .navbar-title {
   overflow: visible !important;
