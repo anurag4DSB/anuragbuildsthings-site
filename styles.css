@@ -1833,7 +1833,7 @@ body.home .quarto-listing .quarto-post:first-child {
 }
 
 .palette-head .palette-icon {
-  color: var(--ink-3);
+  color: var(--ink-2);
   flex-shrink: 0;
 }
 
@@ -1907,7 +1907,7 @@ body.home .quarto-listing .quarto-post:first-child {
 }
 
 .palette-list {
-  max-height: 50vh;
+  max-height: calc(100vh - 260px);
   overflow: auto;
 }
 
