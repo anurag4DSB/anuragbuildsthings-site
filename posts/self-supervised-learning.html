@@ -6,9 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-03-18">
 <meta name="description" content="Core intuition behind self-supervised learning: why it works, when to use it, and how it connects to real systems.">
 
-<title>Self-Supervised Learning – Anurag builds things</title>
+<title>Self-Supervised Learning – anurag builds things</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -28,7 +29,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
@@ -40,14 +40,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-23bbe8b5e4efc1e257f6d59dce478b08.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-96e7bea8da555f095b267346e86abe34.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-2cad1fa9bf411e8875dee60cce9c1037.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-96e7bea8da555f095b267346e86abe34.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-f363905b748ffc996504107a87a9f604.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dark-faf158eb7a1eb0588dfce4cf735ff1cf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-f363905b748ffc996504107a87a9f604.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -88,11 +88,21 @@ gtag('js', new Date());
   });
 gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 </script>
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="../favicon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@200..800&amp;family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&amp;family=Inter+Tight:wght@300..700&amp;family=JetBrains+Mono:wght@400..600&amp;family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&amp;display=optional">
 
 
-<meta property="og:title" content="Self-Supervised Learning – Anurag builds things">
+<meta property="og:title" content="Self-Supervised Learning – anurag builds things">
 <meta property="og:description" content="Core intuition behind self-supervised learning: why it works, when to use it, and how it connects to real systems.">
-<meta property="og:site_name" content="Anurag builds things">
+<meta property="og:image" content="https://anuragbuildsthings.com/posts/figures/fig-ssl-overview.png">
+<meta property="og:site_name" content="anurag builds things">
+<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:alt" content="Four pretext tasks: contrastive, masked, predictive, denoising.">
 </head>
 
 <body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -265,13 +275,13 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Anurag builds things</span>
+    <span class="navbar-title">anurag builds things</span>
     </a>
   </div>
         <div class="quarto-navbar-tools tools-wide tools-end">
+    <a href="https://github.com/anurag4dsb" title="" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-git"></i></a>
     <a href="https://www.youtube.com/@AnuragBuildsThings" title="" class="quarto-navigation-tool px-1" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
     <a href="https://www.linkedin.com/in/mittalanu/" title="" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-    <a href="https://github.com/anurag4dsb" title="" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
           <div id="quarto-search" class="" title="Search"></div>
@@ -285,7 +295,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
     <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul>
+  <ul class="collapse">
   <li><a href="#what-it-is" id="toc-what-it-is" class="nav-link active" data-scroll-target="#what-it-is">What It Is</a></li>
   <li><a href="#intuition" id="toc-intuition" class="nav-link" data-scroll-target="#intuition">Intuition</a></li>
   <li><a href="#simple-example" id="toc-simple-example" class="nav-link" data-scroll-target="#simple-example">Simple Example</a></li>
@@ -324,7 +334,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">Mar 2026</p>
+      <p class="date">18 Mar 2026</p>
     </div>
   </div>
   
@@ -370,7 +380,55 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+</main> <!-- /main -->
+<script src="../post-enhance.js" defer=""></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var t = document.querySelector('.navbar-title');
+    if (t) t.textContent = 'anurag builds things';
+
+    // Wrap tools + search in one flex item so they wrap to the next line
+    // as a group when the navbar row can't fit them beside the brand.
+    var tools = document.querySelector('.quarto-navbar-tools');
+    var search = document.querySelector('#quarto-search');
+    if (tools && search && tools.parentElement === search.parentElement &&
+        !tools.closest('.navbar-icon-group')) {
+      var group = document.createElement('div');
+      group.className = 'navbar-icon-group';
+      tools.parentElement.insertBefore(group, tools);
+      group.appendChild(tools);
+      group.appendChild(search);
+    }
+  });
+</script>
+<div id="cmd-palette" class="palette-overlay" data-open="false" aria-hidden="true">
+  <div class="palette" role="dialog" aria-modal="true" aria-label="Search and commands">
+    <div class="palette-head">
+      <svg class="palette-icon" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true">
+        <path d="M16.041 15.856c-0.034 0.026-0.067 0.055-0.099 0.087s-0.060 0.064-0.087 0.099c-1.258 1.213-2.969 1.958-4.855 1.958-1.933 0-3.682-0.782-4.95-2.050s-2.050-3.017-2.050-4.95 0.782-3.682 2.050-4.95 3.017-2.050 4.95-2.050 3.682 0.782 4.95 2.050 2.050 3.017 2.050 4.95c0 1.886-0.745 3.597-1.959 4.856zM21.707 20.293l-3.675-3.675c1.231-1.54 1.968-3.493 1.968-5.618 0-2.485-1.008-4.736-2.636-6.364s-3.879-2.636-6.364-2.636-4.736 1.008-6.364 2.636-2.636 3.879-2.636 6.364 1.008 4.736 2.636 6.364 3.879 2.636 6.364 2.636c2.125 0 4.078-0.737 5.618-1.968l3.675 3.675c0.391 0.391 1.024 0.391 1.414 0s0.391-1.024 0-1.414z"></path>
+      </svg>
+      <input id="palette-input" type="text" placeholder="Search posts, jump anywhere..." autocomplete="off" spellcheck="false">
+      <span class="kbd">⌘K</span>
+    </div>
+    <div class="palette-scopes" role="tablist">
+      <button class="on" data-scope="all" role="tab">All <span class="count">0</span></button>
+      <button data-scope="posts" role="tab">Posts <span class="count">0</span></button>
+      <button data-scope="sections" role="tab">Sections <span class="count">0</span></button>
+      <button data-scope="actions" role="tab">Actions <span class="count">0</span></button>
+    </div>
+    <div class="palette-list" id="palette-list" role="listbox"></div>
+    <div class="palette-foot">
+      <div class="keys">
+        <span><kbd>↑↓</kbd>navigate</span>
+        <span><kbd>↩</kbd>open</span>
+        <span><kbd>⌘↩</kbd>new tab</span>
+        <span><kbd>esc</kbd>close</span>
+      </div>
+      <div>search</div>
+    </div>
+  </div>
+</div>
+<script src="../palette.js" defer=""></script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -785,6 +843,27 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<div class="footer-col">
+<p>
+For the next person figuring things out by building - <a href="mailto:anuragbuildsthings@gmail.com">anuragbuildsthings@gmail.com</a>
+</p>
+</div>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<div class="footer-col">
+<p>
+<a href="#top"><span class="back-to-top-arrow">⬆</span>Back to top</a>
+</p>
+</div>
+</div>
+  </div>
+</footer>
 
 
 

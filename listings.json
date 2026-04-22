@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/augmentations-are-the-model.html",
       "/posts/self-supervised-learning.html",
       "/posts/ssl-representation.html",
       "/posts/why-augmentations-matter.html"

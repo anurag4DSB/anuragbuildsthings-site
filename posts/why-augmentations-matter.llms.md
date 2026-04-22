@@ -10,7 +10,7 @@ Testing how different augmentation strategies affect representation quality in S
 
 Published
 
-Mar 2026
+18 Mar 2026
 
 ## Status
 
@@ -44,5 +44,3 @@ All other hyperparameters held constant (ResNet-18, batch 512, 200 epochs, tempe
 Most SSL papers treat augmentations as a hyperparameter table in the appendix. In practice, they are the experiment. The augmentation pipeline implicitly defines what the model treats as “same” vs “different” – which is the entire learning signal in contrastive methods.
 
 Understanding this connection between augmentations and learned invariances is essential before scaling to harder domains (video, medical imaging) where the right invariances are less obvious.
-
-Back to top

@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2026-04-15">
+<meta name="description" content="Four augmentation recipes on CIFAR-10, held constant everywhere else. The result isn’t subtle — and the pattern has a cleaner explanation than ‘stronger is better’.">
 
-<title>anurag builds things</title>
+<title>Augmentations Are the Model – anurag builds things</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,28 +28,26 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-f363905b748ffc996504107a87a9f604.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-dark-faf158eb7a1eb0588dfce4cf735ff1cf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-f363905b748ffc996504107a87a9f604.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-f363905b748ffc996504107a87a9f604.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dark-faf158eb7a1eb0588dfce4cf735ff1cf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-f363905b748ffc996504107a87a9f604.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,35 +74,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-log .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-log'] = new List('listing-log', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2QD3FPQKQ8"></script>
 
 <script type="text/javascript">
@@ -117,59 +88,24 @@ gtag('js', new Date());
   });
 gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 </script>
-<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="./favicon-192.png">
-<link rel="apple-touch-icon" sizes="192x192" href="./favicon-192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="../favicon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@200..800&amp;family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&amp;family=Inter+Tight:wght@300..700&amp;family=JetBrains+Mono:wght@400..600&amp;family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&amp;display=optional">
-<style>
-  #title-block-header { display: none !important; }
-  .anchorjs-link { display: none !important; }
-  .quarto-listing .list .quarto-post:nth-child(odd),
-  .quarto-listing .list .quarto-post:nth-child(even) {
-    background: transparent !important;
-  }
-</style>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="alternate" type="application/rss+xml" title="anurag builds things" href="index.xml" data-external="1"><meta property="og:title" content="anurag builds things">
-<meta property="og:image" content="https://anuragbuildsthings.com/og-default.png">
+<meta property="og:title" content="Augmentations Are the Model – anurag builds things">
+<meta property="og:description" content="Four augmentation recipes on CIFAR-10, held constant everywhere else. The result isn’t subtle — and the pattern has a cleaner explanation than ‘stronger is better’.">
+<meta property="og:image" content="https://anuragbuildsthings.com/posts/figures/fig-ablation.png">
 <meta property="og:site_name" content="anurag builds things">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
+<meta property="og:image:alt" content="Linear probe accuracy by augmentation recipe: 48.3 / 71.9 / 83.7 / 82.1%.">
 </head>
 
-<body class="floating nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -338,7 +274,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">anurag builds things</span>
     </a>
   </div>
@@ -353,26 +289,57 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-layout-custom page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#the-question" id="toc-the-question" class="nav-link active" data-scroll-target="#the-question">The question</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#the-cleaner-framing" id="toc-the-cleaner-framing" class="nav-link" data-scroll-target="#the-cleaner-framing">The cleaner framing</a></li>
+  <li><a href="#what-id-check-next" id="toc-what-id-check-next" class="nav-link" data-scroll-target="#what-id-check-next">What I’d check next</a></li>
+  <li><a href="#takeaway" id="toc-takeaway" class="nav-link" data-scroll-target="#takeaway">Takeaway</a></li>
+  </ul>
+</nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
 <!-- main -->
+<main class="content" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">anurag builds things</h1>
-</div>
+<h1 class="title">Augmentations Are the Model</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">self-supervised-learning</div>
+    <div class="quarto-category">contrastive-learning</div>
+    <div class="quarto-category">augmentations</div>
+    <div class="quarto-category">computer-vision</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    Four augmentation recipes on CIFAR-10, held constant everywhere else. The result isn’t subtle — and the pattern has a cleaner explanation than ‘stronger is better’.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">15 Apr 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -382,169 +349,86 @@ window.Quarto = {
 </header>
 
 
-
-<!-- ── Hero standfirst ────────────────────────────────────── -->
-<h1 class="hero-standfirst">
-  anurag builds <span class="rotator accent"><span class="word active">things</span><span class="word">RAG</span><span class="word">intelligent systems</span><span class="word">systems</span><span class="word">world models</span></span>
-</h1>
-
-<script>
-  (function () {
-    var words = document.querySelectorAll('.hero-standfirst .rotator .word');
-    if (words.length < 2) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var i = 0;
-    setInterval(function () {
-      words[i].classList.remove('active');
-      i = (i + 1) % words.length;
-      words[i].classList.add('active');
-    }, 2800);
-  })();
-</script>
-
-<p class="hero-dek">
-  I build things to understand how they actually work.
-  A question, a system built to answer it, a comparison against real data.
-  Just the code, the curves, and what they actually mean.
-</p>
-
-<div id="listing-log" class="quarto-listing quarto-listing-container-default">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDY29udHJhc3RpdmUtbGVhcm5pbmclMkNhdWdtZW50YXRpb25zJTJDY29tcHV0ZXItdmlzaW9u" data-listing-date-sort="1776211200000" data-listing-file-modified-sort="1776879199825" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="826">
-<div class="thumbnail"><a href="./posts/augmentations-are-the-model.html" class="no-external">
-
-<img loading="lazy" src="./posts/figures/fig-ablation.png" class="thumbnail-image" style="height: 158px;" alt="Linear probe accuracy by augmentation recipe: 48.3 / 71.9 / 83.7 / 82.1%.">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/augmentations-are-the-model.html" class="no-external">Augmentations Are the Model</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5n'); return false;">self-supervised-learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29udHJhc3RpdmUtbGVhcm5pbmc='); return false;">contrastive-learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YXVnbWVudGF0aW9ucw=='); return false;">augmentations</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29tcHV0ZXItdmlzaW9u'); return false;">computer-vision</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/augmentations-are-the-model.html" class="no-external">
-<p>Four augmentation recipes on CIFAR-10, held constant everywhere else. The result isn’t subtle — and the pattern has a cleaner explanation than ‘stronger is better’.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/augmentations-are-the-model.html" class="no-external">
-<div class="listing-date">
-15 Apr 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDcmVwcmVzZW50YXRpb24tbGVhcm5pbmclMkNmdW5kYW1lbnRhbHM=" data-listing-date-sort="1773792000000" data-listing-file-modified-sort="1776879199826" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="275">
-<div class="thumbnail"><a href="./posts/self-supervised-learning.html" class="no-external">
-
-<img loading="lazy" src="./posts/figures/fig-ssl-overview.png" class="thumbnail-image" style="height: 158px;" alt="Four pretext tasks: contrastive, masked, predictive, denoising.">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/self-supervised-learning.html" class="no-external">Self-Supervised Learning</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5n'); return false;">self-supervised-learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cmVwcmVzZW50YXRpb24tbGVhcm5pbmc='); return false;">representation-learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZnVuZGFtZW50YWxz'); return false;">fundamentals</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/self-supervised-learning.html" class="no-external">
-<p>Core intuition behind self-supervised learning: why it works, when to use it, and how it connects to real systems.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/self-supervised-learning.html" class="no-external">
-<div class="listing-date">
-18 Mar 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDY29udHJhc3RpdmUtbGVhcm5pbmclMkNjb21wdXRlci12aXNpb24=" data-listing-date-sort="1773792000000" data-listing-file-modified-sort="1776879199826" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="129">
-<div class="thumbnail"><a href="./posts/ssl-representation.html" class="no-external">
-
-<img loading="lazy" src="./posts/figures/fig-simclr.png" class="thumbnail-image" style="height: 158px;" alt="SimCLR diagram: two augmented views, encoder, projection, embedding space.">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/ssl-representation.html" class="no-external">Learning Representations Without Labels (SimCLR)</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5n'); return false;">self-supervised-learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29udHJhc3RpdmUtbGVhcm5pbmc='); return false;">contrastive-learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29tcHV0ZXItdmlzaW9u'); return false;">computer-vision</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/ssl-representation.html" class="no-external">
-<p>Implementing SimCLR from scratch to learn visual representations without labels using contrastive learning on CIFAR-10.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/ssl-representation.html" class="no-external">
-<div class="listing-date">
-18 Mar 2026
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDY29udHJhc3RpdmUtbGVhcm5pbmclMkNhdWdtZW50YXRpb25z" data-listing-date-sort="1773792000000" data-listing-file-modified-sort="1776879199826" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="220">
-<div class="thumbnail"><a href="./posts/why-augmentations-matter.html" class="no-external">
-
-<img loading="lazy" src="./posts/figures/fig-aug-matrix.png" class="thumbnail-image" style="height: 158px;" alt="Augmentation recipe matrix: minimal, moderate, full, aggressive.">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/why-augmentations-matter.html" class="no-external">Why Augmentations Matter in Contrastive Learning</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5n'); return false;">self-supervised-learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29udHJhc3RpdmUtbGVhcm5pbmc='); return false;">contrastive-learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YXVnbWVudGF0aW9ucw=='); return false;">augmentations</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/why-augmentations-matter.html" class="no-external">
-<p>Testing how different augmentation strategies affect representation quality in SimCLR-style contrastive learning.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/why-augmentations-matter.html" class="no-external">
-<div class="listing-date">
-18 Mar 2026
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div>
+<section id="the-question" class="level2">
+<h2 class="anchored" data-anchor-id="the-question">The question</h2>
+<p>In <a href="why-augmentations-matter.html">the previous post</a> I claimed augmentations are the most critical design choice in contrastive learning — that they define the invariances the model learns, and everything else (architecture, batch size, epochs) is secondary.</p>
+<p>That was a hypothesis. This post runs the experiment.</p>
+</section>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>Four augmentation recipes, held constant everywhere else:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 82%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Config</th>
+<th>Augmentations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Minimal</td>
+<td>Random crop only</td>
+</tr>
+<tr class="even">
+<td>Moderate</td>
+<td>Crop + horizontal flip + grayscale</td>
+</tr>
+<tr class="odd">
+<td>Full</td>
+<td>Crop + color jitter + flip + grayscale + Gaussian blur</td>
+</tr>
+<tr class="even">
+<td>Aggressive</td>
+<td>Full + extreme crop ratios (0.08–1.0) + strong color distortion</td>
+</tr>
+</tbody>
+</table>
+<p>Everything else fixed: ResNet-18 encoder, 2-layer MLP projection head, NT-Xent loss, batch 512, 200 epochs, temperature 0.5, LARS optimizer with cosine decay.</p>
+<p>Evaluation: freeze the encoder, train a linear classifier on CIFAR-10 labels, report top-1 accuracy. Standard protocol.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<pre><code>┌────────────┬───────────────┬─────────────┐
+│ config     │ linear probe  │ Δ vs minimal│
+├────────────┼───────────────┼─────────────┤
+│ minimal    │      48.3%    │      —      │
+│ moderate   │      71.9%    │   +23.6 pp  │
+│ full       │      83.7%    │   +35.4 pp  │
+│ aggressive │      82.1%    │   +33.8 pp  │
+└────────────┴───────────────┴─────────────┘</code></pre>
+<p>Three things jump out.</p>
+<p><strong>1. The minimal run is barely better than a random projection.</strong> 48% on CIFAR-10 is not good. A logistic regression on raw pixels gets ~40%. So contrastive learning with only random crops — the “this patch and that patch are the same image” signal — is learning something, but not much.</p>
+<p><strong>2. Color jitter alone moves the needle more than anything else.</strong> The jump from moderate (71.9%) to full (83.7%) is almost entirely color jitter + blur. Removing color jitter from the full config drops it back to ~73%. This confirms the SimCLR paper’s finding, but it was useful to feel it first-hand: color statistics are the easy shortcut the model takes, and augmentations that destroy those statistics force it to look at shape and texture instead.</p>
+<p><strong>3. Aggressive is <em>worse</em> than full.</strong> Not much — but consistently, across 3 seeds. Too-strong augmentation breaks the positive pair: the two crops become so dissimilar that the NT-Xent loss starts pulling together things that genuinely <em>don’t</em> share content. There’s a ceiling.</p>
+</section>
+<section id="the-cleaner-framing" class="level2">
+<h2 class="anchored" data-anchor-id="the-cleaner-framing">The cleaner framing</h2>
+<p>“Stronger augmentation is better” is the summary most people walk away with. I don’t think that’s right.</p>
+<p>The cleaner framing: <strong>augmentations define the equivalence relation</strong>. A contrastive loss says “these two things are the same.” Augmentations determine what “same” means. A model trained with color jitter learns that a blue car and a red car are the same car. A model without color jitter learns they’re different. Neither is wrong — it’s a design choice about what invariance you want.</p>
+<p>This is why transferring SSL features across domains often disappoints. You’re not just transferring a feature extractor; you’re transferring an <em>implicit label ontology</em> baked in by your augmentation recipe. ImageNet-trained features think rotations don’t change an object’s identity. That’s a great assumption for ImageNet objects and a bad assumption for X-rays.</p>
+</section>
+<section id="what-id-check-next" class="level2">
+<h2 class="anchored" data-anchor-id="what-id-check-next">What I’d check next</h2>
+<ul>
+<li>Does the same pattern hold at larger batch sizes? (SimCLR is known to love big batches; does the augmentation-sensitivity shape hold?)</li>
+<li>What breaks if you swap NT-Xent for a non-contrastive objective like BYOL? My guess: less augmentation-sensitive, because there’s no explicit negative sampling to amplify the “what counts as different” question.</li>
+<li>Can you read off the learned invariances from the embedding space directly — e.g., does the feature vector change <em>less</em> under augmentations the model was trained to be invariant to?</li>
+</ul>
+<p>The third one would close the loop. It would also be the cleanest evidence for the framing above.</p>
+</section>
+<section id="takeaway" class="level2">
+<h2 class="anchored" data-anchor-id="takeaway">Takeaway</h2>
+<p>Pick your augmentations the way you’d pick your labels. They <em>are</em> your labels, in contrastive learning. Everything else is compute.</p>
 
 
+</section>
 
-
-
-<script src="./post-enhance.js" defer=""></script>
+</main> <!-- /main -->
+<script src="../post-enhance.js" defer=""></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var t = document.querySelector('.navbar-title');
@@ -591,7 +475,7 @@ window.Quarto = {
     </div>
   </div>
 </div>
-<script src="./palette.js" defer=""></script>
+<script src="../palette.js" defer=""></script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

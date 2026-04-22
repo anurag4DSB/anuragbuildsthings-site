@@ -10,7 +10,7 @@ Core intuition behind self-supervised learning: why it works, when to use it, an
 
 Published
 
-Mar 2026
+18 Mar 2026
 
 ## What It Is
 
@@ -44,5 +44,3 @@ The result: an encoder that maps semantically similar inputs to nearby points in
 - **Cost**: eliminates the annotation bottleneck, especially for domains where labeling requires expertise (medical imaging, satellite data)
 
 SSL is not a niche technique. It is the default pretraining paradigm for modern AI systems.
-
-Back to top

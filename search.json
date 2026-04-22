@@ -77,11 +77,53 @@
     "text": "Why It Matters\n\nScale: unlabeled data is orders of magnitude more available than labeled data\nTransfer: SSL representations often transfer better than supervised ones to new domains\nFoundation models: GPT, CLIP, DINO – the most capable models are pretrained with self-supervision\nCost: eliminates the annotation bottleneck, especially for domains where labeling requires expertise (medical imaging, satellite data)\n\nSSL is not a niche technique. It is the default pretraining paradigm for modern AI systems."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Anurag builds things",
+    "objectID": "posts/augmentations-are-the-model.html",
+    "href": "posts/augmentations-are-the-model.html",
+    "title": "Augmentations Are the Model",
     "section": "",
-    "text": "Self-Supervised Learning\n\n\n\nself-supervised-learning\n\nrepresentation-learning\n\nfundamentals\n\n\n\nCore intuition behind self-supervised learning: why it works, when to use it, and how it connects to real systems.\n\n\n\n\n\nMar 2026\n\n\n\n\n\n\n\nLearning Representations Without Labels (SimCLR)\n\n\n\nself-supervised-learning\n\ncontrastive-learning\n\ncomputer-vision\n\n\n\nImplementing SimCLR from scratch to learn visual representations without labels using contrastive learning on CIFAR-10.\n\n\n\n\n\nMar 2026\n\n\n\n\n\n\n\nWhy Augmentations Matter in Contrastive Learning\n\n\n\nself-supervised-learning\n\ncontrastive-learning\n\naugmentations\n\n\n\nTesting how different augmentation strategies affect representation quality in SimCLR-style contrastive learning.\n\n\n\n\n\nMar 2026\n\n\n\n\n\nNo matching items\n Back to top"
+    "text": "In the previous post I claimed augmentations are the most critical design choice in contrastive learning — that they define the invariances the model learns, and everything else (architecture, batch size, epochs) is secondary.\nThat was a hypothesis. This post runs the experiment."
+  },
+  {
+    "objectID": "posts/augmentations-are-the-model.html#the-question",
+    "href": "posts/augmentations-are-the-model.html#the-question",
+    "title": "Augmentations Are the Model",
+    "section": "",
+    "text": "In the previous post I claimed augmentations are the most critical design choice in contrastive learning — that they define the invariances the model learns, and everything else (architecture, batch size, epochs) is secondary.\nThat was a hypothesis. This post runs the experiment."
+  },
+  {
+    "objectID": "posts/augmentations-are-the-model.html#setup",
+    "href": "posts/augmentations-are-the-model.html#setup",
+    "title": "Augmentations Are the Model",
+    "section": "Setup",
+    "text": "Setup\nFour augmentation recipes, held constant everywhere else:\n\n\n\n\n\n\n\nConfig\nAugmentations\n\n\n\n\nMinimal\nRandom crop only\n\n\nModerate\nCrop + horizontal flip + grayscale\n\n\nFull\nCrop + color jitter + flip + grayscale + Gaussian blur\n\n\nAggressive\nFull + extreme crop ratios (0.08–1.0) + strong color distortion\n\n\n\nEverything else fixed: ResNet-18 encoder, 2-layer MLP projection head, NT-Xent loss, batch 512, 200 epochs, temperature 0.5, LARS optimizer with cosine decay.\nEvaluation: freeze the encoder, train a linear classifier on CIFAR-10 labels, report top-1 accuracy. Standard protocol."
+  },
+  {
+    "objectID": "posts/augmentations-are-the-model.html#results",
+    "href": "posts/augmentations-are-the-model.html#results",
+    "title": "Augmentations Are the Model",
+    "section": "Results",
+    "text": "Results\n┌────────────┬───────────────┬─────────────┐\n│ config     │ linear probe  │ Δ vs minimal│\n├────────────┼───────────────┼─────────────┤\n│ minimal    │      48.3%    │      —      │\n│ moderate   │      71.9%    │   +23.6 pp  │\n│ full       │      83.7%    │   +35.4 pp  │\n│ aggressive │      82.1%    │   +33.8 pp  │\n└────────────┴───────────────┴─────────────┘\nThree things jump out.\n1. The minimal run is barely better than a random projection. 48% on CIFAR-10 is not good. A logistic regression on raw pixels gets ~40%. So contrastive learning with only random crops — the “this patch and that patch are the same image” signal — is learning something, but not much.\n2. Color jitter alone moves the needle more than anything else. The jump from moderate (71.9%) to full (83.7%) is almost entirely color jitter + blur. Removing color jitter from the full config drops it back to ~73%. This confirms the SimCLR paper’s finding, but it was useful to feel it first-hand: color statistics are the easy shortcut the model takes, and augmentations that destroy those statistics force it to look at shape and texture instead.\n3. Aggressive is worse than full. Not much — but consistently, across 3 seeds. Too-strong augmentation breaks the positive pair: the two crops become so dissimilar that the NT-Xent loss starts pulling together things that genuinely don’t share content. There’s a ceiling."
+  },
+  {
+    "objectID": "posts/augmentations-are-the-model.html#the-cleaner-framing",
+    "href": "posts/augmentations-are-the-model.html#the-cleaner-framing",
+    "title": "Augmentations Are the Model",
+    "section": "The cleaner framing",
+    "text": "The cleaner framing\n“Stronger augmentation is better” is the summary most people walk away with. I don’t think that’s right.\nThe cleaner framing: augmentations define the equivalence relation. A contrastive loss says “these two things are the same.” Augmentations determine what “same” means. A model trained with color jitter learns that a blue car and a red car are the same car. A model without color jitter learns they’re different. Neither is wrong — it’s a design choice about what invariance you want.\nThis is why transferring SSL features across domains often disappoints. You’re not just transferring a feature extractor; you’re transferring an implicit label ontology baked in by your augmentation recipe. ImageNet-trained features think rotations don’t change an object’s identity. That’s a great assumption for ImageNet objects and a bad assumption for X-rays."
+  },
+  {
+    "objectID": "posts/augmentations-are-the-model.html#what-id-check-next",
+    "href": "posts/augmentations-are-the-model.html#what-id-check-next",
+    "title": "Augmentations Are the Model",
+    "section": "What I’d check next",
+    "text": "What I’d check next\n\nDoes the same pattern hold at larger batch sizes? (SimCLR is known to love big batches; does the augmentation-sensitivity shape hold?)\nWhat breaks if you swap NT-Xent for a non-contrastive objective like BYOL? My guess: less augmentation-sensitive, because there’s no explicit negative sampling to amplify the “what counts as different” question.\nCan you read off the learned invariances from the embedding space directly — e.g., does the feature vector change less under augmentations the model was trained to be invariant to?\n\nThe third one would close the loop. It would also be the cleanest evidence for the framing above."
+  },
+  {
+    "objectID": "posts/augmentations-are-the-model.html#takeaway",
+    "href": "posts/augmentations-are-the-model.html#takeaway",
+    "title": "Augmentations Are the Model",
+    "section": "Takeaway",
+    "text": "Takeaway\nPick your augmentations the way you’d pick your labels. They are your labels, in contrastive learning. Everything else is compute."
   },
   {
     "objectID": "posts/ssl-representation.html",

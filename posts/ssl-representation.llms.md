@@ -10,7 +10,7 @@ Implementing SimCLR from scratch to learn visual representations without labels 
 
 Published
 
-Mar 2026
+18 Mar 2026
 
 ## Goal
 
@@ -49,5 +49,3 @@ Hyperparameters will be tuned incrementally during experiments.
 
 - [SimCLR Paper (Chen et al., 2020)](https://arxiv.org/abs/2002.05709)
 - [LARS Optimizer (You et al., 2017)](https://arxiv.org/abs/1708.03888)
-
-Back to top
