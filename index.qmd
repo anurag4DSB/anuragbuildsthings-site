@@ -36,7 +36,7 @@ toc: false
 
 <!-- ── Hero standfirst ────────────────────────────────────── -->
 <h1 class="hero-standfirst">
-  anurag builds <span class="rotator accent"><span class="word active">working</span><span class="word">broken</span><span class="word">honest</span><span class="word">weird</span><span class="word">small</span><span class="word">quiet</span></span> things
+  anurag builds <span class="rotator accent"><span class="word active">things</span><span class="word">RAG</span><span class="word">intelligent systems</span><span class="word">systems</span><span class="word">world models</span></span>
 </h1>
 
 <script>

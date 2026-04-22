@@ -1740,7 +1740,7 @@ figcaption {
 
 .hero-standfirst .rotator {
   display: inline-grid;
-  text-align: center;
+  text-align: left;
   vertical-align: baseline;
 }
 
