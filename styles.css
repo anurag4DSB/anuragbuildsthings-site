@@ -189,10 +189,9 @@ body.nav-fixed {
    inserted by post-enhance-include.html so the two icon clusters wrap
    to the next row together instead of search dropping alone. */
 .navbar-container.container-fluid {
-  flex-wrap: wrap !important;
-  row-gap: 0.375rem !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
+  position: relative;
 }
 .navbar-container.container-fluid .navbar-brand-container {
   flex-shrink: 0 !important;
@@ -219,6 +218,58 @@ body.nav-fixed {
 .navbar-container.container-fluid #quarto-search .aa-DetachedSearchButton {
   padding-right: 0 !important;
 }
+
+/* Hamburger button — hidden at wide widths; takes over from the icon
+   group below 576px. Injected by post-enhance-include.html. */
+.navbar-hamburger {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--ink-2);
+  cursor: pointer;
+  margin-left: auto;
+  line-height: 1;
+  transition: color 120ms ease;
+}
+.navbar-hamburger .bi {
+  font-size: 1.5rem;
+  display: inline-block;
+  line-height: 1;
+}
+.navbar-hamburger:hover,
+.navbar-hamburger:focus-visible {
+  color: var(--signal);
+}
+.navbar-hamburger:focus { outline: none; }
+.navbar-hamburger:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+@media (max-width: 575px) {
+  .navbar-hamburger {
+    display: inline-flex;
+    align-items: center;
+  }
+  .navbar-container.container-fluid .navbar-icon-group {
+    display: none !important;
+    margin-left: 0 !important;
+  }
+  .navbar-container.container-fluid .navbar-icon-group.is-open {
+    display: flex !important;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--paper-up);
+    border: 1px solid var(--rule);
+    gap: 0.375rem;
+    z-index: 1050;
+  }
+}
+
 .navbar .navbar-brand,
 .navbar .navbar-title {
   overflow: visible !important;
