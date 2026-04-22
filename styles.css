@@ -1734,8 +1734,30 @@ figcaption {
   color: var(--ink);
 }
 
-.hero-standfirst .line.accent {
+.hero-standfirst .accent {
   color: var(--signal);
+}
+
+.hero-standfirst .rotator {
+  display: inline-grid;
+  text-align: center;
+  vertical-align: baseline;
+}
+
+.hero-standfirst .rotator .word {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.hero-standfirst .rotator .word.active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-standfirst .rotator .word {
+    transition: none;
+  }
 }
 
 .hero-dek {

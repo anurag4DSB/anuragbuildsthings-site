@@ -36,13 +36,25 @@ toc: false
 
 <!-- ── Hero standfirst ────────────────────────────────────── -->
 <h1 class="hero-standfirst">
-  <span class="line">A research log on</span>
-  <span class="line">machine learning systems —</span>
-  <span class="line accent">written in public.</span>
+  anurag builds <span class="rotator accent"><span class="word active">working</span><span class="word">broken</span><span class="word">honest</span><span class="word">weird</span><span class="word">small</span><span class="word">quiet</span></span> things
 </h1>
 
+<script>
+  (function () {
+    var words = document.querySelectorAll('.hero-standfirst .rotator .word');
+    if (words.length < 2) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var i = 0;
+    setInterval(function () {
+      words[i].classList.remove('active');
+      i = (i + 1) % words.length;
+      words[i].classList.add('active');
+    }, 2800);
+  })();
+</script>
+
 <p class="hero-dek">
-  Every experiment, every note, every YouTube lecture — posted the week it happens.
+  Every experiment, every note, every YouTube lecture, posted the week it happens.
   No roadmaps. No thought leadership. Just the curves and what they mean.
 </p>
 
