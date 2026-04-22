@@ -2,6 +2,12 @@ project:
   type: website
   resources:
     - CNAME
+    - post-enhance.js
+    - palette.js
+    - favicon-32.png
+    - favicon-192.png
+    - favicon-512.png
+    - og-default.png
   render:
     - "*.qmd"
     - "posts/"
@@ -9,9 +15,10 @@ project:
     - "!.planning/"
 
 website:
-  title: "Anurag builds things"
+  title: "anurag builds things"
   site-url: "https://anuragbuildsthings.com/"
   description: "Projects, experiments, and systems built in public."
+  image: og-default.png
   open-graph: true
   llms-txt: true
   google-analytics:
@@ -23,18 +30,29 @@ website:
     type: overlay
   navbar:
     background: light
+    pinned: true
     search: true
     tools:
+      - icon: git
+        href: https://github.com/anurag4dsb
+        aria-label: GitHub
       - icon: youtube
         href: https://www.youtube.com/@AnuragBuildsThings
         aria-label: YouTube
       - icon: linkedin
         href: https://www.linkedin.com/in/mittalanu/
         aria-label: LinkedIn
-      - icon: github
-        href: https://github.com/anurag4dsb
-        aria-label: GitHub
-  back-to-top-navigation: true
+  page-footer:
+    border: false
+    left: |
+      <div class="footer-col">
+        <p>For the next person figuring things out by building - <a href="mailto:anuragbuildsthings@gmail.com">anuragbuildsthings@gmail.com</a></p>
+      </div>
+    right: |
+      <div class="footer-col">
+        <p><a href="#top"><span class="back-to-top-arrow">⬆</span>Back to top</a></p>
+      </div>
+  back-to-top-navigation: false
   page-navigation: true
 
 format:
@@ -42,14 +60,25 @@ format:
     theme:
       light: [cosmo, styles.css]
       dark: [darkly, styles.css]
+    include-in-header:
+      text: |
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+        <link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@200..800&family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400..600&family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&display=optional">
     toc: true
     toc-location: left
     code-copy: true
     code-overflow: wrap
-    mainfont: "Source Sans Pro"
+    monofont: "JetBrains Mono"
     fontsize: 1em
-    highlight-style: github
-    date-format: "MMM YYYY"
+    highlight-style: github-dark
+    date-format: "DD MMM YYYY"
+    include-after-body:
+      - post-enhance-include.html
+      - palette-include.html
 
 execute:
   freeze: auto

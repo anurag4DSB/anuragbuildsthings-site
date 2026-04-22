@@ -1,0 +1,20 @@
+<script src="/post-enhance.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var t = document.querySelector('.navbar-title');
+    if (t) t.textContent = 'anurag builds things';
+
+    // Wrap tools + search in one flex item so they wrap to the next line
+    // as a group when the navbar row can't fit them beside the brand.
+    var tools = document.querySelector('.quarto-navbar-tools');
+    var search = document.querySelector('#quarto-search');
+    if (tools && search && tools.parentElement === search.parentElement &&
+        !tools.closest('.navbar-icon-group')) {
+      var group = document.createElement('div');
+      group.className = 'navbar-icon-group';
+      tools.parentElement.insertBefore(group, tools);
+      group.appendChild(tools);
+      group.appendChild(search);
+    }
+  });
+</script>

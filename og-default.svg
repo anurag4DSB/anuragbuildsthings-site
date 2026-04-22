@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    
+  </defs>
+
+  
+  <rect class="bg" width="1200" height="630"></rect>
+
+  
+  <circle class="signal" cx="80" cy="80" r="6"></circle>
+  <text x="104" y="87" class="mono" font-size="18" letter-spacing="3">ANURAG BUILDS THINGS</text>
+
+  
+  <text x="1120" y="87" class="mono" font-size="16" letter-spacing="2" text-anchor="end">THE LOG · 2026</text>
+
+  
+  <line class="rule" x1="80" y1="130" x2="1120" y2="130"></line>
+
+  
+  <text x="80" y="280" class="display" font-size="80">
+    <tspan x="80" dy="0">Post title goes here —</tspan>
+    <tspan x="80" dy="92">on two lines if needed.</tspan>
+  </text>
+
+  
+  <text x="80" y="460" class="mono" font-size="20" letter-spacing="1.5" opacity="0.85">
+    <tspan x="80" dy="0">A short description of the post, kept to one or</tspan>
+    <tspan x="80" dy="32">two lines so it reads as a dek.</tspan>
+  </text>
+
+  
+  <line class="rule" x1="80" y1="540" x2="1120" y2="540"></line>
+  <text x="80" y="583" class="mono" font-size="16" letter-spacing="3">FILED · RESEARCH LOG</text>
+  <text x="1120" y="583" class="mono" font-size="16" letter-spacing="3" text-anchor="end">anuragbuildsthings.com</text>
+</svg>

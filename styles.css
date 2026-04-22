@@ -1,29 +1,243 @@
 /*-- scss:defaults --*/
 
-/* Google Fonts — Source Sans Pro */
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+/* ────────────────────────────────────────────────────────────────
+   INSTRUMENT — a Quarto theme for anuragbuildsthings.com
+   Drop-in replacement for styles.css.
+   Ported from the Instrument design system.
+
+   Google Fonts are loaded via <link> in _quarto.yml (not @import here)
+   so they fetch in parallel with this stylesheet instead of after it.
+   Using display=optional to eliminate the font-swap CLS: fonts get ~100ms
+   to load; after that the fallback is committed for the session.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Bootstrap variable overrides (SCSS defaults) ─────────────────── */
+$body-bg: #0c0d0b !default;
+$body-color: #ecece4 !default;
+$link-color: #c8e25c !default;
+$link-hover-color: #ecece4 !default;
+$border-color: #22251f !default;
+$font-family-sans-serif: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif !default;
+$font-family-serif: 'Newsreader', Georgia, 'Times New Roman', serif !default;
+$font-family-monospace: 'JetBrains Mono', ui-monospace, Menlo, monospace !default;
+$headings-font-family: 'Fraunces', 'Newsreader', Georgia, serif !default;
+$headings-font-weight: 300 !default;
+$headings-color: #ecece4 !default;
+$navbar-light-bg: #0c0d0b !default;
+$navbar-dark-bg: #0c0d0b !default;
 
 /*-- scss:rules --*/
 
-/* ── Light mode ── */
-.quarto-light {
-  --bs-body-bg: #ffffff;
+/* ── Tokens ───────────────────────────────────────────────────── */
+:root {
+  --paper: #0c0d0b;
+  --paper-up: #131511;
+  --paper-up-2: #1a1d19;
+  --ink: #ecece4;
+  --ink-2: #9da29a;
+  --ink-3: #5e635c;
+  --ink-4: #3a3d36;
+  --surface: #131511;
+  --rule: #32362f;
+  --rule-hi: #32362f;
+  --signal: #c8e25c;
+  --signal-ink: #0c0d0b;
+  --tint-warm: #e68a56;
+  --tint-cool: #7aa0d6;
+  --display: 'Fraunces', 'Newsreader', Georgia, serif;
+  --text: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --ui: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'Atkinson Hyperlegible Mono', ui-monospace, Menlo, monospace;
+  --mono-code: 'JetBrains Mono', ui-monospace, Menlo, monospace;
 }
 
-/* ── Navbar search icon — match social icon size ── */
-.aa-DetachedSearchButton svg {
-  width: 16px !important;
-  height: 16px !important;
+/* Force dark regardless of toggle ─────────────────────────────── */
+html,
+body,
+.quarto-light,
+.quarto-dark {
+  background: var(--paper) !important;
+  color: var(--ink) !important;
 }
 
-/* ── Navbar — no divider, consistent height ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11", "tnum";
+}
+
+/* Match Bootstrap's body.nav-fixed default (64px) to our actual navbar
+   height so quarto-nav.js's JS override (body.style.paddingTop =
+   navbar.clientHeight) produces the same value — no CLS on first paint.
+   74px = single-row navbar; 101px = wrapped-to-two-rows at narrow widths.
+   Also pre-size .quarto-container min-height to what quarto-nav.js will
+   set (calc(100vh - topOffset)), otherwise its JS override reshuffles
+   the grid rows and shifts main content. */
+body.nav-fixed {
+  padding-top: 4.625rem;
+}
+.quarto-container {
+  min-height: calc(100vh - 4.625rem);
+}
+@media (max-width: 450px) {
+  body.nav-fixed {
+    padding-top: 6.3125rem;
+  }
+  .quarto-container {
+    min-height: calc(100vh - 6.3125rem);
+  }
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--signal-ink);
+}
+
+/* ── Navbar ───────────────────────────────────────────────────── */
 .navbar {
-  border-bottom: none;
-  padding: 8px 16px !important;
+  background: var(--paper) !important;
+  border-bottom: 1px solid var(--rule) !important;
+  padding: 0.875rem 1.5rem !important;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.navbar .navbar-brand,
+.navbar .navbar-title {
+  font-family: var(--display) !important;
+  font-weight: 500 !important;
+  font-size: 1.375rem !important;
+  letter-spacing: -0.005em !important;
+  text-transform: none !important;
+  color: var(--ink) !important;
+}
+
+.navbar .navbar-title {
+  font-style: italic !important;
+  color: var(--signal) !important;
+}
+
+.post-title-dock {
+  position: absolute;
+  left: var(--dock-left, 24px);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--display) !important;
+  font-weight: 400 !important;
+  font-size: 1.125rem !important;
+  color: var(--ink) !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100vw - var(--dock-left, 24px) - 12.5rem);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.post-title-dock.visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-title-dock {
+    transition: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .post-title-dock {
+    display: none;
+  }
 }
 
 .navbar .navbar-brand {
-  color: #000000 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.625rem !important;
+}
+
+
+.navbar .quarto-navigation-tool,
+.navbar .aa-DetachedSearchButton {
+  color: var(--ink-2) !important;
+  transition: color 120ms ease;
+}
+
+.navbar .aa-DetachedSearchButton svg,
+.navbar .aa-DetachedSearchButton .aa-SubmitIcon {
+  color: var(--ink-2) !important;
+  fill: currentColor !important;
+}
+
+.navbar .aa-DetachedSearchButton:hover svg,
+.navbar .aa-DetachedSearchButton:hover .aa-SubmitIcon {
+  color: var(--signal) !important;
+}
+
+/* Brand left, icons grouped right. The .navbar-icon-group wrapper is
+   inserted by post-enhance-include.html so the two icon clusters wrap
+   to the next row together instead of search dropping alone. */
+.navbar-container.container-fluid {
+  flex-wrap: wrap !important;
+  row-gap: 0.375rem !important;
+}
+.navbar-container.container-fluid .navbar-brand-container {
+  flex-shrink: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  order: 0 !important;
+}
+.navbar-container.container-fluid {
+  justify-content: space-between !important;
+}
+.navbar-container.container-fluid .navbar-icon-group {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  flex: 0 0 auto !important;
+}
+.navbar-container.container-fluid #quarto-search {
+  margin-left: 0 !important;
+}
+.navbar .navbar-brand,
+.navbar .navbar-title {
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.navbar .quarto-navigation-tool .bi {
+  display: inline-block;
+  width: 1.75rem;
+  text-align: center;
+  line-height: 1;
+  font-size: 1.375rem !important;
+}
+
+@media (max-width: 768px) {
+  .navbar .quarto-navigation-tool .bi {
+    width: 1.375rem;
+    font-size: 1.125rem !important;
+  }
+  .navbar #quarto-search svg,
+  .navbar .aa-DetachedSearchButton svg {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+  }
+}
+
+.navbar .quarto-navigation-tool:hover {
+  color: var(--signal) !important;
 }
 
 .navbar .quarto-navigation-tool:hover .bi-youtube {
@@ -34,121 +248,1875 @@
   color: #0A66C2 !important;
 }
 
-.navbar .quarto-navigation-tool:hover .bi-github {
-  color: #ffffff !important;
+.navbar .quarto-navigation-tool:hover .bi-git {
+  color: var(--ink) !important;
 }
 
-.quarto-light .navbar .quarto-navigation-tool:hover .bi-github {
-  color: #000000 !important;
-}
-
-/* ── Listing cards ── */
-.quarto-grid-item {
-  border: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-/* ── Category tags — consistent across homepage and posts ── */
-.listing-categories .listing-category,
-.quarto-categories .quarto-category,
-.quarto-categories .quarto-category a {
-  font-size: 0.8rem !important;
-  font-weight: 600 !important;
-  border-color: #6c757d !important;
-  color: #6c757d !important;
-}
-
-.quarto-categories .quarto-category {
-  padding: 1.92px 6.4px !important;
-  opacity: 1 !important;
-}
-
-.quarto-categories .quarto-category a,
-.quarto-categories .quarto-category a:hover,
-.quarto-categories .quarto-category a:visited,
-.quarto-categories .quarto-category a:active {
-  color: inherit !important;
-  font-weight: inherit !important;
-  text-decoration: none !important;
-  -webkit-text-stroke: 0 !important;
-}
-
-/* ── Title block ── */
+/* ── Title block ──────────────────────────────────────────────── */
 .quarto-title-block {
-  margin-bottom: 1.5rem;
+  margin-bottom: 3rem;
 }
 
-.quarto-title-meta > div {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  gap: 0.5em;
+.quarto-title-block .quarto-title-meta {
+  margin-top: 1.25rem;
 }
 
+.quarto-title-block .quarto-categories {
+  margin: 0.5rem 0 1.25rem !important;
+}
+
+.quarto-title-block .description,
+.quarto-title-block p.subtitle {
+  font-family: var(--text) !important;
+  font-size: 1.25rem !important;
+  line-height: 1.5 !important;
+  color: var(--ink-2) !important;
+  font-style: normal !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  margin: 0.5rem 0 1.5rem !important;
+}
+
+.quarto-title .title {
+  font-family: var(--display) !important;
+  font-weight: 300 !important;
+  font-style: italic;
+  font-size: clamp(3rem, 7vw, 5.5rem) !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.028em !important;
+  color: var(--ink) !important;
+  max-width: 18ch;
+  text-wrap: pretty;
+  margin-bottom: 1rem;
+}
+
+.quarto-title .subtitle,
 .quarto-title-meta-heading,
 .quarto-title-meta-contents p {
-  font-size: 0.8rem !important;
-  font-weight: 600 !important;
-  color: #6c757d !important;
-  text-transform: uppercase;
-  opacity: 1 !important;
-  margin: 0;
+  font-family: var(--mono) !important;
+  font-size: 0.625rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-3) !important;
 }
 
-/* ── Homepage listing — breathing room below nav ── */
+/* ── Body prose ──────────────────────────────────────────────── */
+main.content,
+#quarto-document-content {
+  font-family: var(--text);
+  font-size: 1.1875rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+main.content p {
+  margin: 0 0 1rem;
+}
+
+main.content em {
+  color: var(--signal);
+  font-style: italic;
+}
+
+main.content strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+main.content h1,
+main.content h2,
+main.content h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.018em;
+}
+
+main.content h2 {
+  font-style: italic;
+  font-size: 2rem;
+  margin: 2.5rem 0 1rem;
+  padding-top: 1.5rem;
+}
+
+main.content h3 {
+  font-size: 1.375rem;
+  margin: 2rem 0 0.75rem;
+}
+
+main.content a {
+  color: var(--signal);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(200, 226, 92, 0.3);
+}
+
+main.content a:hover {
+  border-bottom-color: var(--signal);
+}
+
+main.content ul,
+main.content ol {
+}
+
+main.content li {
+  margin-bottom: 0.4rem;
+}
+
+/* Inline & block code */
+code,
+pre {
+  font-family: var(--mono-code) !important;
+  font-size: 0.85em;
+}
+
+main.content :not(pre)>code {
+  color: var(--signal);
+  background: var(--paper-up);
+  border: 1px solid var(--rule);
+  padding: 2px 0.375rem;
+  border-radius: 0;
+}
+
+pre,
+div.sourceCode {
+  background: var(--paper-up) !important;
+  border: 1px solid var(--rule) !important;
+  border-radius: 0 !important;
+  padding: 1rem !important;
+}
+
+/* ── Post page: article matches home's 1200 px frame, TOC floats left ──
+   Only kicks in when the viewport is wide enough for the 1200 article
+   plus the ~250 px TOC gutter. Below this, Quarto's default layout
+   (or the narrow override that follows) applies. */
+/* Post page layout: TOC pinned to the left, article next to it up to
+   1200 px, right-hand whitespace is flexible and shrinks first as the
+   viewport narrows. TOC stays visible until the article would drop
+   below a comfortable reading width. */
+@media (min-width: 1044px) {
+  .page-columns:not(.page-layout-custom) {
+    display: grid !important;
+    grid-template-columns: 200px 48px minmax(0, 1200px) minmax(0, 1fr) !important;
+    grid-template-rows: auto !important;
+    max-width: none !important;
+    padding: 0 3rem !important;
+    margin: 0 !important;
+    column-gap: 0 !important;
+    justify-content: start !important;
+  }
+
+  .page-columns:not(.page-layout-custom) #quarto-sidebar {
+    grid-column: 1 / 2 !important;
+    justify-self: start !important;
+    width: 12.5rem !important;
+    margin-right: 0 !important;
+  }
+
+  .page-columns:not(.page-layout-custom) #quarto-document-content {
+    grid-column: 3 / 4 !important;
+    max-width: none !important;
+    padding: 0 1.5rem !important;
+  }
+
+  .page-columns:not(.page-layout-custom) #quarto-margin-sidebar {
+    display: none !important;
+  }
+}
+
+/* Medium viewports (TOC can't fit, but article still has room): hide TOC
+   and centre a 1200 article. */
+@media (min-width: 768px) and (max-width: 1043px) {
+  .page-columns:not(.page-layout-custom) {
+    display: block !important;
+    max-width: 75rem !important;
+    margin: 0 auto !important;
+    padding: 0 1.5rem !important;
+  }
+
+  .page-columns:not(.page-layout-custom) #quarto-sidebar,
+  .page-columns:not(.page-layout-custom) #quarto-margin-sidebar {
+    display: none !important;
+  }
+
+  .page-columns:not(.page-layout-custom) #quarto-document-content {
+    max-width: none !important;
+    width: 100% !important;
+  }
+}
+
+/* ── Sidebar TOC ─────────────────────────────────────────────── */
+#TOC,
+#quarto-margin-sidebar,
+.sidebar nav {
+  font-family: var(--mono) !important;
+  font-size: 0.6875rem !important;
+  letter-spacing: 0.04em;
+}
+
+#TOC .toc-title,
+#quarto-margin-sidebar .toc-title {
+  font-family: var(--mono) !important;
+  font-size: 0.625rem !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-3) !important;
+  font-weight: 400 !important;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+#TOC ul,
+.sidebar nav ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#TOC a,
+.sidebar nav a {
+  color: var(--ink-2) !important;
+  text-decoration: none !important;
+  padding: 0.375rem 0 !important;
+  display: block;
+  border-top: 1px solid var(--rule);
+  border-left: 2px solid transparent;
+  padding-left: 0.625rem !important;
+  transition: color 120ms ease;
+}
+
+#TOC a:hover,
+.sidebar nav a:hover {
+  color: var(--signal) !important;
+}
+
+#TOC a.active,
+.sidebar nav a.active {
+  color: var(--ink) !important;
+  border-left-color: var(--signal);
+}
+
+/* ── Listing (homepage log) — date | body | thumbnail ─────────── */
 .quarto-listing {
   margin-top: 2rem;
 }
 
-
-/* ── Blog listing — tighter date column ── */
-div.quarto-post .metadata {
-  flex-basis: auto;
-  flex-grow: 0;
-  flex-shrink: 0;
-  font-size: 1em;
-  padding-right: 1.5em;
-}
-
-div.quarto-post .body {
-  flex-grow: 1;
-}
-
-div.quarto-post {
-  border-bottom-color: #6c757d !important;
-}
-
-div.quarto-post .listing-description {
-  font-size: 1em;
-}
-
-div.quarto-post .body .listing-categories {
-  font-size: 0.95em;
-  padding-top: 0.5rem;
-}
-
-
-
-/* ── Dark mode ── */
-.quarto-dark {
-  --bs-body-bg: #181818;
-  --bs-body-color: #cccccc;
-}
-
-.quarto-dark .navbar {
-  border-bottom: none;
-}
-
-.quarto-dark #quarto-sidebar {
+.quarto-listing .quarto-post,
+.quarto-listing .quarto-post.image-right-align,
+.quarto-post.image-right {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) clamp(160px, 30%, 340px) !important;
+  grid-template-rows: auto auto !important;
+  column-gap: 1.75rem !important;
+  row-gap: 0.5rem !important;
+  align-items: start !important;
+  padding: 1.4rem 0 !important;
+  border-top: 1px solid var(--rule) !important;
+  border-bottom: 0 !important;
   background: transparent !important;
+  transition: background 200ms ease;
 }
 
-.quarto-dark .navbar .navbar-brand {
-  color: #ffffff !important;
+.quarto-listing .quarto-post:first-child {
+  border-top: none !important;
+}
+
+.quarto-listing .quarto-post:hover {
+  background: rgba(200, 226, 92, 0.025);
+}
+
+.quarto-listing .quarto-post:hover .listing-title a {
+  color: var(--signal) !important;
+}
+
+/* Date row — sits below body in column 1 */
+.quarto-listing .quarto-post .metadata {
+  grid-column: 1;
+  grid-row: 2;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  align-self: start;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.quarto-listing .quarto-post .listing-date {
+  font-family: var(--mono) !important;
+  font-size: 0.6875rem !important;
+  letter-spacing: 0.04em;
+  color: var(--ink-2) !important;
+  text-transform: uppercase;
+}
+
+.quarto-listing .quarto-post .metadata a,
+.quarto-listing .quarto-post .body a {
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+  color: inherit !important;
+}
+
+/* Body column (left) */
+.quarto-listing .quarto-post .body {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.quarto-listing .quarto-post .body .listing-title { order: 1; }
+.quarto-listing .quarto-post .body .listing-description { order: 2; }
+.quarto-listing .quarto-post .body .listing-categories { order: 3; }
+
+.quarto-listing .quarto-post .listing-title {
+  font-family: var(--display) !important;
+  font-weight: 400 !important;
+  font-size: 1.75rem !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.018em !important;
+  margin: 0 0 0.5rem 0 !important;
+  max-width: none;
+  text-wrap: balance;
+}
+
+.quarto-listing .quarto-post .listing-title a {
+  color: var(--ink) !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  transition: color 120ms ease;
+}
+
+.quarto-listing .quarto-post .listing-description {
+  font-family: var(--text);
+  font-size: 1.0625rem !important;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 60ch;
+  margin: 0 !important;
+}
+
+.quarto-listing .quarto-post .listing-description p {
+  margin: 0 !important;
+}
+
+.quarto-listing .quarto-post .listing-description a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border: 0 !important;
+}
+
+/* Thumbnail column (right) — spans both rows, stretches full column height */
+.quarto-listing .quarto-post .thumbnail {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: stretch;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.quarto-listing .quarto-post .thumbnail > a {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.quarto-listing .quarto-post .thumbnail img,
+.quarto-listing .quarto-post .thumbnail .thumbnail-image {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none;
+  object-fit: contain;
+  border: 1px solid var(--rule-hi);
+  display: block;
+  background: var(--bg);
+}
+
+.quarto-listing .quarto-post .thumbnail:empty {
+  display: none;
+}
+
+/* ── Category chips ─────────────────────────────────────────── */
+.listing-categories,
+.quarto-categories {
+  gap: 0.5rem !important;
+  flex-wrap: wrap;
+  padding-top: 0.75rem !important;
+}
+
+.listing-categories .listing-category,
+.quarto-categories .quarto-category {
+  font-family: var(--mono) !important;
+  font-size: 0.5938rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  border: 1px solid var(--rule-hi) !important;
+  color: var(--ink-2) !important;
+  padding: 0.25rem 0.75rem !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  opacity: 1 !important;
+  white-space: nowrap;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.listing-categories .listing-category:hover,
+.quarto-categories .quarto-category:hover {
+  color: var(--signal) !important;
+  border-color: var(--signal) !important;
+}
+
+/* ── Callouts ───────────────────────────────────────────────── */
+.callout {
+  border-radius: 0 !important;
+  border: 0 !important;
+  border-left: 2px solid var(--rule-hi) !important;
+  background: var(--paper-up) !important;
+  padding: 0.75rem 1rem !important;
+  margin: 1.5rem 0 !important;
+}
+
+.callout.callout-style-default .callout-title {
+  font-family: var(--mono) !important;
+  font-size: 0.625rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  color: var(--ink-3) !important;
+}
+
+.callout-note {
+  border-left-color: var(--tint-cool) !important;
+}
+
+.callout-note .callout-title {
+  color: var(--tint-cool) !important;
+}
+
+.callout-warning,
+.callout-caution {
+  border-left-color: var(--tint-warm) !important;
+}
+
+.callout-warning .callout-title,
+.callout-caution .callout-title {
+  color: var(--tint-warm) !important;
+}
+
+.callout-tip,
+.callout-important {
+  border-left-color: var(--signal) !important;
+}
+
+.callout-tip .callout-title,
+.callout-important .callout-title {
+  color: var(--signal) !important;
+}
+
+/* ── Misc ──────────────────────────────────────────────────── */
+hr {
+  border-color: var(--rule) !important;
+}
+
+blockquote {
+  border-left: 2px solid var(--rule-hi) !important;
+  color: var(--ink-2) !important;
+  padding-left: 1rem !important;
+  font-style: italic;
+}
+
+::-webkit-scrollbar {
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--rule-hi);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Scheme toggle — hide (we're committing to dark) */
+.quarto-color-scheme-toggle {
+  display: none !important;
+}
+
+/* Responsive — stack to single column only when even the min-width
+   thumbnail (180 px) would crush the body */
+@media (max-width: 600px) {
+
+  .quarto-listing .quarto-post,
+  .quarto-listing .quarto-post.image-right-align,
+  .quarto-post.image-right,
+  .quarto-listing .list .quarto-post {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  .quarto-listing .quarto-post .metadata,
+  .quarto-listing .quarto-post .body,
+  .quarto-listing .quarto-post .thumbnail,
+  .quarto-listing .list .quarto-post > .body,
+  .quarto-listing .list .quarto-post > .metadata,
+  .quarto-listing .list .quarto-post > .thumbnail {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
+
+  .quarto-listing .quarto-post .thumbnail,
+  .quarto-listing .list .quarto-post > .thumbnail {
+    justify-content: flex-start !important;
+    align-self: auto !important;
+    padding: 0 !important;
+  }
+
+  .quarto-listing .quarto-post .thumbnail > a,
+  .quarto-listing .list .quarto-post > .thumbnail > a {
+    height: auto !important;
+  }
+
+  .quarto-listing .quarto-post .thumbnail img,
+  .quarto-listing .quarto-post .thumbnail .thumbnail-image,
+  .quarto-listing .list .quarto-post > .thumbnail img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 13.75rem !important;
+    object-fit: contain !important;
+  }
+
+  .quarto-title .title {
+    font-size: 2.75rem !important;
+  }
+
+  .status-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .status-cell.right {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
+/* Back-to-top */
+#quarto-back-to-top {
+  background: var(--paper-up) !important;
+  border: 1px solid var(--rule) !important;
+  color: var(--ink-2) !important;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 0 !important;
+}
+
+#quarto-back-to-top:hover {
+  color: var(--signal) !important;
+  border-color: var(--signal) !important;
+}
+
+/* ── Phase 2A · homepage shell ────────────────────────────── */
+
+/* TOC breathing room */
+#TOC,
+.sidebar nav[role="doc-toc"] {
+  padding-left: 0.75rem;
+}
+
+/* Hide Quarto's auto title-block on the homepage (we render our own standfirst) */
+body:has(.standfirst) #title-block-header {
+  display: none !important;
+}
+
+/* Footer — small mono signature */
+.nav-footer,
+.page-footer {
+  border-top: 1px solid var(--rule) !important;
+  background: transparent !important;
+  color: var(--ink-3) !important;
+  font-family: var(--mono) !important;
+  font-size: 0.625rem !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2rem 0 !important;
+  margin-top: 4rem;
+}
+
+.nav-footer a,
+.page-footer a {
+  color: var(--ink-3) !important;
+  border-bottom: 0 !important;
+}
+
+.nav-footer a:hover,
+.page-footer a:hover {
+  color: var(--signal) !important;
+}
+
+/* Stand-first */
+.standfirst {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+  max-width: 28ch;
+  text-wrap: balance;
+  margin: 4rem 0 3rem;
+}
+
+/* Status strip */
+.status-strip {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 3.5rem;
+}
+
+.status-cell {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.status-cell.right {
+  justify-items: end;
+  text-align: right;
+}
+
+.status-cell .label {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-cell .value {
+  font-family: var(--ui);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+
+.pulse {
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0 0 rgba(200, 226, 92, 0.35);
+  animation: instrument-pulse 2s infinite cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes instrument-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(200, 226, 92, 0.35);
+  }
+
+  70% {
+    box-shadow: 0 0 0 6px rgba(200, 226, 92, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(200, 226, 92, 0);
+  }
+}
+
+/* Section head + filter chord */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  margin-bottom: 0;
+}
+
+.section-head>.label {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.filter-chord {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.filter-chord .chip {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border: 1px solid var(--rule-hi);
+  background: transparent;
+  padding: 0.3125rem 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.filter-chord .chip:hover {
+  color: var(--ink);
+  border-color: var(--ink-3);
+}
+
+.filter-chord .chip.on {
+  background: var(--signal);
+  color: var(--signal-ink);
+  border-color: var(--signal);
+}
+
+/* ── Phase 2B · post page ─────────────────────────────────── */
+
+body:not(:has(.standfirst)) .quarto-title-block .quarto-title-meta {
+  display: block !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: 0 !important;
+}
+
+body:not(:has(.standfirst)) .quarto-title-meta>div {
+  display: none !important;
+}
+
+body:not(:has(.standfirst)) .post-meta-line {
+  display: block !important;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Reserve vertical space for .post-meta-line that post-enhance.js inserts
+   after DOMContentLoaded, so article content doesn't shift down 46px when
+   the element arrives. The ::after pseudo pre-allocates the space; once
+   :has() sees the real .post-meta-line, the pseudo collapses and the real
+   element fills the same space — net height unchanged, no CLS. */
+body:not(:has(.standfirst)) .quarto-title-block:not(:has(.post-meta-line))::after {
+  content: "";
+  display: block;
+  height: 2.875rem;
+  order: 4;
+}
+
+/* Put .quarto-categories visually below the description via flex order,
+   instead of JS-moving the DOM node. Without this, post-enhance.js's
+   reorderCategories() shifts the description wrapper up ~42px after
+   first paint. .quarto-title becomes display: contents so its children
+   (h1, categories) are layout-level children of .quarto-title-block and
+   can participate in its flex order. */
+body:not(:has(.standfirst)) .quarto-title-block {
+  display: flex;
+  flex-direction: column;
+}
+body:not(:has(.standfirst)) .quarto-title-block .quarto-title {
+  display: contents;
+}
+body:not(:has(.standfirst)) .quarto-title-block .quarto-title > h1 {
+  order: 1;
+}
+body:not(:has(.standfirst)) .quarto-title-block > div:has(> .description) {
+  order: 2;
+}
+body:not(:has(.standfirst)) .quarto-title-block .quarto-categories {
+  order: 3;
+}
+body:not(:has(.standfirst)) .quarto-title-block .post-meta-line {
+  order: 4;
+}
+body:not(:has(.standfirst)) .quarto-title-block .quarto-title-meta {
+  order: 5;
+}
+
+body:not(:has(.standfirst)) .post-meta-line .dot {
+  margin: 0 0.625rem;
+  color: var(--ink-2);
+  opacity: 0.5;
+}
+
+body:not(:has(.standfirst)) .post-meta-line .reading-time {
+  color: var(--ink-2);
+}
+
+/* Post-page categories: chips like the home listing */
+body:not(:has(.standfirst)) .quarto-title-block .quarto-categories {
+  display: flex !important;
+  gap: 0.5rem !important;
+  flex-wrap: wrap;
+  margin: 0.5rem 0 0 !important;
+  padding: 0 !important;
+}
+
+body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-category {
+  border: 1px solid var(--rule-hi) !important;
+  background: transparent !important;
+  padding: 0.25rem 0.75rem !important;
+  margin: 0 !important;
+  font-family: var(--mono) !important;
+  font-size: 0.5938rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-2) !important;
+  white-space: nowrap;
+  pointer-events: none;
+  cursor: default;
+}
+
+body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-category a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Tighter title on post pages — body, not display, scale */
+body:not(:has(.standfirst)) .quarto-title .title {
+  font-size: clamp(2.5rem, 5.5vw, 4rem) !important;
+  font-style: normal !important;
+  font-weight: 300 !important;
+  max-width: 22ch !important;
+  letter-spacing: -0.024em !important;
+  margin-bottom: 1rem !important;
+}
+
+body:not(:has(.standfirst)) .quarto-title-block .description {
+  font-style: italic !important;
+  font-family: var(--display) !important;
+  font-weight: 300 !important;
+  font-size: 1.375rem !important;
+  line-height: 1.35 !important;
+  color: var(--ink-2) !important;
+  margin: 3.25rem 0 0 !important;
+}
+
+body:not(:has(.standfirst)) .quarto-title-block {
+  margin-bottom: 0 !important;
+}
+
+body:not(:has(.standfirst)) main.content li::marker {
+  color: var(--ink-3);
+}
+
+body:not(:has(.standfirst)) main.content h2 {
+  font-size: 1.75rem !important;
+  margin: 0 0 1.25rem !important;
+  padding-top: 1.75rem !important;
+}
+
+/* Code block refinements */
+div.sourceCode {
+  position: relative;
+  margin: 1.5rem 0 !important;
+}
+
+div.sourceCode pre {
+  margin: 0 !important;
+  padding: 1.125rem 1.25rem !important;
+}
+
+div.sourceCode code {
+  font-size: 0.8125rem !important;
+  line-height: 1.55 !important;
+}
+
+/* Copy button — ghost on hover */
+.code-copy-button {
+  background: transparent !important;
+  color: var(--ink-3) !important;
+  border: 1px solid transparent !important;
+  border-radius: 0 !important;
+  padding: 0.25rem 0.5rem !important;
+  font-family: var(--mono) !important;
+  font-size: 0.6875rem !important;
+  opacity: 0;
+  transition: opacity 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+
+div.sourceCode:hover .code-copy-button {
+  opacity: 1;
+}
+
+.code-copy-button:hover {
+  color: var(--signal) !important;
+  border-color: var(--rule-hi) !important;
+}
+
+.code-copy-button-checked {
+  color: var(--signal) !important;
+  opacity: 1 !important;
+}
+
+/* Figure captions */
+figure.figure {
+  margin: 2rem 0 !important;
+}
+
+figure .figure-caption,
+figcaption {
+  font-family: var(--mono) !important;
+  font-size: 0.6875rem !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3) !important;
+  margin-top: 0.5rem !important;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--rule);
+  max-width: 64ch;
+}
+
+/* Margin notes — pull into right sidebar gutter */
+.column-margin {
+  font-family: var(--ui) !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.45 !important;
+  color: var(--ink-2) !important;
+  border-left: 1px solid var(--rule);
+  padding-left: 0.75rem;
+}
+
+/* ── Post footer — prev/next + filed under ──────────────── */
+.post-footer {
+  margin-top: 0;
+  padding-top: 1.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.post-footer .post-nav {
+  display: block;
+  text-decoration: none !important;
+  border: 0 !important;
+  padding: 1rem 0;
+  color: var(--ink-2) !important;
+  transition: color 120ms ease;
+}
+
+.post-footer .post-nav:hover {
+  color: var(--signal) !important;
+}
+
+.post-footer .post-nav.next {
+  text-align: right;
+}
+
+.post-footer .post-nav .post-nav-label {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.post-footer .post-nav .post-nav-title {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.375rem;
+  line-height: 1.2;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.post-footer .post-nav:hover .post-nav-title {
+  color: var(--signal);
+}
+
+.post-footer .post-nav.empty {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.post-footer .post-nav.empty .post-nav-title {
+  color: var(--ink-3);
+}
+
+@media (max-width: 700px) {
+  .post-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .post-footer .post-nav.next {
+    text-align: left;
+  }
+}
+
+/* ── Site footer (page-footer) ────────────────────────────── */
+.nav-footer {
+  background: var(--surface) !important;
+  border-top: 0 !important;
+  padding: 0.875rem 2rem !important;
+  margin-top: 0rem !important;
+  color: var(--ink-3) !important;
+}
+
+.nav-footer .nav-footer-left>a:not(.footer-col a),
+.nav-footer .nav-footer-center>a:not(.footer-col a),
+.nav-footer .nav-footer-right>a:not(.footer-col a) {
+  display: none !important;
+}
+
+.nav-footer .nav-footer-left,
+.nav-footer .nav-footer-center,
+.nav-footer .nav-footer-right {
+  font-family: var(--mono) !important;
+  font-size: 0.6875rem !important;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+  text-transform: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  color: var(--ink-2) !important;
+}
+
+.nav-footer .nav-footer-center {
+  display: none !important;
+}
+
+.nav-footer .back-to-top-arrow {
+  font-size: 0.75rem;
+  display: inline-block;
+  vertical-align: -1px;
+  margin-right: 2px;
+}
+
+.nav-footer .footer-col-label {
+  display: block;
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 0.75rem;
+}
+
+.nav-footer a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid transparent !important;
+  padding-bottom: 1px !important;
+  transition: color 120ms ease, border-color 120ms ease !important;
+}
+
+.nav-footer a:hover {
+  color: var(--signal) !important;
+  border-bottom-color: var(--signal) !important;
+}
+
+.nav-footer .footer-col p {
+  margin: 0 0 0.25rem !important;
+}
+
+/* ── 404 page ─────────────────────────────────────────────── */
+.page-404 {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.page-404 .glyph {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 1.5rem;
+}
+
+.page-404 .glyph .pulse {
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  background: var(--signal);
+  border-radius: 50%;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.page-404 h1 {
+  font-family: var(--display) !important;
+  font-style: italic !important;
+  font-weight: 300 !important;
+  font-size: clamp(3rem, 7vw, 5.5rem) !important;
+  line-height: 1 !important;
+  letter-spacing: -0.024em !important;
+  color: var(--ink) !important;
+  margin: 0 0 1.5rem !important;
+  border-bottom: 0 !important;
+}
+
+.page-404 .lede {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.375rem;
+  line-height: 1.4;
+  color: var(--ink-2);
+  margin: 0 0 2.5rem;
+  text-wrap: pretty;
+}
+
+.page-404 .actions {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+
+.page-404 .actions a {
+  color: var(--ink) !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid var(--ink-3) !important;
+  padding-bottom: 2px !important;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.page-404 .actions a:hover {
+  color: var(--signal) !important;
+  border-bottom-color: var(--signal) !important;
+}
+
+/* ── Print stylesheet ─────────────────────────────────────── */
+@media print {
+
+  #quarto-header,
+  .navbar,
+  .nav-footer,
+  #quarto-sidebar,
+  .sidebar,
+  #TOC,
+  nav[role="doc-toc"],
+  .post-footer,
+  #quarto-back-to-top,
+  .filter-chord,
+  .status-strip,
+  .section-head,
+  .code-copy-button,
+  .code-tools-button {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  main,
+  .content,
+  .page-columns,
+  .quarto-container {
+    display: block !important;
+    grid-template-columns: none !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: black !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .title,
+  .quarto-title h1 {
+    color: black !important;
+    border: none !important;
+    page-break-after: avoid;
+  }
+
+  h1.title,
+  .quarto-title .title {
+    font-size: 22pt !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .description,
+  .standfirst {
+    color: #444 !important;
+    font-style: italic;
+    font-size: 12pt !important;
+  }
+
+  .post-meta-line {
+    font-family: monospace;
+    font-size: 9pt !important;
+    color: #666 !important;
+    border: none !important;
+    padding: 0 0 1rem !important;
+    margin-bottom: 1.5rem !important;
+    border-bottom: 1px solid #ccc !important;
+  }
+
+  .quarto-categories,
+  .quarto-category,
+  .quarto-category a {
+    color: #666 !important;
+    border: none !important;
+    background: none !important;
+    font-family: monospace !important;
+  }
+
+  a {
+    color: black !important;
+    text-decoration: underline !important;
+  }
+
+  pre,
+  code {
+    background: #f4f4f4 !important;
+    color: black !important;
+    border: 1px solid #ddd !important;
+    font-size: 9.5pt !important;
+  }
+
+  pre {
+    page-break-inside: avoid;
+  }
+
+  img,
+  figure,
+  table {
+    page-break-inside: avoid;
+    max-width: 100% !important;
+  }
+
+  blockquote {
+    color: #444 !important;
+    border-left: 3px solid #999 !important;
+  }
+
+  @page {
+    margin: 2cm;
+  }
 }
 
 
-.quarto-dark .quarto-grid-item {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+/* ── Back-to-top button restyle ───────────────────────────── */
+#quarto-back-to-top {
+  position: fixed !important;
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--ink-4) !important;
+  color: var(--ink-2) !important;
+  font-family: var(--mono) !important;
+  font-size: 0.6875rem !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 0.5rem 0.875rem !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  z-index: 100 !important;
+  text-decoration: none !important;
+  transition: color 120ms ease, border-color 120ms ease !important;
 }
 
+#quarto-back-to-top:hover {
+  color: var(--signal) !important;
+  border-color: var(--signal) !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   HOMEPAGE
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Top utility strip ─────────────────────────────────────── */
+.util-strip {
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.util-strip-inner {
+  max-width: 87.5rem;
+  margin: 0 auto;
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.util-strip .util-mark {
+  color: var(--signal);
+  margin-right: 0.5rem;
+  font-size: 0.5rem;
+}
+
+.util-strip .util-path {
+  color: var(--ink-2);
+}
+
+.util-strip .util-sep {
+  margin: 0 0.5rem;
+  opacity: 0.5;
+}
+
+.util-strip .util-meta {
+  color: var(--ink-3);
+}
+
+/* ── Hero standfirst (replaces .standfirst on home) ────────── */
+.hero-standfirst {
+  font-family: var(--ui) !important;
+  font-weight: 300 !important;
+  font-style: normal !important;
+  font-size: clamp(3rem, 7vw, 4.5rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.022em !important;
+  color: var(--ink) !important;
+  margin: 4rem auto 2rem !important;
+  max-width: 75rem;
+  padding: 0 1.5rem;
+  text-wrap: balance;
+}
+
+.hero-standfirst .line {
+  display: block;
+  color: var(--ink);
+}
+
+.hero-standfirst .accent {
+  color: var(--signal);
+}
+
+.hero-standfirst .rotator {
+  display: inline-grid;
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.hero-standfirst .rotator .word {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.hero-standfirst .rotator .word.active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-standfirst .rotator .word {
+    transition: none;
+  }
+}
+
+.hero-dek {
+  font-family: var(--text) !important;
+  font-size: 1.125rem !important;
+  line-height: 1.55 !important;
+  color: var(--ink-2) !important;
+  max-width: 75rem;
+  margin: 0 auto 5rem !important;
+  padding: 0 1.5rem;
+}
+
+.page-layout-custom .standfirst {
+  display: none;
+}
+
+/* Section head, listing, and log get the same frame */
+.page-layout-custom .section-head,
+.page-layout-custom #log,
+.page-layout-custom .quarto-listing {
+  max-width: 75rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.page-layout-custom .section-head {
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+}
+
+/* ── Fix listing categories: quiet inline tags, not chips ──── */
+.page-layout-custom .quarto-listing .quarto-post .listing-categories {
+  column-gap: 0.875rem !important;
+  row-gap: 0.25rem !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0 !important;
+}
+
+.page-layout-custom .quarto-listing .quarto-post .listing-category {
+  border: 1px solid var(--rule-hi) !important;
+  background: transparent !important;
+  padding: 0.25rem 0.75rem !important;
+  font-family: var(--mono) !important;
+  font-size: 0.5938rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-2) !important;
+  white-space: nowrap;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.page-layout-custom .quarto-listing .quarto-post .listing-category:hover {
+  color: var(--signal) !important;
+  border-color: var(--signal) !important;
+}
+
+@media (max-width: 700px) {
+  .util-strip-inner {
+    font-size: 0.5625rem;
+    padding: 0.375rem 1rem;
+  }
+}
+
+/* ── Homepage (page-layout: custom) ────────────────────────── */
+
+/* Custom layout gives us a blank canvas — give it max-width and breathing room */
+.page-layout-custom {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+
+/* Stronger border between listing rows — the site's main navigation surface */
+.page-layout-custom .quarto-listing .quarto-post {
+  border-top: 1px solid var(--rule-hi) !important;
+  padding: 2rem 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.page-layout-custom .quarto-listing .list .quarto-post:first-child {
+  border-top: 1px solid var(--rule-hi) !important;
+}
+
+/* ── Post listing dividers ──────── */
+.quarto-listing .list .quarto-post {
+  border-top: 1px solid #2a2e27 !important;
+  padding: 1.75rem 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.quarto-listing .list .quarto-post:first-child {
+  border-top: 0 !important;
+}
+
+/* ── Post row column dividers ──────── */
+.quarto-listing .list .quarto-post {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) clamp(160px, 30%, 340px) !important;
+  grid-template-rows: auto auto !important;
+  column-gap: 0 !important;
+  row-gap: 0.5rem !important;
+  align-items: start !important;
+  padding: 2rem 0 !important;
+}
+
+.quarto-listing .list .quarto-post>.body {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  padding: 0 2rem 0 0.25rem !important;
+}
+
+.quarto-listing .list .quarto-post>.metadata {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  padding: 0 2rem 0 0.25rem !important;
+  align-self: start !important;
+}
+
+.quarto-listing .list .quarto-post>.thumbnail {
+  grid-column: 2 !important;
+  grid-row: 1 / span 2 !important;
+  padding: 0 0.25rem 0 1.75rem !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-end !important;
+  align-self: stretch !important;
+}
+
+.quarto-listing .list .quarto-post>.thumbnail>a {
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+}
+
+.quarto-listing .list .quarto-post>.thumbnail img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  margin: 0 !important;
+}
+
+/* Narrow-viewport stack — declared after .list rules so it wins source
+   order and collapses both grids to a single column. */
+@media (max-width: 600px) {
+  .quarto-listing .list .quarto-post {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  .quarto-listing .list .quarto-post > .body,
+  .quarto-listing .list .quarto-post > .metadata,
+  .quarto-listing .list .quarto-post > .thumbnail {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    padding: 0 !important;
+  }
+
+  .quarto-listing .list .quarto-post > .thumbnail {
+    justify-content: flex-start !important;
+    align-self: auto !important;
+  }
+
+  .quarto-listing .list .quarto-post > .thumbnail > a,
+  .quarto-listing .list .quarto-post > .thumbnail img {
+    height: auto !important;
+    max-height: 13.75rem !important;
+  }
+}
+
+/* Dress up the navbar to match home brand block (applied site-wide) */
+.navbar-brand {
+  font-family: var(--serif) !important;
+  font-size: 1.1rem !important;
+  letter-spacing: 0.02em !important;
+  color: var(--ink) !important;
+}
+
+.navbar {
+  border-bottom: 1px solid #2a2e27 !important;
+  padding: 0.875rem 2rem !important;
+}
+
+/* .navbar .navbar-brand::before {
+  content: "[a]";
+  font-family: var(--mono);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--signal);
+  border: 1px solid var(--rule-hi);
+  padding: 0.25rem 0.5rem;
+  letter-spacing: 0;
+} */
+
+/* body:not(.home) .navbar .navbar-brand::after {
+  content: " · research log";
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-left: 0.625rem;
+} */
+
+/* ── Command palette ────────────────────────────────────────── */
+.palette-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 5rem 1.25rem 2.5rem;
+}
+
+.palette-overlay[data-open="true"] {
+  display: flex;
+}
+
+.palette-overlay .palette {
+  position: relative;
+  width: min(45rem, 100%);
+  background: var(--paper-up);
+  border: 1px solid var(--rule-hi);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.7);
+  animation: palette-enter 160ms ease-out;
+}
+
+@keyframes palette-enter {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.palette-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.palette-head .palette-icon {
+  color: var(--ink-2);
+  flex-shrink: 0;
+}
+
+.palette-head input {
+  all: unset;
+  flex: 1;
+  font-family: var(--mono);
+  font-size: 1rem;
+  color: var(--ink);
+  caret-color: var(--signal);
+  min-width: 0;
+}
+
+.palette-head input::placeholder {
+  color: var(--ink-2);
+}
+
+.palette-head .kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  height: 1rem;
+  background: var(--paper-up-2);
+  border: 1px solid var(--rule-hi);
+  padding: 0 0.3125rem;
+  font-family: var(--mono);
+  font-size: 0.5938rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-2);
+  border-radius: 2px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.palette-scopes {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 0 1.25rem;
+  background: #0d0e0c;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.palette-scopes::-webkit-scrollbar { display: none; }
+
+.palette-scopes button {
+  all: unset;
+  font-family: var(--mono);
+  font-size: 0.5938rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding: 0.625rem 0.875rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+}
+
+.palette-scopes button.on {
+  color: var(--ink);
+  border-bottom-color: var(--signal);
+}
+
+.palette-scopes .count {
+  color: var(--ink-2);
+  margin-left: 0.375rem;
+  font-size: 0.5938rem;
+}
+
+.palette-list {
+  max-height: calc(100vh - 16.25rem);
+  overflow: auto;
+}
+
+.palette-list .p-empty {
+  padding: 2rem 1.25rem;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.p-group {
+  padding: 0.625rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.p-group:first-child { border-top: 0; }
+
+.p-group-lbl {
+  font-family: var(--mono);
+  font-size: 0.5938rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding: 0.25rem 1.25rem 0.5rem;
+}
+
+.p-item {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: 0.875rem;
+  align-items: center;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+
+.p-item:hover,
+.p-item.sel {
+  background: #181c17;
+}
+
+.p-item.sel {
+  border-left-color: var(--signal);
+}
+
+.p-ico {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--ink-2);
+}
+
+.p-title {
+  font-family: var(--text);
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.p-title em {
+  background: rgba(200, 226, 92, 0.18);
+  color: var(--signal);
+  font-style: normal;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.p-meta {
+  font-family: var(--mono);
+  font-size: 0.6563rem;
+  color: var(--ink-2);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.p-meta .bi {
+  font-size: 1rem;
+  vertical-align: middle;
+  transition: color 120ms ease;
+}
+
+.p-item:hover .p-meta .bi-git,
+.p-item.sel .p-meta .bi-git {
+  color: var(--ink);
+}
+
+.p-item:hover .p-meta .bi-youtube,
+.p-item.sel .p-meta .bi-youtube {
+  color: #FF0000;
+}
+
+.p-item:hover .p-meta .bi-linkedin,
+.p-item.sel .p-meta .bi-linkedin {
+  color: #0A66C2;
+}
+
+.p-item:hover .p-meta .bi-envelope-fill,
+.p-item.sel .p-meta .bi-envelope-fill {
+  color: var(--signal);
+}
+
+.palette-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.625rem 1.25rem;
+  border-top: 1px solid var(--rule);
+  background: #0d0e0c;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  color: var(--ink-2);
+  letter-spacing: 0.06em;
+}
+
+.palette-foot .keys span {
+  margin-right: 0.875rem;
+}
+
+.palette-foot .keys kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  height: 1rem;
+  background: var(--paper-up-2);
+  border: 1px solid var(--rule-hi);
+  padding: 0 0.3125rem;
+  color: var(--ink-2);
+  margin-right: 0.25rem;
+  border-radius: 2px;
+  font-size: 0.5938rem;
+  font-family: inherit;
+  line-height: 1;
+}
+
+@media (max-width: 700px) {
+  .palette-overlay { padding: 2.5rem 0.75rem; }
+  .palette-foot .keys span:nth-child(n+3) { display: none; }
+}
+
+/* Hide Quarto's default overlay search (we use the palette instead) */
+.quarto-search-results-popup,
+.aa-DetachedOverlay,
+.aa-Panel {
+  display: none !important;
+}

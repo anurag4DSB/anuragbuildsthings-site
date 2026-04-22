@@ -1,33 +1,60 @@
 ---
-title: "Anurag builds things"
+title: "anurag builds things"
 title-block-banner: false
 include-in-header:
   - text: |
       <style>
-        #title-block-header { display: none; }
+        #title-block-header { display: none !important; }
         .anchorjs-link { display: none !important; }
+        .quarto-listing .list .quarto-post:nth-child(odd),
+        .quarto-listing .list .quarto-post:nth-child(even) {
+          background: transparent !important;
+        }
       </style>
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          var section = document.querySelector('section.level2');
-          var listing = document.querySelector('#listing-listing');
-          if (section && listing) {
-            new ResizeObserver(function() {
-              section.style.width = listing.offsetWidth + 'px';
-            }).observe(listing);
-          }
-        });
-      </script>
 listing:
+  id: log
   contents: posts
   type: default
+  image-align: right
+  image-height: "158px"
   sort: "date desc"
   sort-ui: false
   filter-ui: false
-  # TODO: re-enable categories once there are more posts. Consider moving to navbar or horizontal bar above listing.
   categories: false
   feed: true
-  fields: [title, description, date, categories]
-page-layout: full
+  fields: [image, date, title, description, categories]
+page-layout: custom
 toc: false
 ---
+
+```{=html}
+
+<!-- ── Hero standfirst ────────────────────────────────────── -->
+<h1 class="hero-standfirst">
+  anurag builds <span class="rotator accent"><span class="word active">things</span><span class="word">RAG</span><span class="word">intelligent systems</span><span class="word">systems</span><span class="word">world models</span></span>
+</h1>
+
+<script>
+  (function () {
+    var words = document.querySelectorAll('.hero-standfirst .rotator .word');
+    if (words.length < 2) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var i = 0;
+    setInterval(function () {
+      words[i].classList.remove('active');
+      i = (i + 1) % words.length;
+      words[i].classList.add('active');
+    }, 2800);
+  })();
+</script>
+
+<p class="hero-dek">
+  I build things to understand how they actually work.
+  A question, a system built to answer it, a comparison against real data.
+  Just the code, the curves, and what they actually mean.
+</p>
+
+```
+
+::: {#log}
+:::
