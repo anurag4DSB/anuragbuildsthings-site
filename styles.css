@@ -57,6 +57,10 @@ body,
   color: var(--ink) !important;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--text);
   font-size: 18px;
