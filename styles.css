@@ -1279,7 +1279,7 @@ figcaption {
 .nav-footer {
   background: var(--surface) !important;
   border-top: 0 !important;
-  padding: 0.875rem 2rem !important;
+  padding: 0.875rem 1.5rem !important;
   margin-top: 0rem !important;
   color: var(--ink-3) !important;
 }
