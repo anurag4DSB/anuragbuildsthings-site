@@ -665,7 +665,7 @@ div.sourceCode {
   letter-spacing: -0.018em !important;
   margin: 0 0 0.5rem 0 !important;
   max-width: none;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .quarto-listing .quarto-post .listing-title a {
@@ -1699,7 +1699,7 @@ figcaption {
   margin: 1rem auto 2rem !important;
   max-width: 75rem;
   padding: 0 1.5rem;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .hero-standfirst .line {
