@@ -72,6 +72,28 @@ body {
   font-feature-settings: "ss01", "cv11", "tnum";
 }
 
+/* Match Bootstrap's body.nav-fixed default (64px) to our actual navbar
+   height so quarto-nav.js's JS override (body.style.paddingTop =
+   navbar.clientHeight) produces the same value — no CLS on first paint.
+   74px = single-row navbar; 101px = wrapped-to-two-rows at narrow widths.
+   Also pre-size .quarto-container min-height to what quarto-nav.js will
+   set (calc(100vh - topOffset)), otherwise its JS override reshuffles
+   the grid rows and shifts main content. */
+body.nav-fixed {
+  padding-top: 74px;
+}
+.quarto-container {
+  min-height: calc(100vh - 74px);
+}
+@media (max-width: 450px) {
+  body.nav-fixed {
+    padding-top: 101px;
+  }
+  .quarto-container {
+    min-height: calc(100vh - 101px);
+  }
+}
+
 ::selection {
   background: var(--signal);
   color: var(--signal-ink);
@@ -372,7 +394,7 @@ div.sourceCode {
    viewport narrows. TOC stays visible until the article would drop
    below a comfortable reading width. */
 @media (min-width: 1044px) {
-  body:not(.home) .page-columns {
+  .page-columns:not(.page-layout-custom) {
     display: grid !important;
     grid-template-columns: 200px 48px minmax(0, 1200px) minmax(0, 1fr) !important;
     grid-template-rows: auto !important;
@@ -383,20 +405,20 @@ div.sourceCode {
     justify-content: start !important;
   }
 
-  body:not(.home) #quarto-sidebar {
+  .page-columns:not(.page-layout-custom) #quarto-sidebar {
     grid-column: 1 / 2 !important;
     justify-self: start !important;
     width: 200px !important;
     margin-right: 0 !important;
   }
 
-  body:not(.home) #quarto-document-content {
+  .page-columns:not(.page-layout-custom) #quarto-document-content {
     grid-column: 3 / 4 !important;
     max-width: none !important;
     padding: 0 24px !important;
   }
 
-  body:not(.home) #quarto-margin-sidebar {
+  .page-columns:not(.page-layout-custom) #quarto-margin-sidebar {
     display: none !important;
   }
 }
@@ -404,19 +426,19 @@ div.sourceCode {
 /* Medium viewports (TOC can't fit, but article still has room): hide TOC
    and centre a 1200 article. */
 @media (min-width: 768px) and (max-width: 1043px) {
-  body:not(.home) .page-columns {
+  .page-columns:not(.page-layout-custom) {
     display: block !important;
     max-width: 1200px !important;
     margin: 0 auto !important;
     padding: 0 24px !important;
   }
 
-  body:not(.home) #quarto-sidebar,
-  body:not(.home) #quarto-margin-sidebar {
+  .page-columns:not(.page-layout-custom) #quarto-sidebar,
+  .page-columns:not(.page-layout-custom) #quarto-margin-sidebar {
     display: none !important;
   }
 
-  body:not(.home) #quarto-document-content {
+  .page-columns:not(.page-layout-custom) #quarto-document-content {
     max-width: none !important;
     width: 100% !important;
   }
