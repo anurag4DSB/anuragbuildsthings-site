@@ -191,6 +191,8 @@ body.nav-fixed {
 .navbar-container.container-fluid {
   flex-wrap: wrap !important;
   row-gap: 0.375rem !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 .navbar-container.container-fluid .navbar-brand-container {
   flex-shrink: 0 !important;
@@ -206,9 +208,16 @@ body.nav-fixed {
   align-items: center !important;
   gap: 0.25rem !important;
   flex: 0 0 auto !important;
+  margin-left: auto !important;
 }
 .navbar-container.container-fluid #quarto-search {
   margin-left: 0 !important;
+}
+.navbar-container.container-fluid #quarto-search .aa-Autocomplete {
+  width: auto !important;
+}
+.navbar-container.container-fluid #quarto-search .aa-DetachedSearchButton {
+  padding-right: 0 !important;
 }
 .navbar .navbar-brand,
 .navbar .navbar-title {
@@ -1270,7 +1279,7 @@ figcaption {
 .nav-footer {
   background: var(--surface) !important;
   border-top: 0 !important;
-  padding: 0.875rem 2rem !important;
+  padding: 0.875rem 1.5rem !important;
   margin-top: 0rem !important;
   color: var(--ink-3) !important;
 }
@@ -1608,7 +1617,7 @@ figcaption {
   line-height: 1.05 !important;
   letter-spacing: -0.022em !important;
   color: var(--ink) !important;
-  margin: 4rem auto 2rem !important;
+  margin: 1rem auto 2rem !important;
   max-width: 75rem;
   padding: 0 1.5rem;
   text-wrap: balance;
@@ -1651,8 +1660,16 @@ figcaption {
   line-height: 1.55 !important;
   color: var(--ink-2) !important;
   max-width: 75rem;
-  margin: 0 auto 5rem !important;
+  margin: 0 auto 2.5rem !important;
   padding: 0 1.5rem;
+}
+
+/* Slightly tighten heading→dek gap on small screens; top and bottom
+   margins are already inherited from the base 2rem values. */
+@media (max-width: 768px) {
+  .hero-standfirst {
+    margin-bottom: 1.5rem !important;
+  }
 }
 
 .page-layout-custom .standfirst {
@@ -1825,11 +1842,6 @@ figcaption {
   font-size: 1.1rem !important;
   letter-spacing: 0.02em !important;
   color: var(--ink) !important;
-}
-
-.navbar {
-  border-bottom: 1px solid #2a2e27 !important;
-  padding: 0.875rem 2rem !important;
 }
 
 /* .navbar .navbar-brand::before {
