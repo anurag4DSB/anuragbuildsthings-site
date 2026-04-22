@@ -2193,6 +2193,11 @@ body.home .quarto-listing .quarto-post:first-child {
   color: #0A66C2;
 }
 
+.p-item:hover .p-meta .bi-envelope-fill,
+.p-item.sel .p-meta .bi-envelope-fill {
+  color: var(--signal);
+}
+
 .palette-foot {
   display: flex;
   justify-content: space-between;
