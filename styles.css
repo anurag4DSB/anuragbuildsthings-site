@@ -1018,6 +1018,36 @@ body:not(:has(.standfirst)) .quarto-title-block:not(:has(.post-meta-line))::afte
   content: "";
   display: block;
   height: 46px;
+  order: 4;
+}
+
+/* Put .quarto-categories visually below the description via flex order,
+   instead of JS-moving the DOM node. Without this, post-enhance.js's
+   reorderCategories() shifts the description wrapper up ~42px after
+   first paint. .quarto-title becomes display: contents so its children
+   (h1, categories) are layout-level children of .quarto-title-block and
+   can participate in its flex order. */
+body:not(:has(.standfirst)) .quarto-title-block {
+  display: flex;
+  flex-direction: column;
+}
+body:not(:has(.standfirst)) .quarto-title-block .quarto-title {
+  display: contents;
+}
+body:not(:has(.standfirst)) .quarto-title-block .quarto-title > h1 {
+  order: 1;
+}
+body:not(:has(.standfirst)) .quarto-title-block > div:has(> .description) {
+  order: 2;
+}
+body:not(:has(.standfirst)) .quarto-title-block .quarto-categories {
+  order: 3;
+}
+body:not(:has(.standfirst)) .quarto-title-block .post-meta-line {
+  order: 4;
+}
+body:not(:has(.standfirst)) .quarto-title-block .quarto-title-meta {
+  order: 5;
 }
 
 body:not(:has(.standfirst)) .post-meta-line .dot {

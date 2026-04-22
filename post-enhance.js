@@ -37,19 +37,9 @@
     }
   }
 
-  // ── 1b. Move categories below the description, above the meta-line ───
-  // Quarto emits .quarto-categories inside .quarto-title, right after <h1>.
-  // We want: title → description → chips → date/meta-line. Move the node so
-  // DOM order matches visual.
-  function reorderCategories() {
-    const titleBlock = document.querySelector('.quarto-title-block');
-    if (!titleBlock) return;
-    const cats = titleBlock.querySelector('.quarto-categories');
-    if (!cats) return;
-    const descWrapper = titleBlock.querySelector('.description')?.parentElement;
-    if (!descWrapper) return;
-    descWrapper.insertAdjacentElement('afterend', cats);
-  }
+  // Category reordering is handled in CSS via flex order on
+  // .quarto-title-block (see styles.css) — doing it in JS would shift
+  // the description wrapper after DOMContentLoaded (visible CLS).
 
   // ── 2. Prev/next nav ────────────────────────────────────────────
   // Reads /listings.json for ordering, then /index.html for titles.
@@ -175,13 +165,11 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       buildMetaLine();
-      reorderCategories();
       buildPrevNext();
       wirePostTitleDock();
     });
   } else {
     buildMetaLine();
-    reorderCategories();
     buildPrevNext();
     wirePostTitleDock();
   }
