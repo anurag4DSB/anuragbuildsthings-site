@@ -10,9 +10,9 @@
   'use strict';
 
   var ACTIONS = [
-    { title: 'Open GitHub profile',   href: 'https://github.com/anurag4dsb',              external: true, kbd: 'GH' },
-    { title: 'Open YouTube channel',  href: 'https://www.youtube.com/@AnuragBuildsThings', external: true, kbd: 'YT' },
-    { title: 'Open LinkedIn',         href: 'https://www.linkedin.com/in/mittalanu/',     external: true, kbd: 'LI' }
+    { title: 'Open GitHub profile',   href: 'https://github.com/anurag4dsb',              external: true, icon: 'github' },
+    { title: 'Open YouTube channel',  href: 'https://www.youtube.com/@AnuragBuildsThings', external: true, icon: 'youtube' },
+    { title: 'Open LinkedIn',         href: 'https://www.linkedin.com/in/mittalanu/',     external: true, icon: 'linkedin' }
   ];
 
   var overlay, input, listEl, scopeBtns;
@@ -272,7 +272,7 @@
     } else {
       ico = '⌘';
       title = highlight(it.title || '', q);
-      meta = escapeHtml(it.kbd || '');
+      meta = it.icon ? '<i class="bi bi-' + escapeHtml(it.icon) + '" aria-hidden="true"></i>' : escapeHtml(it.kbd || '');
     }
     return '<div class="p-item" role="option">' +
       '<div class="p-ico">' + ico + '</div>' +
