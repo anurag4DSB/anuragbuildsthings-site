@@ -66,7 +66,7 @@ html {
 
 body {
   font-family: var(--text);
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "ss01", "cv11", "tnum";
@@ -80,17 +80,17 @@ body {
    set (calc(100vh - topOffset)), otherwise its JS override reshuffles
    the grid rows and shifts main content. */
 body.nav-fixed {
-  padding-top: 74px;
+  padding-top: 4.625rem;
 }
 .quarto-container {
-  min-height: calc(100vh - 74px);
+  min-height: calc(100vh - 4.625rem);
 }
 @media (max-width: 450px) {
   body.nav-fixed {
-    padding-top: 101px;
+    padding-top: 6.3125rem;
   }
   .quarto-container {
-    min-height: calc(100vh - 101px);
+    min-height: calc(100vh - 6.3125rem);
   }
 }
 
@@ -103,9 +103,9 @@ body.nav-fixed {
 .navbar {
   background: var(--paper) !important;
   border-bottom: 1px solid var(--rule) !important;
-  padding: 14px 24px !important;
+  padding: 0.875rem 1.5rem !important;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -114,7 +114,7 @@ body.nav-fixed {
 .navbar .navbar-title {
   font-family: var(--display) !important;
   font-weight: 500 !important;
-  font-size: 22px !important;
+  font-size: 1.375rem !important;
   letter-spacing: -0.005em !important;
   text-transform: none !important;
   color: var(--ink) !important;
@@ -132,14 +132,14 @@ body.nav-fixed {
   transform: translateY(-50%);
   font-family: var(--display) !important;
   font-weight: 400 !important;
-  font-size: 18px !important;
+  font-size: 1.125rem !important;
   color: var(--ink) !important;
   letter-spacing: -0.01em !important;
   text-transform: none !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: calc(100vw - var(--dock-left, 24px) - 200px);
+  max-width: calc(100vw - var(--dock-left, 24px) - 12.5rem);
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease;
@@ -164,7 +164,7 @@ body.nav-fixed {
 .navbar .navbar-brand {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 10px !important;
+  gap: 0.625rem !important;
 }
 
 
@@ -190,7 +190,7 @@ body.nav-fixed {
    to the next row together instead of search dropping alone. */
 .navbar-container.container-fluid {
   flex-wrap: wrap !important;
-  row-gap: 6px !important;
+  row-gap: 0.375rem !important;
 }
 .navbar-container.container-fluid .navbar-brand-container {
   flex-shrink: 0 !important;
@@ -204,7 +204,7 @@ body.nav-fixed {
 .navbar-container.container-fluid .navbar-icon-group {
   display: flex !important;
   align-items: center !important;
-  gap: 4px !important;
+  gap: 0.25rem !important;
   flex: 0 0 auto !important;
 }
 .navbar-container.container-fluid #quarto-search {
@@ -218,21 +218,21 @@ body.nav-fixed {
 
 .navbar .quarto-navigation-tool .bi {
   display: inline-block;
-  width: 28px;
+  width: 1.75rem;
   text-align: center;
   line-height: 1;
-  font-size: 22px !important;
+  font-size: 1.375rem !important;
 }
 
 @media (max-width: 768px) {
   .navbar .quarto-navigation-tool .bi {
-    width: 22px;
-    font-size: 18px !important;
+    width: 1.375rem;
+    font-size: 1.125rem !important;
   }
   .navbar #quarto-search svg,
   .navbar .aa-DetachedSearchButton svg {
-    width: 20px !important;
-    height: 20px !important;
+    width: 1.25rem !important;
+    height: 1.25rem !important;
   }
 }
 
@@ -268,7 +268,7 @@ body.nav-fixed {
 .quarto-title-block .description,
 .quarto-title-block p.subtitle {
   font-family: var(--text) !important;
-  font-size: 20px !important;
+  font-size: 1.25rem !important;
   line-height: 1.5 !important;
   color: var(--ink-2) !important;
   font-style: normal !important;
@@ -281,7 +281,7 @@ body.nav-fixed {
   font-family: var(--display) !important;
   font-weight: 300 !important;
   font-style: italic;
-  font-size: clamp(48px, 7vw, 88px) !important;
+  font-size: clamp(3rem, 7vw, 5.5rem) !important;
   line-height: 0.98 !important;
   letter-spacing: -0.028em !important;
   color: var(--ink) !important;
@@ -294,7 +294,7 @@ body.nav-fixed {
 .quarto-title-meta-heading,
 .quarto-title-meta-contents p {
   font-family: var(--mono) !important;
-  font-size: 10px !important;
+  font-size: 0.625rem !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
   color: var(--ink-3) !important;
@@ -304,7 +304,7 @@ body.nav-fixed {
 main.content,
 #quarto-document-content {
   font-family: var(--text);
-  font-size: 19px;
+  font-size: 1.1875rem;
   line-height: 1.65;
   color: var(--ink);
 }
@@ -334,13 +334,13 @@ main.content h3 {
 
 main.content h2 {
   font-style: italic;
-  font-size: 32px;
+  font-size: 2rem;
   margin: 2.5rem 0 1rem;
   padding-top: 1.5rem;
 }
 
 main.content h3 {
-  font-size: 22px;
+  font-size: 1.375rem;
   margin: 2rem 0 0.75rem;
 }
 
@@ -373,7 +373,7 @@ main.content :not(pre)>code {
   color: var(--signal);
   background: var(--paper-up);
   border: 1px solid var(--rule);
-  padding: 2px 6px;
+  padding: 2px 0.375rem;
   border-radius: 0;
 }
 
@@ -382,7 +382,7 @@ div.sourceCode {
   background: var(--paper-up) !important;
   border: 1px solid var(--rule) !important;
   border-radius: 0 !important;
-  padding: 16px !important;
+  padding: 1rem !important;
 }
 
 /* ── Post page: article matches home's 1200 px frame, TOC floats left ──
@@ -399,7 +399,7 @@ div.sourceCode {
     grid-template-columns: 200px 48px minmax(0, 1200px) minmax(0, 1fr) !important;
     grid-template-rows: auto !important;
     max-width: none !important;
-    padding: 0 48px !important;
+    padding: 0 3rem !important;
     margin: 0 !important;
     column-gap: 0 !important;
     justify-content: start !important;
@@ -408,14 +408,14 @@ div.sourceCode {
   .page-columns:not(.page-layout-custom) #quarto-sidebar {
     grid-column: 1 / 2 !important;
     justify-self: start !important;
-    width: 200px !important;
+    width: 12.5rem !important;
     margin-right: 0 !important;
   }
 
   .page-columns:not(.page-layout-custom) #quarto-document-content {
     grid-column: 3 / 4 !important;
     max-width: none !important;
-    padding: 0 24px !important;
+    padding: 0 1.5rem !important;
   }
 
   .page-columns:not(.page-layout-custom) #quarto-margin-sidebar {
@@ -428,9 +428,9 @@ div.sourceCode {
 @media (min-width: 768px) and (max-width: 1043px) {
   .page-columns:not(.page-layout-custom) {
     display: block !important;
-    max-width: 1200px !important;
+    max-width: 75rem !important;
     margin: 0 auto !important;
-    padding: 0 24px !important;
+    padding: 0 1.5rem !important;
   }
 
   .page-columns:not(.page-layout-custom) #quarto-sidebar,
@@ -449,14 +449,14 @@ div.sourceCode {
 #quarto-margin-sidebar,
 .sidebar nav {
   font-family: var(--mono) !important;
-  font-size: 11px !important;
+  font-size: 0.6875rem !important;
   letter-spacing: 0.04em;
 }
 
 #TOC .toc-title,
 #quarto-margin-sidebar .toc-title {
   font-family: var(--mono) !important;
-  font-size: 10px !important;
+  font-size: 0.625rem !important;
   letter-spacing: 0.14em !important;
   text-transform: uppercase !important;
   color: var(--ink-3) !important;
@@ -476,11 +476,11 @@ div.sourceCode {
 .sidebar nav a {
   color: var(--ink-2) !important;
   text-decoration: none !important;
-  padding: 6px 0 !important;
+  padding: 0.375rem 0 !important;
   display: block;
   border-top: 1px solid var(--rule);
   border-left: 2px solid transparent;
-  padding-left: 10px !important;
+  padding-left: 0.625rem !important;
   transition: color 120ms ease;
 }
 
@@ -533,7 +533,7 @@ div.sourceCode {
   grid-column: 1;
   grid-row: 2;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.04em;
   color: var(--ink-3);
   align-self: start;
@@ -543,7 +543,7 @@ div.sourceCode {
 
 .quarto-listing .quarto-post .listing-date {
   font-family: var(--mono) !important;
-  font-size: 11px !important;
+  font-size: 0.6875rem !important;
   letter-spacing: 0.04em;
   color: var(--ink-2) !important;
   text-transform: uppercase;
@@ -572,10 +572,10 @@ div.sourceCode {
 .quarto-listing .quarto-post .listing-title {
   font-family: var(--display) !important;
   font-weight: 400 !important;
-  font-size: 28px !important;
+  font-size: 1.75rem !important;
   line-height: 1.15 !important;
   letter-spacing: -0.018em !important;
-  margin: 0 0 8px 0 !important;
+  margin: 0 0 0.5rem 0 !important;
   max-width: none;
   text-wrap: balance;
 }
@@ -589,7 +589,7 @@ div.sourceCode {
 
 .quarto-listing .quarto-post .listing-description {
   font-family: var(--text);
-  font-size: 17px !important;
+  font-size: 1.0625rem !important;
   line-height: 1.55;
   color: var(--ink-2);
   max-width: 60ch;
@@ -640,7 +640,7 @@ div.sourceCode {
 /* ── Category chips ─────────────────────────────────────────── */
 .listing-categories,
 .quarto-categories {
-  gap: 8px !important;
+  gap: 0.5rem !important;
   flex-wrap: wrap;
   padding-top: 0.75rem !important;
 }
@@ -648,13 +648,13 @@ div.sourceCode {
 .listing-categories .listing-category,
 .quarto-categories .quarto-category {
   font-family: var(--mono) !important;
-  font-size: 9.5px !important;
+  font-size: 0.5938rem !important;
   font-weight: 400 !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
   border: 1px solid var(--rule-hi) !important;
   color: var(--ink-2) !important;
-  padding: 4px 12px !important;
+  padding: 0.25rem 0.75rem !important;
   border-radius: 0 !important;
   background: transparent !important;
   opacity: 1 !important;
@@ -674,13 +674,13 @@ div.sourceCode {
   border: 0 !important;
   border-left: 2px solid var(--rule-hi) !important;
   background: var(--paper-up) !important;
-  padding: 12px 16px !important;
+  padding: 0.75rem 1rem !important;
   margin: 1.5rem 0 !important;
 }
 
 .callout.callout-style-default .callout-title {
   font-family: var(--mono) !important;
-  font-size: 10px !important;
+  font-size: 0.625rem !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
   font-weight: 400 !important;
@@ -728,8 +728,8 @@ blockquote {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 0.625rem;
+  height: 0.625rem;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -754,7 +754,7 @@ blockquote {
   .quarto-post.image-right,
   .quarto-listing .list .quarto-post {
     grid-template-columns: 1fr !important;
-    gap: 8px !important;
+    gap: 0.5rem !important;
   }
 
   .quarto-listing .quarto-post .metadata,
@@ -784,12 +784,12 @@ blockquote {
   .quarto-listing .list .quarto-post > .thumbnail img {
     width: 100% !important;
     height: auto !important;
-    max-height: 220px !important;
+    max-height: 13.75rem !important;
     object-fit: contain !important;
   }
 
   .quarto-title .title {
-    font-size: 44px !important;
+    font-size: 2.75rem !important;
   }
 
   .status-strip {
@@ -808,7 +808,7 @@ blockquote {
   border: 1px solid var(--rule) !important;
   color: var(--ink-2) !important;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border-radius: 0 !important;
@@ -824,7 +824,7 @@ blockquote {
 /* TOC breathing room */
 #TOC,
 .sidebar nav[role="doc-toc"] {
-  padding-left: 12px;
+  padding-left: 0.75rem;
 }
 
 /* Hide Quarto's auto title-block on the homepage (we render our own standfirst) */
@@ -839,11 +839,11 @@ body:has(.standfirst) #title-block-header {
   background: transparent !important;
   color: var(--ink-3) !important;
   font-family: var(--mono) !important;
-  font-size: 10px !important;
+  font-size: 0.625rem !important;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 32px 0 !important;
-  margin-top: 64px;
+  padding: 2rem 0 !important;
+  margin-top: 4rem;
 }
 
 .nav-footer a,
@@ -862,29 +862,29 @@ body:has(.standfirst) #title-block-header {
   font-family: var(--display);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(28px, 3.5vw, 44px);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
   line-height: 1.15;
   letter-spacing: -0.018em;
   color: var(--ink);
   max-width: 28ch;
   text-wrap: balance;
-  margin: 64px 0 48px;
+  margin: 4rem 0 3rem;
 }
 
 /* Status strip */
 .status-strip {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1fr;
-  gap: 24px;
-  padding: 16px 0;
+  gap: 1.5rem;
+  padding: 1rem 0;
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
-  margin-bottom: 56px;
+  margin-bottom: 3.5rem;
 }
 
 .status-cell {
   display: grid;
-  gap: 4px;
+  gap: 0.25rem;
 }
 
 .status-cell.right {
@@ -894,18 +894,18 @@ body:has(.standfirst) #title-block-header {
 
 .status-cell .label {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-3);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .status-cell .value {
   font-family: var(--ui);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--ink);
   letter-spacing: -0.005em;
@@ -913,8 +913,8 @@ body:has(.standfirst) #title-block-header {
 
 .pulse {
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 0.375rem;
+  height: 0.375rem;
   border-radius: 50%;
   background: var(--signal);
   box-shadow: 0 0 0 0 rgba(200, 226, 92, 0.35);
@@ -940,15 +940,15 @@ body:has(.standfirst) #title-block-header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 24px;
+  gap: 1.5rem;
   flex-wrap: wrap;
-  padding-bottom: 16px;
+  padding-bottom: 1rem;
   margin-bottom: 0;
 }
 
 .section-head>.label {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-3);
@@ -956,19 +956,19 @@ body:has(.standfirst) #title-block-header {
 
 .filter-chord {
   display: flex;
-  gap: 6px;
+  gap: 0.375rem;
   flex-wrap: wrap;
 }
 
 .filter-chord .chip {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-2);
   border: 1px solid var(--rule-hi);
   background: transparent;
-  padding: 5px 12px;
+  padding: 0.3125rem 0.75rem;
   cursor: pointer;
   user-select: none;
   transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
@@ -1001,12 +1001,12 @@ body:not(:has(.standfirst)) .quarto-title-meta>div {
 body:not(:has(.standfirst)) .post-meta-line {
   display: block !important;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-2);
-  margin-top: 8px;
-  margin-bottom: 24px;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Reserve vertical space for .post-meta-line that post-enhance.js inserts
@@ -1017,7 +1017,7 @@ body:not(:has(.standfirst)) .post-meta-line {
 body:not(:has(.standfirst)) .quarto-title-block:not(:has(.post-meta-line))::after {
   content: "";
   display: block;
-  height: 46px;
+  height: 2.875rem;
   order: 4;
 }
 
@@ -1051,7 +1051,7 @@ body:not(:has(.standfirst)) .quarto-title-block .quarto-title-meta {
 }
 
 body:not(:has(.standfirst)) .post-meta-line .dot {
-  margin: 0 10px;
+  margin: 0 0.625rem;
   color: var(--ink-2);
   opacity: 0.5;
 }
@@ -1063,19 +1063,19 @@ body:not(:has(.standfirst)) .post-meta-line .reading-time {
 /* Post-page categories: chips like the home listing */
 body:not(:has(.standfirst)) .quarto-title-block .quarto-categories {
   display: flex !important;
-  gap: 8px !important;
+  gap: 0.5rem !important;
   flex-wrap: wrap;
-  margin: 8px 0 0 !important;
+  margin: 0.5rem 0 0 !important;
   padding: 0 !important;
 }
 
 body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-category {
   border: 1px solid var(--rule-hi) !important;
   background: transparent !important;
-  padding: 4px 12px !important;
+  padding: 0.25rem 0.75rem !important;
   margin: 0 !important;
   font-family: var(--mono) !important;
-  font-size: 9.5px !important;
+  font-size: 0.5938rem !important;
   font-weight: 400 !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
@@ -1094,7 +1094,7 @@ body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-categ
 
 /* Tighter title on post pages — body, not display, scale */
 body:not(:has(.standfirst)) .quarto-title .title {
-  font-size: clamp(40px, 5.5vw, 64px) !important;
+  font-size: clamp(2.5rem, 5.5vw, 4rem) !important;
   font-style: normal !important;
   font-weight: 300 !important;
   max-width: 22ch !important;
@@ -1106,7 +1106,7 @@ body:not(:has(.standfirst)) .quarto-title-block .description {
   font-style: italic !important;
   font-family: var(--display) !important;
   font-weight: 300 !important;
-  font-size: 22px !important;
+  font-size: 1.375rem !important;
   line-height: 1.35 !important;
   color: var(--ink-2) !important;
   margin: 3.25rem 0 0 !important;
@@ -1121,7 +1121,7 @@ body:not(:has(.standfirst)) main.content li::marker {
 }
 
 body:not(:has(.standfirst)) main.content h2 {
-  font-size: 28px !important;
+  font-size: 1.75rem !important;
   margin: 0 0 1.25rem !important;
   padding-top: 1.75rem !important;
 }
@@ -1134,11 +1134,11 @@ div.sourceCode {
 
 div.sourceCode pre {
   margin: 0 !important;
-  padding: 18px 20px !important;
+  padding: 1.125rem 1.25rem !important;
 }
 
 div.sourceCode code {
-  font-size: 13px !important;
+  font-size: 0.8125rem !important;
   line-height: 1.55 !important;
 }
 
@@ -1148,9 +1148,9 @@ div.sourceCode code {
   color: var(--ink-3) !important;
   border: 1px solid transparent !important;
   border-radius: 0 !important;
-  padding: 4px 8px !important;
+  padding: 0.25rem 0.5rem !important;
   font-family: var(--mono) !important;
-  font-size: 11px !important;
+  font-size: 0.6875rem !important;
   opacity: 0;
   transition: opacity 120ms ease, color 120ms ease, border-color 120ms ease;
 }
@@ -1177,12 +1177,12 @@ figure.figure {
 figure .figure-caption,
 figcaption {
   font-family: var(--mono) !important;
-  font-size: 11px !important;
+  font-size: 0.6875rem !important;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-3) !important;
-  margin-top: 8px !important;
-  padding-top: 8px;
+  margin-top: 0.5rem !important;
+  padding-top: 0.5rem;
   border-top: 1px solid var(--rule);
   max-width: 64ch;
 }
@@ -1190,11 +1190,11 @@ figcaption {
 /* Margin notes — pull into right sidebar gutter */
 .column-margin {
   font-family: var(--ui) !important;
-  font-size: 13px !important;
+  font-size: 0.8125rem !important;
   line-height: 1.45 !important;
   color: var(--ink-2) !important;
   border-left: 1px solid var(--rule);
-  padding-left: 12px;
+  padding-left: 0.75rem;
 }
 
 /* ── Post footer — prev/next + filed under ──────────────── */
@@ -1203,14 +1203,14 @@ figcaption {
   padding-top: 1.75rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 1.5rem;
 }
 
 .post-footer .post-nav {
   display: block;
   text-decoration: none !important;
   border: 0 !important;
-  padding: 16px 0;
+  padding: 1rem 0;
   color: var(--ink-2) !important;
   transition: color 120ms ease;
 }
@@ -1225,19 +1225,19 @@ figcaption {
 
 .post-footer .post-nav .post-nav-label {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-3);
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .post-footer .post-nav .post-nav-title {
   font-family: var(--display);
   font-style: italic;
   font-weight: 300;
-  font-size: 22px;
+  font-size: 1.375rem;
   line-height: 1.2;
   color: var(--ink);
   text-wrap: balance;
@@ -1270,7 +1270,7 @@ figcaption {
 .nav-footer {
   background: var(--surface) !important;
   border-top: 0 !important;
-  padding: 14px 32px !important;
+  padding: 0.875rem 2rem !important;
   margin-top: 0rem !important;
   color: var(--ink-3) !important;
 }
@@ -1285,7 +1285,7 @@ figcaption {
 .nav-footer .nav-footer-center,
 .nav-footer .nav-footer-right {
   font-family: var(--mono) !important;
-  font-size: 11px !important;
+  font-size: 0.6875rem !important;
   letter-spacing: 0 !important;
   line-height: 1.65 !important;
   text-transform: none !important;
@@ -1299,7 +1299,7 @@ figcaption {
 }
 
 .nav-footer .back-to-top-arrow {
-  font-size: 12px;
+  font-size: 0.75rem;
   display: inline-block;
   vertical-align: -1px;
   margin-right: 2px;
@@ -1307,11 +1307,11 @@ figcaption {
 
 .nav-footer .footer-col-label {
   display: block;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-4);
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .nav-footer a {
@@ -1328,7 +1328,7 @@ figcaption {
 }
 
 .nav-footer .footer-col p {
-  margin: 0 0 4px !important;
+  margin: 0 0 0.25rem !important;
 }
 
 /* ── 404 page ─────────────────────────────────────────────── */
@@ -1337,14 +1337,14 @@ figcaption {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 640px;
+  max-width: 40rem;
   margin: 0 auto;
   padding: 4rem 1.5rem;
 }
 
 .page-404 .glyph {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-4);
@@ -1353,11 +1353,11 @@ figcaption {
 
 .page-404 .glyph .pulse {
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 0.375rem;
+  height: 0.375rem;
   background: var(--signal);
   border-radius: 50%;
-  margin-left: 8px;
+  margin-left: 0.5rem;
   vertical-align: middle;
   animation: pulse 1.6s ease-in-out infinite;
 }
@@ -1366,7 +1366,7 @@ figcaption {
   font-family: var(--display) !important;
   font-style: italic !important;
   font-weight: 300 !important;
-  font-size: clamp(48px, 7vw, 88px) !important;
+  font-size: clamp(3rem, 7vw, 5.5rem) !important;
   line-height: 1 !important;
   letter-spacing: -0.024em !important;
   color: var(--ink) !important;
@@ -1377,7 +1377,7 @@ figcaption {
 .page-404 .lede {
   font-family: var(--display);
   font-style: italic;
-  font-size: 22px;
+  font-size: 1.375rem;
   line-height: 1.4;
   color: var(--ink-2);
   margin: 0 0 2.5rem;
@@ -1389,7 +1389,7 @@ figcaption {
   gap: 1.5rem;
   flex-wrap: wrap;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: 0.06em;
 }
 
@@ -1540,10 +1540,10 @@ figcaption {
   border: 1px solid var(--ink-4) !important;
   color: var(--ink-2) !important;
   font-family: var(--mono) !important;
-  font-size: 11px !important;
+  font-size: 0.6875rem !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
-  padding: 8px 14px !important;
+  padding: 0.5rem 0.875rem !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   z-index: 100 !important;
@@ -1565,16 +1565,16 @@ figcaption {
   border-bottom: 1px solid var(--rule);
   background: var(--paper);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
 
 .util-strip-inner {
-  max-width: 1400px;
+  max-width: 87.5rem;
   margin: 0 auto;
-  padding: 8px 24px;
+  padding: 0.5rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1582,8 +1582,8 @@ figcaption {
 
 .util-strip .util-mark {
   color: var(--signal);
-  margin-right: 8px;
-  font-size: 8px;
+  margin-right: 0.5rem;
+  font-size: 0.5rem;
 }
 
 .util-strip .util-path {
@@ -1591,7 +1591,7 @@ figcaption {
 }
 
 .util-strip .util-sep {
-  margin: 0 8px;
+  margin: 0 0.5rem;
   opacity: 0.5;
 }
 
@@ -1604,13 +1604,13 @@ figcaption {
   font-family: var(--ui) !important;
   font-weight: 300 !important;
   font-style: normal !important;
-  font-size: clamp(48px, 7vw, 72px) !important;
+  font-size: clamp(3rem, 7vw, 4.5rem) !important;
   line-height: 1.05 !important;
   letter-spacing: -0.022em !important;
   color: var(--ink) !important;
-  margin: 64px auto 32px !important;
-  max-width: 1200px;
-  padding: 0 24px;
+  margin: 4rem auto 2rem !important;
+  max-width: 75rem;
+  padding: 0 1.5rem;
   text-wrap: balance;
 }
 
@@ -1647,12 +1647,12 @@ figcaption {
 
 .hero-dek {
   font-family: var(--text) !important;
-  font-size: 18px !important;
+  font-size: 1.125rem !important;
   line-height: 1.55 !important;
   color: var(--ink-2) !important;
-  max-width: 1200px;
-  margin: 0 auto 80px !important;
-  padding: 0 24px;
+  max-width: 75rem;
+  margin: 0 auto 5rem !important;
+  padding: 0 1.5rem;
 }
 
 .page-layout-custom .standfirst {
@@ -1663,34 +1663,34 @@ figcaption {
 .page-layout-custom .section-head,
 .page-layout-custom #log,
 .page-layout-custom .quarto-listing {
-  max-width: 1200px;
+  max-width: 75rem;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 .page-layout-custom .section-head {
   border-top: 1px solid var(--rule);
-  padding-top: 16px;
-  margin-top: 24px;
+  padding-top: 1rem;
+  margin-top: 1.5rem;
   margin-bottom: 0;
 }
 
 /* ── Fix listing categories: quiet inline tags, not chips ──── */
 .page-layout-custom .quarto-listing .quarto-post .listing-categories {
-  column-gap: 14px !important;
-  row-gap: 4px !important;
-  padding-top: 8px !important;
+  column-gap: 0.875rem !important;
+  row-gap: 0.25rem !important;
+  padding-top: 0.5rem !important;
   padding-bottom: 0 !important;
 }
 
 .page-layout-custom .quarto-listing .quarto-post .listing-category {
   border: 1px solid var(--rule-hi) !important;
   background: transparent !important;
-  padding: 4px 12px !important;
+  padding: 0.25rem 0.75rem !important;
   font-family: var(--mono) !important;
-  font-size: 9.5px !important;
+  font-size: 0.5938rem !important;
   font-weight: 400 !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
@@ -1706,8 +1706,8 @@ figcaption {
 
 @media (max-width: 700px) {
   .util-strip-inner {
-    font-size: 9px;
-    padding: 6px 16px;
+    font-size: 0.5625rem;
+    padding: 0.375rem 1rem;
   }
 }
 
@@ -1715,7 +1715,7 @@ figcaption {
 
 /* Custom layout gives us a blank canvas — give it max-width and breathing room */
 .page-layout-custom {
-  max-width: 1440px;
+  max-width: 90rem;
   margin: 0 auto;
   padding: 0 2.5rem;
 }
@@ -1735,7 +1735,7 @@ figcaption {
 /* ── Post listing dividers ──────── */
 .quarto-listing .list .quarto-post {
   border-top: 1px solid #2a2e27 !important;
-  padding: 28px 0 !important;
+  padding: 1.75rem 0 !important;
   margin-bottom: 0 !important;
 }
 
@@ -1751,26 +1751,26 @@ figcaption {
   column-gap: 0 !important;
   row-gap: 0.5rem !important;
   align-items: start !important;
-  padding: 32px 0 !important;
+  padding: 2rem 0 !important;
 }
 
 .quarto-listing .list .quarto-post>.body {
   grid-column: 1 !important;
   grid-row: 1 !important;
-  padding: 0 32px 0 4px !important;
+  padding: 0 2rem 0 0.25rem !important;
 }
 
 .quarto-listing .list .quarto-post>.metadata {
   grid-column: 1 !important;
   grid-row: 2 !important;
-  padding: 0 32px 0 4px !important;
+  padding: 0 2rem 0 0.25rem !important;
   align-self: start !important;
 }
 
 .quarto-listing .list .quarto-post>.thumbnail {
   grid-column: 2 !important;
   grid-row: 1 / span 2 !important;
-  padding: 0 4px 0 28px !important;
+  padding: 0 0.25rem 0 1.75rem !important;
   display: flex !important;
   align-items: stretch !important;
   justify-content: flex-end !important;
@@ -1796,7 +1796,7 @@ figcaption {
 @media (max-width: 600px) {
   .quarto-listing .list .quarto-post {
     grid-template-columns: 1fr !important;
-    gap: 8px !important;
+    gap: 0.5rem !important;
   }
 
   .quarto-listing .list .quarto-post > .body,
@@ -1815,7 +1815,7 @@ figcaption {
   .quarto-listing .list .quarto-post > .thumbnail > a,
   .quarto-listing .list .quarto-post > .thumbnail img {
     height: auto !important;
-    max-height: 220px !important;
+    max-height: 13.75rem !important;
   }
 }
 
@@ -1829,18 +1829,18 @@ figcaption {
 
 .navbar {
   border-bottom: 1px solid #2a2e27 !important;
-  padding: 14px 32px !important;
+  padding: 0.875rem 2rem !important;
 }
 
 /* .navbar .navbar-brand::before {
   content: "[a]";
   font-family: var(--mono);
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 500;
   line-height: 1;
   color: var(--signal);
   border: 1px solid var(--rule-hi);
-  padding: 4px 8px;
+  padding: 0.25rem 0.5rem;
   letter-spacing: 0;
 } */
 
@@ -1851,7 +1851,7 @@ figcaption {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--muted);
-  margin-left: 10px;
+  margin-left: 0.625rem;
 } */
 
 /* ── Command palette ────────────────────────────────────────── */
@@ -1865,7 +1865,7 @@ figcaption {
   display: none;
   align-items: flex-start;
   justify-content: center;
-  padding: 80px 20px 40px;
+  padding: 5rem 1.25rem 2.5rem;
 }
 
 .palette-overlay[data-open="true"] {
@@ -1874,7 +1874,7 @@ figcaption {
 
 .palette-overlay .palette {
   position: relative;
-  width: min(720px, 100%);
+  width: min(45rem, 100%);
   background: var(--paper-up);
   border: 1px solid var(--rule-hi);
   box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.7);
@@ -1889,8 +1889,8 @@ figcaption {
 .palette-head {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--rule);
 }
 
@@ -1903,7 +1903,7 @@ figcaption {
   all: unset;
   flex: 1;
   font-family: var(--mono);
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--ink);
   caret-color: var(--signal);
   min-width: 0;
@@ -1917,13 +1917,13 @@ figcaption {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px;
-  height: 16px;
+  min-width: 1.125rem;
+  height: 1rem;
   background: var(--paper-up-2);
   border: 1px solid var(--rule-hi);
-  padding: 0 5px;
+  padding: 0 0.3125rem;
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: 0.5938rem;
   letter-spacing: 0.1em;
   color: var(--ink-2);
   border-radius: 2px;
@@ -1935,7 +1935,7 @@ figcaption {
   display: flex;
   gap: 0;
   border-bottom: 1px solid var(--rule);
-  padding: 0 20px;
+  padding: 0 1.25rem;
   background: #0d0e0c;
   overflow-x: auto;
   scrollbar-width: none;
@@ -1946,11 +1946,11 @@ figcaption {
 .palette-scopes button {
   all: unset;
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: 0.5938rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-2);
-  padding: 10px 14px;
+  padding: 0.625rem 0.875rem;
   cursor: pointer;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
@@ -1964,27 +1964,27 @@ figcaption {
 
 .palette-scopes .count {
   color: var(--ink-2);
-  margin-left: 6px;
-  font-size: 9.5px;
+  margin-left: 0.375rem;
+  font-size: 0.5938rem;
 }
 
 .palette-list {
-  max-height: calc(100vh - 260px);
+  max-height: calc(100vh - 16.25rem);
   overflow: auto;
 }
 
 .palette-list .p-empty {
-  padding: 32px 20px;
+  padding: 2rem 1.25rem;
   text-align: center;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
 
 .p-group {
-  padding: 10px 0;
+  padding: 0.625rem 0;
   border-top: 1px solid var(--rule);
 }
 
@@ -1992,19 +1992,19 @@ figcaption {
 
 .p-group-lbl {
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: 0.5938rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-2);
-  padding: 4px 20px 8px;
+  padding: 0.25rem 1.25rem 0.5rem;
 }
 
 .p-item {
   display: grid;
   grid-template-columns: 18px 1fr auto;
-  gap: 14px;
+  gap: 0.875rem;
   align-items: center;
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   cursor: pointer;
   color: inherit;
   text-decoration: none;
@@ -2022,13 +2022,13 @@ figcaption {
 
 .p-ico {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--ink-2);
 }
 
 .p-title {
   font-family: var(--text);
-  font-size: 16px;
+  font-size: 1rem;
   color: var(--ink);
   line-height: 1.35;
 }
@@ -2043,14 +2043,14 @@ figcaption {
 
 .p-meta {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 0.6563rem;
   color: var(--ink-2);
   letter-spacing: 0.04em;
   white-space: nowrap;
 }
 
 .p-meta .bi {
-  font-size: 16px;
+  font-size: 1rem;
   vertical-align: middle;
   transition: color 120ms ease;
 }
@@ -2079,38 +2079,38 @@ figcaption {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   border-top: 1px solid var(--rule);
   background: #0d0e0c;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--ink-2);
   letter-spacing: 0.06em;
 }
 
 .palette-foot .keys span {
-  margin-right: 14px;
+  margin-right: 0.875rem;
 }
 
 .palette-foot .keys kbd {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px;
-  height: 16px;
+  min-width: 1.125rem;
+  height: 1rem;
   background: var(--paper-up-2);
   border: 1px solid var(--rule-hi);
-  padding: 0 5px;
+  padding: 0 0.3125rem;
   color: var(--ink-2);
-  margin-right: 4px;
+  margin-right: 0.25rem;
   border-radius: 2px;
-  font-size: 9.5px;
+  font-size: 0.5938rem;
   font-family: inherit;
   line-height: 1;
 }
 
 @media (max-width: 700px) {
-  .palette-overlay { padding: 40px 12px; }
+  .palette-overlay { padding: 2.5rem 0.75rem; }
   .palette-foot .keys span:nth-child(n+3) { display: none; }
 }
 
