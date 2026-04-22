@@ -1009,6 +1009,17 @@ body:not(:has(.standfirst)) .post-meta-line {
   margin-bottom: 24px;
 }
 
+/* Reserve vertical space for .post-meta-line that post-enhance.js inserts
+   after DOMContentLoaded, so article content doesn't shift down 46px when
+   the element arrives. The ::after pseudo pre-allocates the space; once
+   :has() sees the real .post-meta-line, the pseudo collapses and the real
+   element fills the same space — net height unchanged, no CLS. */
+body:not(:has(.standfirst)) .quarto-title-block:not(:has(.post-meta-line))::after {
+  content: "";
+  display: block;
+  height: 46px;
+}
+
 body:not(:has(.standfirst)) .post-meta-line .dot {
   margin: 0 10px;
   color: var(--ink-2);
