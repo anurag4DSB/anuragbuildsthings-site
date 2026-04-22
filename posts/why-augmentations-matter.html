@@ -45,9 +45,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5c28299c5761db6c95be3bcbeb1b4776.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-dark-1181b01322686ec1070f9b87ad2a221a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-5c28299c5761db6c95be3bcbeb1b4776.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-5433d79d9e222153a746d025c253758b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dark-7e3272d659e64dc22473652edd96d121.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-5433d79d9e222153a746d025c253758b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -413,13 +413,51 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
     // as a group when the navbar row can't fit them beside the brand.
     var tools = document.querySelector('.quarto-navbar-tools');
     var search = document.querySelector('#quarto-search');
+    var group = null;
     if (tools && search && tools.parentElement === search.parentElement &&
         !tools.closest('.navbar-icon-group')) {
-      var group = document.createElement('div');
+      group = document.createElement('div');
       group.className = 'navbar-icon-group';
       tools.parentElement.insertBefore(group, tools);
       group.appendChild(tools);
       group.appendChild(search);
+    } else {
+      group = document.querySelector('.navbar-icon-group');
+    }
+
+    // Inject a hamburger button that shows the icon group on narrow screens.
+    // CSS hides the group + shows the hamburger below the 576px breakpoint;
+    // clicking toggles .is-open on the group, which CSS reveals as a small
+    // dropdown panel anchored to the navbar right edge.
+    if (group && !document.querySelector('.navbar-hamburger')) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'navbar-hamburger';
+      btn.setAttribute('aria-label', 'Menu');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML = '<i class="bi bi-list" aria-hidden="true"></i>';
+      group.parentElement.insertBefore(btn, group);
+
+      var close = function () {
+        group.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+      };
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = group.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      document.addEventListener('click', function (e) {
+        if (!group.classList.contains('is-open')) return;
+        if (group.contains(e.target) || btn.contains(e.target)) return;
+        close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && group.classList.contains('is-open')) {
+          close();
+          btn.focus();
+        }
+      });
     }
   });
 </script>
