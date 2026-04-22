@@ -1651,7 +1651,7 @@ figcaption {
   line-height: 1.55 !important;
   color: var(--ink-2) !important;
   max-width: 1200px;
-  margin: 0 auto 0px !important;
+  margin: 0 auto 80px !important;
   padding: 0 24px;
 }
 
