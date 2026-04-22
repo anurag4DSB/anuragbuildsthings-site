@@ -1617,7 +1617,7 @@ figcaption {
   line-height: 1.05 !important;
   letter-spacing: -0.022em !important;
   color: var(--ink) !important;
-  margin: 4rem auto 2rem !important;
+  margin: 1rem auto 2rem !important;
   max-width: 75rem;
   padding: 0 1.5rem;
   text-wrap: balance;
@@ -1660,8 +1660,16 @@ figcaption {
   line-height: 1.55 !important;
   color: var(--ink-2) !important;
   max-width: 75rem;
-  margin: 0 auto 5rem !important;
+  margin: 0 auto 2.5rem !important;
   padding: 0 1.5rem;
+}
+
+/* Slightly tighten heading→dek gap on small screens; top and bottom
+   margins are already inherited from the base 2rem values. */
+@media (max-width: 768px) {
+  .hero-standfirst {
+    margin-bottom: 1.5rem !important;
+  }
 }
 
 .page-layout-custom .standfirst {
