@@ -54,8 +54,9 @@ toc: false
 </script>
 
 <p class="hero-dek">
-  Every experiment, every note, every YouTube lecture, posted the week it happens.
-  No roadmaps. No thought leadership. Just the curves and what they mean.
+  I build things to understand how they actually work.
+  A question, a system built to answer it, a comparison against real data.
+  Just the code, the curves, and what they actually mean.
 </p>
 
 ```
