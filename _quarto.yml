@@ -65,6 +65,9 @@ format:
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
         <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
         <link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@200..800&family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400..600&family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&display=optional">
     toc: true
     toc-location: left
     code-copy: true

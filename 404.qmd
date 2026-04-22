@@ -18,7 +18,6 @@ toc: false
   <p class="lede">Either the URL drifted, or the entry was never shipped. Either way — back to the log.</p>
   <div class="actions">
     <a href="/">← Return to the log</a>
-    <a href="/index.xml">Subscribe (RSS)</a>
   </div>
 </section>
 ```

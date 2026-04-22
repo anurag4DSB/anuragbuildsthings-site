@@ -4,9 +4,12 @@
    INSTRUMENT — a Quarto theme for anuragbuildsthings.com
    Drop-in replacement for styles.css.
    Ported from the Instrument design system.
-   ──────────────────────────────────────────────────────────────── */
 
-@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@200..800&family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400..600&family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&display=swap');
+   Google Fonts are loaded via <link> in _quarto.yml (not @import here)
+   so they fetch in parallel with this stylesheet instead of after it.
+   Using display=optional to eliminate the font-swap CLS: fonts get ~100ms
+   to load; after that the fallback is committed for the session.
+   ──────────────────────────────────────────────────────────────── */
 
 /* Bootstrap variable overrides (SCSS defaults) ─────────────────── */
 $body-bg: #0c0d0b !default;
@@ -1589,14 +1592,14 @@ figcaption {
   padding: 0 24px;
 }
 
-body.home .standfirst {
+.page-layout-custom .standfirst {
   display: none;
 }
 
 /* Section head, listing, and log get the same frame */
-body.home .section-head,
-body.home #log,
-body.home .quarto-listing {
+.page-layout-custom .section-head,
+.page-layout-custom #log,
+.page-layout-custom .quarto-listing {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -1604,7 +1607,7 @@ body.home .quarto-listing {
   padding-right: 24px;
 }
 
-body.home .section-head {
+.page-layout-custom .section-head {
   border-top: 1px solid var(--rule);
   padding-top: 16px;
   margin-top: 24px;
@@ -1612,14 +1615,14 @@ body.home .section-head {
 }
 
 /* ── Fix listing categories: quiet inline tags, not chips ──── */
-body.home .quarto-listing .quarto-post .listing-categories {
+.page-layout-custom .quarto-listing .quarto-post .listing-categories {
   column-gap: 14px !important;
   row-gap: 4px !important;
   padding-top: 8px !important;
   padding-bottom: 0 !important;
 }
 
-body.home .quarto-listing .quarto-post .listing-category {
+.page-layout-custom .quarto-listing .quarto-post .listing-category {
   border: 1px solid var(--rule-hi) !important;
   background: transparent !important;
   padding: 4px 12px !important;
@@ -1633,7 +1636,7 @@ body.home .quarto-listing .quarto-post .listing-category {
   transition: color 120ms ease, border-color 120ms ease;
 }
 
-body.home .quarto-listing .quarto-post .listing-category:hover {
+.page-layout-custom .quarto-listing .quarto-post .listing-category:hover {
   color: var(--signal) !important;
   border-color: var(--signal) !important;
 }
@@ -1652,7 +1655,7 @@ body.home .quarto-listing .quarto-post .listing-category:hover {
 /* ── Homepage (page-layout: custom) ────────────────────────── */
 
 /* Custom layout gives us a blank canvas — give it max-width and breathing room */
-body.home .page-layout-custom {
+.page-layout-custom {
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 2.5rem;
@@ -1660,13 +1663,13 @@ body.home .page-layout-custom {
 
 
 /* Stronger border between listing rows — the site's main navigation surface */
-body.home .quarto-listing .quarto-post {
+.page-layout-custom .quarto-listing .quarto-post {
   border-top: 1px solid var(--rule-hi) !important;
   padding: 2rem 0 !important;
   margin-bottom: 0 !important;
 }
 
-body.home .quarto-listing .quarto-post:first-child {
+.page-layout-custom .quarto-listing .quarto-post:first-child {
   border-top: 1px solid var(--rule-hi) !important;
 }
 

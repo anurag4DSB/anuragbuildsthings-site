@@ -11,11 +11,6 @@ include-in-header:
           background: transparent !important;
         }
       </style>
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          document.body.classList.add('home');
-        });
-      </script>
 listing:
   id: log
   contents: posts
