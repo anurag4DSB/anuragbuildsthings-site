@@ -1604,7 +1604,7 @@ figcaption {
   font-family: var(--ui) !important;
   font-weight: 300 !important;
   font-style: normal !important;
-  font-size: clamp(40px, 6vw, 72px) !important;
+  font-size: clamp(48px, 7vw, 72px) !important;
   line-height: 1.05 !important;
   letter-spacing: -0.022em !important;
   color: var(--ink) !important;
@@ -1705,10 +1705,6 @@ figcaption {
 }
 
 @media (max-width: 700px) {
-  .hero-standfirst {
-    font-size: 36px !important;
-  }
-
   .util-strip-inner {
     font-size: 9px;
     padding: 6px 16px;
