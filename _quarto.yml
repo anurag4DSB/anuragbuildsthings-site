@@ -33,7 +33,7 @@ website:
     pinned: true
     search: true
     tools:
-      - icon: github
+      - icon: git
         href: https://github.com/anurag4dsb
         aria-label: GitHub
       - icon: youtube

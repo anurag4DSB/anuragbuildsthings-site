@@ -223,7 +223,7 @@ body {
   color: #0A66C2 !important;
 }
 
-.navbar .quarto-navigation-tool:hover .bi-github {
+.navbar .quarto-navigation-tool:hover .bi-git {
   color: var(--ink) !important;
 }
 
@@ -2183,8 +2183,8 @@ body.home .quarto-listing .quarto-post:first-child {
   transition: color 120ms ease;
 }
 
-.p-item:hover .p-meta .bi-github,
-.p-item.sel .p-meta .bi-github {
+.p-item:hover .p-meta .bi-git,
+.p-item.sel .p-meta .bi-git {
   color: var(--ink);
 }
 
