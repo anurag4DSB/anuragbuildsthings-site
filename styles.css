@@ -211,11 +211,11 @@ body {
 }
 
 .navbar .quarto-navigation-tool:hover .bi-youtube {
-  color: var(--tint-warm) !important;
+  color: #FF0000 !important;
 }
 
 .navbar .quarto-navigation-tool:hover .bi-linkedin {
-  color: var(--tint-cool) !important;
+  color: #0A66C2 !important;
 }
 
 .navbar .quarto-navigation-tool:hover .bi-github {
@@ -1215,12 +1215,16 @@ figcaption {
 .nav-footer .nav-footer-right {
   font-family: var(--mono) !important;
   font-size: 11px !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0 !important;
   line-height: 1.65 !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   min-height: 0 !important;
   margin: 0 !important;
   color: var(--ink-2) !important;
+}
+
+.nav-footer .nav-footer-center {
+  display: none !important;
 }
 
 .nav-footer .back-to-top-arrow {
@@ -2171,6 +2175,22 @@ body.home .quarto-listing .quarto-post:first-child {
 .p-meta .bi {
   font-size: 16px;
   vertical-align: middle;
+  transition: color 120ms ease;
+}
+
+.p-item:hover .p-meta .bi-github,
+.p-item.sel .p-meta .bi-github {
+  color: var(--ink);
+}
+
+.p-item:hover .p-meta .bi-youtube,
+.p-item.sel .p-meta .bi-youtube {
+  color: #FF0000;
+}
+
+.p-item:hover .p-meta .bi-linkedin,
+.p-item.sel .p-meta .bi-linkedin {
+  color: #0A66C2;
 }
 
 .palette-foot {

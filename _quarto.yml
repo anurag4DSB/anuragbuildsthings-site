@@ -46,7 +46,7 @@ website:
     border: false
     left: |
       <div class="footer-col">
-        <p>For the next person who has to build one.</p>
+        <p>For the next person figuring things out by building - <a href="mailto:anuragbuildsthings@gmail.com">anuragbuildsthings@gmail.com</a></p>
       </div>
     right: |
       <div class="footer-col">

@@ -10,9 +10,9 @@
   'use strict';
 
   var ACTIONS = [
-    { title: 'Open GitHub profile',   href: 'https://github.com/anurag4dsb',              external: true, icon: 'github' },
     { title: 'Open YouTube channel',  href: 'https://www.youtube.com/@AnuragBuildsThings', external: true, icon: 'youtube' },
-    { title: 'Open LinkedIn',         href: 'https://www.linkedin.com/in/mittalanu/',     external: true, icon: 'linkedin' }
+    { title: 'Open LinkedIn',         href: 'https://www.linkedin.com/in/mittalanu/',     external: true, icon: 'linkedin' },
+    { title: 'Open GitHub profile',   href: 'https://github.com/anurag4dsb',              external: true, icon: 'github' }
   ];
 
   var overlay, input, listEl, scopeBtns;
