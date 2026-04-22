@@ -665,7 +665,7 @@ div.sourceCode {
   letter-spacing: -0.018em !important;
   margin: 0 0 0.5rem 0 !important;
   max-width: none;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .quarto-listing .quarto-post .listing-title a {
@@ -1153,7 +1153,7 @@ body:not(:has(.standfirst)) .quarto-title-block .quarto-categories {
   display: flex !important;
   gap: 0.5rem !important;
   flex-wrap: wrap;
-  margin: 0.5rem 0 0 !important;
+  margin: 0.5rem 0 !important;
   padding: 0 !important;
 }
 
@@ -1187,6 +1187,7 @@ body:not(:has(.standfirst)) .quarto-title .title {
   font-weight: 300 !important;
   max-width: 22ch !important;
   letter-spacing: -0.024em !important;
+  margin-top: 1.75rem !important;
   margin-bottom: 1rem !important;
 }
 
@@ -1197,7 +1198,7 @@ body:not(:has(.standfirst)) .quarto-title-block .description {
   font-size: 1.375rem !important;
   line-height: 1.35 !important;
   color: var(--ink-2) !important;
-  margin: 3.25rem 0 0 !important;
+  margin: 0.5rem 0 !important;
 }
 
 body:not(:has(.standfirst)) .quarto-title-block {
@@ -1699,7 +1700,7 @@ figcaption {
   margin: 1rem auto 2rem !important;
   max-width: 75rem;
   padding: 0 1.5rem;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .hero-standfirst .line {
