@@ -1728,7 +1728,7 @@ figcaption {
   margin-bottom: 0 !important;
 }
 
-.page-layout-custom .quarto-listing .quarto-post:first-child {
+.page-layout-custom .quarto-listing .list .quarto-post:first-child {
   border-top: 1px solid var(--rule-hi) !important;
 }
 
