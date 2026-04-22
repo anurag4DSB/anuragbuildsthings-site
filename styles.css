@@ -192,11 +192,16 @@ body {
 }
 
 .navbar .quarto-navigation-tool .bi {
+  display: inline-block;
+  width: 28px;
+  text-align: center;
+  line-height: 1;
   font-size: 22px !important;
 }
 
 @media (max-width: 768px) {
   .navbar .quarto-navigation-tool .bi {
+    width: 22px;
     font-size: 18px !important;
   }
   .navbar #quarto-search svg,

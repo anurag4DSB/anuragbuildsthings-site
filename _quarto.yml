@@ -33,15 +33,15 @@ website:
     pinned: true
     search: true
     tools:
+      - icon: github
+        href: https://github.com/anurag4dsb
+        aria-label: GitHub
       - icon: youtube
         href: https://www.youtube.com/@AnuragBuildsThings
         aria-label: YouTube
       - icon: linkedin
         href: https://www.linkedin.com/in/mittalanu/
         aria-label: LinkedIn
-      - icon: github
-        href: https://github.com/anurag4dsb
-        aria-label: GitHub
   page-footer:
     border: false
     left: |
