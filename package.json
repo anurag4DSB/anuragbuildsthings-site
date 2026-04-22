@@ -1,0 +1,11 @@
+{
+  "name": "anuragbuildsthings-site-devtools",
+  "private": true,
+  "description": "Dev-only tooling (visual regression harness). Not part of the Quarto build.",
+  "type": "module",
+  "devDependencies": {
+    "pixelmatch": "^7.1.0",
+    "playwright": "^1.59.1",
+    "pngjs": "^7.0.0"
+  }
+}
