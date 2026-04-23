@@ -13,11 +13,11 @@ toc: false
 
 ```{=html}
 <section class="page-404">
-  <div class="glyph">signal lost<span class="pulse"></span></div>
+  <div class="glyph">404 signal lost<span class="pulse"></span></div>
   <h1>This page didn't compile.</h1>
-  <p class="lede">Either the URL drifted, or the entry was never shipped. Either way — back to the log.</p>
+  <p class="lede">Either the URL drifted, or the entry was never shipped.</p>
   <div class="actions">
-    <a href="/">← Return to the log</a>
+    <a href="/">← Return to the index</a>
   </div>
 </section>
 ```

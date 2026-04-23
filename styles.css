@@ -1,7 +1,7 @@
 /*-- scss:defaults --*/
 
 /* ────────────────────────────────────────────────────────────────
-   INSTRUMENT — a Quarto theme for anuragbuildsthings.com
+   INSTRUMENT - a Quarto theme for anuragbuildsthings.com
    Drop-in replacement for styles.css.
    Ported from the Instrument design system.
 
@@ -74,7 +74,7 @@ body {
 
 /* Match Bootstrap's body.nav-fixed default (64px) to our actual navbar
    height so quarto-nav.js's JS override (body.style.paddingTop =
-   navbar.clientHeight) produces the same value — no CLS on first paint.
+   navbar.clientHeight) produces the same value - no CLS on first paint.
    74px = single-row navbar; 101px = wrapped-to-two-rows at narrow widths.
    Also pre-size .quarto-container min-height to what quarto-nav.js will
    set (calc(100vh - topOffset)), otherwise its JS override reshuffles
@@ -219,7 +219,7 @@ body.nav-fixed {
   padding-right: 0 !important;
 }
 
-/* Hamburger button — hidden at wide widths; takes over from the icon
+/* Hamburger button - hidden at wide widths; takes over from the icon
    group below 576px. Injected by post-enhance-include.html. */
 .navbar-hamburger {
   display: none;
@@ -583,7 +583,7 @@ div.sourceCode {
   border-left-color: var(--signal);
 }
 
-/* ── Listing (homepage log) — date | body | thumbnail ─────────── */
+/* ── Listing (homepage log) - date | body | thumbnail ─────────── */
 .quarto-listing {
   margin-top: 2rem;
 }
@@ -616,7 +616,7 @@ div.sourceCode {
   color: var(--signal) !important;
 }
 
-/* Date row — sits below body in column 1 */
+/* Date row - sits below body in column 1 */
 .quarto-listing .quarto-post .metadata {
   grid-column: 1;
   grid-row: 2;
@@ -694,7 +694,7 @@ div.sourceCode {
   border: 0 !important;
 }
 
-/* Thumbnail column (right) — spans both rows, stretches full column height */
+/* Thumbnail column (right) - spans both rows, stretches full column height */
 .quarto-listing .quarto-post .thumbnail {
   grid-column: 2;
   grid-row: 1 / span 2;
@@ -828,12 +828,12 @@ blockquote {
   background: transparent;
 }
 
-/* Scheme toggle — hide (we're committing to dark) */
+/* Scheme toggle - hide (we're committing to dark) */
 .quarto-color-scheme-toggle {
   display: none !important;
 }
 
-/* Responsive — stack to single column only when even the min-width
+/* Responsive - stack to single column only when even the min-width
    thumbnail (180 px) would crush the body */
 @media (max-width: 600px) {
 
@@ -920,7 +920,7 @@ body:has(.standfirst) #title-block-header {
   display: none !important;
 }
 
-/* Footer — small mono signature */
+/* Footer - small mono signature */
 .nav-footer,
 .page-footer {
   border-top: 1px solid var(--rule) !important;
@@ -1101,7 +1101,7 @@ body:not(:has(.standfirst)) .post-meta-line {
    after DOMContentLoaded, so article content doesn't shift down 46px when
    the element arrives. The ::after pseudo pre-allocates the space; once
    :has() sees the real .post-meta-line, the pseudo collapses and the real
-   element fills the same space — net height unchanged, no CLS. */
+   element fills the same space - net height unchanged, no CLS. */
 body:not(:has(.standfirst)) .quarto-title-block:not(:has(.post-meta-line))::after {
   content: "";
   display: block;
@@ -1180,7 +1180,7 @@ body:not(:has(.standfirst)) .quarto-title-block .quarto-categories .quarto-categ
   padding-bottom: 0 !important;
 }
 
-/* Tighter title on post pages — body, not display, scale */
+/* Tighter title on post pages - body, not display, scale */
 body:not(:has(.standfirst)) .quarto-title .title {
   font-size: clamp(2.5rem, 5.5vw, 4rem) !important;
   font-style: normal !important;
@@ -1231,7 +1231,7 @@ div.sourceCode code {
   line-height: 1.55 !important;
 }
 
-/* Copy button — ghost on hover */
+/* Copy button - ghost on hover */
 .code-copy-button {
   background: transparent !important;
   color: var(--ink-3) !important;
@@ -1276,7 +1276,7 @@ figcaption {
   max-width: 64ch;
 }
 
-/* Margin notes — pull into right sidebar gutter */
+/* Margin notes - pull into right sidebar gutter */
 .column-margin {
   font-family: var(--ui) !important;
   font-size: 0.8125rem !important;
@@ -1286,7 +1286,7 @@ figcaption {
   padding-left: 0.75rem;
 }
 
-/* ── Post footer — prev/next + filed under ──────────────── */
+/* ── Post footer - prev/next + filed under ──────────────── */
 .post-footer {
   margin-top: 0;
   padding-top: 1.75rem;
@@ -1337,12 +1337,12 @@ figcaption {
 }
 
 .post-footer .post-nav.empty {
-  opacity: 0.3;
   pointer-events: none;
 }
 
 .post-footer .post-nav.empty .post-nav-title {
   color: var(--ink-3);
+  opacity: 0.3;
 }
 
 @media (max-width: 700px) {
@@ -1831,7 +1831,7 @@ figcaption {
 
 /* ── Homepage (page-layout: custom) ────────────────────────── */
 
-/* Custom layout gives us a blank canvas — give it max-width and breathing room */
+/* Custom layout gives us a blank canvas - give it max-width and breathing room */
 .page-layout-custom {
   max-width: 90rem;
   margin: 0 auto;
@@ -1839,7 +1839,7 @@ figcaption {
 }
 
 
-/* Stronger border between listing rows — the site's main navigation surface */
+/* Stronger border between listing rows - the site's main navigation surface */
 .page-layout-custom .quarto-listing .quarto-post {
   border-top: 1px solid var(--rule-hi) !important;
   padding: 2rem 0 !important;
@@ -1909,7 +1909,7 @@ figcaption {
   margin: 0 !important;
 }
 
-/* Narrow-viewport stack — declared after .list rules so it wins source
+/* Narrow-viewport stack - declared after .list rules so it wins source
    order and collapses both grids to a single column. */
 @media (max-width: 600px) {
   .quarto-listing .list .quarto-post {
