@@ -22,9 +22,4 @@ quarto-web
 # Playwright
 .playwright-mcp/
 
-# Node / visual-regression harness
-/node_modules/
-/.regression-baseline/
-/.regression-diff/
-
 **/*.quarto_ipynb
