@@ -1337,12 +1337,12 @@ figcaption {
 }
 
 .post-footer .post-nav.empty {
-  opacity: 0.3;
   pointer-events: none;
 }
 
 .post-footer .post-nav.empty .post-nav-title {
   color: var(--ink-3);
+  opacity: 0.3;
 }
 
 @media (max-width: 700px) {
