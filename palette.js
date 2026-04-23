@@ -1,4 +1,4 @@
-// palette.js — command palette for the site's search
+// palette.js - command palette for the site's search
 //
 // Binds ⌘K / Ctrl+K to open, Esc to close. Fetches /search.json (Quarto-generated)
 // on first open, filters posts + sections + actions as you type, highlights
@@ -10,10 +10,10 @@
   'use strict';
 
   var ACTIONS = [
-    { title: 'Open GitHub',   href: 'https://github.com/anurag4dsb',               external: true,  icon: 'git' },
-    { title: 'Open YouTube',  href: 'https://www.youtube.com/@AnuragBuildsThings', external: true,  icon: 'youtube' },
-    { title: 'Open LinkedIn', href: 'https://www.linkedin.com/in/mittalanu/',      external: true,  icon: 'linkedin' },
-    { title: 'Email me',      href: 'mailto:anuragbuildsthings@gmail.com',         external: false, icon: 'envelope-fill' }
+    { title: 'Open GitHub', href: 'https://github.com/anurag4dsb', external: true, icon: 'git' },
+    { title: 'Open YouTube', href: 'https://www.youtube.com/@AnuragBuildsThings', external: true, icon: 'youtube' },
+    { title: 'Open LinkedIn', href: 'https://www.linkedin.com/in/mittalanu/', external: true, icon: 'linkedin' },
+    { title: 'Email me', href: 'mailto:anuragbuildsthings@gmail.com', external: false, icon: 'envelope-fill' }
   ];
 
   var overlay, input, listEl, scopeBtns;
