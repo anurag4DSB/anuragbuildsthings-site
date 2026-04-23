@@ -1697,7 +1697,7 @@ figcaption {
   line-height: 1.05 !important;
   letter-spacing: -0.022em !important;
   color: var(--ink) !important;
-  margin: 1rem auto 2rem !important;
+  margin: 1rem auto 1rem !important;
   max-width: 75rem;
   padding: 0 1.5rem;
   text-wrap: pretty;
@@ -1713,31 +1713,52 @@ figcaption {
 }
 
 .hero-standfirst .rotator {
-  display: inline-grid;
-  text-align: left;
+  position: relative;
+  display: inline-block;
   vertical-align: baseline;
+  white-space: nowrap;
+  color: var(--signal);
 }
 
-.hero-standfirst .rotator .word {
-  grid-area: 1 / 1;
-  opacity: 0;
-  transition: opacity 320ms ease;
+.hero-standfirst .rotator .ghost {
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
 }
 
-.hero-standfirst .rotator .word.active {
-  opacity: 1;
+.hero-standfirst .rotator .stage {
+  position: absolute;
+  inset: 0;
+  display: inline-block;
+  white-space: nowrap;
 }
+
+.hero-standfirst .rotator .typed {
+  color: var(--signal);
+}
+
+.hero-standfirst .rotator .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.82em;
+  background: var(--signal);
+  vertical-align: -0.08em;
+  margin-left: 0.02em;
+  animation: hero-cursor-blink 1s steps(2) infinite;
+}
+
+@keyframes hero-cursor-blink { 50% { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-standfirst .rotator .word {
-    transition: none;
+  .hero-standfirst .rotator .cursor {
+    animation: none;
   }
 }
 
 .hero-dek {
   font-family: var(--text) !important;
-  font-size: 1.125rem !important;
-  line-height: 1.55 !important;
+  font-size: 1.75rem !important;
+  line-height: 1.3 !important;
   color: var(--ink-2) !important;
   max-width: 75rem;
   margin: 0 auto 2.5rem !important;
