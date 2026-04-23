@@ -338,7 +338,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
     if (t) t.textContent = 'anurag builds things';
 
     // External social links open in a new tab. Exclude the dark-mode toggle
-    // — Quarto renders it with an http href pointing at the current page.
+    // - Quarto renders it with an http href pointing at the current page.
     document.querySelectorAll('.navbar .quarto-navigation-tool[href^="http"]:not(.quarto-color-scheme-toggle)').forEach(function (a) {
       if (!a.getAttribute('target')) {
         a.setAttribute('target', '_blank');
