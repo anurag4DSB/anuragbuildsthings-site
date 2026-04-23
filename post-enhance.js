@@ -1,4 +1,4 @@
-// post-enhance.js — Phase 2B
+// post-enhance.js - Phase 2B
 // Runs on post pages only. Builds:
 //   1. A single thin meta line (date · reading time · word count)
 //   2. Prev/next nav at the bottom of the article
@@ -38,7 +38,7 @@
   }
 
   // Category reordering is handled in CSS via flex order on
-  // .quarto-title-block (see styles.css) — doing it in JS would shift
+  // .quarto-title-block (see styles.css) - doing it in JS would shift
   // the description wrapper after DOMContentLoaded (visible CLS).
 
   // ── 2. Prev/next nav ────────────────────────────────────────────
@@ -105,7 +105,7 @@
       if (!url) {
         return `<span class="post-nav empty ${side}">
           <span class="post-nav-label">${side === 'prev' ? 'Start of log' : 'Latest entry'}</span>
-          <span class="post-nav-title">—</span>
+          <span class="post-nav-title">-</span>
         </span>`;
       }
       const label = side === 'prev' ? '← Previous in log' : 'Next in log →';
