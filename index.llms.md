@@ -8,7 +8,7 @@ I build things to understand how they actually work. A question, a system built 
 
 ### [Augmentations Are the Model](posts/augmentations-are-the-model.llms.md)
 
-Four augmentation recipes on CIFAR-10, held constant everywhere else. The result isn’t subtle — and the pattern has a cleaner explanation than ‘stronger is better’.
+Four augmentation recipes on CIFAR-10, held constant everywhere else. The result isn’t subtle - and the pattern has a cleaner explanation than ‘stronger is better’.
 
 15 Apr 2026
 

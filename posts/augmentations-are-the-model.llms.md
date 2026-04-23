@@ -8,7 +8,7 @@ augmentations
 
 computer-vision
 
-Four augmentation recipes on CIFAR-10, held constant everywhere else. The result isn’t subtle — and the pattern has a cleaner explanation than ‘stronger is better’.
+Four augmentation recipes on CIFAR-10, held constant everywhere else. The result isn’t subtle - and the pattern has a cleaner explanation than ‘stronger is better’.
 
 Published
 
@@ -16,7 +16,7 @@ Published
 
 ## The question
 
-In [the previous post](why-augmentations-matter.llms.md) I claimed augmentations are the most critical design choice in contrastive learning — that they define the invariances the model learns, and everything else (architecture, batch size, epochs) is secondary.
+In [the previous post](why-augmentations-matter.llms.md) I claimed augmentations are the most critical design choice in contrastive learning - that they define the invariances the model learns, and everything else (architecture, batch size, epochs) is secondary.
 
 That was a hypothesis. This post runs the experiment.
 
@@ -40,7 +40,7 @@ Evaluation: freeze the encoder, train a linear classifier on CIFAR-10 labels, re
     ┌────────────┬───────────────┬─────────────┐
     │ config     │ linear probe  │ Δ vs minimal│
     ├────────────┼───────────────┼─────────────┤
-    │ minimal    │      48.3%    │      —      │
+    │ minimal    │      48.3%    │      -      │
     │ moderate   │      71.9%    │   +23.6 pp  │
     │ full       │      83.7%    │   +35.4 pp  │
     │ aggressive │      82.1%    │   +33.8 pp  │
@@ -48,17 +48,17 @@ Evaluation: freeze the encoder, train a linear classifier on CIFAR-10 labels, re
 
 Three things jump out.
 
-**1. The minimal run is barely better than a random projection.** 48% on CIFAR-10 is not good. A logistic regression on raw pixels gets ~40%. So contrastive learning with only random crops — the “this patch and that patch are the same image” signal — is learning something, but not much.
+**1. The minimal run is barely better than a random projection.** 48% on CIFAR-10 is not good. A logistic regression on raw pixels gets ~40%. So contrastive learning with only random crops - the “this patch and that patch are the same image” signal - is learning something, but not much.
 
 **2. Color jitter alone moves the needle more than anything else.** The jump from moderate (71.9%) to full (83.7%) is almost entirely color jitter + blur. Removing color jitter from the full config drops it back to ~73%. This confirms the SimCLR paper’s finding, but it was useful to feel it first-hand: color statistics are the easy shortcut the model takes, and augmentations that destroy those statistics force it to look at shape and texture instead.
 
-**3. Aggressive is *worse* than full.** Not much — but consistently, across 3 seeds. Too-strong augmentation breaks the positive pair: the two crops become so dissimilar that the NT-Xent loss starts pulling together things that genuinely *don’t* share content. There’s a ceiling.
+**3. Aggressive is *worse* than full.** Not much - but consistently, across 3 seeds. Too-strong augmentation breaks the positive pair: the two crops become so dissimilar that the NT-Xent loss starts pulling together things that genuinely *don’t* share content. There’s a ceiling.
 
 ## The cleaner framing
 
 “Stronger augmentation is better” is the summary most people walk away with. I don’t think that’s right.
 
-The cleaner framing: **augmentations define the equivalence relation**. A contrastive loss says “these two things are the same.” Augmentations determine what “same” means. A model trained with color jitter learns that a blue car and a red car are the same car. A model without color jitter learns they’re different. Neither is wrong — it’s a design choice about what invariance you want.
+The cleaner framing: **augmentations define the equivalence relation**. A contrastive loss says “these two things are the same.” Augmentations determine what “same” means. A model trained with color jitter learns that a blue car and a red car are the same car. A model without color jitter learns they’re different. Neither is wrong - it’s a design choice about what invariance you want.
 
 This is why transferring SSL features across domains often disappoints. You’re not just transferring a feature extractor; you’re transferring an *implicit label ontology* baked in by your augmentation recipe. ImageNet-trained features think rotations don’t change an object’s identity. That’s a great assumption for ImageNet objects and a bad assumption for X-rays.
 
@@ -66,7 +66,7 @@ This is why transferring SSL features across domains often disappoints. You’re
 
 - Does the same pattern hold at larger batch sizes? (SimCLR is known to love big batches; does the augmentation-sensitivity shape hold?)
 - What breaks if you swap NT-Xent for a non-contrastive objective like BYOL? My guess: less augmentation-sensitive, because there’s no explicit negative sampling to amplify the “what counts as different” question.
-- Can you read off the learned invariances from the embedding space directly — e.g., does the feature vector change *less* under augmentations the model was trained to be invariant to?
+- Can you read off the learned invariances from the embedding space directly - e.g., does the feature vector change *less* under augmentations the model was trained to be invariant to?
 
 The third one would close the loop. It would also be the cleanest evidence for the framing above.
 
