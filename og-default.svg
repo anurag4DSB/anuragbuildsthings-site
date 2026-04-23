@@ -19,7 +19,7 @@
 
   
   <text x="80" y="280" class="display" font-size="80">
-    <tspan x="80" dy="0">Post title goes here —</tspan>
+    <tspan x="80" dy="0">Post title goes here -</tspan>
     <tspan x="80" dy="92">on two lines if needed.</tspan>
   </text>
 

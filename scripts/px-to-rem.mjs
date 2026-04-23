@@ -119,7 +119,7 @@ function rewriteValue(value, decide) {
 
     // Detect identifier / function call openings. CSS idents can start with
     // `--` (custom prop), `-` followed by letter (vendor prefix), or a letter.
-    // They must NOT start with `-` followed by a digit — that's a negative
+    // They must NOT start with `-` followed by a digit - that's a negative
     // number, which we want to fall through to the px-match branch.
     const isIdentStart =
       /[a-zA-Z_]/.test(ch) ||
@@ -145,7 +145,7 @@ function rewriteValue(value, decide) {
     }
 
     if (ch === '(') {
-      // bare '(' without an identifier — treat as a neutral group, push a fn zone
+      // bare '(' without an identifier - treat as a neutral group, push a fn zone
       // so matching ')' pops it.
       out += ch;
       zones.push({ type: 'fn', name: 'group' });
@@ -202,8 +202,8 @@ function rewriteValue(value, decide) {
 
 // Split a line into zero or more declaration segments we can transform.
 // Returns an array of parts:
-//   { kind: 'literal', text }          — emit as-is
-//   { kind: 'decl', prop, value, sep } — rewritable; `sep` is the terminator
+//   { kind: 'literal', text }          - emit as-is
+//   { kind: 'decl', prop, value, sep } - rewritable; `sep` is the terminator
 //                                        (';', '}' with trailing bits, or '' for
 //                                        a line-final value with no semicolon)
 //
@@ -373,7 +373,7 @@ function transform(source) {
 
     // Update block stack from THIS line's braces. Use processedLine, same as raw
     // for brace structure.
-    // Count '{' and '}' ignoring those inside strings/comments — simplistic but
+    // Count '{' and '}' ignoring those inside strings/comments - simplistic but
     // styles.css has no such cases relevant here.
     for (const ch of processedLine) {
       if (ch === '{') {

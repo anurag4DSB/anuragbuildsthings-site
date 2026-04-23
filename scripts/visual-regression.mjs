@@ -94,7 +94,7 @@ async function captureAll(outDir) {
         try {
           await page.goto(url, { waitUntil: 'networkidle', timeout: 20000 });
         } catch (err) {
-          // Some networkidle flaps — fall back to domcontentloaded.
+          // Some networkidle flaps - fall back to domcontentloaded.
           await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
         }
 
