@@ -45,9 +45,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c8cdb1872ac671aa64a09fc5a32535f7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-dark-66300764862db42ad2624cde9a9ceaa6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-c8cdb1872ac671aa64a09fc5a32535f7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-ec6f44b5aa5cf1c88476ae1e4484e905.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dark-00adccc5c1521facb4dbb28ebeb4c86a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-ec6f44b5aa5cf1c88476ae1e4484e905.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -433,6 +433,15 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
   document.addEventListener('DOMContentLoaded', function () {
     var t = document.querySelector('.navbar-title');
     if (t) t.textContent = 'anurag builds things';
+
+    // External social links open in a new tab. Exclude the dark-mode toggle
+    // — Quarto renders it with an http href pointing at the current page.
+    document.querySelectorAll('.navbar .quarto-navigation-tool[href^="http"]:not(.quarto-color-scheme-toggle)').forEach(function (a) {
+      if (!a.getAttribute('target')) {
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
 
     // Wrap tools + search in one flex item so they wrap to the next line
     // as a group when the navbar row can't fit them beside the brand.

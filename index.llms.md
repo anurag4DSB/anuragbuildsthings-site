@@ -1,6 +1,6 @@
 # anurag builds things
 
-# anurag builds thingsRAGintelligent systemssystemsworld models
+# anurag builds  intelligent systems  
 
 I build things to understand how they actually work. A question, a system built to answer it, a comparison against real data. Just the code, the curves, and what they actually mean.
 

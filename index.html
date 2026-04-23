@@ -45,9 +45,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c8cdb1872ac671aa64a09fc5a32535f7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-dark-66300764862db42ad2624cde9a9ceaa6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-c8cdb1872ac671aa64a09fc5a32535f7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-ec6f44b5aa5cf1c88476ae1e4484e905.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-dark-00adccc5c1521facb4dbb28ebeb4c86a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-ec6f44b5aa5cf1c88476ae1e4484e905.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -385,20 +385,48 @@ window.Quarto = {
 
 <!-- ── Hero standfirst ────────────────────────────────────── -->
 <h1 class="hero-standfirst">
-  anurag builds <span class="rotator accent"><span class="word active">things</span><span class="word">RAG</span><span class="word">intelligent systems</span><span class="word">systems</span><span class="word">world models</span></span>
+  anurag builds <span class="rotator accent" aria-live="polite" aria-label="rotating phrase">
+    <span class="ghost" aria-hidden="true">intelligent systems</span>
+    <span class="stage" aria-hidden="true"><span class="typed"></span><span class="cursor"></span></span>
+  </span>
 </h1>
 
 <script>
   (function () {
-    var words = document.querySelectorAll('.hero-standfirst .rotator .word');
-    if (words.length < 2) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var i = 0;
-    setInterval(function () {
-      words[i].classList.remove('active');
-      i = (i + 1) % words.length;
-      words[i].classList.add('active');
-    }, 2800);
+    var WORDS = ['things', 'RAG', 'intelligent systems', 'systems', 'world models'];
+    var TYPE_MS = 75, BACK_MS = 42, HOLD_MS = 2500, EMPTY_MS = 380;
+
+    var typed = document.querySelector('.hero-standfirst .rotator .typed');
+    if (!typed) return;
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      typed.textContent = WORDS[0];
+      return;
+    }
+
+    var idx = 0;
+    function later(fn, ms) { setTimeout(fn, ms); }
+    function typeIn(word, done) {
+      var i = 0;
+      (function step() {
+        typed.textContent = word.slice(0, i);
+        if (i < word.length) { i++; later(step, TYPE_MS); }
+        else later(done, HOLD_MS);
+      })();
+    }
+    function backspace(done) {
+      var cur = typed.textContent, i = cur.length;
+      (function step() {
+        typed.textContent = cur.slice(0, i);
+        if (i > 0) { i--; later(step, BACK_MS); }
+        else later(done, EMPTY_MS);
+      })();
+    }
+    (function loop() {
+      typeIn(WORDS[idx], function () {
+        backspace(function () { idx = (idx + 1) % WORDS.length; loop(); });
+      });
+    })();
   })();
 </script>
 
@@ -410,7 +438,7 @@ window.Quarto = {
 
 <div id="listing-log" class="quarto-listing quarto-listing-container-default">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDY29udHJhc3RpdmUtbGVhcm5pbmclMkNhdWdtZW50YXRpb25zJTJDY29tcHV0ZXItdmlzaW9u" data-listing-date-sort="1776211200000" data-listing-file-modified-sort="1776887433498" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="826">
+<div class="quarto-post image-right" data-index="0" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDY29udHJhc3RpdmUtbGVhcm5pbmclMkNhdWdtZW50YXRpb25zJTJDY29tcHV0ZXItdmlzaW9u" data-listing-date-sort="1776211200000" data-listing-file-modified-sort="1776921252641" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="826">
 <div class="thumbnail"><a href="./posts/augmentations-are-the-model.html" class="no-external">
 
 <img loading="lazy" src="./posts/figures/fig-ablation.png" class="thumbnail-image" style="height: 158px;" alt="Linear probe accuracy by augmentation recipe: 48.3 / 71.9 / 83.7 / 82.1%.">
@@ -443,7 +471,7 @@ window.Quarto = {
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDcmVwcmVzZW50YXRpb24tbGVhcm5pbmclMkNmdW5kYW1lbnRhbHM=" data-listing-date-sort="1773792000000" data-listing-file-modified-sort="1776887433500" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="275">
+<div class="quarto-post image-right" data-index="1" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDcmVwcmVzZW50YXRpb24tbGVhcm5pbmclMkNmdW5kYW1lbnRhbHM=" data-listing-date-sort="1773792000000" data-listing-file-modified-sort="1776921252641" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="275">
 <div class="thumbnail"><a href="./posts/self-supervised-learning.html" class="no-external">
 
 <img loading="lazy" src="./posts/figures/fig-ssl-overview.png" class="thumbnail-image" style="height: 158px;" alt="Four pretext tasks: contrastive, masked, predictive, denoising.">
@@ -474,7 +502,7 @@ window.Quarto = {
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDY29udHJhc3RpdmUtbGVhcm5pbmclMkNjb21wdXRlci12aXNpb24=" data-listing-date-sort="1773792000000" data-listing-file-modified-sort="1776887433500" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="129">
+<div class="quarto-post image-right" data-index="2" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDY29udHJhc3RpdmUtbGVhcm5pbmclMkNjb21wdXRlci12aXNpb24=" data-listing-date-sort="1773792000000" data-listing-file-modified-sort="1776921252641" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="129">
 <div class="thumbnail"><a href="./posts/ssl-representation.html" class="no-external">
 
 <img loading="lazy" src="./posts/figures/fig-simclr.png" class="thumbnail-image" style="height: 158px;" alt="SimCLR diagram: two augmented views, encoder, projection, embedding space.">
@@ -505,7 +533,7 @@ window.Quarto = {
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDY29udHJhc3RpdmUtbGVhcm5pbmclMkNhdWdtZW50YXRpb25z" data-listing-date-sort="1773792000000" data-listing-file-modified-sort="1776887433500" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="220">
+<div class="quarto-post image-right" data-index="3" data-categories="c2VsZi1zdXBlcnZpc2VkLWxlYXJuaW5nJTJDY29udHJhc3RpdmUtbGVhcm5pbmclMkNhdWdtZW50YXRpb25z" data-listing-date-sort="1773792000000" data-listing-file-modified-sort="1776921252641" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="220">
 <div class="thumbnail"><a href="./posts/why-augmentations-matter.html" class="no-external">
 
 <img loading="lazy" src="./posts/figures/fig-aug-matrix.png" class="thumbnail-image" style="height: 158px;" alt="Augmentation recipe matrix: minimal, moderate, full, aggressive.">
@@ -549,6 +577,15 @@ window.Quarto = {
   document.addEventListener('DOMContentLoaded', function () {
     var t = document.querySelector('.navbar-title');
     if (t) t.textContent = 'anurag builds things';
+
+    // External social links open in a new tab. Exclude the dark-mode toggle
+    // — Quarto renders it with an http href pointing at the current page.
+    document.querySelectorAll('.navbar .quarto-navigation-tool[href^="http"]:not(.quarto-color-scheme-toggle)').forEach(function (a) {
+      if (!a.getAttribute('target')) {
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
 
     // Wrap tools + search in one flex item so they wrap to the next line
     // as a group when the navbar row can't fit them beside the brand.
