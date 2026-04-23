@@ -31,20 +31,48 @@ toc: false
 
 <!-- ── Hero standfirst ────────────────────────────────────── -->
 <h1 class="hero-standfirst">
-  anurag builds <span class="rotator accent"><span class="word active">things</span><span class="word">RAG</span><span class="word">intelligent systems</span><span class="word">systems</span><span class="word">world models</span></span>
+  anurag builds <span class="rotator accent" aria-live="polite" aria-label="rotating phrase">
+    <span class="ghost" aria-hidden="true">intelligent systems</span>
+    <span class="stage" aria-hidden="true"><span class="typed"></span><span class="cursor"></span></span>
+  </span>
 </h1>
 
 <script>
   (function () {
-    var words = document.querySelectorAll('.hero-standfirst .rotator .word');
-    if (words.length < 2) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var i = 0;
-    setInterval(function () {
-      words[i].classList.remove('active');
-      i = (i + 1) % words.length;
-      words[i].classList.add('active');
-    }, 2800);
+    var WORDS = ['things', 'RAG', 'intelligent systems', 'systems', 'world models'];
+    var TYPE_MS = 75, BACK_MS = 42, HOLD_MS = 2500, EMPTY_MS = 380;
+
+    var typed = document.querySelector('.hero-standfirst .rotator .typed');
+    if (!typed) return;
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      typed.textContent = WORDS[0];
+      return;
+    }
+
+    var idx = 0;
+    function later(fn, ms) { setTimeout(fn, ms); }
+    function typeIn(word, done) {
+      var i = 0;
+      (function step() {
+        typed.textContent = word.slice(0, i);
+        if (i < word.length) { i++; later(step, TYPE_MS); }
+        else later(done, HOLD_MS);
+      })();
+    }
+    function backspace(done) {
+      var cur = typed.textContent, i = cur.length;
+      (function step() {
+        typed.textContent = cur.slice(0, i);
+        if (i > 0) { i--; later(step, BACK_MS); }
+        else later(done, EMPTY_MS);
+      })();
+    }
+    (function loop() {
+      typeIn(WORDS[idx], function () {
+        backspace(function () { idx = (idx + 1) % WORDS.length; loop(); });
+      });
+    })();
   })();
 </script>
 
