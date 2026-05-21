@@ -42,6 +42,9 @@ website:
       - icon: linkedin
         href: https://www.linkedin.com/in/mittalanu/
         aria-label: LinkedIn
+      - icon: substack
+        href: https://anuragbuildsthings.substack.com
+        aria-label: Substack
   page-footer:
     border: false
     left: |
