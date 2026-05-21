@@ -45,7 +45,7 @@ Half a day of my own reading first - release notes, PRs, issues on the upstream 
 
 The output was a 4-phase roadmap: critical security bug, 5 high-value fixes, ~30 developer-days of work across 74 analyzed commits. After the first pass I asked it to re-render the markdown reports as an HTML site so I could read them in a browser, then ran a second verification pass on Opus in tmux mode to challenge the findings against the actual code.
 
-[Chapter map](https://www.youtube.com/watch?v=HthWDC8LLEc):
+Chapter map:
 
 - [00:00](https://www.youtube.com/watch?v=HthWDC8LLEc&t=0s) - Real production use (not a demo)
 - [00:45](https://www.youtube.com/watch?v=HthWDC8LLEc&t=45s) - Project context: CSI driver for S3
@@ -101,25 +101,32 @@ It does. It's the most fun part of the feature.
 
 ### 3. Pick the model per teammate
 
-Teammates **don't inherit the lead's `/model` selection**. They use whatever you set as **Default teammate model** in `/config` → "Default teammate model", or one could mention it in the user prompt.
+Teammates **don't inherit the lead's `/model` selection**. They use whatever you set as **Default teammate model** in `/config` → "Default teammate model", or whatever you specify in the prompt.
 
 If you want the team on Opus, say so in the spawn prompt:
 
-```
-Use agent teams to spawn a team of agents with as many team members as
-possible to maximize parallelism of independent task completion with an
-upper limit of 10; if there are more tasks, queue them till some team
-members are done. All teammates should use Opus 4.6 model. Each
-team-member should verify their output by comparing to the actual code…
-```
+> Use agent teams to spawn one teammate per independent task, maximizing
+parallelism with an upper limit of 10 concurrent teammates. If there
+are more tasks than that, queue the rest - new teammates spawn as
+active ones finish and slots open up. Where tasks have dependencies,
+allow communication among teammates so dependent agents wait for
+prerequisites to finish, and the team lead coordinates handoffs between
+them. All teammates should use the Opus 4.6 model. Each teammate should
+verify their output by comparing it against the actual code…
 
-Otherwise you'll think you're getting Opus across the team and you'll be getting Sonnet. Caught me on the first pass.
+### A note on this prompt
+
+- **"Use agent teams to spawn…"** - without this phrasing, Claude Code often won't engage the agent teams feature at all. Being explicit is the trigger.
+- **"limit of 10 concurrent teammates"** - sweet spot for most tasks I've run. Past ten, coordination overhead and permission prompts start eating the gains. New agents still spawn for queued tasks once a slot frees up.
+- **"allow communication among teammates"** - teammates can message each other and the lead directly. Worth it whenever tasks have ordering dependencies; without it the lead has to broker every handoff.
+- **"All teammates should use the Opus 4.6 model"** - specified inline here, but you can also set it via `/config → Default teammate model` so you don't have to repeat it in every prompt.
+- **"verify their output by comparing it against the actual code"** - keeps agents grounded in the codebase instead of their own summaries. The most effective hallucination guard I've found for this kind of work.
 
 ## What the cost actually looked like
 
-Token usage scales linearly with team size - each teammate is a full instance. The first pass with four analyzers and a lead landed around 350k tokens total when the lead alone showed ~53k. The second pass on Opus with ~19 teammates was substantially more.
+Token usage scales linearly with team size - each teammate is a full instance. The first pass with four Sonnet analyzers and a lead landed around 350k tokens total - roughly **$8 at API rates**. The second pass on Opus with ~19 teammates re-reading large portions of both codebases for verification was substantially heavier - **somewhere in the $50–$100 range if you were paying API token prices**. I was on a Claude Max plan, so this didn't hit a credit card, but the API-equivalent figure is the one that matters if you're deciding whether to try this on your own work.
 
-If the chore would have taken me a day, that math is fine. For routine work, a single session is cheaper and faster.
+If the chore would have taken me a focused day, that math is fine. For routine work, a single session is cheaper and faster. The actual lesson isn't *"agent teams are cheap"* - it's that you can run a small Sonnet team to plan, then spend the Opus budget only where verification actually matters.
 
 > "There are 74 commits analyzed... That's like a lot of work." [▶ ~24:30](https://www.youtube.com/watch?v=HthWDC8LLEc&t=1470s)
 
