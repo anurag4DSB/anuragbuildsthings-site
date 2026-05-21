@@ -1,0 +1,147 @@
+---
+title: "Claude Code Agent Teams on a Real Production Chore"
+date: 2026-04-03
+categories: [claude-code, agent-teams, ai-coding, kubernetes, csi]
+description: "I tried Claude Code's experimental agent teams on an actual job — analyzing upstream divergence on Scality's S3 CSI driver — not a toy demo. Field notes on what worked, what cost, and the three settings worth knowing."
+---
+
+::: {.callout-note}
+This is the companion post to the video below. The post is the reference card; the video is the walkthrough.
+:::
+
+```{=html}
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:1.5rem 0;">
+  <iframe
+    src="https://www.youtube.com/embed/HthWDC8LLEc"
+    title="Claude Code Agent Teams on a real production chore"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+    style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+</div>
+```
+
+## What this is
+
+Claude Code [agent teams](https://code.claude.com/docs/en/agent-teams) shipped as an experimental feature about a week before I recorded this. I wanted to know how it behaved on something real, so I pointed it at a job I actually had to do: bring [scality/mountpoint-s3-csi-driver](https://github.com/scality/mountpoint-s3-csi-driver), a fork of the [AWS Mountpoint S3 CSI driver](https://github.com/awslabs/mountpoint-s3-csi-driver) — back to feature parity with upstream after a gap, and fix a known bug (missing `securityContext` on mount pods) along the way.
+
+We hadn't rebased the fork since AWS's v2.0. The diff was large. There were features I'd want, features I'd skip (EKS, S3 Express One Zone — Scality's S3 implementation doesn't need those), and bugs to triage. Classic intensive chore.
+
+> "I tried Claude Code agent teams for like 10 minutes and I was very surprised by how much I can scale myself." [▶ 00:00](https://www.youtube.com/watch?v=HthWDC8LLEc&t=0s)
+
+## Agent teams vs. subagents — the one-line version
+
+[Subagents](https://code.claude.com/docs/en/sub-agents) report back to the main agent and don't talk to each other. **Agent teams** share a task list and message each other directly, each in its own context window. You can also message any teammate yourself.
+
+That's the whole architectural difference. The cost difference is real: each teammate is a full Claude Code instance, so tokens scale linearly with team size.
+
+## What I actually did
+
+Half a day of my own reading first — release notes, PRs, issues on the upstream — *before* delegating. Then I spawned a team with four analyzers running in parallel: feature filter, security context analyzer, upstream analyzer, divergence analyzer. A team lead synthesized.
+
+> "I wanted to understand what I am delegating, so I can direct it in the right direction." [▶ ~05:00](https://www.youtube.com/watch?v=HthWDC8LLEc&t=300s)
+
+> "I don't call it vibe coding. I call it intentional AI coding." [▶ ~26:30](https://www.youtube.com/watch?v=HthWDC8LLEc&t=1590s)
+
+The output was a 4-phase roadmap: critical security bug, 5 high-value fixes, ~30 developer-days of work across 74 analyzed commits. After the first pass I asked it to re-render the markdown reports as an HTML site so I could read them in a browser, then ran a second verification pass on Opus in tmux mode to challenge the findings against the actual code.
+
+[Chapter map](https://www.youtube.com/watch?v=HthWDC8LLEc):
+
+- [00:00](https://www.youtube.com/watch?v=HthWDC8LLEc&t=0s) — Real production use (not a demo)
+- [00:45](https://www.youtube.com/watch?v=HthWDC8LLEc&t=45s) — Project context: CSI driver for S3
+- [08:30](https://www.youtube.com/watch?v=HthWDC8LLEc&t=510s) — Spawning agent teams & delegation
+- [14:20](https://www.youtube.com/watch?v=HthWDC8LLEc&t=860s) — Reviewing output + token/cost reality check
+- [18:40](https://www.youtube.com/watch?v=HthWDC8LLEc&t=1120s) — Turning findings into an action plan
+- [30:00](https://www.youtube.com/watch?v=HthWDC8LLEc&t=1800s) — Tmux teammate mode (watch agents live)
+- [40:50](https://www.youtube.com/watch?v=HthWDC8LLEc&t=2450s) — Results, scaling reflections & next steps
+
+## Three settings worth knowing
+
+These are the three things I'd want someone to have in front of them before trying this.
+
+### 1. Enable it
+
+Agent teams are disabled by default. Flip the env var in `~/.claude/settings.json`:
+
+```json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+```
+
+Needs Claude Code v2.1.32 or later. Check with `claude --version`.
+
+### 2. Display mode — in-process vs. tmux split panes
+
+Two ways to watch teammates work:
+
+- **In-process** (default-ish): all teammates live in your main terminal. `Shift+Down` cycles through them, `Enter` jumps into a teammate's session, `Ctrl+T` toggles the task list. Works in any terminal, zero setup.
+- **Split panes**: each teammate gets its own pane via tmux or iTerm2. You see everyone at once. The mode I switched to halfway through the video to actually *watch* a 19-teammate Opus pass spawn.
+
+Override in `~/.claude/settings.json`:
+
+```json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "teammateMode": "tmux"
+}
+```
+
+Or per-session: `claude --teammate-mode in-process`.
+
+Default is `"auto"` — split panes if you're already inside a tmux session, in-process otherwise. For tmux mode in iTerm2, install the [`it2` CLI](https://github.com/mkusaka/it2) and enable the Python API in iTerm2 settings. `tmux -CC` from iTerm2 is the suggested entrypoint.
+
+> "I think it should display all the agents on the right side of the screen automatically once the agents start." [▶ ~34:55](https://www.youtube.com/watch?v=HthWDC8LLEc&t=2095s)
+
+It does. It's the most fun part of the feature.
+
+### 3. Pick the model per teammate
+
+Teammates **don't inherit the lead's `/model` selection**. They use whatever you set as **Default teammate model** in `/config` → "Default teammate model", or one could mention it in the user prompt.
+
+If you want the team on Opus, say so in the spawn prompt:
+
+```text
+Use agent teams to spawn a team of agents with as many team members as
+possible to maximize parallelism of independent task completion with an
+upper limit of 10; if there are more tasks, queue them till some team
+members are done. All teammates should use Opus 4.6 model. Each
+team-member should verify their output by comparing to the actual code…
+```
+
+Otherwise you'll think you're getting Opus across the team and you'll be getting Sonnet. Caught me on the first pass.
+
+## What the cost actually looked like
+
+Token usage scales linearly with team size — each teammate is a full instance. The first pass with four analyzers and a lead landed around 350k tokens total when the lead alone showed ~53k. The second pass on Opus with ~19 teammates was substantially more.
+
+If the chore would have taken me a day, that math is fine. For routine work, a single session is cheaper and faster.
+
+> "There are 74 commits analyzed... That's like a lot of work." [▶ ~24:30](https://www.youtube.com/watch?v=HthWDC8LLEc&t=1470s)
+
+## What I'd do differently next time
+
+- **Pre-approve permissions.** Every teammate is its own Claude Code session, so the same permission prompts surface from each one. Adding allowlists to `.claude/settings.json` *before* spawning saves a lot of clicking.
+- **Specify model in the spawn prompt.** Don't rely on the lead inheriting your `/model` — it doesn't propagate.
+- **Pull the verification pass into the same run.** I split "analyze" and "verify against code" into two prompts. One prompt with explicit verification-as-a-task would have been cleaner.
+- **Save the workflow as a skill.** This is a chore I'll repeat. Next time, a skill triggers the team with the right prompt structure instead of me re-typing it.
+- **Try out agent teams with features and bugs.**
+
+## Bottom line
+
+Agent teams are worth the token bill when the work has parallel structure and you'd otherwise be context-switching across files yourself. Research, review, and divergence analysis are the sweet spot. The output I got back was something I'd actually use — not a vague summary, a 4-phase plan with intent, system impact, and dependencies for each item. The bug got fixed. The rebase has happened and new versions have been released.
+
+It scales the work, not the understanding. You still need to know what you're delegating. The agents are fast. The judgment is still yours.
+
+## Links
+
+- [Claude Code agent teams docs](https://code.claude.com/docs/en/agent-teams)
+- [Subagents docs](https://code.claude.com/docs/en/sub-agents) — for the comparison
+- [scality/mountpoint-s3-csi-driver](https://github.com/scality/mountpoint-s3-csi-driver)
+- [awslabs/mountpoint-s3-csi-driver](https://github.com/awslabs/mountpoint-s3-csi-driver) — upstream
+- [awslabs/mountpoint-s3](https://github.com/awslabs/mountpoint-s3) — the underlying FUSE client both drivers use
+- [`it2` CLI](https://github.com/mkusaka/it2) — for iTerm2 split-pane mode
