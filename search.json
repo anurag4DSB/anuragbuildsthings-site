@@ -1,5 +1,54 @@
 [
   {
+    "objectID": "posts/prompts-i-keep-coming-back-to.html",
+    "href": "posts/prompts-i-keep-coming-back-to.html",
+    "title": "Prompts I Keep Coming Back To",
+    "section": "",
+    "text": "Note\n\n\n\nLiving document - last updated 2026-05-21. Started today. I add to this when a prompt earns its place."
+  },
+  {
+    "objectID": "posts/prompts-i-keep-coming-back-to.html#what-this-is",
+    "href": "posts/prompts-i-keep-coming-back-to.html#what-this-is",
+    "title": "Prompts I Keep Coming Back To",
+    "section": "What this is",
+    "text": "What this is\nA commonplace book of prompts.\nNot prompts I wrote - prompts I’ve come across in other people’s posts, threads, repos, and talks, and found myself reaching for over and over. The kind that earn a spot in muscle memory because they keep producing useful output for the work I actually do.\nThis page exists for one reason: I kept losing them. See a great prompt, use it once, need it again a month later, reconstruct it badly from memory. From now on, when one earns its third use, it lives here.\nWhere I know the source, I credit it. Where I don’t, the source line stays open until I rediscover it. Each entry is just the prompt itself - copy-pasteable - and, when it helps, a short note on why I like it."
+  },
+  {
+    "objectID": "posts/prompts-i-keep-coming-back-to.html#quick-reference",
+    "href": "posts/prompts-i-keep-coming-back-to.html#quick-reference",
+    "title": "Prompts I Keep Coming Back To",
+    "section": "Quick reference",
+    "text": "Quick reference\n\n\n\nPrompt\nWhat it’s for\nSection\n\n\n\n\nultrathink\nTrigger deeper reasoning from Claude\nMagic words\n\n\ndiary\nSurface step-by-step reasoning instead of compressed summary\nMagic words\n\n\ngreat textbook\nCounter GPT-5’s tendency to be cryptic\nMagic words\n\n\nBURN THE BOATS\nStop agents from doing unnecessary backward-compat work\nMagic words\n\n\nProject kickoff interview\nGet past surface requirements at the start of a project\nFull prompts"
+  },
+  {
+    "objectID": "posts/prompts-i-keep-coming-back-to.html#magic-words",
+    "href": "posts/prompts-i-keep-coming-back-to.html#magic-words",
+    "title": "Prompts I Keep Coming Back To",
+    "section": "Magic words",
+    "text": "Magic words\nShort phrases I drop into prompts to nudge model behavior. From a friend at DeepMind: reasoning models aren’t only better because they “reason” - they’re also better because outputting more tokens means more compute budget. So anything that makes a model think longer or output more helps, to a degree. These are user-triggered versions of that effect.\n\nultrathink\nA trigger for deeper reasoning. Drop it into any Claude prompt where you want expanded thinking - Claude treats it as a signal to spend more compute budget on the response.\n\nplan this refactor - ultrathink\n\n\n\ndiary\nForces step-by-step thinking. Makes uncertainty explicit. Prevents the model from collapsing everything into a dense summary.\nInstead of jumping straight to a compressed explanation, the model has to walk through how understanding evolved over time: observations, hypotheses, dead ends, and conclusions. A side effect I’ve noticed: the reasoning trace also surfaces loopholes in conclusions before reaching them.\n\nexplain this bug as a diary entry\n\n\n\ngreat textbook\nFor countering GPT-5’s tendency to be cryptic. Forces pedagogical, clear, build-up-understanding-from-zero explanations instead of dense compressed summaries.\nI discovered this one going through a bug. The agent’s summary was technically correct but unreadable. The reframing produced a clean walk-through I could actually hand to a teammate.\n\nwrite an explanation of this bug, like a great textbook\n\n\n\nBURN THE BOATS\nFor when agents do unnecessary backward-compatibility work. Drops the legacy-preservation instinct and lets the model rewrite freely.\n\nrefactor this module - BURN THE BOATS\n\n\nI’ve used it four or five times in 2025. Works every time."
+  },
+  {
+    "objectID": "posts/prompts-i-keep-coming-back-to.html#full-prompts",
+    "href": "posts/prompts-i-keep-coming-back-to.html#full-prompts",
+    "title": "Prompts I Keep Coming Back To",
+    "section": "Full prompts",
+    "text": "Full prompts\n\nProject kickoff interview\n\nI am about to start this project, \"PROJECT NAME\". You have all the\ncontext using the hopocalypse MCP server. Interview me until you have\n95% confidence about what I actually want, not what I think I should\nwant.\n\n\nThe load-bearing line is “what I actually want, not what I think I should want.” Without it, the model interviews for surface requirements I’ve already articulated. With it, the interview interrogates the framing I came in with - which is usually where the assumptions are hiding.\nThe MCP reference is incidental - swap in whatever your context-loading mechanism is, or drop the line entirely. The interviewing pattern is the part that matters."
+  },
+  {
+    "objectID": "posts/prompts-i-keep-coming-back-to.html#on-my-radar",
+    "href": "posts/prompts-i-keep-coming-back-to.html#on-my-radar",
+    "title": "Prompts I Keep Coming Back To",
+    "section": "On my radar",
+    "text": "On my radar\nHalf-remembered prompts I want to write up next. Placeholders until they get full entries above.\n\nyaml dsl - a structural framing trick I keep using; need to articulate the load-bearing parts.\nfor a new intern - a thoroughness trigger; need to write up when it does and doesn’t help."
+  },
+  {
+    "objectID": "posts/prompts-i-keep-coming-back-to.html#how-i-add-to-this",
+    "href": "posts/prompts-i-keep-coming-back-to.html#how-i-add-to-this",
+    "title": "Prompts I Keep Coming Back To",
+    "section": "How I add to this",
+    "text": "How I add to this\nA prompt earns a spot here after three uses and after I can articulate (even in one line) what makes it land. Until then it lives in On my radar above as a name, a thread link, or a vague memory of a phrase that worked."
+  },
+  {
     "objectID": "posts/claude-code-agent-teams-real-work.html",
     "href": "posts/claude-code-agent-teams-real-work.html",
     "title": "Claude Code Agent Teams on a Real Production Chore",

@@ -4,5 +4,6 @@
 
 ## Pages
 
-- [Claude Code Agent Teams on a Real Production Chore](https://anuragbuildsthings.com/posts/claude-code-agent-teams-real-work.llms.md)
+- [Prompts I Keep Coming Back To](https://anuragbuildsthings.com/posts/prompts-i-keep-coming-back-to.llms.md)
 - [anurag builds things](https://anuragbuildsthings.com/index.llms.md)
+- [Claude Code Agent Teams on a Real Production Chore](https://anuragbuildsthings.com/posts/claude-code-agent-teams-real-work.llms.md)

@@ -17,7 +17,151 @@
 <width>144</width>
 </image>
 <generator>quarto-1.9.37</generator>
-<lastBuildDate>Fri, 03 Apr 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 21 May 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Prompts I Keep Coming Back To</title>
+  <link>https://anuragbuildsthings.com/posts/prompts-i-keep-coming-back-to.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Living document - last updated 2026-05-21.</strong> Started today. I add to this when a prompt earns its place.</p>
+</div>
+</div>
+<section id="what-this-is" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-is">What this is</h2>
+<p>A commonplace book of prompts.</p>
+<p>Not prompts I wrote - prompts I’ve come across in other people’s posts, threads, repos, and talks, and found myself reaching for over and over. The kind that earn a spot in muscle memory because they keep producing useful output for the work I actually do.</p>
+<p>This page exists for one reason: I kept losing them. See a great prompt, use it once, need it again a month later, reconstruct it badly from memory. From now on, when one earns its third use, it lives here.</p>
+<p>Where I know the source, I credit it. Where I don’t, the source line stays open until I rediscover it. Each entry is just the prompt itself - copy-pasteable - and, when it helps, a short note on why I like it.</p>
+</section>
+<section id="quick-reference" class="level2">
+<h2 class="anchored" data-anchor-id="quick-reference">Quick reference</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Prompt</th>
+<th>What it’s for</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ultrathink</td>
+<td>Trigger deeper reasoning from Claude</td>
+<td>Magic words</td>
+</tr>
+<tr class="even">
+<td>diary</td>
+<td>Surface step-by-step reasoning instead of compressed summary</td>
+<td>Magic words</td>
+</tr>
+<tr class="odd">
+<td>great textbook</td>
+<td>Counter GPT-5’s tendency to be cryptic</td>
+<td>Magic words</td>
+</tr>
+<tr class="even">
+<td>BURN THE BOATS</td>
+<td>Stop agents from doing unnecessary backward-compat work</td>
+<td>Magic words</td>
+</tr>
+<tr class="odd">
+<td>Project kickoff interview</td>
+<td>Get past surface requirements at the start of a project</td>
+<td>Full prompts</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="magic-words" class="level2">
+<h2 class="anchored" data-anchor-id="magic-words">Magic words</h2>
+<p>Short phrases I drop into prompts to nudge model behavior. From a friend at DeepMind: <em>reasoning models aren’t only better because they “reason” - they’re also better because outputting more tokens means more compute budget</em>. So anything that makes a model think longer or output more helps, to a degree. These are user-triggered versions of that effect.</p>
+<section id="ultrathink" class="level3 entry">
+<h3 class="entry anchored" data-anchor-id="ultrathink">ultrathink</h3>
+<p>A trigger for deeper reasoning. Drop it into any Claude prompt where you want expanded thinking - Claude treats it as a signal to spend more compute budget on the response.</p>
+<div class="prompt-card">
+<pre><code>plan this refactor - ultrathink</code></pre>
+</div>
+</section>
+<section id="diary" class="level3 entry">
+<h3 class="entry anchored" data-anchor-id="diary">diary</h3>
+<p>Forces step-by-step thinking. Makes uncertainty explicit. Prevents the model from collapsing everything into a dense summary.</p>
+<p>Instead of jumping straight to a compressed explanation, the model has to walk through how understanding evolved over time: observations, hypotheses, dead ends, and conclusions. A side effect I’ve noticed: the reasoning trace also surfaces loopholes in conclusions before reaching them.</p>
+<div class="prompt-card">
+<pre><code>explain this bug as a diary entry</code></pre>
+</div>
+</section>
+<section id="great-textbook" class="level3 entry">
+<h3 class="entry anchored" data-anchor-id="great-textbook">great textbook</h3>
+<p>For countering GPT-5’s tendency to be cryptic. Forces pedagogical, clear, build-up-understanding-from-zero explanations instead of dense compressed summaries.</p>
+<p>I discovered this one going through a bug. The agent’s summary was technically correct but unreadable. The reframing produced a clean walk-through I could actually hand to a teammate.</p>
+<div class="prompt-card">
+<pre><code>write an explanation of this bug, like a great textbook</code></pre>
+</div>
+</section>
+<section id="burn-the-boats" class="level3 entry">
+<h3 class="entry anchored" data-anchor-id="burn-the-boats">BURN THE BOATS</h3>
+<p>For when agents do unnecessary backward-compatibility work. Drops the legacy-preservation instinct and lets the model rewrite freely.</p>
+<div class="prompt-card">
+<pre><code>refactor this module - BURN THE BOATS</code></pre>
+</div>
+<div class="prompt-note">
+<p>I’ve used it four or five times in 2025. Works every time.</p>
+</div>
+</section>
+</section>
+<section id="full-prompts" class="level2">
+<h2 class="anchored" data-anchor-id="full-prompts">Full prompts</h2>
+<section id="project-kickoff-interview" class="level3 entry">
+<h3 class="entry anchored" data-anchor-id="project-kickoff-interview">Project kickoff interview</h3>
+<div class="prompt-card">
+<pre><code>I am about to start this project, "PROJECT NAME". You have all the
+context using the hopocalypse MCP server. Interview me until you have
+95% confidence about what I actually want, not what I think I should
+want.</code></pre>
+</div>
+<div class="prompt-note">
+<p>The load-bearing line is <em>“what I actually want, not what I think I should want.”</em> Without it, the model interviews for surface requirements I’ve already articulated. With it, the interview interrogates the framing I came in with - which is usually where the assumptions are hiding.</p>
+<p>The MCP reference is incidental - swap in whatever your context-loading mechanism is, or drop the line entirely. The interviewing pattern is the part that matters.</p>
+</div>
+</section>
+</section>
+<section id="on-my-radar" class="level2">
+<h2 class="anchored" data-anchor-id="on-my-radar">On my radar</h2>
+<p>Half-remembered prompts I want to write up next. Placeholders until they get full entries above.</p>
+<ul>
+<li><strong><code>yaml dsl</code></strong> - a structural framing trick I keep using; need to articulate the load-bearing parts.</li>
+<li><strong><code>for a new intern</code></strong> - a thoroughness trigger; need to write up when it does and doesn’t help.</li>
+</ul>
+</section>
+<section id="how-i-add-to-this" class="level2">
+<h2 class="anchored" data-anchor-id="how-i-add-to-this">How I add to this</h2>
+<p>A prompt earns a spot here after three uses and after I can articulate (even in one line) what makes it land. Until then it lives in <em>On my radar</em> above as a name, a thread link, or a vague memory of a phrase that worked.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>prompts</category>
+  <category>claude-code</category>
+  <category>ai-coding</category>
+  <category>living-document</category>
+  <guid>https://anuragbuildsthings.com/posts/prompts-i-keep-coming-back-to.html</guid>
+  <pubDate>Thu, 21 May 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Claude Code Agent Teams on a Real Production Chore</title>
   <link>https://anuragbuildsthings.com/posts/claude-code-agent-teams-real-work.html</link>
