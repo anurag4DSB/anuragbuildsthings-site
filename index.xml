@@ -134,8 +134,16 @@ context using the hopocalypse MCP server. Interview me until you have
 want.</code></pre>
 </div>
 <div class="prompt-note">
-<p>The load-bearing line is <em>“what I actually want, not what I think I should want.”</em> Without it, the model interviews for surface requirements I’ve already articulated. With it, the interview interrogates the framing I came in with - which is usually where the assumptions are hiding.</p>
-<p>The MCP reference is incidental - swap in whatever your context-loading mechanism is, or drop the line entirely. The interviewing pattern is the part that matters.</p>
+<p>The load-bearing line is <em>“what I actually want, not what I think I should want.”</em> Without it, the model interviews for surface requirements I’ve already articulated. With it, the interview interrogates the framing I came in with — which is usually where the assumptions are hiding.</p>
+<p>The “hopocalypse MCP server” line is just how <em>I</em> load context. Swap it for whatever fits your setup:</p>
+<ul>
+<li><code>read the README at /path/to/spec.md</code></li>
+<li><code>pull issue #42 from the GitHub MCP</code></li>
+<li><code>here's the design doc, attached</code></li>
+<li><code>use the Notion MCP to read the page titled "X"</code></li>
+<li>or just paste the context inline before this prompt</li>
+</ul>
+<p>Or drop the context line entirely if the model already has what it needs. The interviewing pattern is the part that matters.</p>
 </div>
 </section>
 </section>
@@ -161,6 +169,7 @@ want.</code></pre>
   <category>living-document</category>
   <guid>https://anuragbuildsthings.com/posts/prompts-i-keep-coming-back-to.html</guid>
   <pubDate>Thu, 21 May 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://anuragbuildsthings.com/posts/figures/prompts-i-keep-coming-back-to-thumb.png" medium="image" type="image/png" height="80" width="144"/>
 </item>
 <item>
   <title>Claude Code Agent Teams on a Real Production Chore</title>

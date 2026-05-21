@@ -4,6 +4,8 @@
 
 I build things to understand how they actually work. A question, a system built to answer it, a comparison against real data. Just the code, the curves, and what they actually mean.
 
+[![](./posts/figures/prompts-i-keep-coming-back-to-thumb.png)](posts/prompts-i-keep-coming-back-to.llms.md)
+
 ### [Prompts I Keep Coming Back To](posts/prompts-i-keep-coming-back-to.llms.md)
 
 A commonplace book - prompts and magic words I’ve collected from others and keep reaching for. Not mine; just my favorites. Growing as I find more.
