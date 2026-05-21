@@ -3,6 +3,8 @@ title: "Claude Code Agent Teams on a Real Production Chore"
 date: 2026-04-03
 categories: [claude-code, agent-teams, ai-coding, kubernetes, csi]
 description: "I tried Claude Code's experimental agent teams on an actual job - analyzing upstream divergence on Scality's S3 CSI driver - not a toy demo. Field notes on what worked, what cost, and the three settings worth knowing."
+image: figures/claude-code-agent-teams-thumb.jpg
+image-alt: "YouTube thumbnail for the companion video: '21 agents, 1 human, prod K8s driver' over a tmux split-pane showing teammates working in parallel."
 ---
 
 ::: {.callout-note}
