@@ -40,7 +40,7 @@ Where I know the source, I credit it. Where I don’t, the source line stays ope
 
 ## Magic words
 
-Short phrases I drop into prompts to nudge model behavior. From a friend at DeepMind: *reasoning models aren’t only better because they “reason” - they’re also better because outputting more tokens means more compute budget*. So anything that makes a model think longer or output more helps, to a degree. These are user-triggered versions of that effect.
+Short phrases I drop into prompts to nudge model behavior. Reasoning models aren’t only better because they “reason” - they’re also better because outputting more tokens means more compute budget. So anything that makes a model think longer or output more helps, to a degree. These are user-triggered versions of that effect.
 
 ### ultrathink
 

@@ -88,7 +88,7 @@ Note
 </section>
 <section id="magic-words" class="level2">
 <h2 class="anchored" data-anchor-id="magic-words">Magic words</h2>
-<p>Short phrases I drop into prompts to nudge model behavior. From a friend at DeepMind: <em>reasoning models aren’t only better because they “reason” - they’re also better because outputting more tokens means more compute budget</em>. So anything that makes a model think longer or output more helps, to a degree. These are user-triggered versions of that effect.</p>
+<p>Short phrases I drop into prompts to nudge model behavior. Reasoning models aren’t only better because they “reason” - they’re also better because outputting more tokens means more compute budget. So anything that makes a model think longer or output more helps, to a degree. These are user-triggered versions of that effect.</p>
 <section id="ultrathink" class="level3 entry">
 <h3 class="entry anchored" data-anchor-id="ultrathink">ultrathink</h3>
 <p>A trigger for deeper reasoning. Drop it into any Claude prompt where you want expanded thinking - Claude treats it as a signal to spend more compute budget on the response.</p>
