@@ -85,10 +85,10 @@ The load-bearing line is *“what I actually want, not what I think I should wan
 
 The “hopocalypse MCP server” line is just how *I* load context. Swap it for whatever fits your setup:
 
-- `read the README at /path/to/spec.md`
-- `pull issue #42 from the GitHub MCP`
+- `read the README at @/path/to/spec.md`
+- `pull issue #42 using gh cli`
 - `here's the design doc, attached`
-- `use the Notion MCP to read the page titled "X"`
+- `use the Atlassian MCP to read the Confluence page titled "X"`
 - or just paste the context inline before this prompt
 
 Or drop the context line entirely if the model already has what it needs. The interviewing pattern is the part that matters.
