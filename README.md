@@ -2,7 +2,7 @@
 
 Source for [anuragbuildsthings.com](https://anuragbuildsthings.com/) - a personal site about projects, experiments, and systems built in public.
 
-Built with [Quarto](https://quarto.org/). Deployed to GitHub Pages via the workflow in `.github/workflows/publish.yml` on every push to `main`.
+Built with [Quarto](https://quarto.org/docs/get-started/). Deployed to GitHub Pages via the workflow in `.github/workflows/publish.yml` on every push to `main`.
 
 ## Run locally
 
