@@ -473,6 +473,17 @@ div.sourceCode {
   padding: 1rem !important;
 }
 
+/* Quarto's highlight theme sets its own dark foreground on .sourceCode
+   pre/code, which is unreadable on our dark --paper-up background.
+   Force --ink at the container level; token spans (.kw, .st, .co, …)
+   keep their syntax-highlight colors. */
+pre,
+pre code,
+div.sourceCode pre,
+div.sourceCode code {
+  color: var(--ink) !important;
+}
+
 /* ── Post page: article matches home's 1200 px frame, TOC floats left ──
    Only kicks in when the viewport is wide enough for the 1200 article
    plus the ~250 px TOC gutter. Below this, Quarto's default layout
