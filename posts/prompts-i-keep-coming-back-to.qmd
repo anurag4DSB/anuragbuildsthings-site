@@ -3,6 +3,7 @@ title: "Prompts I Keep Coming Back To"
 date: 2026-05-21
 categories: [prompts, claude-code, ai-coding, living-document]
 description: "A commonplace book - prompts and magic words I've collected from others and keep reaching for. Not mine; just my favorites. Growing as I find more."
+image: figures/prompts-i-keep-coming-back-to-thumb.png
 ---
 
 ::: {.callout-note}
