@@ -18,7 +18,7 @@ Published
 
 > **NOTE:**
 >
-> This is the companion post to the video below. The post is the reference card; the video is the walkthrough.
+> This is the companion post to the video below. The post is the reference card; the video is the walkthrough. Also on [Substack](https://anuragbuildsthings.substack.com/p/claude-code-agent-teams-on-a-real).
 
 # An error occurred.
 
