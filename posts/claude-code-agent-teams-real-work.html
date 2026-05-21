@@ -475,7 +475,7 @@ Note
 <p>Teammates <strong>don’t inherit the lead’s <code>/model</code> selection</strong>. They use whatever you set as <strong>Default teammate model</strong> in <code>/config</code> → “Default teammate model”, or whatever you specify in the prompt.</p>
 <p>If you want the team on Opus, say so in the spawn prompt:</p>
 <blockquote class="blockquote">
-<p>Use agent teams to spawn one teammate per independent task, maximizing parallelism with an upper limit of 10 concurrent teammates. If there are more tasks than that, queue the rest - new teammates spawn as active ones finish and slots open up. Where tasks have dependencies, allow communication among teammates so dependent agents wait for prerequisites to finish, and the team lead coordinates handoffs between them. All teammates should use the Opus 4.6 model. Each teammate should verify their output by comparing it against the actual code…</p>
+<p><strong>Use agent teams to spawn</strong> one teammate per independent task, maximizing parallelism with an upper <strong>limit of 10 concurrent teammates</strong>. If there are more tasks than that, queue the rest - new teammates spawn as active ones finish and slots open up. Where tasks have dependencies, <strong>allow communication among teammates</strong> so dependent agents wait for prerequisites to finish, and the team lead coordinates handoffs between them. <strong>All teammates should use the Opus 4.6 model</strong>. Each teammate should <strong>verify their output by comparing it against the actual code</strong>…</p>
 </blockquote>
 </section>
 <section id="a-note-on-this-prompt" class="level3">

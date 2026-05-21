@@ -108,7 +108,7 @@ Teammates **don’t inherit the lead’s `/model` selection**. They use whatever
 
 If you want the team on Opus, say so in the spawn prompt:
 
-> Use agent teams to spawn one teammate per independent task, maximizing parallelism with an upper limit of 10 concurrent teammates. If there are more tasks than that, queue the rest - new teammates spawn as active ones finish and slots open up. Where tasks have dependencies, allow communication among teammates so dependent agents wait for prerequisites to finish, and the team lead coordinates handoffs between them. All teammates should use the Opus 4.6 model. Each teammate should verify their output by comparing it against the actual code…
+> **Use agent teams to spawn** one teammate per independent task, maximizing parallelism with an upper **limit of 10 concurrent teammates**. If there are more tasks than that, queue the rest - new teammates spawn as active ones finish and slots open up. Where tasks have dependencies, **allow communication among teammates** so dependent agents wait for prerequisites to finish, and the team lead coordinates handoffs between them. **All teammates should use the Opus 4.6 model**. Each teammate should **verify their output by comparing it against the actual code**…
 
 ### A note on this prompt
 
