@@ -39,7 +39,7 @@ toc: false
 
 <script>
   (function () {
-    var WORDS = ['things', 'RAG', 'intelligent systems', 'systems', 'world models'];
+    var WORDS = ['things', 'agent teams', 'intelligent systems', 'kubernetes drivers', 'evals & benchmarks', 'MCP servers', 'knowledge RAG systems', 'distributed systems'];
     var TYPE_MS = 75, BACK_MS = 42, HOLD_MS = 2500, EMPTY_MS = 380;
 
     var typed = document.querySelector('.hero-standfirst .rotator .typed');
