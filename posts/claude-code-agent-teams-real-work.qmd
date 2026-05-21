@@ -124,7 +124,7 @@ verify their output by comparing it against the actual code…
 
 ## What the cost actually looked like
 
-Token usage scales linearly with team size - each teammate is a full instance. The first pass with four Sonnet analyzers and a lead landed around 350k tokens total - roughly **$8 at API rates**. The second pass on Opus with ~19 teammates re-reading large portions of both codebases for verification was substantially heavier - **somewhere in the $50–$100 range if you were paying API token prices**. I was on a Claude Max plan, so this didn't hit a credit card, but the API-equivalent figure is the one that matters if you're deciding whether to try this on your own work.
+Token usage scales linearly with team size - each teammate is a full instance. The first pass with four Sonnet analyzers and a lead landed around 350k tokens total - roughly **$8 at API rates**. The second pass on Opus with ~19 teammates re-reading large portions of both codebases for verification was substantially heavier - **somewhere in the $50–$100 range if you were paying API token prices**.
 
 If the chore would have taken me a focused day, that math is fine. For routine work, a single session is cheaper and faster. The actual lesson isn't *"agent teams are cheap"* - it's that you can run a small Sonnet team to plan, then spend the Opus budget only where verification actually matters.
 
