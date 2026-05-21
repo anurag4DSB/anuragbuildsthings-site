@@ -1,0 +1,18 @@
+---
+title: "[working title -- agent memory research]"
+# date intentionally omitted until the post is ready to publish
+categories: [agents, memory, distributed-systems]
+description: "Placeholder. Research notes on persistent external memory for multi-repo coding agents."
+---
+
+## Research question
+
+How should persistent external memory for multi-repository software reasoning be structured so that agent performance improves on cross-service debugging, architecture understanding, and implementation tracing?
+
+## Working claim
+
+I investigated what kinds of persistent external memory actually help coding agents reason across distributed systems codebases, and I can show where each retrieval mode helps or fails.
+
+## Notes
+
+<!-- scratch space -->
