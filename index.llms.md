@@ -4,6 +4,8 @@
 
 I build things to understand how they actually work. A question, a system built to answer it, a comparison against real data. Just the code, the curves, and what they actually mean.
 
+[![YouTube thumbnail for the companion video: &#039;21 agents, 1 human, prod K8s driver' over a tmux split-pane showing teammates working in parallel.](./posts/figures/claude-code-agent-teams-thumb.jpg)](posts/claude-code-agent-teams-real-work.llms.md)
+
 ### [Claude Code Agent Teams on a Real Production Chore](posts/claude-code-agent-teams-real-work.llms.md)
 
 I tried Claude Code’s experimental agent teams on an actual job - analyzing upstream divergence on Scality’s S3 CSI driver - not a toy demo. Field notes on what worked, what cost, and the three settings worth knowing.
