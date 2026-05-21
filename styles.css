@@ -473,6 +473,17 @@ div.sourceCode {
   padding: 1rem !important;
 }
 
+/* Quarto's highlight theme sets its own dark foreground on .sourceCode
+   pre/code, which is unreadable on our dark --paper-up background.
+   Force --ink at the container level; token spans (.kw, .st, .co, …)
+   keep their syntax-highlight colors. */
+pre,
+pre code,
+div.sourceCode pre,
+div.sourceCode code {
+  color: var(--ink) !important;
+}
+
 /* ── Post page: article matches home's 1200 px frame, TOC floats left ──
    Only kicks in when the viewport is wide enough for the 1200 article
    plus the ~250 px TOC gutter. Below this, Quarto's default layout
@@ -508,6 +519,32 @@ div.sourceCode {
 
   .page-columns:not(.page-layout-custom) #quarto-margin-sidebar {
     display: none !important;
+  }
+}
+
+/* Wide viewports: align the post-page article with the home-page's 1200 px
+   centred frame, and let the TOC float in the left margin without pushing
+   the article. The TOC needs at least 248 px of left-margin slack to fit
+   (200 px width + 48 px gap), and the article is 1200 px centred, so the
+   minimum viewport is ~1792 px (1200 + 2×248 + 2×3rem padding). Below
+   this, the left-anchored grid above applies. */
+@media (min-width: 1800px) {
+  .page-columns:not(.page-layout-custom) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 75rem) minmax(0, 1fr) !important;
+    justify-content: center !important;
+  }
+
+  .page-columns:not(.page-layout-custom) #quarto-sidebar {
+    grid-column: 1 / 2 !important;
+    grid-row: 1 !important;
+    justify-self: end !important;
+    width: 12.5rem !important;
+    margin-right: 3rem !important;
+  }
+
+  .page-columns:not(.page-layout-custom) #quarto-document-content {
+    grid-column: 2 / 3 !important;
+    grid-row: 1 !important;
   }
 }
 

@@ -23,3 +23,6 @@ quarto-web
 .playwright-mcp/
 
 **/*.quarto_ipynb
+
+# Temporary local data
+post-temp-data/
