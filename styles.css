@@ -340,6 +340,10 @@ body.nav-fixed {
   color: var(--ink) !important;
 }
 
+.navbar .quarto-navigation-tool:hover .bi-substack {
+  color: #FF6719 !important;
+}
+
 /* ── Title block ──────────────────────────────────────────────── */
 .quarto-title-block {
   margin-bottom: 3rem;
@@ -2223,6 +2227,11 @@ figcaption {
 .p-item:hover .p-meta .bi-envelope-fill,
 .p-item.sel .p-meta .bi-envelope-fill {
   color: var(--signal);
+}
+
+.p-item:hover .p-meta .bi-substack,
+.p-item.sel .p-meta .bi-substack {
+  color: #FF6719;
 }
 
 .palette-foot {

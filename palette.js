@@ -13,6 +13,7 @@
     { title: 'Open GitHub', href: 'https://github.com/anurag4dsb', external: true, icon: 'git' },
     { title: 'Open YouTube', href: 'https://www.youtube.com/@AnuragBuildsThings', external: true, icon: 'youtube' },
     { title: 'Open LinkedIn', href: 'https://www.linkedin.com/in/mittalanu/', external: true, icon: 'linkedin' },
+    { title: 'Open Substack', href: 'https://anuragbuildsthings.substack.com', external: true, icon: 'substack' },
     { title: 'Email me', href: 'mailto:anuragbuildsthings@gmail.com', external: false, icon: 'envelope-fill' }
   ];
 
