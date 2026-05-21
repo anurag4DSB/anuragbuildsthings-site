@@ -4,8 +4,5 @@
 
 ## Pages
 
-- [Why Augmentations Matter in Contrastive Learning](https://anuragbuildsthings.com/posts/why-augmentations-matter.llms.md)
-- [Self-Supervised Learning](https://anuragbuildsthings.com/posts/self-supervised-learning.llms.md)
+- [Claude Code Agent Teams on a Real Production Chore](https://anuragbuildsthings.com/posts/claude-code-agent-teams-real-work.llms.md)
 - [anurag builds things](https://anuragbuildsthings.com/index.llms.md)
-- [Augmentations Are the Model](https://anuragbuildsthings.com/posts/augmentations-are-the-model.llms.md)
-- [Learning Representations Without Labels (SimCLR)](https://anuragbuildsthings.com/posts/ssl-representation.llms.md)

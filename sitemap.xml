@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://anuragbuildsthings.com/posts/why-augmentations-matter.html</loc>
-    <lastmod>2026-04-23T09:36:43.158Z</lastmod>
-  </url>
-  <url>
-    <loc>https://anuragbuildsthings.com/posts/self-supervised-learning.html</loc>
-    <lastmod>2026-04-23T09:36:43.158Z</lastmod>
+    <loc>https://anuragbuildsthings.com/posts/claude-code-agent-teams-real-work.html</loc>
+    <lastmod>2026-05-21T12:29:50.688Z</lastmod>
   </url>
   <url>
     <loc>https://anuragbuildsthings.com/index.html</loc>
-    <lastmod>2026-04-23T09:36:43.156Z</lastmod>
-  </url>
-  <url>
-    <loc>https://anuragbuildsthings.com/posts/augmentations-are-the-model.html</loc>
-    <lastmod>2026-04-23T09:36:43.158Z</lastmod>
-  </url>
-  <url>
-    <loc>https://anuragbuildsthings.com/posts/ssl-representation.html</loc>
-    <lastmod>2026-04-23T09:36:43.158Z</lastmod>
+    <lastmod>2026-05-21T12:29:50.687Z</lastmod>
   </url>
 </urlset>

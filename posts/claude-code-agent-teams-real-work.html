@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-03-18">
-<meta name="description" content="Implementing SimCLR from scratch to learn visual representations without labels using contrastive learning on CIFAR-10.">
+<meta name="dcterms.date" content="2026-04-03">
+<meta name="description" content="I tried Claude Code’s experimental agent teams on an actual job - analyzing upstream divergence on Scality’s S3 CSI driver - not a toy demo. Field notes on what worked, what cost, and the three settings worth knowing.">
 
-<title>Learning Representations Without Labels (SimCLR) – anurag builds things</title>
+<title>Claude Code Agent Teams on a Real Production Chore – anurag builds things</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -24,6 +24,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -45,9 +80,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-42c95e970eec116de8324dc2a05cd83c.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-bc5f8510b27d685868454e2f55466411.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-dark-f696dae79fedeac69867e24af891f176.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-bc5f8510b27d685868454e2f55466411.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-8985828272e003e1661e9d1f499226bc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dark-ea0746a99511818bf60ec9e8e727f3a9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-8985828272e003e1661e9d1f499226bc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -96,13 +131,10 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@200..800&amp;family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&amp;family=Inter+Tight:wght@300..700&amp;family=JetBrains+Mono:wght@400..600&amp;family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&amp;display=optional">
 
 
-<meta property="og:title" content="Learning Representations Without Labels (SimCLR) – anurag builds things">
-<meta property="og:description" content="Implementing SimCLR from scratch to learn visual representations without labels using contrastive learning on CIFAR-10.">
-<meta property="og:image" content="https://anuragbuildsthings.com/posts/figures/fig-simclr.png">
+<meta property="og:title" content="Claude Code Agent Teams on a Real Production Chore – anurag builds things">
+<meta property="og:description" content="I tried Claude Code’s experimental agent teams on an actual job - analyzing upstream divergence on Scality’s S3 CSI driver - not a toy demo. Field notes on what worked, what cost, and the three settings worth knowing.">
+<meta property="og:image" content="https://anuragbuildsthings.com/posts/og-default.png">
 <meta property="og:site_name" content="anurag builds things">
-<meta property="og:image:height" content="630">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:alt" content="SimCLR diagram: two augmented views, encoder, projection, embedding space.">
 </head>
 
 <body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -296,12 +328,14 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal">Goal</a></li>
-  <li><a href="#plan" id="toc-plan" class="nav-link" data-scroll-target="#plan">Plan</a></li>
-  <li><a href="#initial-setup" id="toc-initial-setup" class="nav-link" data-scroll-target="#initial-setup">Initial Setup</a></li>
-  <li><a href="#what-i-expect" id="toc-what-i-expect" class="nav-link" data-scroll-target="#what-i-expect">What I Expect</a></li>
-  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#what-this-is" id="toc-what-this-is" class="nav-link active" data-scroll-target="#what-this-is">What this is</a></li>
+  <li><a href="#agent-teams-vs.-subagents---the-one-line-version" id="toc-agent-teams-vs.-subagents---the-one-line-version" class="nav-link" data-scroll-target="#agent-teams-vs.-subagents---the-one-line-version">Agent teams vs.&nbsp;subagents - the one-line version</a></li>
+  <li><a href="#what-i-actually-did" id="toc-what-i-actually-did" class="nav-link" data-scroll-target="#what-i-actually-did">What I actually did</a></li>
+  <li><a href="#three-settings-worth-knowing" id="toc-three-settings-worth-knowing" class="nav-link" data-scroll-target="#three-settings-worth-knowing">Three settings worth knowing</a></li>
+  <li><a href="#what-the-cost-actually-looked-like" id="toc-what-the-cost-actually-looked-like" class="nav-link" data-scroll-target="#what-the-cost-actually-looked-like">What the cost actually looked like</a></li>
+  <li><a href="#what-id-do-differently-next-time" id="toc-what-id-do-differently-next-time" class="nav-link" data-scroll-target="#what-id-do-differently-next-time">What I’d do differently next time</a></li>
+  <li><a href="#bottom-line" id="toc-bottom-line" class="nav-link" data-scroll-target="#bottom-line">Bottom line</a></li>
+  <li><a href="#links" id="toc-links" class="nav-link" data-scroll-target="#links">Links</a></li>
   </ul>
 </nav>
 </nav>
@@ -315,17 +349,19 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Learning Representations Without Labels (SimCLR)</h1>
+<h1 class="title">Claude Code Agent Teams on a Real Production Chore</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">self-supervised-learning</div>
-    <div class="quarto-category">contrastive-learning</div>
-    <div class="quarto-category">computer-vision</div>
+    <div class="quarto-category">claude-code</div>
+    <div class="quarto-category">agent-teams</div>
+    <div class="quarto-category">ai-coding</div>
+    <div class="quarto-category">kubernetes</div>
+    <div class="quarto-category">csi</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Implementing SimCLR from scratch to learn visual representations without labels using contrastive learning on CIFAR-10.
+    I tried Claude Code’s experimental agent teams on an actual job - analyzing upstream divergence on Scality’s S3 CSI driver - not a toy demo. Field notes on what worked, what cost, and the three settings worth knowing.
   </div>
 </div>
 
@@ -336,7 +372,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">18 Mar 2026</p>
+      <p class="date">03 Apr 2026</p>
     </div>
   </div>
   
@@ -348,50 +384,141 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 </header>
 
 
-<section id="goal" class="level2">
-<h2 class="anchored" data-anchor-id="goal">Goal</h2>
-<p>Learn visual representations without labels using contrastive learning. Specifically, implement SimCLR (Simple Framework for Contrastive Learning of Visual Representations) from scratch and evaluate the quality of learned embeddings on CIFAR-10.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is the companion post to the video below. The post is the reference card; the video is the walkthrough.</p>
+</div>
+</div>
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:1.5rem 0;">
+  <iframe src="https://www.youtube.com/embed/HthWDC8LLEc" title="Claude Code Agent Teams on a real production chore" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+</div>
+<section id="what-this-is" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-is">What this is</h2>
+<p>Claude Code <a href="https://code.claude.com/docs/en/agent-teams">agent teams</a> shipped as an experimental feature about a week before I recorded this. I wanted to know how it behaved on something real, so I pointed it at a job I actually had to do: bring <a href="https://github.com/scality/mountpoint-s3-csi-driver">scality/mountpoint-s3-csi-driver</a>, a fork of the <a href="https://github.com/awslabs/mountpoint-s3-csi-driver">AWS Mountpoint S3 CSI driver</a> - back to feature parity with upstream after a gap, and fix a known bug (missing <code>securityContext</code> on mount pods) along the way.</p>
+<p>We hadn’t rebased the fork since AWS’s v2.0. The diff was large. There were features I’d want, features I’d skip (EKS, S3 Express One Zone - Scality’s S3 implementation doesn’t need those), and bugs to triage. Classic intensive chore.</p>
+<blockquote class="blockquote">
+<p>“I tried Claude Code agent teams for like 10 minutes and I was very surprised by how much I can scale myself.” <a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=0s">▶ 00:00</a></p>
+</blockquote>
 </section>
-<section id="plan" class="level2">
-<h2 class="anchored" data-anchor-id="plan">Plan</h2>
-<p>Implement SimCLR on CIFAR-10 and validate:</p>
+<section id="agent-teams-vs.-subagents---the-one-line-version" class="level2">
+<h2 class="anchored" data-anchor-id="agent-teams-vs.-subagents---the-one-line-version">Agent teams vs.&nbsp;subagents - the one-line version</h2>
+<p><a href="https://code.claude.com/docs/en/sub-agents">Subagents</a> report back to the main agent and don’t talk to each other. <strong>Agent teams</strong> share a task list and message each other directly, each in its own context window. You can also message any teammate yourself.</p>
+<p>That’s the whole architectural difference. The cost difference is real: each teammate is a full Claude Code instance, so tokens scale linearly with team size.</p>
+</section>
+<section id="what-i-actually-did" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-actually-did">What I actually did</h2>
+<p>Half a day of my own reading first - release notes, PRs, issues on the upstream - <em>before</em> delegating. Then I spawned a team with four analyzers running in parallel: feature filter, security context analyzer, upstream analyzer, divergence analyzer. A team lead synthesized.</p>
+<blockquote class="blockquote">
+<p>“I wanted to understand what I am delegating, so I can direct it in the right direction.” <a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=300s">▶ ~05:00</a></p>
+</blockquote>
+<blockquote class="blockquote">
+<p>“I don’t call it vibe coding. I call it intentional AI coding.” <a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=1590s">▶ ~26:30</a></p>
+</blockquote>
+<p>The output was a 4-phase roadmap: critical security bug, 5 high-value fixes, ~30 developer-days of work across 74 analyzed commits. After the first pass I asked it to re-render the markdown reports as an HTML site so I could read them in a browser, then ran a second verification pass on Opus in tmux mode to challenge the findings against the actual code.</p>
+<p>Chapter map:</p>
 <ul>
-<li>Can the model learn useful representations without labels?</li>
-<li>How sensitive is performance to augmentations?</li>
-<li>How does batch size affect learning?</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=0s">00:00</a> - Real production use (not a demo)</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=45s">00:45</a> - Project context: CSI driver for S3</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=510s">08:30</a> - Spawning agent teams &amp; delegation</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=860s">14:20</a> - Reviewing output + token/cost reality check</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=1120s">18:40</a> - Turning findings into an action plan</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=1800s">30:00</a> - Tmux teammate mode (watch agents live)</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=2450s">40:50</a> - Results, scaling reflections &amp; next steps</li>
 </ul>
 </section>
-<section id="initial-setup" class="level2">
-<h2 class="anchored" data-anchor-id="initial-setup">Initial Setup</h2>
-<ul>
-<li>Encoder: ResNet-18</li>
-<li>Projection head: 2-layer MLP</li>
-<li>Loss: NT-Xent</li>
-<li>Dataset: CIFAR-10</li>
-</ul>
-<p>Hyperparameters will be tuned incrementally during experiments.</p>
+<section id="three-settings-worth-knowing" class="level2">
+<h2 class="anchored" data-anchor-id="three-settings-worth-knowing">Three settings worth knowing</h2>
+<p>These are the three things I’d want someone to have in front of them before trying this.</p>
+<section id="enable-it" class="level3">
+<h3 class="anchored" data-anchor-id="enable-it">1. Enable it</h3>
+<p>Agent teams are disabled by default. Flip the env var in <code>~/.claude/settings.json</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"env"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"</span><span class="fu">:</span> <span class="st">"1"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Needs Claude Code v2.1.32 or later. Check with <code>claude --version</code>.</p>
 </section>
-<section id="what-i-expect" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-expect">What I Expect</h2>
+<section id="display-mode---in-process-vs.-tmux-split-panes" class="level3">
+<h3 class="anchored" data-anchor-id="display-mode---in-process-vs.-tmux-split-panes">2. Display mode - in-process vs.&nbsp;tmux split panes</h3>
+<p>Two ways to watch teammates work:</p>
 <ul>
-<li>Augmentations will be critical for learning meaningful representations</li>
-<li>Larger batch sizes may improve performance (more negative samples)</li>
-<li>Training stability may depend on temperature and normalization</li>
+<li><strong>In-process</strong> (default-ish): all teammates live in your main terminal. <code>Shift+Down</code> cycles through them, <code>Enter</code> jumps into a teammate’s session, <code>Ctrl+T</code> toggles the task list. Works in any terminal, zero setup.</li>
+<li><strong>Split panes</strong>: each teammate gets its own pane via tmux or iTerm2. You see everyone at once. The mode I switched to halfway through the video to actually <em>watch</em> a 19-teammate Opus pass spawn.</li>
+</ul>
+<p>Override in <code>~/.claude/settings.json</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"env"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"</span><span class="fu">:</span> <span class="st">"1"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"teammateMode"</span><span class="fu">:</span> <span class="st">"tmux"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or per-session: <code>claude --teammate-mode in-process</code>.</p>
+<p>Default is <code>"auto"</code> - split panes if you’re already inside a tmux session, in-process otherwise. For tmux mode in iTerm2, install the <a href="https://github.com/mkusaka/it2"><code>it2</code> CLI</a> and enable the Python API in iTerm2 settings. <code>tmux -CC</code> from iTerm2 is the suggested entrypoint.</p>
+<blockquote class="blockquote">
+<p>“I think it should display all the agents on the right side of the screen automatically once the agents start.” <a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=2095s">▶ ~34:55</a></p>
+</blockquote>
+<p>It does. It’s the most fun part of the feature.</p>
+</section>
+<section id="pick-the-model-per-teammate" class="level3">
+<h3 class="anchored" data-anchor-id="pick-the-model-per-teammate">3. Pick the model per teammate</h3>
+<p>Teammates <strong>don’t inherit the lead’s <code>/model</code> selection</strong>. They use whatever you set as <strong>Default teammate model</strong> in <code>/config</code> → “Default teammate model”, or whatever you specify in the prompt.</p>
+<p>If you want the team on Opus, say so in the spawn prompt:</p>
+<blockquote class="blockquote">
+<p>Use agent teams to spawn one teammate per independent task, maximizing parallelism with an upper limit of 10 concurrent teammates. If there are more tasks than that, queue the rest - new teammates spawn as active ones finish and slots open up. Where tasks have dependencies, allow communication among teammates so dependent agents wait for prerequisites to finish, and the team lead coordinates handoffs between them. All teammates should use the Opus 4.6 model. Each teammate should verify their output by comparing it against the actual code…</p>
+</blockquote>
+</section>
+<section id="a-note-on-this-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="a-note-on-this-prompt">A note on this prompt</h3>
+<ul>
+<li><strong>“Use agent teams to spawn…”</strong> - without this phrasing, Claude Code often won’t engage the agent teams feature at all. Being explicit is the trigger.</li>
+<li><strong>“limit of 10 concurrent teammates”</strong> - sweet spot for most tasks I’ve run. Past ten, coordination overhead and permission prompts start eating the gains. New agents still spawn for queued tasks once a slot frees up.</li>
+<li><strong>“allow communication among teammates”</strong> - teammates can message each other and the lead directly. Worth it whenever tasks have ordering dependencies; without it the lead has to broker every handoff.</li>
+<li><strong>“All teammates should use the Opus 4.6 model”</strong> - specified inline here, but you can also set it via <code>/config → Default teammate model</code> so you don’t have to repeat it in every prompt.</li>
+<li><strong>“verify their output by comparing it against the actual code”</strong> - keeps agents grounded in the codebase instead of their own summaries. The most effective hallucination guard I’ve found for this kind of work.</li>
 </ul>
 </section>
-<section id="next-steps" class="level2">
-<h2 class="anchored" data-anchor-id="next-steps">Next Steps</h2>
+</section>
+<section id="what-the-cost-actually-looked-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-cost-actually-looked-like">What the cost actually looked like</h2>
+<p>Token usage scales linearly with team size - each teammate is a full instance. The first pass with four Sonnet analyzers and a lead landed around 350k tokens total - roughly <strong>$8 at API rates</strong>. The second pass on Opus with ~19 teammates re-reading large portions of both codebases for verification was substantially heavier - <strong>somewhere in the $50–$100 range if you were paying API token prices</strong>.</p>
+<p>If the chore would have taken me a focused day, that math is fine. For routine work, a single session is cheaper and faster. The actual lesson isn’t <em>“agent teams are cheap”</em> - it’s that you can run a small Sonnet team to plan, then spend the Opus budget only where verification actually matters.</p>
+<blockquote class="blockquote">
+<p>“There are 74 commits analyzed… That’s like a lot of work.” <a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=1470s">▶ ~24:30</a></p>
+</blockquote>
+</section>
+<section id="what-id-do-differently-next-time" class="level2">
+<h2 class="anchored" data-anchor-id="what-id-do-differently-next-time">What I’d do differently next time</h2>
 <ul>
-<li>Implement data pipeline and augmentations</li>
-<li>Implement NT-Xent loss</li>
-<li>Run first small-scale training</li>
+<li><strong>Pre-approve permissions.</strong> Every teammate is its own Claude Code session, so the same permission prompts surface from each one. Adding allowlists to <code>.claude/settings.json</code> <em>before</em> spawning saves a lot of clicking.</li>
+<li><strong>Specify model in the spawn prompt.</strong> Don’t rely on the lead inheriting your <code>/model</code> - it doesn’t propagate.</li>
+<li><strong>Pull the verification pass into the same run.</strong> I split “analyze” and “verify against code” into two prompts. One prompt with explicit verification-as-a-task would have been cleaner.</li>
+<li><strong>Save the workflow as a skill.</strong> This is a chore I’ll repeat. Next time, a skill triggers the team with the right prompt structure instead of me re-typing it.</li>
+<li><strong>Try out agent teams with features and bugs.</strong></li>
 </ul>
 </section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
+<section id="bottom-line" class="level2">
+<h2 class="anchored" data-anchor-id="bottom-line">Bottom line</h2>
+<p>Agent teams are worth the token bill when the work has parallel structure and you’d otherwise be context-switching across files yourself. Research, review, and divergence analysis are the sweet spot. The output I got back was something I’d actually use - not a vague summary, a 4-phase plan with intent, system impact, and dependencies for each item. The bug got fixed. The rebase has happened and new versions have been released.</p>
+<p>It scales the work, not the understanding. You still need to know what you’re delegating. The agents are fast. The judgment is still yours.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li><a href="https://arxiv.org/abs/2002.05709">SimCLR Paper (Chen et al., 2020)</a></li>
-<li><a href="https://arxiv.org/abs/1708.03888">LARS Optimizer (You et al., 2017)</a></li>
+<li><a href="https://code.claude.com/docs/en/agent-teams">Claude Code agent teams docs</a></li>
+<li><a href="https://code.claude.com/docs/en/sub-agents">Subagents docs</a> - for the comparison</li>
+<li><a href="https://github.com/scality/mountpoint-s3-csi-driver">scality/mountpoint-s3-csi-driver</a></li>
+<li><a href="https://github.com/awslabs/mountpoint-s3-csi-driver">awslabs/mountpoint-s3-csi-driver</a> - upstream</li>
+<li><a href="https://github.com/awslabs/mountpoint-s3">awslabs/mountpoint-s3</a> - the underlying FUSE client both drivers use</li>
+<li><a href="https://github.com/mkusaka/it2"><code>it2</code> CLI</a> - for iTerm2 split-pane mode</li>
 </ul>
 
 

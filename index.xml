@@ -17,291 +17,206 @@
 <width>144</width>
 </image>
 <generator>quarto-1.9.37</generator>
-<lastBuildDate>Wed, 15 Apr 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 03 Apr 2026 00:00:00 GMT</lastBuildDate>
 <item>
-  <title>Augmentations Are the Model</title>
-  <link>https://anuragbuildsthings.com/posts/augmentations-are-the-model.html</link>
+  <title>Claude Code Agent Teams on a Real Production Chore</title>
+  <link>https://anuragbuildsthings.com/posts/claude-code-agent-teams-real-work.html</link>
   <description><![CDATA[ 
 
 
 
 
 
-<section id="the-question" class="level2">
-<h2 class="anchored" data-anchor-id="the-question">The question</h2>
-<p>In <a href="why-augmentations-matter.html">the previous post</a> I claimed augmentations are the most critical design choice in contrastive learning - that they define the invariances the model learns, and everything else (architecture, batch size, epochs) is secondary.</p>
-<p>That was a hypothesis. This post runs the experiment.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is the companion post to the video below. The post is the reference card; the video is the walkthrough.</p>
+</div>
+</div>
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:1.5rem 0;">
+  <iframe src="https://www.youtube.com/embed/HthWDC8LLEc" title="Claude Code Agent Teams on a real production chore" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+</div>
+<section id="what-this-is" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-is">What this is</h2>
+<p>Claude Code <a href="https://code.claude.com/docs/en/agent-teams">agent teams</a> shipped as an experimental feature about a week before I recorded this. I wanted to know how it behaved on something real, so I pointed it at a job I actually had to do: bring <a href="https://github.com/scality/mountpoint-s3-csi-driver">scality/mountpoint-s3-csi-driver</a>, a fork of the <a href="https://github.com/awslabs/mountpoint-s3-csi-driver">AWS Mountpoint S3 CSI driver</a> - back to feature parity with upstream after a gap, and fix a known bug (missing <code>securityContext</code> on mount pods) along the way.</p>
+<p>We hadn’t rebased the fork since AWS’s v2.0. The diff was large. There were features I’d want, features I’d skip (EKS, S3 Express One Zone - Scality’s S3 implementation doesn’t need those), and bugs to triage. Classic intensive chore.</p>
+<blockquote class="blockquote">
+<p>“I tried Claude Code agent teams for like 10 minutes and I was very surprised by how much I can scale myself.” <a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=0s">▶ 00:00</a></p>
+</blockquote>
 </section>
-<section id="setup" class="level2">
-<h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>Four augmentation recipes, held constant everywhere else:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 82%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Config</th>
-<th>Augmentations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Minimal</td>
-<td>Random crop only</td>
-</tr>
-<tr class="even">
-<td>Moderate</td>
-<td>Crop + horizontal flip + grayscale</td>
-</tr>
-<tr class="odd">
-<td>Full</td>
-<td>Crop + color jitter + flip + grayscale + Gaussian blur</td>
-</tr>
-<tr class="even">
-<td>Aggressive</td>
-<td>Full + extreme crop ratios (0.08–1.0) + strong color distortion</td>
-</tr>
-</tbody>
-</table>
-<p>Everything else fixed: ResNet-18 encoder, 2-layer MLP projection head, NT-Xent loss, batch 512, 200 epochs, temperature 0.5, LARS optimizer with cosine decay.</p>
-<p>Evaluation: freeze the encoder, train a linear classifier on CIFAR-10 labels, report top-1 accuracy. Standard protocol.</p>
+<section id="agent-teams-vs.-subagents---the-one-line-version" class="level2">
+<h2 class="anchored" data-anchor-id="agent-teams-vs.-subagents---the-one-line-version">Agent teams vs.&nbsp;subagents - the one-line version</h2>
+<p><a href="https://code.claude.com/docs/en/sub-agents">Subagents</a> report back to the main agent and don’t talk to each other. <strong>Agent teams</strong> share a task list and message each other directly, each in its own context window. You can also message any teammate yourself.</p>
+<p>That’s the whole architectural difference. The cost difference is real: each teammate is a full Claude Code instance, so tokens scale linearly with team size.</p>
 </section>
-<section id="results" class="level2">
-<h2 class="anchored" data-anchor-id="results">Results</h2>
-<pre><code>┌────────────┬───────────────┬─────────────┐
-│ config     │ linear probe  │ Δ vs minimal│
-├────────────┼───────────────┼─────────────┤
-│ minimal    │      48.3%    │      -      │
-│ moderate   │      71.9%    │   +23.6 pp  │
-│ full       │      83.7%    │   +35.4 pp  │
-│ aggressive │      82.1%    │   +33.8 pp  │
-└────────────┴───────────────┴─────────────┘</code></pre>
-<p>Three things jump out.</p>
-<p><strong>1. The minimal run is barely better than a random projection.</strong> 48% on CIFAR-10 is not good. A logistic regression on raw pixels gets ~40%. So contrastive learning with only random crops - the “this patch and that patch are the same image” signal - is learning something, but not much.</p>
-<p><strong>2. Color jitter alone moves the needle more than anything else.</strong> The jump from moderate (71.9%) to full (83.7%) is almost entirely color jitter + blur. Removing color jitter from the full config drops it back to ~73%. This confirms the SimCLR paper’s finding, but it was useful to feel it first-hand: color statistics are the easy shortcut the model takes, and augmentations that destroy those statistics force it to look at shape and texture instead.</p>
-<p><strong>3. Aggressive is <em>worse</em> than full.</strong> Not much - but consistently, across 3 seeds. Too-strong augmentation breaks the positive pair: the two crops become so dissimilar that the NT-Xent loss starts pulling together things that genuinely <em>don’t</em> share content. There’s a ceiling.</p>
-</section>
-<section id="the-cleaner-framing" class="level2">
-<h2 class="anchored" data-anchor-id="the-cleaner-framing">The cleaner framing</h2>
-<p>“Stronger augmentation is better” is the summary most people walk away with. I don’t think that’s right.</p>
-<p>The cleaner framing: <strong>augmentations define the equivalence relation</strong>. A contrastive loss says “these two things are the same.” Augmentations determine what “same” means. A model trained with color jitter learns that a blue car and a red car are the same car. A model without color jitter learns they’re different. Neither is wrong - it’s a design choice about what invariance you want.</p>
-<p>This is why transferring SSL features across domains often disappoints. You’re not just transferring a feature extractor; you’re transferring an <em>implicit label ontology</em> baked in by your augmentation recipe. ImageNet-trained features think rotations don’t change an object’s identity. That’s a great assumption for ImageNet objects and a bad assumption for X-rays.</p>
-</section>
-<section id="what-id-check-next" class="level2">
-<h2 class="anchored" data-anchor-id="what-id-check-next">What I’d check next</h2>
+<section id="what-i-actually-did" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-actually-did">What I actually did</h2>
+<p>Half a day of my own reading first - release notes, PRs, issues on the upstream - <em>before</em> delegating. Then I spawned a team with four analyzers running in parallel: feature filter, security context analyzer, upstream analyzer, divergence analyzer. A team lead synthesized.</p>
+<blockquote class="blockquote">
+<p>“I wanted to understand what I am delegating, so I can direct it in the right direction.” <a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=300s">▶ ~05:00</a></p>
+</blockquote>
+<blockquote class="blockquote">
+<p>“I don’t call it vibe coding. I call it intentional AI coding.” <a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=1590s">▶ ~26:30</a></p>
+</blockquote>
+<p>The output was a 4-phase roadmap: critical security bug, 5 high-value fixes, ~30 developer-days of work across 74 analyzed commits. After the first pass I asked it to re-render the markdown reports as an HTML site so I could read them in a browser, then ran a second verification pass on Opus in tmux mode to challenge the findings against the actual code.</p>
+<p>Chapter map:</p>
 <ul>
-<li>Does the same pattern hold at larger batch sizes? (SimCLR is known to love big batches; does the augmentation-sensitivity shape hold?)</li>
-<li>What breaks if you swap NT-Xent for a non-contrastive objective like BYOL? My guess: less augmentation-sensitive, because there’s no explicit negative sampling to amplify the “what counts as different” question.</li>
-<li>Can you read off the learned invariances from the embedding space directly - e.g., does the feature vector change <em>less</em> under augmentations the model was trained to be invariant to?</li>
-</ul>
-<p>The third one would close the loop. It would also be the cleanest evidence for the framing above.</p>
-</section>
-<section id="takeaway" class="level2">
-<h2 class="anchored" data-anchor-id="takeaway">Takeaway</h2>
-<p>Pick your augmentations the way you’d pick your labels. They <em>are</em> your labels, in contrastive learning. Everything else is compute.</p>
-
-
-</section>
-
- ]]></description>
-  <category>self-supervised-learning</category>
-  <category>contrastive-learning</category>
-  <category>augmentations</category>
-  <category>computer-vision</category>
-  <guid>https://anuragbuildsthings.com/posts/augmentations-are-the-model.html</guid>
-  <pubDate>Wed, 15 Apr 2026 00:00:00 GMT</pubDate>
-  <media:content url="https://anuragbuildsthings.com/posts/figures/fig-ablation.png" medium="image" type="image/png" height="76" width="144"/>
-</item>
-<item>
-  <title>Self-Supervised Learning</title>
-  <link>https://anuragbuildsthings.com/posts/self-supervised-learning.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<section id="what-it-is" class="level2">
-<h2 class="anchored" data-anchor-id="what-it-is">What It Is</h2>
-<p>Self-supervised learning (SSL) trains models on unlabeled data by generating supervision from the data itself. Instead of human-provided labels, the model solves a <em>pretext task</em> – a proxy objective that forces it to learn useful structure.</p>
-<p>Examples of pretext tasks:</p>
-<ul>
-<li><strong>Contrastive</strong>: pull augmented views of the same image together, push different images apart (SimCLR, MoCo)</li>
-<li><strong>Masked prediction</strong>: mask part of the input and predict it (BERT, MAE)</li>
-<li><strong>Predictive</strong>: predict future frames, next tokens, or missing patches</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=0s">00:00</a> - Real production use (not a demo)</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=45s">00:45</a> - Project context: CSI driver for S3</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=510s">08:30</a> - Spawning agent teams &amp; delegation</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=860s">14:20</a> - Reviewing output + token/cost reality check</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=1120s">18:40</a> - Turning findings into an action plan</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=1800s">30:00</a> - Tmux teammate mode (watch agents live)</li>
+<li><a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=2450s">40:50</a> - Results, scaling reflections &amp; next steps</li>
 </ul>
 </section>
-<section id="intuition" class="level2">
-<h2 class="anchored" data-anchor-id="intuition">Intuition</h2>
-<p>Labels are expensive. Structure is free.</p>
-<p>Images have spatial coherence. Text has sequential coherence. Video has temporal coherence. SSL exploits these natural regularities to learn representations that capture what matters in the data – without anyone telling the model what to look for.</p>
-<p>The key insight: a model that can solve a hard pretext task (e.g., reconstruct a masked image region) must have learned something meaningful about the domain.</p>
+<section id="three-settings-worth-knowing" class="level2">
+<h2 class="anchored" data-anchor-id="three-settings-worth-knowing">Three settings worth knowing</h2>
+<p>These are the three things I’d want someone to have in front of them before trying this.</p>
+<section id="enable-it" class="level3">
+<h3 class="anchored" data-anchor-id="enable-it">1. Enable it</h3>
+<p>Agent teams are disabled by default. Flip the env var in <code>~/.claude/settings.json</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"env"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb1-3">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1"</span></span>
+<span id="cb1-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div></div>
+<p>Needs Claude Code v2.1.32 or later. Check with <code>claude --version</code>.</p>
 </section>
-<section id="simple-example" class="level2">
-<h2 class="anchored" data-anchor-id="simple-example">Simple Example</h2>
-<p>Take an image. Crop it twice, apply different augmentations. The model must learn that both crops came from the same source. To do this, it has to understand <em>content</em> (what’s in the image) and ignore <em>style</em> (color jitter, rotation, scale).</p>
-<p>The result: an encoder that maps semantically similar inputs to nearby points in embedding space – without ever seeing a label.</p>
-</section>
-<section id="why-it-matters" class="level2">
-<h2 class="anchored" data-anchor-id="why-it-matters">Why It Matters</h2>
+<section id="display-mode---in-process-vs.-tmux-split-panes" class="level3">
+<h3 class="anchored" data-anchor-id="display-mode---in-process-vs.-tmux-split-panes">2. Display mode - in-process vs.&nbsp;tmux split panes</h3>
+<p>Two ways to watch teammates work:</p>
 <ul>
-<li><strong>Scale</strong>: unlabeled data is orders of magnitude more available than labeled data</li>
-<li><strong>Transfer</strong>: SSL representations often transfer better than supervised ones to new domains</li>
-<li><strong>Foundation models</strong>: GPT, CLIP, DINO – the most capable models are pretrained with self-supervision</li>
-<li><strong>Cost</strong>: eliminates the annotation bottleneck, especially for domains where labeling requires expertise (medical imaging, satellite data)</li>
+<li><strong>In-process</strong> (default-ish): all teammates live in your main terminal. <code>Shift+Down</code> cycles through them, <code>Enter</code> jumps into a teammate’s session, <code>Ctrl+T</code> toggles the task list. Works in any terminal, zero setup.</li>
+<li><strong>Split panes</strong>: each teammate gets its own pane via tmux or iTerm2. You see everyone at once. The mode I switched to halfway through the video to actually <em>watch</em> a 19-teammate Opus pass spawn.</li>
 </ul>
-<p>SSL is not a niche technique. It is the default pretraining paradigm for modern AI systems.</p>
-
-
+<p>Override in <code>~/.claude/settings.json</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"env"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-3">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1"</span></span>
+<span id="cb2-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb2-5">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"teammateMode"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"tmux"</span></span>
+<span id="cb2-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div></div>
+<p>Or per-session: <code>claude --teammate-mode in-process</code>.</p>
+<p>Default is <code>"auto"</code> - split panes if you’re already inside a tmux session, in-process otherwise. For tmux mode in iTerm2, install the <a href="https://github.com/mkusaka/it2"><code>it2</code> CLI</a> and enable the Python API in iTerm2 settings. <code>tmux -CC</code> from iTerm2 is the suggested entrypoint.</p>
+<blockquote class="blockquote">
+<p>“I think it should display all the agents on the right side of the screen automatically once the agents start.” <a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=2095s">▶ ~34:55</a></p>
+</blockquote>
+<p>It does. It’s the most fun part of the feature.</p>
 </section>
-
- ]]></description>
-  <category>self-supervised-learning</category>
-  <category>representation-learning</category>
-  <category>fundamentals</category>
-  <guid>https://anuragbuildsthings.com/posts/self-supervised-learning.html</guid>
-  <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
-  <media:content url="https://anuragbuildsthings.com/posts/figures/fig-ssl-overview.png" medium="image" type="image/png" height="76" width="144"/>
-</item>
-<item>
-  <title>Learning Representations Without Labels (SimCLR)</title>
-  <link>https://anuragbuildsthings.com/posts/ssl-representation.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<section id="goal" class="level2">
-<h2 class="anchored" data-anchor-id="goal">Goal</h2>
-<p>Learn visual representations without labels using contrastive learning. Specifically, implement SimCLR (Simple Framework for Contrastive Learning of Visual Representations) from scratch and evaluate the quality of learned embeddings on CIFAR-10.</p>
+<section id="pick-the-model-per-teammate" class="level3">
+<h3 class="anchored" data-anchor-id="pick-the-model-per-teammate">3. Pick the model per teammate</h3>
+<p>Teammates <strong>don’t inherit the lead’s <code>/model</code> selection</strong>. They use whatever you set as <strong>Default teammate model</strong> in <code>/config</code> → “Default teammate model”, or whatever you specify in the prompt.</p>
+<p>If you want the team on Opus, say so in the spawn prompt:</p>
+<blockquote class="blockquote">
+<p>Use agent teams to spawn one teammate per independent task, maximizing parallelism with an upper limit of 10 concurrent teammates. If there are more tasks than that, queue the rest - new teammates spawn as active ones finish and slots open up. Where tasks have dependencies, allow communication among teammates so dependent agents wait for prerequisites to finish, and the team lead coordinates handoffs between them. All teammates should use the Opus 4.6 model. Each teammate should verify their output by comparing it against the actual code…</p>
+</blockquote>
 </section>
-<section id="plan" class="level2">
-<h2 class="anchored" data-anchor-id="plan">Plan</h2>
-<p>Implement SimCLR on CIFAR-10 and validate:</p>
+<section id="a-note-on-this-prompt" class="level3">
+<h3 class="anchored" data-anchor-id="a-note-on-this-prompt">A note on this prompt</h3>
 <ul>
-<li>Can the model learn useful representations without labels?</li>
-<li>How sensitive is performance to augmentations?</li>
-<li>How does batch size affect learning?</li>
+<li><strong>“Use agent teams to spawn…”</strong> - without this phrasing, Claude Code often won’t engage the agent teams feature at all. Being explicit is the trigger.</li>
+<li><strong>“limit of 10 concurrent teammates”</strong> - sweet spot for most tasks I’ve run. Past ten, coordination overhead and permission prompts start eating the gains. New agents still spawn for queued tasks once a slot frees up.</li>
+<li><strong>“allow communication among teammates”</strong> - teammates can message each other and the lead directly. Worth it whenever tasks have ordering dependencies; without it the lead has to broker every handoff.</li>
+<li><strong>“All teammates should use the Opus 4.6 model”</strong> - specified inline here, but you can also set it via <code>/config → Default teammate model</code> so you don’t have to repeat it in every prompt.</li>
+<li><strong>“verify their output by comparing it against the actual code”</strong> - keeps agents grounded in the codebase instead of their own summaries. The most effective hallucination guard I’ve found for this kind of work.</li>
 </ul>
 </section>
-<section id="initial-setup" class="level2">
-<h2 class="anchored" data-anchor-id="initial-setup">Initial Setup</h2>
-<ul>
-<li>Encoder: ResNet-18</li>
-<li>Projection head: 2-layer MLP</li>
-<li>Loss: NT-Xent</li>
-<li>Dataset: CIFAR-10</li>
-</ul>
-<p>Hyperparameters will be tuned incrementally during experiments.</p>
 </section>
-<section id="what-i-expect" class="level2">
-<h2 class="anchored" data-anchor-id="what-i-expect">What I Expect</h2>
-<ul>
-<li>Augmentations will be critical for learning meaningful representations</li>
-<li>Larger batch sizes may improve performance (more negative samples)</li>
-<li>Training stability may depend on temperature and normalization</li>
-</ul>
+<section id="what-the-cost-actually-looked-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-cost-actually-looked-like">What the cost actually looked like</h2>
+<p>Token usage scales linearly with team size - each teammate is a full instance. The first pass with four Sonnet analyzers and a lead landed around 350k tokens total - roughly <strong>$8 at API rates</strong>. The second pass on Opus with ~19 teammates re-reading large portions of both codebases for verification was substantially heavier - <strong>somewhere in the $50–$100 range if you were paying API token prices</strong>.</p>
+<p>If the chore would have taken me a focused day, that math is fine. For routine work, a single session is cheaper and faster. The actual lesson isn’t <em>“agent teams are cheap”</em> - it’s that you can run a small Sonnet team to plan, then spend the Opus budget only where verification actually matters.</p>
+<blockquote class="blockquote">
+<p>“There are 74 commits analyzed… That’s like a lot of work.” <a href="https://www.youtube.com/watch?v=HthWDC8LLEc&amp;t=1470s">▶ ~24:30</a></p>
+</blockquote>
 </section>
-<section id="next-steps" class="level2">
-<h2 class="anchored" data-anchor-id="next-steps">Next Steps</h2>
+<section id="what-id-do-differently-next-time" class="level2">
+<h2 class="anchored" data-anchor-id="what-id-do-differently-next-time">What I’d do differently next time</h2>
 <ul>
-<li>Implement data pipeline and augmentations</li>
-<li>Implement NT-Xent loss</li>
-<li>Run first small-scale training</li>
+<li><strong>Pre-approve permissions.</strong> Every teammate is its own Claude Code session, so the same permission prompts surface from each one. Adding allowlists to <code>.claude/settings.json</code> <em>before</em> spawning saves a lot of clicking.</li>
+<li><strong>Specify model in the spawn prompt.</strong> Don’t rely on the lead inheriting your <code>/model</code> - it doesn’t propagate.</li>
+<li><strong>Pull the verification pass into the same run.</strong> I split “analyze” and “verify against code” into two prompts. One prompt with explicit verification-as-a-task would have been cleaner.</li>
+<li><strong>Save the workflow as a skill.</strong> This is a chore I’ll repeat. Next time, a skill triggers the team with the right prompt structure instead of me re-typing it.</li>
+<li><strong>Try out agent teams with features and bugs.</strong></li>
 </ul>
 </section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
+<section id="bottom-line" class="level2">
+<h2 class="anchored" data-anchor-id="bottom-line">Bottom line</h2>
+<p>Agent teams are worth the token bill when the work has parallel structure and you’d otherwise be context-switching across files yourself. Research, review, and divergence analysis are the sweet spot. The output I got back was something I’d actually use - not a vague summary, a 4-phase plan with intent, system impact, and dependencies for each item. The bug got fixed. The rebase has happened and new versions have been released.</p>
+<p>It scales the work, not the understanding. You still need to know what you’re delegating. The agents are fast. The judgment is still yours.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li><a href="https://arxiv.org/abs/2002.05709">SimCLR Paper (Chen et al., 2020)</a></li>
-<li><a href="https://arxiv.org/abs/1708.03888">LARS Optimizer (You et al., 2017)</a></li>
+<li><a href="https://code.claude.com/docs/en/agent-teams">Claude Code agent teams docs</a></li>
+<li><a href="https://code.claude.com/docs/en/sub-agents">Subagents docs</a> - for the comparison</li>
+<li><a href="https://github.com/scality/mountpoint-s3-csi-driver">scality/mountpoint-s3-csi-driver</a></li>
+<li><a href="https://github.com/awslabs/mountpoint-s3-csi-driver">awslabs/mountpoint-s3-csi-driver</a> - upstream</li>
+<li><a href="https://github.com/awslabs/mountpoint-s3">awslabs/mountpoint-s3</a> - the underlying FUSE client both drivers use</li>
+<li><a href="https://github.com/mkusaka/it2"><code>it2</code> CLI</a> - for iTerm2 split-pane mode</li>
 </ul>
 
 
 </section>
 
  ]]></description>
-  <category>self-supervised-learning</category>
-  <category>contrastive-learning</category>
-  <category>computer-vision</category>
-  <guid>https://anuragbuildsthings.com/posts/ssl-representation.html</guid>
-  <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
-  <media:content url="https://anuragbuildsthings.com/posts/figures/fig-simclr.png" medium="image" type="image/png" height="76" width="144"/>
-</item>
-<item>
-  <title>Why Augmentations Matter in Contrastive Learning</title>
-  <link>https://anuragbuildsthings.com/posts/why-augmentations-matter.html</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<section id="status" class="level2">
-<h2 class="anchored" data-anchor-id="status">Status</h2>
-<p>Planned experiment – not yet executed.</p>
-</section>
-<section id="hypothesis" class="level2">
-<h2 class="anchored" data-anchor-id="hypothesis">Hypothesis</h2>
-<p>Augmentations are the most critical design choice in contrastive learning. They define what invariances the model learns – get them wrong and the representations are useless, regardless of architecture or training budget.</p>
-</section>
-<section id="setup" class="level2">
-<h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>Train SimCLR on CIFAR-10 with different augmentation configurations and measure linear probe accuracy:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Config</th>
-<th>Augmentations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Minimal</td>
-<td>Random crop only</td>
-</tr>
-<tr class="even">
-<td>Moderate</td>
-<td>Crop + horizontal flip + grayscale</td>
-</tr>
-<tr class="odd">
-<td>Full</td>
-<td>Crop + color jitter + flip + grayscale + blur</td>
-</tr>
-<tr class="even">
-<td>Aggressive</td>
-<td>Full + extreme crop ratios + strong color distortion</td>
-</tr>
-</tbody>
-</table>
-<p>All other hyperparameters held constant (ResNet-18, batch 512, 200 epochs, temperature 0.5).</p>
-</section>
-<section id="expected-outcome" class="level2">
-<h2 class="anchored" data-anchor-id="expected-outcome">Expected Outcome</h2>
-<ul>
-<li><strong>Minimal</strong> augmentations will produce weak representations – the contrastive task becomes too easy (trivial shortcuts like position matching)</li>
-<li><strong>Full</strong> augmentations will force the model to learn semantic features, producing the strongest embeddings</li>
-<li><strong>Aggressive</strong> augmentations may hurt early training by making the pretext task too hard</li>
-</ul>
-</section>
-<section id="why-this-matters" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-matters">Why This Matters</h2>
-<p>Most SSL papers treat augmentations as a hyperparameter table in the appendix. In practice, they are the experiment. The augmentation pipeline implicitly defines what the model treats as “same” vs “different” – which is the entire learning signal in contrastive methods.</p>
-<p>Understanding this connection between augmentations and learned invariances is essential before scaling to harder domains (video, medical imaging) where the right invariances are less obvious.</p>
-
-
-</section>
-
- ]]></description>
-  <category>self-supervised-learning</category>
-  <category>contrastive-learning</category>
-  <category>augmentations</category>
-  <guid>https://anuragbuildsthings.com/posts/why-augmentations-matter.html</guid>
-  <pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate>
-  <media:content url="https://anuragbuildsthings.com/posts/figures/fig-aug-matrix.png" medium="image" type="image/png" height="76" width="144"/>
+  <category>claude-code</category>
+  <category>agent-teams</category>
+  <category>ai-coding</category>
+  <category>kubernetes</category>
+  <category>csi</category>
+  <guid>https://anuragbuildsthings.com/posts/claude-code-agent-teams-real-work.html</guid>
+  <pubDate>Fri, 03 Apr 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
