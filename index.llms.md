@@ -4,6 +4,14 @@
 
 I build things to understand how they actually work. A question, a system built to answer it, a comparison against real data. Just the code, the curves, and what they actually mean.
 
+[![A painted still-life of a leather-bound notebook with logos for OpenAI, Anthropic, Microsoft, Mistral, GitHub, Cursor, Zed, and Google Gemini arranged across its cover, on a worn wooden desk with a brass magnifying glass, a coiled USB cable, a fountain pen, and an ivory card bearing a single lime-green dot.](./posts/figures/ai-tools-timeline-thumb.png)](posts/ai-tools-timeline.llms.md)
+
+### [The AI Tools I’ve Actually Used](posts/ai-tools-timeline.llms.md)
+
+A running vertical timeline of the AI tools I’ve leaned on day-to-day - for coding, chat, research, and the work in between. Updated as I adopt new ones.
+
+22 May 2026
+
 [![](./posts/figures/prompts-i-keep-coming-back-to-thumb.png)](posts/prompts-i-keep-coming-back-to.llms.md)
 
 ### [Prompts I Keep Coming Back To](posts/prompts-i-keep-coming-back-to.llms.md)

@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/ai-tools-timeline.html",
       "/posts/prompts-i-keep-coming-back-to.html",
       "/posts/claude-code-agent-teams-real-work.html"
     ]

@@ -17,7 +17,168 @@
 <width>144</width>
 </image>
 <generator>quarto-1.9.37</generator>
-<lastBuildDate>Thu, 21 May 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 22 May 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>The AI Tools I’ve Actually Used</title>
+  <link>https://anuragbuildsthings.com/posts/ai-tools-timeline.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Living document - last updated 2026-05-22.</strong></p>
+</div>
+</div>
+<section id="what-this-is" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-is">What this is</h2>
+<p>A timeline of the AI tools I’ve actually leaned on - not every chatbot I poked at, just the ones that stuck. It starts in November 2021 with VS Code Copilot, gets a real second beat in December 2022 with ChatGPT for general chat, then accelerates through late 2024 onward as AI-assisted coding became core to how I work.</p>
+<p>Entries are <strong>adoption dates, not exclusive use</strong>. The pattern worth watching is which <em>role</em> each tool took on. VS Code held the IDE seat with Copilot bolted on. ChatGPT picked up general chat in 2022 and added assisted coding on top in 2024. Cursor absorbed two roles at once (IDE and agentic chat) before Claude Code split the agentic role back off. Gemini opened the image-generation slot in 2025, with ChatGPT joining that slot in 2026. Claude (the chat product) carved comms and general chat off ChatGPT, leaving it for research. Antigravity took the IDE seat from Cursor. Tools moved through the same slots more than they replaced each other one-to-one.</p>
+</section>
+<section id="timeline" class="level2">
+<h2 class="anchored" data-anchor-id="timeline">Timeline</h2>
+<div class="timeline">
+<section id="november-2021" class="level3 timeline-date timeline-entry">
+<h3 class="timeline-date anchored" data-anchor-id="november-2021">November 2021</h3>
+<div class="timeline-tools">
+<div class="tool-card">
+<p><strong>VS Code Copilot</strong> <span class="tool-tag">· code autocomplete</span></p>
+<p>- VS Code was already my IDE, so I picked up new Copilot features as they shipped, and they were impressive.</p>
+</div>
+</div>
+</section>
+<section id="december-2022" class="level3 timeline-date timeline-entry">
+<h3 class="timeline-date anchored" data-anchor-id="december-2022">December 2022</h3>
+<div class="timeline-tools">
+<div class="tool-card">
+<p><strong>ChatGPT</strong> <span class="tool-tag">· chat</span></p>
+<p>- first AI tool I leaned on outside the editor. General chat - questions, drafting, thinking out loud.</p>
+</div>
+</div>
+</section>
+<section id="october-2024" class="level3 timeline-date timeline-entry">
+<h3 class="timeline-date anchored" data-anchor-id="october-2024">October 2024</h3>
+<div class="timeline-tools">
+<div class="tool-card">
+<p><strong>ChatGPT</strong> <span class="tool-tag">· coding chat</span></p>
+<p>- picked up assisted coding and systems thinking on top of the existing chat use.</p>
+</div>
+</div>
+</section>
+<section id="january-2025" class="level3 timeline-date timeline-entry">
+<h3 class="timeline-date anchored" data-anchor-id="january-2025">January 2025</h3>
+<div class="timeline-tools">
+<div class="tool-card">
+<p><strong>Cursor</strong> <span class="tool-tag">· IDE + chat</span></p>
+<p>- switched from VS Code to Cursor as my IDE/editor; daily driver until early 2026.</p>
+<p>- also slowly shifted agentic chat work from ChatGPT to Cursor.</p>
+</div>
+</div>
+</section>
+<section id="april-2025" class="level3 timeline-date timeline-entry">
+<h3 class="timeline-date anchored" data-anchor-id="april-2025">April 2025</h3>
+<div class="timeline-tools">
+<div class="tool-card">
+<p><strong>Claude Code</strong> <span class="tool-tag">· agentic CLI</span></p>
+<p>- took over the agentic work from Cursor’s chat; Cursor stayed on as the IDE. Still in daily use.</p>
+</div>
+</div>
+</section>
+<section id="august-2025" class="level3 timeline-date timeline-entry">
+<h3 class="timeline-date anchored" data-anchor-id="august-2025">August 2025</h3>
+<div class="timeline-tools">
+<div class="tool-card">
+<p><strong>Gemini</strong> <span class="tool-tag">· image gen</span></p>
+<p>- started using for image generation. The first AI tool I brought in for something other than chat or code.</p>
+</div>
+</div>
+</section>
+<section id="january-2026" class="level3 timeline-date timeline-entry">
+<h3 class="timeline-date anchored" data-anchor-id="january-2026">January 2026</h3>
+<div class="timeline-tools">
+<div class="tool-card">
+<p><strong>Claude (chat)</strong> <span class="tool-tag">· chat</span></p>
+<p>- took over comms and general chat from ChatGPT; ChatGPT stayed on for research. Not Claude Code - this is the chat product.</p>
+</div>
+</div>
+</section>
+<section id="february-2026" class="level3 timeline-date timeline-entry">
+<h3 class="timeline-date anchored" data-anchor-id="february-2026">February 2026</h3>
+<div class="timeline-tools">
+<div class="tool-card">
+<p><strong>Antigravity</strong> <span class="tool-tag">· IDE</span></p>
+<p>- took over the IDE role from Cursor; Claude Code remained the primary agentic tool.</p>
+</div>
+</div>
+</section>
+<section id="april-2026" class="level3 timeline-date timeline-entry">
+<h3 class="timeline-date anchored" data-anchor-id="april-2026">April 2026</h3>
+<div class="timeline-tools">
+<div class="tool-card">
+<p><strong>ChatGPT</strong> <span class="tool-tag">· image gen</span></p>
+<p>- added image generation. Now I use both this and Gemini for images, picking whichever fits what I’m making.</p>
+</div>
+</div>
+</section>
+</div>
+</section>
+<section id="what-didnt-stick" class="level2">
+<h2 class="anchored" data-anchor-id="what-didnt-stick">What didn’t stick</h2>
+<p>Not everything I tried made the timeline. These are tools I gave a real go and then dropped - sometimes because something already in my workflow was doing the job better, sometimes because the switching cost outweighed what they offered, and occasionally because I never got past first-contact friction.</p>
+<div class="didnt-stick-list">
+<div class="didnt-stick-card">
+<p><strong>GitHub Copilot agentic features</strong> <span class="tool-tag">· agentic</span></p>
+<p>- tried them when they landed; they weren’t as good as what I already had - ChatGPT for assisted coding, then Cursor and Claude Code for agentic work. No reason to switch back yet.</p>
+</div>
+<div class="didnt-stick-card">
+<p><strong>Gemini CLI / Codex CLI</strong> <span class="tool-tag">· agentic CLI</span></p>
+<p>- at the time I tried these, Claude Code was already doing the same job better. Neither showed me a reason to switch permanently.</p>
+</div>
+<div class="didnt-stick-card">
+<p><strong>Mistral Vibe</strong> <span class="tool-tag">· agentic</span></p>
+<p>- tried it on launch day and got stuck linking my chat account. Might be that it expects an API key even when a chat account is linked; haven’t gone back to confirm.</p>
+</div>
+<div class="didnt-stick-card">
+<p><strong>Zed</strong> <span class="tool-tag">· IDE</span></p>
+<p>- fast and clean, but I lean too hard on VS Code’s search and the rest of its ecosystem to move my main editor.</p>
+</div>
+</div>
+</section>
+<section id="on-my-radar" class="level2">
+<h2 class="anchored" data-anchor-id="on-my-radar">On my radar</h2>
+<p>A mix of new things I haven’t tried yet and old things I dropped but keep watching - tools change, and so do my needs.</p>
+<ul>
+<li><strong>Zed</strong> <span class="tool-tag">· IDE</span> - they keep shipping impressive updates, so I take another look every few months.</li>
+<li><strong>Mistral Vibe</strong> <span class="tool-tag">· agentic</span> - the docs and integration may have moved past launch-day jank; worth another real try.</li>
+<li><strong>Codex CLI</strong> <span class="tool-tag">· agentic CLI</span> - I’m on the Codex app when I want Codex; curious what the CLI does differently.</li>
+</ul>
+</section>
+<section id="how-i-add-to-this" class="level2">
+<h2 class="anchored" data-anchor-id="how-i-add-to-this">How I add to this</h2>
+<p>An entry lands on the timeline once a tool has earned <strong>sustained daily use</strong> - not a weekend trial, not a “this is cool” demo. If I went back to the previous tool within a couple of weeks, it doesn’t make the timeline. The point isn’t to log every tool I touched; it’s to mark the moments my actual workflow changed.</p>
+<p>A tool lands in <strong>What didn’t stick</strong> under a parallel bar: I gave it a real trial and made a conscious decision to drop it. Things I saw a demo of and moved on from don’t count - that’s bookmarking, not trying.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>ai-coding</category>
+  <category>living-document</category>
+  <category>timeline</category>
+  <guid>https://anuragbuildsthings.com/posts/ai-tools-timeline.html</guid>
+  <pubDate>Fri, 22 May 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://anuragbuildsthings.com/posts/figures/ai-tools-timeline-thumb.png" medium="image" type="image/png" height="81" width="144"/>
+</item>
 <item>
   <title>Prompts I Keep Coming Back To</title>
   <link>https://anuragbuildsthings.com/posts/prompts-i-keep-coming-back-to.html</link>
