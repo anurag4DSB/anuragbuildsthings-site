@@ -4,7 +4,7 @@ date: 2026-05-22
 categories: [ai-coding, living-document, timeline]
 description: "A running vertical timeline of the AI tools I've leaned on day-to-day - for coding, chat, research, and the work in between. Updated as I adopt new ones."
 image: figures/ai-tools-timeline-thumb.png
-image-alt: "Vertical timeline of dated tool cards on a dark background."
+image-alt: "A painted still-life of a leather-bound notebook covered in tech-company stickers - OpenAI, Microsoft, GitHub, Mistral, Cursor, Zed, Google Gemini - on a worn wooden desk, with a brass magnifying glass, a coiled USB cable, a fountain pen, and an ivory card bearing a single lime-green dot."
 ---
 
 ::: {.callout-note}
@@ -106,7 +106,7 @@ Entries are **adoption dates, not exclusive use**. The pattern worth watching is
 ::: {.tool-card}
 **Antigravity** [· IDE]{.tool-tag}
 
-\- took over the IDE role from Cursor.
+\- took over the IDE role from Cursor; Claude Code remained the primary agentic tool.
 :::
 :::
 :::
@@ -137,7 +137,7 @@ Not everything I tried made the timeline. These are tools I gave a real go and t
 :::
 
 ::: {.didnt-stick-card}
-**Gemini CLI / Codex** [· agentic CLI]{.tool-tag}
+**Gemini CLI / Codex CLI** [· agentic CLI]{.tool-tag}
 
 \- at the time I tried these, Claude Code was already doing the same job better. Neither showed me a reason to switch permanently.
 :::
