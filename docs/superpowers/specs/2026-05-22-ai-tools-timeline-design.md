@@ -24,10 +24,10 @@ No JS changes. No `_quarto.yml` changes.
 
 ```yaml
 ---
-title: "My AI-Assisted Coding Tools, October 2024 →"
+title: "My AI-Assisted Coding Tools, November 2021 →"
 date: 2026-05-22
 categories: [ai-coding, living-document, timeline]
-description: "A running vertical timeline of the AI tools I've leaned on day-to-day for coding, from October 2024 onward. Updated as I adopt new ones."
+description: "A running vertical timeline of the AI tools I've leaned on day-to-day for coding, from November 2021 onward. Updated as I adopt new ones."
 image: figures/ai-tools-timeline-thumb.png
 image-alt: "Vertical timeline of dated tool cards on a dark background."
 ---
@@ -38,7 +38,7 @@ New category introduced: `timeline`. Title is a working title; can be edited inl
 ## Page structure
 
 1. `::: {.callout-note}` — `**Living document — last updated 2026-05-22.**`
-2. `## What this is` — 2-3 paragraphs. Scope: "tools I actually leaned on for coding, not every chatbot I tried." Honest about the start date (October 2024) being when AI-assisted coding became a real part of the author's workflow.
+2. `## What this is` — 2-3 paragraphs. Scope: "tools I actually leaned on for coding, not every chatbot I tried." Honest about the start date (November 2021 with Copilot) being the first AI tool that genuinely stuck in the author's workflow, and the October 2024 → present arc being when AI-assisted coding became core. Note that entries are adoption dates, not exclusive use — Claude Code (CLI/agentic) and Antigravity (IDE) coexist today.
 3. `## Timeline` — the component.
 4. `## On my radar` — short bulleted list of tools being evaluated.
 5. `## How I add to this` — methodology footer: the bar an entry must clear (sustained daily use, not a one-week trial).
@@ -51,55 +51,39 @@ Authored as nested Quarto fenced divs — no raw HTML in the post body. The wrap
 - A `.timeline-tools` container holding one or two `.tool-card` divs.
 - Each `.tool-card` has a bold tool name on the first line and an em-dash subtitle on the second line.
 
-Example shape:
+Example shape (abbreviated — full content in §"v1 content" below):
 
 ```
 ::: {.timeline}
 
 ::: {.timeline-entry}
-### October 2024 {.timeline-date}
+### November 2021 {.timeline-date}
 ::: {.timeline-tools}
 ::: {.tool-card}
-**ChatGPT**
-— assisted coding and systems thinking
+**VS Code Copilot**
+— first in-editor autocomplete that stuck
 :::
 :::
 :::
 
-::: {.timeline-entry}
-### January 2025 {.timeline-date}
-::: {.timeline-tools}
-::: {.tool-card}
-**Cursor**
-— in-editor agentic coding
-:::
-:::
-:::
-
-::: {.timeline-entry}
-### April 2025 {.timeline-date}
-::: {.timeline-tools}
-::: {.tool-card}
-**Claude Code**
-— agentic CLI for real work
-:::
-:::
-:::
+… (other entries follow the same shape)
 
 :::
 ```
 
-Cursor and Claude Code subtitles are placeholders ("in-editor agentic coding", "agentic CLI for real work") for the author to edit inline.
-
 ## v1 content
 
-Three confirmed entries:
+Five confirmed entries:
 
 | Date | Tool | Subtitle |
 |---|---|---|
+| November 2021 | VS Code Copilot | first in-editor autocomplete that stuck |
 | October 2024 | ChatGPT | assisted coding and systems thinking |
-| January 2025 | Cursor | *placeholder — author edits* |
-| April 2025 | Claude Code | *placeholder — author edits* |
+| January 2025 | Cursor | editor; daily driver until early 2026 |
+| April 2025 | Claude Code | agentic CLI for real work *(still in daily use)* |
+| February 2026 | Antigravity | IDE, replacing Cursor |
+
+Subtitles are draft wording — author edits inline in the .qmd before merge.
 
 ## CSS additions (new section in `styles.css`)
 
