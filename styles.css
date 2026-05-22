@@ -2519,21 +2519,35 @@ main.content .timeline-entry h3.timeline-date::before {
   border-bottom: 1px solid var(--rule);
 }
 
-.tool-card > p {
+main.content .tool-card > p {
   margin: 0;
   line-height: 1.5;
 }
 
-.tool-card > p:first-child {
+main.content .tool-card > p:first-child {
   color: var(--ink);
   font-weight: 600;
   font-size: 1rem;
 }
 
-.tool-card > p + p {
-  margin-top: 0.25rem;
+main.content .tool-card > p + p {
+  margin-top: 0.35rem;
   color: var(--ink-2);
   font-size: 0.9375rem;
+}
+
+/* Feature tag next to a tool name: small uppercase mono label,
+   visually subordinate to the name. Works inside tool cards,
+   didn't-stick cards, and radar bullets. */
+.tool-tag {
+  display: inline;
+  margin-left: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
 @media (max-width: 700px) {
@@ -2580,19 +2594,19 @@ main.content .timeline-entry h3.timeline-date::before {
   border-bottom: 1px solid var(--rule);
 }
 
-.didnt-stick-card > p {
+main.content .didnt-stick-card > p {
   margin: 0;
   line-height: 1.5;
 }
 
-.didnt-stick-card > p:first-child {
+main.content .didnt-stick-card > p:first-child {
   color: var(--ink-2);
   font-weight: 600;
   font-size: 1rem;
 }
 
-.didnt-stick-card > p + p {
-  margin-top: 0.25rem;
+main.content .didnt-stick-card > p + p {
+  margin-top: 0.35rem;
   color: var(--ink-3);
   font-size: 0.9375rem;
 }
