@@ -2427,3 +2427,172 @@ figcaption {
 .aa-Panel {
   display: none !important;
 }
+
+/* ────────────────────────────────────────────────────────────────
+   Timeline (ai-tools-timeline post)
+   Vertical rail on the left with date labels and node dots; tool
+   cards stack to the right. Two cards per entry sit side-by-side
+   on wide viewports and wrap on narrow ones.
+   ──────────────────────────────────────────────────────────────── */
+
+.timeline {
+  position: relative;
+  margin: 2.5rem 0;
+  padding-left: 0;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: calc(10rem + 0.5rem);
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 1px;
+  background: var(--rule);
+}
+
+.timeline-entry {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  column-gap: 2rem;
+  align-items: start;
+  position: relative;
+  padding: 1rem 0;
+}
+
+.timeline-entry + .timeline-entry {
+  margin-top: 0.5rem;
+}
+
+/* Lime dot on the rail, aligned with the date heading baseline */
+.timeline-entry::before {
+  content: "";
+  position: absolute;
+  left: calc(10rem + 0.5rem);
+  top: 1.65rem;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--signal);
+  transform: translateX(-5px);
+  box-shadow: 0 0 0 3px var(--paper);
+  z-index: 1;
+}
+
+/* Date heading: small uppercase, muted, no auto-counter
+   (explicitly overrides the h3.entry counter from the prompts post
+   by not using .entry class; this rule scopes to .timeline-date only). */
+main.content .timeline-entry h3.timeline-date {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  line-height: 1.4;
+  text-align: right;
+  padding-right: 1rem;
+}
+
+main.content .timeline-entry h3.timeline-date::before {
+  content: none;
+  counter-increment: none;
+}
+
+.timeline-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tool-card {
+  flex: 1 1 16rem;
+  min-width: 14rem;
+  padding: 0.875rem 1.125rem;
+  background: var(--paper-up);
+  border-left: 3px solid var(--signal);
+  border-top: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.tool-card > p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.tool-card > p:first-child {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.tool-card > p + p {
+  margin-top: 0.25rem;
+  color: var(--ink-2);
+  font-size: 0.9375rem;
+}
+
+@media (max-width: 700px) {
+  .timeline::before {
+    left: 12px;
+  }
+
+  .timeline-entry {
+    grid-template-columns: 1fr;
+    padding-left: 2rem;
+    row-gap: 0.5rem;
+  }
+
+  .timeline-entry::before {
+    left: 12px;
+    top: 1.25rem;
+  }
+
+  main.content .timeline-entry h3.timeline-date {
+    text-align: left;
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+/* "What didn't stick" cards — same family as .tool-card but with a
+   muted (not lime) rail and dimmer text. Signals "didn't make the
+   canon" without being aggressive about it. Tiles as an auto-fit
+   grid since entries are equally weighted (no dates to anchor to). */
+
+.didnt-stick-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.didnt-stick-card {
+  padding: 0.875rem 1.125rem;
+  background: var(--paper-up);
+  border-left: 3px solid var(--rule);
+  border-top: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.didnt-stick-card > p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.didnt-stick-card > p:first-child {
+  color: var(--ink-2);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.didnt-stick-card > p + p {
+  margin-top: 0.25rem;
+  color: var(--ink-3);
+  font-size: 0.9375rem;
+}

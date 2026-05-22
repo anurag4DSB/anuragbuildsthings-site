@@ -1,0 +1,127 @@
+---
+title: "My AI-Assisted Coding Tools, November 2021 →"
+date: 2026-05-22
+categories: [ai-coding, living-document, timeline]
+description: "A running vertical timeline of the AI tools I've leaned on day-to-day for coding, from November 2021 onward. Updated as I adopt new ones."
+image: figures/ai-tools-timeline-thumb.png
+image-alt: "Vertical timeline of dated tool cards on a dark background."
+---
+
+::: {.callout-note}
+**Living document — last updated 2026-05-22.**
+:::
+
+## What this is
+
+<!-- TODO(author): rewrite in your own voice. Draft below is a placeholder so the page renders. -->
+
+A timeline of the AI tools I've actually leaned on for coding — not every chatbot I poked at, just the ones that stuck in my daily workflow. It starts in November 2021 with VS Code Copilot, goes quiet for a few years, then picks up again in late 2024 when AI-assisted coding became core to how I work.
+
+Entries are **adoption dates, not exclusive use**. Claude Code (CLI / agentic) and Antigravity (IDE) coexist today — one didn't replace the other. Where a tool *did* replace another in the same slot (Antigravity → Cursor as IDE), I'll say so.
+
+## Timeline
+
+::: {.timeline}
+
+::: {.timeline-entry}
+### November 2021 {.timeline-date}
+::: {.timeline-tools}
+::: {.tool-card}
+**VS Code Copilot**
+
+— first in-editor autocomplete that stuck
+:::
+:::
+:::
+
+::: {.timeline-entry}
+### October 2024 {.timeline-date}
+::: {.timeline-tools}
+::: {.tool-card}
+**ChatGPT**
+
+— assisted coding and systems thinking
+:::
+:::
+:::
+
+::: {.timeline-entry}
+### January 2025 {.timeline-date}
+::: {.timeline-tools}
+::: {.tool-card}
+**Cursor**
+
+— editor; daily driver until early 2026
+:::
+:::
+:::
+
+::: {.timeline-entry}
+### April 2025 {.timeline-date}
+::: {.timeline-tools}
+::: {.tool-card}
+**Claude Code**
+
+— agentic CLI for real work (still in daily use)
+:::
+:::
+:::
+
+::: {.timeline-entry}
+### February 2026 {.timeline-date}
+::: {.timeline-tools}
+::: {.tool-card}
+**Antigravity**
+
+— IDE, replacing Cursor
+:::
+:::
+:::
+
+:::
+
+## What didn't stick
+
+Not everything I tried made the timeline. These are tools I gave a real go and then dropped — sometimes because something already in my workflow was doing the job better, sometimes because the switching cost outweighed what they offered, and occasionally because I never got past first-contact friction.
+
+::: {.didnt-stick-list}
+
+::: {.didnt-stick-card}
+**GitHub Copilot agentic features**
+
+— tried them when they landed; they weren't as good as what I already had — ChatGPT for assisted coding, then Cursor and Claude Code for agentic work. No reason to switch.
+:::
+
+::: {.didnt-stick-card}
+**Gemini CLI / Codex**
+
+— at the time I tried these, Claude Code was already doing the same job better. Neither showed me a reason to switch.
+:::
+
+::: {.didnt-stick-card}
+**Mistral Vibe**
+
+— tried it on launch day and got stuck linking my chat account. Might be that it expects an API key even when a chat account is linked; haven't gone back to confirm.
+:::
+
+::: {.didnt-stick-card}
+**Zed**
+
+— fast and clean, but I lean too hard on VS Code's search and the rest of its ecosystem to move my main editor.
+:::
+
+:::
+
+## On my radar
+
+A mix of new things I haven't tried yet and old things I dropped but keep watching — tools change, and so do my needs.
+
+- **Zed** — they keep shipping impressive updates, so I take another look every few months.
+- **Mistral Vibe** — the docs and integration may have moved past launch-day jank; worth another real try.
+- **Codex CLI** — I'm on the Codex app when I want Codex; curious what the CLI does differently.
+
+## How I add to this
+
+An entry lands on the timeline once a tool has earned **sustained daily use** — not a weekend trial, not a "this is cool" demo. If I went back to the previous tool within a couple of weeks, it doesn't make the timeline. The point isn't to log every tool I touched; it's to mark the moments my actual workflow changed.
+
+A tool lands in **What didn't stick** under a parallel bar: I gave it a real trial and made a conscious decision to drop it. Things I saw a demo of and moved on from don't count — that's bookmarking, not trying.
