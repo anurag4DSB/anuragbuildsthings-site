@@ -4,7 +4,7 @@ date: 2026-05-22
 categories: [ai-coding, living-document, timeline]
 description: "A running vertical timeline of the AI tools I've leaned on day-to-day - for coding, chat, research, and the work in between. Updated as I adopt new ones."
 image: figures/ai-tools-timeline-thumb.png
-image-alt: "A painted still-life of a leather-bound notebook covered in tech-company stickers - OpenAI, Microsoft, GitHub, Mistral, Cursor, Zed, Google Gemini - on a worn wooden desk, with a brass magnifying glass, a coiled USB cable, a fountain pen, and an ivory card bearing a single lime-green dot."
+image-alt: "A painted still-life of a leather-bound notebook with logos for OpenAI, Anthropic, Microsoft, Mistral, GitHub, Cursor, Zed, and Google Gemini arranged across its cover, on a worn wooden desk with a brass magnifying glass, a coiled USB cable, a fountain pen, and an ivory card bearing a single lime-green dot."
 ---
 
 ::: {.callout-note}
