@@ -8,17 +8,18 @@ project:
     - favicon-192.png
     - favicon-512.png
     - og-default.png
+    - revision/manifest.webmanifest
+    - revision/sw.js
   render:
     - "*.qmd"
     - "posts/"
     - "revision/"
     - "!quarto-web/"
     - "!.planning/"
-  post-render:
-    - revision/_prune-sitemap.sh
 
 website:
   title: "anurag builds things"
+  draft-mode: unlinked
   site-url: "https://anuragbuildsthings.com/"
   description: "Projects, experiments, and systems built in public."
   image: og-default.png

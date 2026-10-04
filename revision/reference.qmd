@@ -8,6 +8,8 @@ toc: true
 
 <p class="rev-nav"><a href="index.html">plan</a> · <a href="daily.html">daily</a> · <a href="reference.html">reference</a> · <a href="coding.html">coding</a> · <a href="data-paths.html">diagrams</a></p>
 
+<p class="rev-tools"><button type="button" data-rev="next">next unknown (j)</button><button type="button" data-rev="expand">expand all</button><button type="button" data-rev="collapse">collapse all</button><button type="button" data-rev="export">export marks</button></p>
+
 ## The opening and the board (7)
 
 <details class="rev" data-card="opening-script">
@@ -2895,4 +2897,4 @@ B trajectory + replay: event = (attempt_id, try_no, seq, type, payload or blob h
 </div>
 </details>
 
-<p class="rev-nav"><button type="button" id="rev-reset">reset this page</button></p>
+<p class="rev-nav"><button type="button" data-rev="reset">reset this page</button></p>
