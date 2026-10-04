@@ -162,7 +162,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** Dijkstra: heap of (dist, node); pop; skip stale; relax neighbours. Prim: heap of edges from the tree. Kruskal: sort edges + union-find.
 
-**Complexity.** Dijkstra O((V+E) log V) time: each node popped once and each edge relaxed once, each pop or relaxation a heap operation of log V, with O(V+E) space for the adjacency list and the heap. Bellman-Ford O(V·E) time: V − 1 rounds, each relaxing all E edges, with O(V) space for the distance array. Kruskal O(E log E) time: sort the E edges once, E log E, then E union-find calls, each nearly O(1), with O(V) space for the parent and rank arrays.
+**Complexity.** Dijkstra O((V+E) log V) time: each node popped once and each edge relaxed once, each pop or relaxation a heap operation of log V. O(V+E) space: the adjacency list and the heap. Bellman-Ford O(V·E) time: V − 1 rounds, each relaxing all E edges. O(V) space: the distance array. Kruskal O(E log E) time: sorting the E edges costs E log E, then E union-find calls each cost nearly O(1). O(V) space: the parent and rank arrays.
 
 **Traps.**
 
@@ -196,7 +196,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** Scan once; for each element compute a key; consult/update the map; answer derived from the map at the end or on the fly.
 
-**Complexity.** Time O(n): one pass over n elements, one O(1) average hash map lookup each, or O(n·k) when each key costs k to build, such as a sorted string or a count tuple. Space O(n) for a hash map of up to n entries, or O(alphabet) for a fixed-size count array.
+**Complexity.** O(n) time: one pass over n elements, one O(1) average hash map lookup each. O(n·k) time when each key costs k to build, such as a count tuple, or O(n·k log k) when the key is a sorted string of length k. O(n) space: a hash map of up to n entries, or O(alphabet) for a fixed-size count array.
 
 **Traps.**
 
@@ -228,7 +228,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** def bt(state): if goal: record; return; for choice in choices(state): apply; bt(new_state); undo.
 
-**Complexity.** Time exponential: k choices per level and depth levels give O(k^depth) leaves, and on grids O(4·3^(L-1)) per start, 4 directions on the first step and 3 for each of the L − 1 later steps since the path cannot go back. Space O(depth): one recursion frame and one path entry per level, output excluded.
+**Complexity.** O(k^depth) time: k choices per level over depth levels give up to k^depth leaves. On grids, O(4·3^(L−1)) per start cell: 4 directions on the first step and 3 for each of the L − 1 later steps, since the path cannot step back. O(depth) space: one recursion frame and one path entry per level, output excluded.
 
 **Traps.**
 
@@ -260,7 +260,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** lo, hi = bounds; while lo < hi (or <=): mid; test; move lo or hi so the invariant holds; return lo/hi with a final check.
 
-**Complexity.** Time O(log n): each iteration halves the search range, so log n iterations of O(1) work. Space O(1): two or three indices.
+**Complexity.** O(log n) time: each iteration halves the search range, so log n iterations of O(1) work. O(1) space: two or three indices.
 
 **Traps.**
 
@@ -292,7 +292,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** Iterative inorder with a stack (stop early at k); or descend from root comparing values; or DFS carrying (low, high) bounds.
 
-**Complexity.** Time O(h) for descents: one root-to-leaf path, the height h, log n when balanced, n when skewed. O(h + k) for kth via inorder: descend h to the smallest node, then k inorder steps. O(n) for full validation: every node visited once. Space O(h): the recursion or explicit stack holds one path.
+**Complexity.** O(h) time for descents: one root-to-leaf path, the height h, log n when balanced, n when skewed. O(h + k) time for the kth smallest: descend h to the smallest node, then k inorder steps. O(n) time for full validation: every node visited once. O(h) space: the recursion or explicit stack holds one path.
 
 **Traps.**
 
@@ -325,7 +325,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** dp array sized n+1 (or amount+1) → base cases → for i in range: dp[i] = combine(dp[i−k] for valid k) → return dp[n] / max.
 
-**Complexity.** Time O(n·choices): n states, each computed once by trying every choice, so O(n²) for LIS-style where each state scans up to n earlier states, and O(amount·coins) for knapsack-like where each of the amount states tries every coin. Space O(n) for the table, or O(1) rolled when each state reads only the last one or two.
+**Complexity.** O(n·choices) time: n states, each computed once by trying every choice. That is O(n²) for LIS-style states that each scan up to n earlier states, and O(amount·coins) for knapsack-like states that each try every coin. O(n) space: the table, one entry per state, or O(1) when each state reads only the last one or two, so rolling variables replace the table.
 
 **Traps.**
 
@@ -358,7 +358,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** dp with (m+1)×(n+1) padding → fill row by row → dp[m][n]; roll rows for O(n) space.
 
-**Complexity.** Time O(m·n): m·n states, each computed once in O(1) from its neighbours. Space O(m·n) for the full table, or O(min(m, n)) when each row reads only the previous row, so one row of the shorter side is kept.
+**Complexity.** O(m·n) time: m·n states, each computed once in O(1) from its neighbours. O(m·n) space: the full table, or O(min(m, n)) when each row reads only the previous row, so one row along the shorter side is kept.
 
 **Traps.**
 
@@ -391,7 +391,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** for each unvisited start: traverse (stack/recursion or queue), mark visited, collect; count/aggregate per traversal.
 
-**Complexity.** Time O(V+E): every node and edge visited once, which is O(m·n) on grids since each of the m·n cells has at most 4 edges. Space O(V): the visited set plus the queue or recursion stack, each up to V.
+**Complexity.** O(V+E) time: every node and edge visited once, which is O(m·n) on grids since each of the m·n cells has at most 4 edges. O(V) space: the visited set plus the queue or recursion stack, each up to V, and O(V+E) when an adjacency list must be built first.
 
 **Traps.**
 
@@ -423,7 +423,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** Sort if needed → scan → maintain summary (best so far, current run, farthest reach) → update answer each step.
 
-**Complexity.** Time O(n): one pass over n elements with an O(1) decision each, or O(n log n) with sort, sorting once, n log n, then one pass, n. Space O(1): a few running variables, the sort's own space excluded.
+**Complexity.** O(n) time: one pass over n elements with an O(1) decision each. O(n log n) time when a sort comes first: sorting costs n log n and dominates the pass. O(1) space: a few running variables, the sort's own space excluded.
 
 **Traps.**
 
@@ -455,7 +455,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** Build heap of initial items → loop: pop extreme, process, push replacement/new items → answer from heap contents or pop sequence.
 
-**Complexity.** Time O(n log k): n operations, each log k on a heap kept at size k. Or O(n log n): all n elements pushed and popped, each log n. Space O(k) or O(n): the heap's size.
+**Complexity.** O(n log k) time: n operations, each log k on a heap kept at size k. O(n log n) time when all n elements are pushed and popped, each log n. O(k) space: a size-k heap holds at most k entries, or O(n) when every element stays in the heap.
 
 **Traps.**
 
@@ -487,7 +487,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** Sort → iterate → compare with last kept: merge/extend, skip, or count → return result.
 
-**Complexity.** Time O(n log n): sort once by start, n log n, then one pass over the n intervals to merge or compare. Space O(n) for the output of up to n merged intervals, or O(1) when only a count or running end is kept.
+**Complexity.** O(n log n) time: sorting by start or by end costs n log n and dominates the single pass over the n intervals that merges or compares them. O(n) space: the output of up to n merged intervals, or O(1) when only a count or running end is kept.
 
 **Traps.**
 
@@ -519,7 +519,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** dummy → pointers (prev/cur/next or slow/fast) → loop with explicit save-then-rewire → return dummy.next.
 
-**Complexity.** Time O(n): one pass, or a constant number of passes, over n nodes. Space O(1) iterative: a few pointers. O(n) recursive stack: one frame per node.
+**Complexity.** O(n) time: one pass, or a constant number of passes, over n nodes. O(1) space iteratively: a few pointers. O(n) space recursively: one stack frame per node.
 
 **Traps.**
 
@@ -551,7 +551,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** Rotate: transpose then reverse rows. Spiral: top/bottom/left/right, four passes, shrink, guard against double-visit. Zeroes: mark first row/col, apply, then fix first row/col.
 
-**Complexity.** Time O(m·n): every cell visited a constant number of times. Space O(1): a few indices or boundaries, with changes made in place and the output excluded.
+**Complexity.** O(m·n) time: every cell visited a constant number of times. O(1) space: a few indices or boundaries, with changes made in place and the output excluded.
 
 **Traps.**
 
@@ -583,7 +583,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** right expands one at a time; update summary; while invalid: shrink left and update; record best when valid (longest: after shrink; shortest: while valid).
 
-**Complexity.** Time O(n): each index enters and leaves the window at most once, so at most 2n pointer moves. Space O(alphabet) or O(k): the counts of what is inside the window.
+**Complexity.** O(n) time: each index enters and leaves the window at most once, so at most 2n pointer moves. O(alphabet) space: one count per distinct value inside the window, or O(k) when the window holds at most k elements.
 
 **Traps.**
 
@@ -615,7 +615,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** For each element: pop while top is resolved by it (recording answers); push the element; at the end handle leftovers.
 
-**Complexity.** Time O(n): each element pushed and popped at most once, so at most 2n stack operations. Space O(n): the stack, up to n elements.
+**Complexity.** O(n) time: each element pushed and popped at most once, so at most 2n stack operations. O(n) space: the stack, up to n elements.
 
 **Traps.**
 
@@ -648,7 +648,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** Build adjacency + indegree → queue all indegree-0 → pop, emit, decrement neighbours, push zeros → emitted count == n else cycle.
 
-**Complexity.** Time O(V+E): in-degrees computed over all E edges, then every node dequeued once and every edge decremented once. Space O(V+E): the adjacency list plus the in-degree array and the queue of up to V nodes.
+**Complexity.** O(V+E) time: in-degrees computed over all E edges, then every node dequeued once and every edge decremented once. O(V+E) space: the adjacency list plus the in-degree array and the queue of up to V nodes.
 
 **Traps.**
 
@@ -680,7 +680,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** queue=[root]; while queue: size=len(queue); for _ in range(size): pop, record, push children; append level result.
 
-**Complexity.** Time O(n): every node enqueued and dequeued once. Space O(w): the queue holds one level, where w is max width (up to n/2 on the last level of a complete tree).
+**Complexity.** O(n) time: every node enqueued and dequeued once. O(w) space: the queue holds one level, where w is the maximum width, up to n/2 on the last level of a complete tree.
 
 **Traps.**
 
@@ -711,7 +711,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** def dfs(node): if not node: base; L = dfs(left); R = dfs(right); update global; return combined-for-parent.
 
-**Complexity.** Time O(n): every node visited once. Space O(h) recursion: one stack frame per level of the current path, log n when balanced and O(n) when skewed in the worst case.
+**Complexity.** O(n) time: every node visited once with O(1) work. O(h) space: one stack frame per level of the current path, log n when balanced and n when skewed.
 
 **Traps.**
 
@@ -743,7 +743,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** Node = {children: {}, end: bool}; insert walks/creates; search walks; startsWith walks without end check; DFS for wildcards.
 
-**Complexity.** Time O(L) per operation: one step per character of the word, each an O(1) child lookup. Space O(total characters): at most one node per character inserted, less when prefixes are shared.
+**Complexity.** O(L) time per operation: one step per character of the word, each an O(1) child lookup. O(total characters) space: at most one node per character inserted, less when prefixes are shared.
 
 **Traps.**
 
@@ -775,7 +775,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** Sort if needed → place pointers → loop while they have not crossed → compare, record, move the pointer whose move can improve the answer.
 
-**Complexity.** Time O(n) after an O(n log n) sort: sort once, n log n, then one pass where the two pointers move toward each other and each element is passed at most once. Space O(1): two indices, the sort's own space excluded.
+**Complexity.** O(n) time: the two pointers move toward each other, so each element is passed at most once. O(n log n) time when the input must be sorted first: the sort costs n log n and dominates the pass. O(1) space: two indices, the sort's own space excluded.
 
 **Traps.**
 
@@ -807,7 +807,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Shape.** parent=[i]; find with path compression; union returns False if same root; components = n − successful unions.
 
-**Complexity.** Time O((V+E) α(n)), nearly linear: V make-set calls plus up to E union or find calls, each α(n) amortized with path compression and union by rank. Space O(V): the parent and rank arrays.
+**Complexity.** O((V+E)·α(V)) time: V make-set calls plus up to E union or find calls, each α(V) amortized, nearly constant, with path compression and union by rank. O(V) space: the parent and rank arrays.
 
 **Traps.**
 
@@ -1035,7 +1035,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** dp[i] is true if some j < i has dp[j] true and s[j:i] in the dictionary.
 
-**Complexity.** O(n²) time: n prefix states, each scanning up to n earlier split points j with an O(1) average set lookup, or O(n × maxLen) when j is limited to the longest word length. O(n) space: the dp array of n + 1 booleans.
+**Complexity.** O(n³) time: n prefix states, each scanning up to n earlier split points j, and hashing the substring s[j:i] for the set lookup costs up to n characters. Limiting j to the last maxLen positions, maxLen being the longest word length, cuts this to O(n·maxLen²). O(n) space: the dp array of n + 1 booleans, plus the word set.
 
 **Trap.** Greedy longest-match; recomputing without memoisation.
 
@@ -1108,7 +1108,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Adjacent words yield one edge each from their first differing characters; topologically sort all letters, including those with no edges.
 
-**Complexity.** O(total characters + V + E) time: one pass over adjacent word pairs compares each character at most once to extract edges, then the topological sort visits every letter and every edge once. O(V + E) space: the adjacency list and in-degree map, with V letters and at most one edge per adjacent word pair.
+**Complexity.** O(total characters + V + E) time: comparing each adjacent word pair touches every character at most twice, once against each neighbouring word, to extract edges, then the topological sort visits every letter and every edge once. O(V + E) space: the adjacency list and in-degree map, with V letters and at most one edge per adjacent word pair.
 
 **Trap.** Missing the prefix-invalid case; forgetting isolated letters; assuming a unique order.
 
@@ -1156,7 +1156,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** A hash set answers 'have I seen this?' in O(1); one scan with an early exit.
 
-**Complexity.** O(n) time: one pass over n elements, O(1) average per hash set lookup and insert. O(n) space: the hash set holds up to n elements. The sort variant is O(n log n) time, sort once, n log n, then one pass, n, comparing neighbours, and O(1) extra space when sorting in place.
+**Complexity.** O(n) time: one pass over n elements, O(1) average per hash set lookup and insert. O(n) space: the hash set holds up to n elements. With sorting instead, O(n log n) time: the sort costs n log n and dominates the single pass that compares neighbours. O(1) extra space: sorting in place leaves only the loop index.
 
 **Trap.** Nested-loop comparison, or comparing set length to array length without thinking about early exit.
 
@@ -1200,7 +1200,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Put everything in a set; only count upward from numbers whose predecessor is missing, so every element is walked once.
 
-**Complexity.** O(n) time: n set inserts at O(1) average, and each element is walked at most once because counting starts only where the predecessor is missing. O(n) space: the hash set holds every number. The sort alternative is O(n log n): sort once, n log n, then one pass, n.
+**Complexity.** O(n) time: n set inserts at O(1) average, and each element is walked at most once because counting starts only where the predecessor is missing. O(n) space: the hash set holds every number. With sorting instead, O(n log n) time: the sort costs n log n and dominates the single pass that counts runs.
 
 **Trap.** Counting from every number gives O(n²) on long runs; forgetting duplicates when sorting.
 
@@ -1244,7 +1244,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Length-prefix framing: write the length, a separator, then the payload — the decoder reads the length and jumps; exactly how wire protocols avoid escaping.
 
-**Complexity.** O(total length) both directions: encode writes each character once plus a short length prefix per string, decode reads each character once and jumps by the prefix. O(1) extra space beyond the output: a read index and the current length.
+**Complexity.** O(total length) time in both directions: encode writes each character once plus a short length prefix per string, decode reads each character once and jumps by the prefix. O(1) extra space beyond the output: a read index and the current length.
 
 **Trap.** Choosing a delimiter character and then needing escaping; forgetting multi-digit lengths.
 
@@ -1267,7 +1267,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Count, then place values into buckets indexed by frequency and read from the top; or keep a size-k heap.
 
-**Complexity.** O(n) for the bucket approach: one counting pass over n with O(1) average hash map lookups, then one pass over n + 1 frequency buckets. O(n log k) for the heap: up to n distinct values pushed, each log k on a heap kept at size k. O(n) space: the count map and the buckets.
+**Complexity.** O(n) time with buckets: one counting pass over n with O(1) average hash map lookups, then one pass over n + 1 frequency buckets. O(n log k) time with a heap: up to n distinct values pushed, each log k on a heap kept at size k. O(n) space: the count map plus the buckets or the size-k heap.
 
 **Trap.** Sorting all pairs by count when the problem asks for better; building a max-heap when a min-heap of size k is intended (or vice versa).
 
@@ -1338,7 +1338,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** From each cell matching the first letter, DFS over 4 neighbours matching the next letter; mark in place and unmark on return.
 
-**Complexity.** O(m·n·4^L) time worst case: m·n starting cells, each a DFS with up to 4 branches per step, depth L. O(L) space: the recursion depth, one frame per matched character.
+**Complexity.** O(m·n·4·3^(L−1)) time worst case: m·n starting cells, each a DFS of depth L with 4 directions on the first step and 3 on each later step, because the path never steps back onto the cell it came from. O(L) space: the recursion depth, one frame per matched character.
 
 **Trap.** Forgetting to unmark; allowing diagonal moves; not stopping at the first success.
 
@@ -1629,7 +1629,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Exactly n − 1 edges and fully connected (equivalently: connected and acyclic).
 
-**Complexity.** O(n α(n)) time: reject unless there are exactly n − 1 edges, then n − 1 unions, each nearly O(1) amortized, α(n), with path compression and union by rank. O(n) space: the parent and rank arrays.
+**Complexity.** O(n·α(n)) time: reject unless there are exactly n − 1 edges, then n − 1 unions each cost α(n) amortized, nearly constant, with path compression and union by rank. O(n) space: the parent and rank arrays.
 
 **Trap.** Checking only connectivity or only the edge count; undirected DFS needs parent tracking to avoid false cycles.
 
@@ -1750,7 +1750,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Rooms = maximum concurrency: +1 at each start, −1 at each end (or the heap size after popping finished meetings).
 
-**Complexity.** O(n log n) time: sort once, n log n, then one pass, n, either sweeping the sorted starts and ends or doing n heap operations, each log n on a heap of up to n meetings. O(n) space: the two sorted arrays or the heap.
+**Complexity.** O(n log n) time: sorting costs n log n, then the sweep over the sorted starts and ends is one pass of n, or the heap version does up to n pushes and pops at log n each. O(n) space: the two sorted arrays or the heap of up to n meetings.
 
 **Trap.** Tie order when a meeting ends exactly as another starts; reusing the Meeting Rooms logic.
 
@@ -1771,7 +1771,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Any start earlier than the previous end is a conflict.
 
-**Complexity.** O(n log n) time: sort once, n log n, then one pass, n, comparing each start with the previous end. O(1) space: only the previous end, when the sort is done in place.
+**Complexity.** O(n log n) time: sorting by start costs n log n and dominates the single pass that compares each start with the previous end. O(1) space: only the previous end, when the sort is done in place.
 
 **Trap.** Boundary semantics when one meeting ends exactly as another starts.
 
@@ -1792,7 +1792,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** If start ≤ last.end, extend last.end to the max; otherwise start a new interval.
 
-**Complexity.** O(n log n) time: sort once by start, n log n, then one pass, n, extending the last interval or appending a new one. O(n) space: the output list of up to n intervals.
+**Complexity.** O(n log n) time: sorting by start costs n log n and dominates the single pass that extends the last interval or appends a new one. O(n) space: the output list of up to n intervals.
 
 **Trap.** Not taking the max of ends; inclusive vs exclusive touching.
 
@@ -1813,7 +1813,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Keep the interval that ends earliest (it leaves the most room); count the others as removals.
 
-**Complexity.** O(n log n) time: sort once by end, n log n, then one pass over the n intervals keeping the earliest end. O(1) space: one running end and a removal count, the sort's own space excluded.
+**Complexity.** O(n log n) time: sorting by end costs n log n and dominates the single pass that keeps the earliest end. O(1) space: one running end and a removal count, the sort's own space excluded.
 
 **Trap.** Sorting by start and keeping the longer; not seeing the equivalence with maximum non-overlapping set.
 
@@ -1861,7 +1861,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** A min-heap over the k current heads yields the next element in O(log k); or merge lists in pairs, halving the count each round.
 
-**Complexity.** O(N log k) time with a heap: N total nodes, each pushed and popped once, log k on a heap of size k. O(k) space: the heap holds one head per list. Pairwise merging is also O(N log k), log k rounds that each touch all N nodes once, with O(1) space when nodes are spliced iteratively.
+**Complexity.** O(N log k) time with a heap: N total nodes, each pushed and popped once, log k on a heap of size k. O(k) space: the heap holds one head per list. Pairwise merging is also O(N log k) time: log k rounds, each touching all N nodes once. O(1) space: nodes are spliced iteratively, with no heap.
 
 **Trap.** Sequential merging is O(N·k); heap tuples need an index tie-breaker because nodes are not comparable.
 
@@ -1905,7 +1905,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Start a lead pointer n+1 ahead from a dummy; when it reaches the end, the trailing pointer is just before the target.
 
-**Complexity.** O(n) time: one pass over n nodes with two pointers kept n apart. O(1) space: two pointers and a dummy head.
+**Complexity.** O(L) time: one pass over the list's L nodes, with the lead pointer kept n + 1 nodes ahead of the trailing one. O(1) space: two pointers and a dummy head.
 
 **Trap.** Removing the head without a dummy; off-by-one in the gap.
 
@@ -1927,7 +1927,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Find the middle with slow/fast, reverse the second half, then interleave the two halves.
 
-**Complexity.** O(n) time: three passes, finding the middle, reversing the second half, then merging, each over at most n nodes. O(1) space: a few pointers, nodes are relinked in place.
+**Complexity.** O(n) time: three passes, finding the middle, reversing the second half, then merging, each over at most n nodes. O(1) space: a few pointers, because nodes are relinked in place.
 
 **Trap.** Not terminating the first half; odd/even middle handling.
 
@@ -1949,7 +1949,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** prev / cur / next: save next, point cur.next at prev, advance.
 
-**Complexity.** O(n) time: one pass over n nodes, each pointer flipped once. O(1) space: three pointers when iterative, O(n) for the recursive version, one stack frame per node.
+**Complexity.** O(n) time: one pass over n nodes, each pointer flipped once. O(1) space iteratively: only the prev, cur and next pointers. O(n) space recursively: one stack frame per node.
 
 **Trap.** Overwriting .next before saving it.
 
@@ -1996,7 +1996,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Use the first row and first column as flag storage plus one extra variable for their own status; apply zeroes afterwards in the right order.
 
-**Complexity.** O(m·n) time: one pass over the m·n cells to mark zeros in the first row and column, then one pass to apply them. O(1) space: the first row and column act as the markers, plus two flags.
+**Complexity.** O(m·n) time: one pass over the m·n cells to mark zeros in the first row and column, then one pass to apply them. O(1) space: the first row and column act as the markers, plus one extra flag for their own status.
 
 **Trap.** Overwriting markers before reading them; zeroing the first row/column too early.
 
@@ -2355,7 +2355,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** At each node of the big tree, test identity against subRoot with the Same Tree check.
 
-**Complexity.** O(n·m) time: each of the n nodes of the big tree may start a Same Tree check that walks up to m nodes. O(h) space: the recursion depth of the big tree. Serialisation plus string matching can do better, O(n + m) with a linear-time matcher such as KMP.
+**Complexity.** O(n·m) time: each of the n nodes of the big tree may start a Same Tree check that walks up to m nodes. O(h) space: the recursion depth of the big tree. Serialising both trees and matching strings gives O(n + m) time: each tree is serialised once, then a linear-time matcher such as KMP scans the two strings once. O(n + m) space: the two serialised strings.
 
 **Trap.** Accepting a partial match; forgetting the empty-subtree edge semantics.
 
@@ -2447,7 +2447,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Build a trie of the words and DFS the grid while walking the trie simultaneously; stop at dead nodes, collect at word ends, and prune found words.
 
-**Complexity.** Bounded by O(m·n·4·3^(L−1)) time but far less with pruning: m·n starting cells, 4 directions on the first step, then 3 per step for L − 1 more steps, while the trie cuts dead prefixes early. O(total characters) space: one trie node per character across all words, plus the recursion depth L.
+**Complexity.** O(m·n·4·3^(L−1)) time in the worst case, far less with pruning: m·n starting cells, 4 directions on the first step, then 3 per step for L − 1 more steps, where L is the longest word length, while the trie cuts dead prefixes early. O(total characters) space: one trie node per character across all words, plus the recursion depth L.
 
 **Trap.** Duplicate results; not pruning found words or dead leaves (time limit); forgetting to unmark cells.
 
@@ -2517,7 +2517,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **The leap.** Sort; for each anchor, converge two pointers on the remainder; skip equal neighbours at every level to avoid duplicate triplets.
 
-**Complexity.** O(n²) time: sort once, n log n, then n outer iterations each running a two-pointer pass of up to n. O(1) extra space: the pointers only, ignoring the output and the sort's own space.
+**Complexity.** O(n²) time: sorting costs n log n, then each of the n anchors runs a two-pointer pass of up to n, which dominates. O(1) extra space: the pointers only, ignoring the output and the sort's own space.
 
 **Trap.** Forgetting to move both pointers after a hit; skipping duplicates only at the anchor.
 
