@@ -78,7 +78,7 @@ details.rev.is-known .rev-tag::after { content: " · known"; color: var(--signal
   margin-left: 0.75rem;
 }
 .rev-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.5rem; }
-.rev-tools button, .rev-known, [data-rev="reset"] {
+.rev-tools button, .rev-known, .rev-close, [data-rev="reset"] {
   background: transparent;
   border: 1px solid var(--rule-hi);
   color: var(--ink-2);
@@ -91,13 +91,35 @@ details.rev.is-known .rev-tag::after { content: " · known"; color: var(--signal
   cursor: pointer;
   transition: color 120ms ease, border-color 120ms ease;
 }
-.rev-tools button:hover, .rev-known:hover, [data-rev="reset"]:hover { color: var(--signal); border-color: var(--signal); }
+.rev-tools button:hover, .rev-known:hover, .rev-close:hover, [data-rev="reset"]:hover { color: var(--signal); border-color: var(--signal); }
 .rev-plan { color: var(--ink-2); }
 .rev-nav { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin: 1rem 0 1.5rem; }
 .rev-nav a { color: var(--ink-2); border-bottom-color: transparent; }
 .rev-nav a:hover { color: var(--signal); }
 #rev-progress { color: var(--ink); }
+.rev-a td code { white-space: nowrap; }
+.rev-a pre code .ln { display: block; padding-left: 2ch; text-indent: -2ch; }
+.rev-a pre code .ln + .ln { margin-top: 0.3em; }
+details.rev, .level2 > h2 { scroll-margin-top: 5.5rem; }
+.rev-step { display: block; font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); border-top: 1px solid var(--rule); padding-top: 0.5rem; margin-top: 1.25rem; }
+.rev-actions { display: flex; gap: 0.5rem; }
+.rev-q2 { display: block; font-family: var(--text); font-size: 0.9375rem; line-height: 1.45; color: var(--ink-2); margin-top: 0.25rem; }
+details.rev.is-known .rev-q2 { color: var(--ink-3); }
+.cell-output-display figure > div { overflow-x: auto; padding-bottom: 0.5rem; }
+.cell-output-display svg.flowchart { max-width: none !important; height: auto; }
+.cell-output-display svg.flowchart .cluster rect { fill: transparent !important; stroke: var(--rule) !important; }
+.rev-full { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
 @media (max-width: 600px) {
   .rev-q { font-size: 1.0625rem; }
   .rev-a p, .rev-a li { font-size: 1rem; }
+  .rev-tools button, .rev-known, .rev-close, [data-rev="reset"] { min-height: 44px; padding: 0 0.875rem; }
+  .rev-nav { line-height: 2.75rem; margin: 0.5rem 0 1rem; }
+  .rev-nav a { display: inline-block; }
+  table.rev-stack, table.rev-stack tbody, table.rev-stack tr, table.rev-stack td { display: block; width: 100%; }
+  table.rev-stack thead { display: none; }
+  table.rev-stack tr { border-top: 1px solid var(--rule); padding: 0.625rem 0; }
+  table.rev-stack td { border: 0 !important; padding: 0.125rem 0 !important; }
+  table.rev-stack td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-top: 0.375rem; }
+  table.rev-stack td:first-child { font-size: 1.125rem; color: var(--ink); }
+  table.rev-stack td:first-child::before { display: none; }
 }

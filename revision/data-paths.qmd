@@ -13,7 +13,7 @@ mermaid:
 ## 1. Sync call: the queue lives inside the gateway
 
 ```{mermaid}
-flowchart LR
+flowchart TB
   C["Client<br/>POST /infer, 200 KB image inline"] -->|"1 bytes arrive, connection stays open"| H
   subgraph GW["One gateway process: three kinds of threads"]
     H["request handlers<br/>one lightweight task per open connection,<br/>tens of thousands per process, each holds its bytes"] -->|"2 admit: one Lua script charges an ESTIMATE<br/>(input size + max_output_tokens)"| RD[("Redis<br/>tenant token buckets,<br/>shared by all N gateways")]
@@ -34,7 +34,7 @@ flowchart LR
 ## 2. Stream: frames pushed straight to the pinned host
 
 ```{mermaid}
-flowchart LR
+flowchart TB
   D["Device<br/>compressed video, 0.25 MB/s"] -->|"1 open session (device, org, model)"| API["API gateway"]
   API -->|"2 admission: concurrent-session counter per org"| RD[("Redis")]
   API -->|"3 pick a host"| SR["Session router<br/>capacity view of GPU hosts"]
@@ -55,7 +55,7 @@ flowchart LR
 ## 3. Batch job: object storage and Kafka, because the wait is long
 
 ```{mermaid}
-flowchart LR
+flowchart TB
   C["Client"] -->|"1 POST /files: presigned upload, GBs"| OS[("Object storage<br/>video, frames, results")]
   C -->|"2 POST /jobs with idempotency key"| API["API gateway"]
   API -->|"3 job record, chunk ids, priority"| JQ[("Kafka job topic")]

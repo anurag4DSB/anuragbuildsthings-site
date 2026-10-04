@@ -1,16 +1,18 @@
 ---
 title: "Coding"
-description: "100 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side."
+description: "105 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side."
 toc: true
 ---
 
-<p class="rev-plan">One section before the two problems of the day. Say the pattern from the cues before opening. <span id="rev-progress"></span></p>
+<p class="rev-plan">One section before the two problems of the day. Say the pattern from the cues before opening. For any problem the ladder is: brute force first, then the algorithm I already know (DFS, BFS, two pointers, a hash map), then the specialised one by name and complexity if it exists. <span id="rev-progress"></span></p>
 
 <p class="rev-nav"><a href="index.html">plan</a> · <a href="daily.html">daily</a> · <a href="reference.html">reference</a> · <a href="coding.html">coding</a> · <a href="data-paths.html">diagrams</a></p>
 
 <p class="rev-tools"><button type="button" data-rev="next">next unknown (j)</button><button type="button" data-rev="expand">expand all</button><button type="button" data-rev="collapse">collapse all</button><button type="button" data-rev="export">export marks</button></p>
 
 ## DP: the six lines (4)
+
+<p class="rev-plan">Before any DP code, these are written as comments in the editor. Say all six for the card, then open and check the order.</p>
 
 <details class="rev" data-card="dp-six">
 <summary><span class="rev-head"><span class="rev-tag">DP</span><span class="rev-q">The six lines to write as comments before any DP code?</span></span></summary>
@@ -31,7 +33,7 @@ ORDER       which states must exist before dp[i]? -> fill direction (forward, ba
 </details>
 
 <details class="rev" data-card="dp-question">
-<summary><span class="rev-head"><span class="rev-tag">DP</span><span class="rev-q">QUESTION: which words mean best, possible or count, and what operator and starting value follow?</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">DP</span><span class="rev-q">Which words mean best, possible or count, and what operator and starting value follow?</span></span></summary>
 <div class="rev-a">
 
 | Words in the problem | Kind | Combine with | Unknown starts as |
@@ -80,10 +82,71 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </div>
 </details>
 
+## Complexity: where it comes from (5)
+
+<p class="rev-plan">Every complexity is a sentence with its source: the loop shape, the recursion tree, the number of states, or the cost per operation. Say the source before the big O.</p>
+
+<details class="rev" data-card="cx-loops">
+<summary><span class="rev-head"><span class="rev-tag">COMPLEXITY</span><span class="rev-q">Loops: how do you read the time off the code?</span></span></summary>
+<div class="rev-a">
+
+Sequential blocks add, nested blocks multiply. One pass over n is O(n). A loop over n with an inner loop over m is O(n·m). A loop whose body halves the problem is O(log n), so n binary searches are O(n log n). Sorting first costs O(n log n) and then a pass adds O(n), which stays O(n log n). Say it as a sentence: "one pass, constant work per element, so linear".
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="cx-loops">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="cx-recursion">
+<summary><span class="rev-head"><span class="rev-tag">COMPLEXITY</span><span class="rev-q">Recursion and backtracking: where does 2^n or n! come from?</span></span></summary>
+<div class="rev-a">
+
+Count the recursion tree: nodes × work per node. Two choices per element and depth n give 2^n leaves (subsets, take or skip). n choices then n-1 then n-2 give n! leaves (permutations), and copying each answer adds a factor of n. A branching factor b and depth d give b^d. Space is the depth of the deepest path, the call stack, plus the current partial answer. Say it as: "two branches per element, depth n, so 2^n calls, each O(1), stack depth n".
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="cx-recursion">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="cx-dp">
+<summary><span class="rev-head"><span class="rev-tag">COMPLEXITY</span><span class="rev-q">Memoization and DP: how does exponential become polynomial?</span></span></summary>
+<div class="rev-a">
+
+Memoization makes each distinct state computed once, so time is number of states × work per state. One index gives n states; an index and a remaining amount give n·target; two indices give n·m. Work per state is the number of choices: O(1) for take or skip, O(k) when k coins are tried, O(n) when all earlier states are scanned (LIS is n states × n scan = n²). Space is the table, reduced to O(1) or O(m) when only the last row or the last k values are needed.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="cx-dp">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="cx-structures">
+<summary><span class="rev-head"><span class="rev-tag">COMPLEXITY</span><span class="rev-q">Data structures: the costs you add per operation?</span></span></summary>
+<div class="rev-a">
+
+Hash map and set: O(1) average per lookup or insert, so n lookups are O(n). Heap: push and pop are O(log k) on a heap of size k, so n pushes are O(n log k); building one from n items is O(n). Balanced BST and sorted containers: O(log n) per operation. Trie: one step per character, O(L) per word. Union-find with path compression and union by size: near O(1) per operation. Deque and monotonic stack: amortized O(1) per element because each element enters and leaves once. Graphs: every node and edge once is O(V+E); Dijkstra adds a heap step per edge, O((V+E) log V).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="cx-structures">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="cx-say">
+<summary><span class="rev-head"><span class="rev-tag">COMPLEXITY</span><span class="rev-q">How to say the complexity at the end of a problem?</span></span></summary>
+<div class="rev-a">
+
+One sentence with the source: "O(n log n) time: the sort dominates, then a single pass. O(n) space: the hash map of seen values; the output does not count." Then the honest tail: the worst case you assumed (a skewed tree is O(n), not O(log n)) and the trade you would make if asked for less space.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="cx-say">mark known</button></p>
+
+</div>
+</details>
+
 ## Patterns: cues to name (21)
 
+<p class="rev-plan">The question side shows only the cues, the phrases a problem statement uses. Say the pattern name, its core idea and the complexity out loud, then open. If you cannot name it in ten seconds, it is not known.</p>
+
 <details class="rev" data-card="cp-advanced-graph">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'weighted', 'minimum cost', 'cheapest path', 'network delay', 'connect all points', 'k stops' · Edge weights present; BFS no longer correct</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'weighted', 'minimum cost', 'cheapest path', 'network delay', 'connect all points', 'k stops'</span><span class="rev-q2">Edge weights present; BFS no longer correct</span></span></summary>
 <div class="rev-a">
 
 **Advanced Graph / Shortest Path.** Weighted shortest paths, minimum spanning trees, ordering under constraints beyond simple BFS. Blind 75 touches this only through Alien Dictionary; know the shapes for follow-ups.
@@ -99,7 +162,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** Dijkstra: heap of (dist, node); pop; skip stale; relax neighbours. Prim: heap of edges from the tree. Kruskal: sort edges + union-find.
 
-**Complexity.** Dijkstra O((V+E) log V); Bellman-Ford O(V·E); Kruskal O(E log E).
+**Complexity.** Dijkstra O((V+E) log V) time: each node popped once and each edge relaxed once, each pop or relaxation a heap operation of log V. O(V+E) space: the adjacency list and the heap. Bellman-Ford O(V·E) time: V − 1 rounds, each relaxing all E edges. O(V) space: the distance array. Kruskal O(E log E) time: sorting the E edges costs E log E, then E union-find calls each cost nearly O(1). O(V) space: the parent and rank arrays.
 
 **Traps.**
 
@@ -110,13 +173,15 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Not this when.** Unweighted → BFS. DAG ordering → topological sort. Connectivity only → union-find.
 
+**This week.** Name only. Say "weighted edges, so BFS is wrong; Dijkstra, a BFS whose queue is a heap keyed by distance, O((V+E) log V)" and solve the problem in front of you with BFS or DFS. No full implementation this week.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-advanced-graph">mark known</button></p>
 
 </div>
 </details>
 
 <details class="rev" data-card="cp-arrays-hashing">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'duplicate', 'anagram', 'group', 'frequency', 'top k', 'pair that sums to' · Unsorted input and a hint that O(n log n) is not good enough · Need to look something up 'have I seen X before?' while scanning once</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'duplicate', 'anagram', 'group', 'frequency', 'top k', 'pair that sums to'</span><span class="rev-q2">Unsorted input and a hint that O(n log n) is not good enough · Need to look something up 'have I seen X before?' while scanning once</span></span></summary>
 <div class="rev-a">
 
 **Arrays / Hashing.** Any question about membership, counting, grouping, or finding pairs/complements in unsorted data where O(n) is expected.
@@ -131,7 +196,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** Scan once; for each element compute a key; consult/update the map; answer derived from the map at the end or on the fly.
 
-**Complexity.** Time O(n) (O(n·k) when the key costs k to build); space O(n) or O(alphabet).
+**Complexity.** O(n) time: one pass over n elements, one O(1) average hash map lookup each. O(n·k) time when each key costs k to build, such as a count tuple, or O(n·k log k) when the key is a sorted string of length k. O(n) space: a hash map of up to n entries, or O(alphabet) for a fixed-size count array.
 
 **Traps.**
 
@@ -148,7 +213,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-backtracking">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'all combinations', 'all subsets', 'exists a path', 'word in grid', 'unlimited reuse', 'no reuse' · Exponential output or search space with pruning opportunities · Choices at each step, then undo</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'all combinations', 'all subsets', 'exists a path', 'word in grid', 'unlimited reuse', 'no reuse'</span><span class="rev-q2">Exponential output or search space with pruning opportunities · Choices at each step, then undo</span></span></summary>
 <div class="rev-a">
 
 **Backtracking.** Enumerate all combinations/permutations/paths under constraints; search a grid for a word; build candidates incrementally and undo.
@@ -163,7 +228,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** def bt(state): if goal: record; return; for choice in choices(state): apply; bt(new_state); undo.
 
-**Complexity.** Time exponential (O(k^depth) or O(4·3^(L-1)) on grids); space O(depth).
+**Complexity.** O(k^depth) time: k choices per level over depth levels give up to k^depth leaves. On grids, O(4·3^(L−1)) per start cell: 4 directions on the first step and 3 for each of the L − 1 later steps, since the path cannot step back. O(depth) space: one recursion frame and one path entry per level, output excluded.
 
 **Traps.**
 
@@ -180,7 +245,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-binary-search">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'sorted', 'rotated', 'O(log n)', 'find minimum/target', 'first/last position' · A yes/no predicate that is false…false,true…true over the search space (binary search on the answer) · Search space is a numeric range, not just an array</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'sorted', 'rotated', 'O(log n)', 'find minimum/target', 'first/last position'</span><span class="rev-q2">A yes/no predicate that is false…false,true…true over the search space (binary search on the answer) · Search space is a numeric range, not just an array</span></span></summary>
 <div class="rev-a">
 
 **Binary Search.** Sorted or rotated-sorted data, or any monotonic predicate over a range where the answer can be found by halving.
@@ -195,7 +260,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** lo, hi = bounds; while lo < hi (or <=): mid; test; move lo or hi so the invariant holds; return lo/hi with a final check.
 
-**Complexity.** Time O(log n); space O(1).
+**Complexity.** O(log n) time: each iteration halves the search range, so log n iterations of O(1) work. O(1) space: two or three indices.
 
 **Traps.**
 
@@ -212,7 +277,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-bst-inorder">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'BST', 'binary search tree', 'kth smallest/largest', 'sorted order', 'lowest common ancestor' with BST · Left < node < right must hold for entire subtrees</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'BST', 'binary search tree', 'kth smallest/largest', 'sorted order', 'lowest common ancestor' with BST</span><span class="rev-q2">Left < node < right must hold for entire subtrees</span></span></summary>
 <div class="rev-a">
 
 **BST / Inorder.** Binary search tree questions: kth smallest, validation, LCA, range queries — the ordering property is the tool.
@@ -227,7 +292,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** Iterative inorder with a stack (stop early at k); or descend from root comparing values; or DFS carrying (low, high) bounds.
 
-**Complexity.** Time O(h) for descents, O(h + k) for kth via inorder, O(n) for full validation; space O(h).
+**Complexity.** O(h) time for descents: one root-to-leaf path, the height h, log n when balanced, n when skewed. O(h + k) time for the kth smallest: descend h to the smallest node, then k inorder steps. O(n) time for full validation: every node visited once. O(h) space: the recursion or explicit stack holds one path.
 
 **Traps.**
 
@@ -244,7 +309,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-dp-1d">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'number of ways', 'minimum/maximum … ending at', 'can be segmented', 'fewest coins', 'non-adjacent', 'decode', 'longest increasing subsequence' · Recursion with repeated states; greedy is wrong · Answer builds from smaller prefixes or smaller amounts</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'number of ways', 'minimum/maximum … ending at', 'can be segmented', 'fewest coins', 'non-adjacent', 'decode', 'longest increasing subsequence'</span><span class="rev-q2">Recursion with repeated states; greedy is wrong · Answer builds from smaller prefixes or smaller amounts</span></span></summary>
 <div class="rev-a">
 
 **1-D Dynamic Programming.** Optimal value or count over a sequence/amount where the answer for position i depends on a few earlier positions; overlapping subproblems. Before any DP attempt: the six questions in the DP cheat sheet.
@@ -260,7 +325,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** dp array sized n+1 (or amount+1) → base cases → for i in range: dp[i] = combine(dp[i−k] for valid k) → return dp[n] / max.
 
-**Complexity.** Time O(n·choices) (O(n²) for LIS-style, O(amount·coins) for knapsack-like); space O(n) or O(1) rolled.
+**Complexity.** O(n·choices) time: n states, each computed once by trying every choice. That is O(n²) for LIS-style states that each scan up to n earlier states, and O(amount·coins) for knapsack-like states that each try every coin. O(n) space: the table, one entry per state, or O(1) when each state reads only the last one or two, so rolling variables replace the table.
 
 **Traps.**
 
@@ -277,7 +342,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-dp-2d">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'two strings', 'common subsequence', 'grid paths', 'm × n', 'edit', 'match' · Recurrence depends on (i−1, j), (i, j−1), (i−1, j−1)</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'two strings', 'common subsequence', 'grid paths', 'm × n', 'edit', 'match'</span><span class="rev-q2">Recurrence depends on (i−1, j), (i, j−1), (i−1, j−1)</span></span></summary>
 <div class="rev-a">
 
 **2-D Dynamic Programming.** Two sequences (LCS, edit distance) or a grid (paths) where the state needs two indices.
@@ -293,7 +358,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** dp with (m+1)×(n+1) padding → fill row by row → dp[m][n]; roll rows for O(n) space.
 
-**Complexity.** Time O(m·n); space O(m·n) or O(min(m, n)).
+**Complexity.** O(m·n) time: m·n states, each computed once in O(1) from its neighbours. O(m·n) space: the full table, or O(min(m, n)) when each row reads only the previous row, so one row along the shorter side is kept.
 
 **Traps.**
 
@@ -310,7 +375,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-graph-dfs-bfs">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'connected', 'islands', 'reachable', 'clone', 'grid of 0/1', 'neighbors', 'shortest number of steps' · Nodes and edges are explicit, or implicit in a grid</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'connected', 'islands', 'reachable', 'clone', 'grid of 0/1', 'neighbors', 'shortest number of steps'</span><span class="rev-q2">Nodes and edges are explicit, or implicit in a grid</span></span></summary>
 <div class="rev-a">
 
 **Graph DFS / BFS.** Connectivity, components, reachability, flood fill on grids, cloning, shortest path in unweighted graphs.
@@ -326,7 +391,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** for each unvisited start: traverse (stack/recursion or queue), mark visited, collect; count/aggregate per traversal.
 
-**Complexity.** Time O(V+E) = O(m·n) on grids; space O(V) for visited/queue.
+**Complexity.** O(V+E) time: every node and edge visited once, which is O(m·n) on grids since each of the m·n cells has at most 4 edges. O(V) space: the visited set plus the queue or recursion stack, each up to V, and O(V+E) when an adjacency list must be built first.
 
 **Traps.**
 
@@ -343,7 +408,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-greedy">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'maximum/minimum with a simple structure', 'can reach', 'minimum removals', 'max profit one transaction', 'maximum subarray' · An exchange argument works: swapping the greedy choice for any other never helps</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'maximum/minimum with a simple structure', 'can reach', 'minimum removals', 'max profit one transaction', 'maximum subarray'</span><span class="rev-q2">An exchange argument works: swapping the greedy choice for any other never helps</span></span></summary>
 <div class="rev-a">
 
 **Greedy.** Local choice that is provably safe: earliest finishing interval, farthest reach, running max/min, Kadane-style 'reset when negative'.
@@ -358,7 +423,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** Sort if needed → scan → maintain summary (best so far, current run, farthest reach) → update answer each step.
 
-**Complexity.** Time O(n) or O(n log n) with sort; space O(1).
+**Complexity.** O(n) time: one pass over n elements with an O(1) decision each. O(n log n) time when a sort comes first: sorting costs n log n and dominates the pass. O(1) space: a few running variables, the sort's own space excluded.
 
 **Traps.**
 
@@ -375,7 +440,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-heap">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'k smallest/largest', 'k sorted lists', 'median of stream', 'minimum rooms', 'schedule', 'most frequent' · Need extract-min/max in O(log n) while inserting · Only the extremes matter, not full sorted order</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'k smallest/largest', 'k sorted lists', 'median of stream', 'minimum rooms', 'schedule', 'most frequent'</span><span class="rev-q2">Need extract-min/max in O(log n) while inserting · Only the extremes matter, not full sorted order</span></span></summary>
 <div class="rev-a">
 
 **Heap / Priority Queue.** Repeatedly need the current min/max among a changing set: k-way merge, top-k, medians, scheduling by earliest end.
@@ -390,7 +455,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** Build heap of initial items → loop: pop extreme, process, push replacement/new items → answer from heap contents or pop sequence.
 
-**Complexity.** Time O(n log k) or O(n log n); space O(k) or O(n).
+**Complexity.** O(n log k) time: n operations, each log k on a heap kept at size k. O(n log n) time when all n elements are pushed and popped, each log n. O(k) space: a size-k heap holds at most k entries, or O(n) when every element stays in the heap.
 
 **Traps.**
 
@@ -407,7 +472,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-intervals">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'intervals', 'meetings', 'overlapping', 'merge', 'rooms', 'non-overlapping' · Sorting by start or by end makes the problem a single sweep</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'intervals', 'meetings', 'overlapping', 'merge', 'rooms', 'non-overlapping'</span><span class="rev-q2">Sorting by start or by end makes the problem a single sweep</span></span></summary>
 <div class="rev-a">
 
 **Intervals.** Ranges with start/end: merge, insert, count overlaps, minimum removals, minimum rooms, can-attend.
@@ -422,7 +487,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** Sort → iterate → compare with last kept: merge/extend, skip, or count → return result.
 
-**Complexity.** Time O(n log n); space O(n) output or O(1).
+**Complexity.** O(n log n) time: sorting by start or by end costs n log n and dominates the single pass over the n intervals that merges or compares them. O(n) space: the output of up to n merged intervals, or O(1) when only a count or running end is kept.
 
 **Traps.**
 
@@ -439,7 +504,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-linked-list">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'linked list', 'in place', 'O(1) space', 'reverse', 'merge', 'cycle', 'nth from end' · The task decomposes into: find middle, reverse, merge, two-pointer gap · Node identity matters more than values</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'linked list', 'in place', 'O(1) space', 'reverse', 'merge', 'cycle', 'nth from end'</span><span class="rev-q2">The task decomposes into: find middle, reverse, merge, two-pointer gap · Node identity matters more than values</span></span></summary>
 <div class="rev-a">
 
 **Linked List Pointer Manipulation.** Singly linked list rewiring: reverse, merge, find middle, detect cycle, remove nth-from-end, reorder — usually in O(1) extra space.
@@ -454,7 +519,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** dummy → pointers (prev/cur/next or slow/fast) → loop with explicit save-then-rewire → return dummy.next.
 
-**Complexity.** Time O(n); space O(1) iterative (O(n) recursive stack).
+**Complexity.** O(n) time: one pass, or a constant number of passes, over n nodes. O(1) space iteratively: a few pointers. O(n) space recursively: one stack frame per node.
 
 **Traps.**
 
@@ -471,7 +536,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-matrix-traversal">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'rotate the image', 'spiral order', 'set row and column to zero', 'in place', 'O(1) extra space' · The answer is about index gymnastics, not algorithms</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'rotate the image', 'spiral order', 'set row and column to zero', 'in place', 'O(1) extra space'</span><span class="rev-q2">The answer is about index gymnastics, not algorithms</span></span></summary>
 <div class="rev-a">
 
 **Matrix Traversal.** In-place matrix transforms and ordered traversals: rotate, spiral, set zeroes, transpose; boundary bookkeeping is the whole problem.
@@ -486,7 +551,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** Rotate: transpose then reverse rows. Spiral: top/bottom/left/right, four passes, shrink, guard against double-visit. Zeroes: mark first row/col, apply, then fix first row/col.
 
-**Complexity.** Time O(m·n); space O(1).
+**Complexity.** O(m·n) time: every cell visited a constant number of times. O(1) space: a few indices or boundaries, with changes made in place and the output excluded.
 
 **Traps.**
 
@@ -503,7 +568,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-sliding-window">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'substring', 'subarray', 'contiguous', 'window', 'at most k', 'without repeating', 'containing all' · A validity condition that can be updated incrementally when one element enters or leaves · O(n) expected over strings/arrays</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'substring', 'subarray', 'contiguous', 'window', 'at most k', 'without repeating', 'containing all'</span><span class="rev-q2">A validity condition that can be updated incrementally when one element enters or leaves · O(n) expected over strings/arrays</span></span></summary>
 <div class="rev-a">
 
 **Sliding Window.** 'Longest/shortest/max/min contiguous subarray or substring satisfying a condition' over a linear sequence.
@@ -518,7 +583,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** right expands one at a time; update summary; while invalid: shrink left and update; record best when valid (longest: after shrink; shortest: while valid).
 
-**Complexity.** Time O(n) (each index enters and leaves once); space O(alphabet) or O(k).
+**Complexity.** O(n) time: each index enters and leaves the window at most once, so at most 2n pointer moves. O(alphabet) space: one count per distinct value inside the window, or O(k) when the window holds at most k elements.
 
 **Traps.**
 
@@ -535,7 +600,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-stack">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'valid parentheses', 'balanced', 'nested', 'undo', 'evaluate expression', 'next greater/smaller' · The answer for an element depends on the nearest previous element with some property · Need to process in LIFO order</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'valid parentheses', 'balanced', 'nested', 'undo', 'evaluate expression', 'next greater/smaller'</span><span class="rev-q2">The answer for an element depends on the nearest previous element with some property · Need to process in LIFO order</span></span></summary>
 <div class="rev-a">
 
 **Stack.** Matching/nesting, 'most recent unmatched thing', next-greater-element, or simulating recursion iteratively.
@@ -550,7 +615,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** For each element: pop while top is resolved by it (recording answers); push the element; at the end handle leftovers.
 
-**Complexity.** Time O(n) (each element pushed/popped once); space O(n).
+**Complexity.** O(n) time: each element pushed and popped at most once, so at most 2n stack operations. O(n) space: the stack, up to n elements.
 
 **Traps.**
 
@@ -567,7 +632,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-topological-sort">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'prerequisites', 'dependencies', 'order', 'schedule', 'alien dictionary', 'build order' · Directed edges meaning 'must come before' · Ask 'is there a cycle?' in a directed graph</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'prerequisites', 'dependencies', 'order', 'schedule', 'alien dictionary', 'build order'</span><span class="rev-q2">Directed edges meaning 'must come before' · Ask 'is there a cycle?' in a directed graph</span></span></summary>
 <div class="rev-a">
 
 **Topological Sort.** Directed dependencies: can all tasks finish, in what order, is there a cycle, derive an order from pairwise constraints.
@@ -583,7 +648,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** Build adjacency + indegree → queue all indegree-0 → pop, emit, decrement neighbours, push zeros → emitted count == n else cycle.
 
-**Complexity.** Time O(V+E); space O(V+E).
+**Complexity.** O(V+E) time: in-degrees computed over all E edges, then every node dequeued once and every edge decremented once. O(V+E) space: the adjacency list plus the in-degree array and the queue of up to V nodes.
 
 **Traps.**
 
@@ -600,7 +665,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-tree-bfs">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'level order', 'level by level', 'each level', 'minimum depth', 'width' · Need nodes grouped by distance from the root</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'level order', 'level by level', 'each level', 'minimum depth', 'width'</span><span class="rev-q2">Need nodes grouped by distance from the root</span></span></summary>
 <div class="rev-a">
 
 **Tree BFS.** Level-order questions: levels as lists, right-side view, minimum depth, zigzag, connecting nodes on the same level.
@@ -615,7 +680,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** queue=[root]; while queue: size=len(queue); for _ in range(size): pop, record, push children; append level result.
 
-**Complexity.** Time O(n); space O(w) where w is max width (up to n/2).
+**Complexity.** O(n) time: every node enqueued and dequeued once. O(w) space: the queue holds one level, where w is the maximum width, up to n/2 on the last level of a complete tree.
 
 **Traps.**
 
@@ -631,7 +696,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-tree-dfs">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'binary tree', 'subtree', 'path', 'depth/height', 'same/identical', 'invert', 'maximum path sum' · The answer at a node depends only on answers from its children (post-order) · Or constraints flow down from ancestors (pre-order with parameters)</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'binary tree', 'subtree', 'path', 'depth/height', 'same/identical', 'invert', 'maximum path sum'</span><span class="rev-q2">The answer at a node depends only on answers from its children (post-order) · Or constraints flow down from ancestors (pre-order with parameters)</span></span></summary>
 <div class="rev-a">
 
 **Tree DFS.** Anything computed per subtree: depth, sums, validity, equality, paths, invert, construct. Recursion that returns a value up.
@@ -646,7 +711,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** def dfs(node): if not node: base; L = dfs(left); R = dfs(right); update global; return combined-for-parent.
 
-**Complexity.** Time O(n); space O(h) recursion (worst O(n) skewed).
+**Complexity.** O(n) time: every node visited once with O(1) work. O(h) space: one stack frame per level of the current path, log n when balanced and n when skewed.
 
 **Traps.**
 
@@ -663,7 +728,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-trie">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'prefix', 'autocomplete', 'dictionary of words', 'startsWith', 'many words on a grid' · Repeated prefix checks that would re-scan strings</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'prefix', 'autocomplete', 'dictionary of words', 'startsWith', 'many words on a grid'</span><span class="rev-q2">Repeated prefix checks that would re-scan strings</span></span></summary>
 <div class="rev-a">
 
 **Trie.** Prefix operations over many words: insert/search/startsWith, wildcard search, finding all dictionary words in a grid.
@@ -678,7 +743,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** Node = {children: {}, end: bool}; insert walks/creates; search walks; startsWith walks without end check; DFS for wildcards.
 
-**Complexity.** Time O(L) per operation; space O(total characters).
+**Complexity.** O(L) time per operation: one step per character of the word, each an O(1) child lookup. O(total characters) space: at most one node per character inserted, less when prefixes are shared.
 
 **Traps.**
 
@@ -695,7 +760,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-two-pointers">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'sorted array', 'palindrome', 'pair/triplet', 'container', 'in place' · A monotonic relationship: moving one pointer changes the quantity in a predictable direction · Need O(1) extra space</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'sorted array', 'palindrome', 'pair/triplet', 'container', 'in place'</span><span class="rev-q2">A monotonic relationship: moving one pointer changes the quantity in a predictable direction · Need O(1) extra space</span></span></summary>
 <div class="rev-a">
 
 **Two Pointers.** Sorted (or sortable) sequences, palindromes, or 'pick two elements' questions where a brute-force pair scan is O(n²).
@@ -710,7 +775,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** Sort if needed → place pointers → loop while they have not crossed → compare, record, move the pointer whose move can improve the answer.
 
-**Complexity.** Time O(n) after an O(n log n) sort; space O(1).
+**Complexity.** O(n) time: the two pointers move toward each other, so each element is passed at most once. O(n log n) time when the input must be sorted first: the sort costs n log n and dominates the pass. O(1) space: two indices, the sort's own space excluded.
 
 **Traps.**
 
@@ -727,7 +792,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 <details class="rev" data-card="cp-union-find">
-<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'connected components', 'valid tree', 'redundant connection', 'union', 'group' · Edges arrive as a list and only connectivity matters, not paths · Undirected</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'connected components', 'valid tree', 'redundant connection', 'union', 'group'</span><span class="rev-q2">Edges arrive as a list and only connectivity matters, not paths · Undirected</span></span></summary>
 <div class="rev-a">
 
 **Union Find (Disjoint Set Union).** Dynamic connectivity: count components, detect a cycle in an undirected graph, check if edges form a tree, group equivalent items.
@@ -742,7 +807,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Shape.** parent=[i]; find with path compression; union returns False if same root; components = n − successful unions.
 
-**Complexity.** Time O((V+E) α(n)) ≈ linear; space O(V).
+**Complexity.** O((V+E)·α(V)) time: V make-set calls plus up to E union or find calls, each α(V) amortized, nearly constant, with path compression and union by rank. O(V) space: the parent and rank arrays.
 
 **Traps.**
 
@@ -752,12 +817,16 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **Not this when.** Directed dependencies → topological sort. Need the actual path → DFS/BFS. Need to un-union → offline tricks (rare).
 
+**This week.** Twenty-minute primer on Wednesday: find with path compression, union by size, both near O(1). Its two problems (valid tree, connected components) also fall to DFS, so DFS is the answer you write; union-find is the follow-up you name.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-union-find">mark known</button></p>
 
 </div>
 </details>
 
 ## Recognition: 1-D Dynamic Programming (10)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-climbing-stairs">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Climbing Stairs: 'distinct ways to reach the top', steps of 1 or 2</span></span></summary>
@@ -771,7 +840,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** ways(n) = ways(n − 1) + ways(n − 2); two rolling variables suffice.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: n states, each computed once in O(1) from the previous two. O(1) space: two rolling variables replace the DP table.
 
 **Trap.** Recursion without memoisation; base cases.
 
@@ -793,7 +862,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** dp[a] = 1 + min(dp[a − c]) over coins; fill amounts bottom-up with an infinity sentinel.
 
-**Complexity.** O(amount × coins) time, O(amount) space.
+**Complexity.** O(amount × coins) time: amount states, each scans every coin once in O(1). O(amount) space: the DP table with one entry per amount from 0 to amount.
 
 **Trap.** Greedy; mishandling the impossible sentinel.
 
@@ -815,7 +884,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** ways(i) = (valid one-digit ? ways(i − 1) : 0) + (valid two-digit ? ways(i − 2) : 0).
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: n states, each computed once in O(1) by checking one one-digit and one two-digit code. O(1) space: two rolling variables replace the DP table.
 
 **Trap.** Leading zeros; '30'-style invalid pairs; a lone '0'.
 
@@ -836,7 +905,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** First and last cannot both be taken: answer = max(rob(houses[1:]), rob(houses[:-1])).
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: two runs of the linear house robber, each n states computed once in O(1). O(1) space: two rolling variables per run, provided you pass index ranges rather than slicing copies of the array.
 
 **Trap.** Forgetting the single-house case; trying to rotate the array.
 
@@ -857,7 +926,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** best(i) = max(best(i − 1), best(i − 2) + value[i]); roll two variables.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: n states, each computed once in O(1) from the previous two. O(1) space: two rolling variables replace the DP table.
 
 **Trap.** Greedy picking of alternates; off-by-one on the first two houses.
 
@@ -879,7 +948,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** dp[i] = 1 + max(dp[j]) for j < i with nums[j] < nums[i]; or maintain the smallest tail per length and binary search.
 
-**Complexity.** O(n²) or O(n log n) time, O(n) space.
+**Complexity.** O(n²) time for the DP: n states, each scans up to n earlier states. O(n log n) time for the tails method: n iterations of a binary search, log n each. O(n) space: the dp array or the tails array, at most one entry per element.
 
 **Trap.** Confusing subsequence with subarray; bisect side for strict increase.
 
@@ -901,7 +970,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Every palindrome has a center; expand from each of the 2n − 1 centers while the ends match.
 
-**Complexity.** O(n²) time, O(1) space.
+**Complexity.** O(n²) time: 2n − 1 centers, and each expansion moves outward up to n/2 steps. O(1) space: only the center indices and the best start and length, output excluded.
 
 **Trap.** Forgetting even-length centers; returning the length instead of the substring.
 
@@ -923,7 +992,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Track both the current maximum and minimum products, because a negative flips them; zero resets both.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: one pass over n elements, O(1) work to update the running maximum and minimum. O(1) space: the current maximum, the current minimum and the best answer.
 
 **Trap.** Tracking only the max; forgetting to swap when the element is negative.
 
@@ -944,7 +1013,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Each successful expansion step from a center is one more palindrome.
 
-**Complexity.** O(n²) time, O(1) space.
+**Complexity.** O(n²) time: 2n − 1 centers, each expanding outward up to n/2 steps. O(1) space: two indices and a counter.
 
 **Trap.** Double counting; missing even centers.
 
@@ -966,7 +1035,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** dp[i] is true if some j < i has dp[j] true and s[j:i] in the dictionary.
 
-**Complexity.** O(n²) time (or O(n × maxLen)), O(n) space.
+**Complexity.** O(n³) time: n prefix states, each scanning up to n earlier split points j, and hashing the substring s[j:i] for the set lookup costs up to n characters. Limiting j to the last maxLen positions, maxLen being the longest word length, cuts this to O(n·maxLen²). O(n) space: the dp array of n + 1 booleans, plus the word set.
 
 **Trap.** Greedy longest-match; recomputing without memoisation.
 
@@ -976,6 +1045,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: 2-D Dynamic Programming (2)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-count-paths">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Unique Paths: 'paths from top-left to bottom-right', 'only right or down'</span></span></summary>
@@ -990,7 +1061,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** paths(i, j) = paths(i − 1, j) + paths(i, j − 1); a single rolling row suffices; also C(m + n − 2, m − 1).
 
-**Complexity.** O(m·n) time, O(n) space.
+**Complexity.** O(m·n) time: nested loops over m rows and n columns, each cell computed once in O(1) from the cell above and the cell to the left. O(n) space: a single rolling row of n entries replaces the full m·n table.
 
 **Trap.** Edge initialisation.
 
@@ -1011,7 +1082,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** dp[i][j] = 1 + dp[i − 1][j − 1] on a match, else max(dp[i − 1][j], dp[i][j − 1]).
 
-**Complexity.** O(m·n) time, O(m·n) space (or O(min(m, n)) rolled).
+**Complexity.** O(m·n) time: nested loops over m and n characters, so m·n states, each computed once in O(1). O(m·n) space: the full DP table, or O(min(m, n)) when you roll a single row over the shorter string.
 
 **Trap.** Subsequence vs substring; padding off-by-one.
 
@@ -1021,6 +1092,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Advanced Graphs (1)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-foreign-dictionary">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · HARD</span><span class="rev-q">Alien Dictionary: 'order of letters from a sorted list of words', 'return empty if invalid', 'hard'</span></span></summary>
@@ -1035,7 +1108,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Adjacent words yield one edge each from their first differing characters; topologically sort all letters, including those with no edges.
 
-**Complexity.** O(total characters + V + E) time, O(V + E) space.
+**Complexity.** O(total characters + V + E) time: comparing each adjacent word pair touches every character at most twice, once against each neighbouring word, to extract edges, then the topological sort visits every letter and every edge once. O(V + E) space: the adjacency list and in-degree map, with V letters and at most one edge per adjacent word pair.
 
 **Trap.** Missing the prefix-invalid case; forgetting isolated letters; assuming a unique order.
 
@@ -1045,6 +1118,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Arrays & Hashing (8)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-anagram-groups">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Group Anagrams: 'group the anagrams together' · Many strings, output as groups</span></span></summary>
@@ -1059,7 +1134,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Map each word to a canonical signature; the map's values are the groups.
 
-**Complexity.** O(n·k) with count-tuple keys, O(n·k log k) with sorted keys; O(n·k) space.
+**Complexity.** O(n·k) time with count-tuple keys: n words of length up to k, each scanned once in k to build its key, then O(1) average per hash map lookup. O(n·k log k) time with sorted keys: n words, each sorted in k log k. O(n·k) space: the hash map stores every word once, plus one key per group.
 
 **Trap.** Using a list as a dictionary key; over-thinking output order (any order is fine).
 
@@ -1081,7 +1156,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** A hash set answers 'have I seen this?' in O(1); one scan with an early exit.
 
-**Complexity.** O(n) time, O(n) space (sort variant: O(n log n), O(1)).
+**Complexity.** O(n) time: one pass over n elements, O(1) average per hash set lookup and insert. O(n) space: the hash set holds up to n elements. With sorting instead, O(n log n) time: the sort costs n log n and dominates the single pass that compares neighbours. O(1) extra space: sorting in place leaves only the loop index.
 
 **Trap.** Nested-loop comparison, or comparing set length to array length without thinking about early exit.
 
@@ -1103,7 +1178,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Two strings are anagrams iff their letter multisets are equal: compare frequency counts, not orderings.
 
-**Complexity.** O(n) time, O(1) space for a fixed alphabet.
+**Complexity.** O(n) time: one pass over each string, O(1) per count update. O(1) space for a fixed alphabet: the count array or map has at most 26 entries whatever n is.
 
 **Trap.** Sorting both strings works but is O(n log n); assuming lowercase ASCII when Unicode is allowed.
 
@@ -1125,7 +1200,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Put everything in a set; only count upward from numbers whose predecessor is missing, so every element is walked once.
 
-**Complexity.** O(n) time, O(n) space (sort alternative O(n log n)).
+**Complexity.** O(n) time: n set inserts at O(1) average, and each element is walked at most once because counting starts only where the predecessor is missing. O(n) space: the hash set holds every number. With sorting instead, O(n log n) time: the sort costs n log n and dominates the single pass that counts runs.
 
 **Trap.** Counting from every number gives O(n²) on long runs; forgetting duplicates when sorting.
 
@@ -1147,7 +1222,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** answer[i] = (product of prefix before i) × (product of suffix after i); two passes, the second folding the suffix into a running scalar.
 
-**Complexity.** O(n) time, O(1) extra space (output excluded).
+**Complexity.** O(n) time: one prefix pass and one suffix pass over n elements. O(1) extra space: the output array holds the prefixes and one scalar carries the suffix, output excluded.
 
 **Trap.** Division breaks on zeros; off-by-one between exclusive and inclusive prefix.
 
@@ -1169,7 +1244,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Length-prefix framing: write the length, a separator, then the payload — the decoder reads the length and jumps; exactly how wire protocols avoid escaping.
 
-**Complexity.** O(total length) both directions, O(1) extra beyond output.
+**Complexity.** O(total length) time in both directions: encode writes each character once plus a short length prefix per string, decode reads each character once and jumps by the prefix. O(1) extra space beyond the output: a read index and the current length.
 
 **Trap.** Choosing a delimiter character and then needing escaping; forgetting multi-digit lengths.
 
@@ -1192,7 +1267,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Count, then place values into buckets indexed by frequency and read from the top; or keep a size-k heap.
 
-**Complexity.** O(n) bucket approach, O(n log k) heap; O(n) space.
+**Complexity.** O(n) time with buckets: one counting pass over n with O(1) average hash map lookups, then one pass over n + 1 frequency buckets. O(n log k) time with a heap: up to n distinct values pushed, each log k on a heap kept at size k. O(n) space: the count map plus the buckets or the size-k heap.
 
 **Trap.** Sorting all pairs by count when the problem asks for better; building a max-heap when a min-heap of size k is intended (or vice versa).
 
@@ -1215,7 +1290,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** While scanning, look up the complement in a value→index map; insert the current element only after the lookup.
 
-**Complexity.** O(n) time, O(n) space.
+**Complexity.** O(n) time: one pass over n elements, one O(1) average hash map lookup each. O(n) space: the map of value to index, up to n entries.
 
 **Trap.** Inserting before checking (pairs an element with itself); sorting destroys the required indices.
 
@@ -1225,6 +1300,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Backtracking (2)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-combination-target-sum">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Combination Sum: 'all unique combinations that sum to target', 'may be used unlimited times'</span></span></summary>
@@ -1239,7 +1316,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Iterate candidates from a start index (never backwards) to enforce non-decreasing order; recurse with the same index to allow reuse; prune when the remainder goes negative.
 
-**Complexity.** Exponential time (roughly O(k^(T/min))), O(T/min) depth.
+**Complexity.** O(k^(T/min)) time, exponential and a loose bound: each call branches over up to k candidates, and the depth is at most T/min because every step subtracts at least min from the target, so up to k^(T/min) leaves. O(T/min) space: the recursion depth and the current combination, output excluded.
 
 **Trap.** Producing permutations instead of combinations; no pruning.
 
@@ -1261,7 +1338,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** From each cell matching the first letter, DFS over 4 neighbours matching the next letter; mark in place and unmark on return.
 
-**Complexity.** O(m·n·4^L) time worst case, O(L) space.
+**Complexity.** O(m·n·4·3^(L−1)) time worst case: m·n starting cells, each a DFS of depth L with 4 directions on the first step and 3 on each later step, because the path never steps back onto the cell it came from. O(L) space: the recursion depth, one frame per matched character.
 
 **Trap.** Forgetting to unmark; allowing diagonal moves; not stopping at the first success.
 
@@ -1271,6 +1348,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Binary Search (2)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-find-minimum-in-rotated-sorted-array">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Find Minimum In Rotated Sorted Array: 'rotated', 'sorted', 'O(log n)', 'minimum'</span></span></summary>
@@ -1285,7 +1364,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** If nums[mid] > nums[right] the minimum is right of mid; otherwise it is mid or to the left — halve accordingly.
 
-**Complexity.** O(log n) time, O(1) space.
+**Complexity.** O(log n) time: binary search halves the range each iteration, so log n iterations of O(1) work. O(1) space: only the left, right and mid indices.
 
 **Trap.** Comparing with the left end (fails when not rotated); off-by-one when shrinking toward mid.
 
@@ -1307,7 +1386,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** One half around mid is always sorted; test membership in the sorted half to decide the direction.
 
-**Complexity.** O(log n) time, O(1) space.
+**Complexity.** O(log n) time: binary search halves the range each iteration, so log n iterations of O(1) work to find the sorted half and test the target against it. O(1) space: only the left, right and mid indices.
 
 **Trap.** Boundary conditions with ≤ vs <; finding the pivot first is a valid two-step alternative but longer.
 
@@ -1317,6 +1396,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Bit Manipulation (5)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-counting-bits">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Counting Bits: 'number of 1 bits for every i from 0 to n', 'O(n)'</span></span></summary>
@@ -1330,7 +1411,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** count[i] = count[i & (i − 1)] + 1 (or count[i >> 1] + (i & 1)).
 
-**Complexity.** O(n) time, O(n) space.
+**Complexity.** O(n) time: n + 1 states, each computed once in O(1) from a smaller index already filled. O(n) space: the output array of n + 1 counts, which doubles as the DP table.
 
 **Trap.** Running popcount per number (fine, but misses the DP point).
 
@@ -1351,7 +1432,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** XOR all indices 0..n with all values leaves the missing number; or n(n + 1)/2 minus the sum.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: one pass over n elements, O(1) work per XOR or addition. O(1) space: a single running XOR or sum.
 
 **Trap.** Sorting (unnecessary O(n log n)).
 
@@ -1372,7 +1453,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** n & (n − 1) clears the lowest set bit; count the iterations until zero.
 
-**Complexity.** O(number of set bits) time, O(1) space.
+**Complexity.** O(number of set bits) time: each n & (n − 1) step clears one set bit, so the loop runs once per 1 bit, at most 32. O(1) space: one counter.
 
 **Trap.** Negative numbers / unbounded integers in Python.
 
@@ -1393,7 +1474,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Shift the result left and OR in the input's lowest bit, 32 times.
 
-**Complexity.** O(32) time, O(1) space.
+**Complexity.** O(32) time: one loop over the 32 bits, one shift and OR each. O(1) space: the result word.
 
 **Trap.** Python's unbounded integers (mask to 32 bits).
 
@@ -1414,7 +1495,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** sum = a ^ b, carry = (a & b) << 1; repeat until the carry is zero, masking to 32 bits in Python.
 
-**Complexity.** O(32) time, O(1) space.
+**Complexity.** O(32) time: each XOR and carry round moves the carry left by at least one bit, so at most 32 rounds on a 32-bit word. O(1) space: the sum and carry words.
 
 **Trap.** Infinite loops with Python negatives when not masked.
 
@@ -1424,6 +1505,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Graphs (6)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-clone-graph">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Clone Graph: 'deep copy of a connected graph', neighbours lists, cycles</span></span></summary>
@@ -1438,7 +1521,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** A hash map from original node to its clone doubles as the visited set; create the clone before recursing into neighbours.
 
-**Complexity.** O(V + E) time, O(V) space.
+**Complexity.** O(V + E) time: every node is cloned once and every edge is followed once. O(V) space: the original-to-clone hash map holds V entries, and the recursion stack or queue holds at most V nodes.
 
 **Trap.** Creating duplicate clones; not handling an empty graph.
 
@@ -1459,7 +1542,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Components = n minus the number of unions that actually merged two different sets.
 
-**Complexity.** O(E α(n)) time, O(n) space.
+**Complexity.** O(n + E·α(n)) time: initialising the parent array touches all n nodes, then E unions each cost α(n), nearly constant, with path compression and union by rank. O(n) space: the parent and rank arrays, one entry per node.
 
 **Trap.** Building adjacency for DFS when union-find is shorter; skipping path compression is fine but say why it matters.
 
@@ -1481,7 +1564,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Each unvisited land cell starts a flood fill that sinks the whole island; count the fills.
 
-**Complexity.** O(m·n) time, O(m·n) worst-case space.
+**Complexity.** O(m·n) time: nested loops over m rows and n columns visit every cell, and each flood fill sinks a land cell at most once, so every cell is processed a constant number of times. O(m·n) space in the worst case: the DFS recursion or BFS queue can hold every cell when the grid is all land.
 
 **Trap.** Recursion depth on large grids; diagonal adjacency.
 
@@ -1503,7 +1586,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** A valid order exists iff there is no directed cycle: detect via DFS states (visiting/visited) or by checking that Kahn's algorithm processes every node.
 
-**Complexity.** O(V + E) time, O(V + E) space.
+**Complexity.** O(V + E) time: the DFS or Kahn's algorithm visits every course and every prerequisite edge once. O(V + E) space: the adjacency list of V lists and E edges, plus the state or in-degree array and the recursion stack or queue, each up to V.
 
 **Trap.** A plain visited set cannot distinguish a back edge from a cross edge; reversed edge direction.
 
@@ -1525,7 +1608,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Start from each ocean's border cells and climb to cells with height ≥ current; the answer is the intersection of the two reachable sets.
 
-**Complexity.** O(m·n) time, O(m·n) space.
+**Complexity.** O(m·n) time: one reverse DFS or BFS per ocean from its border cells, each cell visited at most once per ocean, so 2·m·n steps. O(m·n) space: two visited grids of m·n cells plus the recursion stack or queue.
 
 **Trap.** Forward simulation per cell (quadratic); reversing the height comparison incorrectly.
 
@@ -1546,7 +1629,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Exactly n − 1 edges and fully connected (equivalently: connected and acyclic).
 
-**Complexity.** O(n α(n)) time, O(n) space.
+**Complexity.** O(n·α(n)) time: reject unless there are exactly n − 1 edges, then n − 1 unions each cost α(n) amortized, nearly constant, with path compression and union by rank. O(n) space: the parent and rank arrays.
 
 **Trap.** Checking only connectivity or only the edge count; undirected DFS needs parent tracking to avoid false cycles.
 
@@ -1556,6 +1639,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Greedy (2)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-jump-game">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Jump Game: 'can you reach the last index', 'maximum jump length'</span></span></summary>
@@ -1570,7 +1655,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Track the farthest reachable index; if the current index exceeds it, fail; or move the goal leftward from the end.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: one pass over n indices, O(1) work each to update the farthest reach or the goal. O(1) space: only the farthest reachable index or the goal index.
 
 **Trap.** Quadratic DP; confusing with the minimum-jumps variant.
 
@@ -1592,7 +1677,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** current = max(nums[i], current + nums[i]); a negative running sum never helps.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: one pass over n elements, O(1) work to extend or restart the running sum. O(1) space: the running sum and the best sum.
 
 **Trap.** Initialising to 0 when all numbers may be negative.
 
@@ -1602,6 +1687,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Heap / Priority Queue (1)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-find-median-in-a-data-stream">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · HARD</span><span class="rev-q">Find Median From Data Stream: 'stream', 'median at any time', 'addNum / findMedian'</span></span></summary>
@@ -1616,7 +1703,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Split the numbers into a lower half (max-heap) and upper half (min-heap) whose sizes differ by at most one; the median is at the tops.
 
-**Complexity.** O(log n) per insert, O(1) per median, O(n) space.
+**Complexity.** O(log n) time per insert: one push and at most one rebalancing move, each log n on a heap of up to n elements. O(1) time per median: it reads only the two heap tops. O(n) space: the two heaps together hold all n numbers.
 
 **Trap.** Min-heap-only library (negate for the max-heap); rebalancing in the wrong direction.
 
@@ -1626,6 +1713,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Intervals (5)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-insert-new-interval">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Insert Interval: 'sorted non-overlapping intervals', 'insert and merge if necessary'</span></span></summary>
@@ -1639,7 +1728,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Append everything ending before; merge everything overlapping into the new interval; append the rest.
 
-**Complexity.** O(n) time, O(n) space.
+**Complexity.** O(n) time: one pass over n already-sorted intervals, each appended or merged once. O(n) space: the output list of up to n + 1 intervals.
 
 **Trap.** Wrong overlap condition; forgetting to append the new interval when it belongs at the end.
 
@@ -1661,7 +1750,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Rooms = maximum concurrency: +1 at each start, −1 at each end (or the heap size after popping finished meetings).
 
-**Complexity.** O(n log n) time, O(n) space.
+**Complexity.** O(n log n) time: sorting costs n log n, then the sweep over the sorted starts and ends is one pass of n, or the heap version does up to n pushes and pops at log n each. O(n) space: the two sorted arrays or the heap of up to n meetings.
 
 **Trap.** Tie order when a meeting ends exactly as another starts; reusing the Meeting Rooms logic.
 
@@ -1682,7 +1771,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Any start earlier than the previous end is a conflict.
 
-**Complexity.** O(n log n) time, O(1) space.
+**Complexity.** O(n log n) time: sorting by start costs n log n and dominates the single pass that compares each start with the previous end. O(1) space: only the previous end, when the sort is done in place.
 
 **Trap.** Boundary semantics when one meeting ends exactly as another starts.
 
@@ -1703,7 +1792,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** If start ≤ last.end, extend last.end to the max; otherwise start a new interval.
 
-**Complexity.** O(n log n) time, O(n) space.
+**Complexity.** O(n log n) time: sorting by start costs n log n and dominates the single pass that extends the last interval or appends a new one. O(n) space: the output list of up to n intervals.
 
 **Trap.** Not taking the max of ends; inclusive vs exclusive touching.
 
@@ -1724,7 +1813,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Keep the interval that ends earliest (it leaves the most room); count the others as removals.
 
-**Complexity.** O(n log n) time, O(1) space.
+**Complexity.** O(n log n) time: sorting by end costs n log n and dominates the single pass that keeps the earliest end. O(1) space: one running end and a removal count, the sort's own space excluded.
 
 **Trap.** Sorting by start and keeping the longer; not seeing the equivalence with maximum non-overlapping set.
 
@@ -1734,6 +1823,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Linked List (6)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-linked-list-cycle-detection">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Linked List Cycle: 'cycle', 'constant memory'</span></span></summary>
@@ -1748,7 +1839,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** A pointer moving two steps gains one node per iteration on a pointer moving one; inside a cycle they must meet.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: the fast pointer reaches the end within n/2 steps when there is no cycle, and inside a cycle it gains one node per step, so it catches the slow pointer within one lap of at most n nodes. O(1) space: only the two pointers.
 
 **Trap.** Missing fast.next null checks; using a set when O(1) space was expected.
 
@@ -1770,7 +1861,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** A min-heap over the k current heads yields the next element in O(log k); or merge lists in pairs, halving the count each round.
 
-**Complexity.** O(N log k) time, O(k) space (pairwise: O(N log k), O(1)).
+**Complexity.** O(N log k) time with a heap: N total nodes, each pushed and popped once, log k on a heap of size k. O(k) space: the heap holds one head per list. Pairwise merging is also O(N log k) time: log k rounds, each touching all N nodes once. O(1) space: nodes are spliced iteratively, with no heap.
 
 **Trap.** Sequential merging is O(N·k); heap tuples need an index tie-breaker because nodes are not comparable.
 
@@ -1792,7 +1883,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Splice existing nodes by comparison behind a dummy head; attach the leftover tail.
 
-**Complexity.** O(n + m) time, O(1) space.
+**Complexity.** O(n + m) time: one pass over both lists, each node spliced once. O(1) space: only the dummy head and the tail pointer, because existing nodes are reused.
 
 **Trap.** Allocating new nodes; forgetting the leftover tail.
 
@@ -1814,7 +1905,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Start a lead pointer n+1 ahead from a dummy; when it reaches the end, the trailing pointer is just before the target.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(L) time: one pass over the list's L nodes, with the lead pointer kept n + 1 nodes ahead of the trailing one. O(1) space: two pointers and a dummy head.
 
 **Trap.** Removing the head without a dummy; off-by-one in the gap.
 
@@ -1836,7 +1927,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Find the middle with slow/fast, reverse the second half, then interleave the two halves.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: three passes, finding the middle, reversing the second half, then merging, each over at most n nodes. O(1) space: a few pointers, because nodes are relinked in place.
 
 **Trap.** Not terminating the first half; odd/even middle handling.
 
@@ -1858,7 +1949,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** prev / cur / next: save next, point cur.next at prev, advance.
 
-**Complexity.** O(n) time, O(1) space (recursion O(n)).
+**Complexity.** O(n) time: one pass over n nodes, each pointer flipped once. O(1) space iteratively: only the prev, cur and next pointers. O(n) space recursively: one stack frame per node.
 
 **Trap.** Overwriting .next before saving it.
 
@@ -1868,6 +1959,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Math & Geometry (3)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-rotate-matrix">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Rotate Image: 'rotate 90 degrees clockwise in place'</span></span></summary>
@@ -1881,7 +1974,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Transpose, then reverse each row (clockwise).
 
-**Complexity.** O(n²) time, O(1) space.
+**Complexity.** O(n²) time: transpose then reverse each row, each of the n² cells swapped a constant number of times. O(1) space: swaps happen in place.
 
 **Trap.** Layer-by-layer index errors; rotating the wrong way.
 
@@ -1903,7 +1996,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Use the first row and first column as flag storage plus one extra variable for their own status; apply zeroes afterwards in the right order.
 
-**Complexity.** O(m·n) time, O(1) space.
+**Complexity.** O(m·n) time: one pass over the m·n cells to mark zeros in the first row and column, then one pass to apply them. O(1) space: the first row and column act as the markers, plus one extra flag for their own status.
 
 **Trap.** Overwriting markers before reading them; zeroing the first row/column too early.
 
@@ -1925,7 +2018,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Maintain top/bottom/left/right; traverse four edges, shrink, and re-check bounds before the bottom and left passes.
 
-**Complexity.** O(m·n) time, O(1) space.
+**Complexity.** O(m·n) time: every cell visited once while four boundaries shrink inward. O(1) space: four boundary indices, the output excluded.
 
 **Trap.** Double-visiting on a leftover single row or column.
 
@@ -1935,6 +2028,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Sliding Window (4)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-buy-and-sell-crypto">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Best Time to Buy And Sell Stock: 'buy one day, sell a later day', 'maximum profit', single transaction</span></span></summary>
@@ -1949,7 +2044,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Track the minimum price so far; profit at day i is price − min so far; keep the best.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: one pass over n prices, O(1) work per day. O(1) space: only the minimum price so far and the best profit.
 
 **Trap.** Allowing a sale before the purchase; nested loops.
 
@@ -1971,7 +2066,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** A window is valid iff its length minus its most frequent count is ≤ k; the historical max frequency never needs decrementing to get the right answer.
 
-**Complexity.** O(n) time, O(26) space.
+**Complexity.** O(n) time: each character enters and leaves the window at most once, with O(1) per count update and max check. O(26) space: one count per uppercase letter.
 
 **Trap.** Recomputing the max on every step (acceptable at 26) or shrinking the window incorrectly.
 
@@ -1993,7 +2088,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Maintain a window of unique characters; on a repeat, move left just past the previous occurrence (never backwards).
 
-**Complexity.** O(n) time, O(alphabet) space.
+**Complexity.** O(n) time: each character enters the window once and the left pointer only moves forward, so each leaves at most once, with O(1) average per hash map lookup. O(alphabet) space: the hash map holds at most one last-seen index per distinct character.
 
 **Trap.** Moving left by one instead of jumping; forgetting max(left, last_seen + 1).
 
@@ -2015,7 +2110,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Track need counts vs have counts and the number of fully satisfied characters; expand right until satisfied, shrink left while satisfied, record the smallest.
 
-**Complexity.** O(|s| + |t|) time, O(alphabet) space.
+**Complexity.** O(|s| + |t|) time: one pass over t builds the need counts, then each character of s enters and leaves the window at most once, with O(1) average per hash map update. O(alphabet) space: the need and have maps hold at most one count per distinct character.
 
 **Trap.** Mishandling duplicate characters in t; recording the answer before the window is fully formed.
 
@@ -2025,6 +2120,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Stack (1)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-validate-parentheses">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Valid Parentheses: 'brackets', 'valid/balanced', 'closed in the correct order'</span></span></summary>
@@ -2039,7 +2136,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** LIFO matching: push openers, pop and compare on closers; the stack must be empty at the end.
 
-**Complexity.** O(n) time, O(n) space.
+**Complexity.** O(n) time: one pass over n characters, each bracket pushed and popped at most once. O(n) space: the stack, up to n opening brackets.
 
 **Trap.** Popping an empty stack; forgetting leftover openers.
 
@@ -2049,6 +2146,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Trees (11)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-binary-tree-from-preorder-and-inorder-traversal">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Construct Binary Tree From Preorder And Inorder Traversal: 'preorder and inorder', 'construct the tree'</span></span></summary>
@@ -2063,7 +2162,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Preorder gives the root; its index in inorder gives the left size; recurse on the corresponding ranges using an index map.
 
-**Complexity.** O(n) time with a value→index map (O(n²) with linear searches), O(n) space.
+**Complexity.** O(n) time: every node is created once, and the value-to-index map makes each inorder lookup O(1) average. With linear searches instead, each of n nodes scans up to n inorder entries, so O(n²). O(n) space: the value-to-index map holds n entries, plus the recursion depth h, n when skewed.
 
 **Trap.** Slicing arrays (hidden O(n²) copies); wrong preorder offset for the right subtree.
 
@@ -2085,7 +2184,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Return the best single-branch gain (floored at zero) to the parent while updating a global best with left + right + node.
 
-**Complexity.** O(n) time, O(h) space.
+**Complexity.** O(n) time: one post-order traversal visits every node once and does O(1) work there. O(h) space: the recursion depth, the height h, log n when balanced and n when skewed.
 
 **Trap.** Passing both branches upward; not clamping negatives.
 
@@ -2106,7 +2205,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** height(node) = 1 + max(height(left), height(right)).
 
-**Complexity.** O(n) time, O(h) space.
+**Complexity.** O(n) time: every node is visited once with O(1) work. O(h) space: the recursion depth, the height h, log n when balanced and n when skewed.
 
 **Trap.** Counting edges vs nodes; recursion depth on skewed trees.
 
@@ -2127,7 +2226,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Swap the children at each node and recurse; any traversal order works.
 
-**Complexity.** O(n) time, O(h) space.
+**Complexity.** O(n) time: every node is visited once and its two children swapped in O(1). O(h) space: the recursion depth, the height h, log n when balanced and n when skewed.
 
 **Trap.** None serious — this is a warm-up to make recursion automatic.
 
@@ -2149,7 +2248,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Inorder of a BST is sorted; an explicit stack lets you stop at the kth visit.
 
-**Complexity.** O(h + k) time, O(h) space.
+**Complexity.** O(h + k) time: every node pushed on the stack is either popped as one of the k visits or still waiting on the stack, which holds at most h, so at most h + k pushes and pops. O(h) space: the explicit stack holds at most one root-to-leaf path, log n when balanced and n when skewed.
 
 **Trap.** Collecting the whole inorder list (correct but O(n)); off-by-one on k.
 
@@ -2170,7 +2269,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Process exactly len(queue) nodes per round; each round is one level.
 
-**Complexity.** O(n) time, O(w) space.
+**Complexity.** O(n) time: every node is enqueued and dequeued once. O(w) space: the queue holds at most one level, the widest level w, up to about n/2 in a full tree, output excluded.
 
 **Trap.** Not snapshotting the queue size before the inner loop.
 
@@ -2191,7 +2290,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Walk down from the root: both smaller → left, both larger → right, otherwise the current node is the split point.
 
-**Complexity.** O(h) time, O(1) space iteratively.
+**Complexity.** O(h) time: one step down per level, the height h, log n when balanced and n when skewed. O(1) space iteratively: only the current node pointer, while a recursive walk would use O(h) for the call stack.
 
 **Trap.** Using the general-tree LCA algorithm (works but ignores the property); forgetting a node can be its own ancestor.
 
@@ -2212,7 +2311,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Recurse on both trees simultaneously; equality of structure and value at every node.
 
-**Complexity.** O(n) time, O(h) space.
+**Complexity.** O(n) time: one paired DFS, every node of both trees visited once. O(h) space: the recursion depth, the height h, log n when balanced, n when skewed.
 
 **Trap.** Comparing values before null checks.
 
@@ -2234,7 +2333,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Preorder with explicit null markers is self-delimiting; deserialisation consumes tokens in the same order.
 
-**Complexity.** O(n) time, O(n) space.
+**Complexity.** O(n) time: every node visited once to serialize and once to rebuild. O(n) space: the serialized string with one token per node and null marker, plus the recursion depth.
 
 **Trap.** Delimiters versus multi-digit or negative values; recursion depth.
 
@@ -2256,7 +2355,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** At each node of the big tree, test identity against subRoot with the Same Tree check.
 
-**Complexity.** O(n·m) time, O(h) space (serialisation + string matching can do better).
+**Complexity.** O(n·m) time: each of the n nodes of the big tree may start a Same Tree check that walks up to m nodes. O(h) space: the recursion depth of the big tree. Serialising both trees and matching strings gives O(n + m) time: each tree is serialised once, then a linear-time matcher such as KMP scans the two strings once. O(n + m) space: the two serialised strings.
 
 **Trap.** Accepting a partial match; forgetting the empty-subtree edge semantics.
 
@@ -2278,7 +2377,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Every node must lie strictly inside an (low, high) interval inherited from above; or the inorder sequence must be strictly increasing.
 
-**Complexity.** O(n) time, O(h) space.
+**Complexity.** O(n) time: one DFS visiting every node once, checking it against the bounds passed down. O(h) space: the recursion depth, log n when balanced, n when skewed.
 
 **Trap.** Comparing only with children; equal values; sentinel handling for the bounds.
 
@@ -2288,6 +2387,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Tries (3)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-design-word-search-data-structure">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Design Add And Search Words Data Structure: 'search with '.' matching any letter'</span></span></summary>
@@ -2302,7 +2403,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Walk the trie; on a wildcard, branch into every child (backtracking over the trie).
 
-**Complexity.** O(26^dots · L) worst case per search, O(total characters) space.
+**Complexity.** O(26^dots · L) time per search in the worst case: each wildcard branches into up to 26 children, so dots wildcards give up to 26^dots paths, each walked at most L characters deep. O(total characters) space: the trie stores at most one node per inserted character.
 
 **Trap.** Returning only the first child's result; ignoring the end flag at the last character.
 
@@ -2324,7 +2425,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Children map per node plus an end flag; every operation walks one character per level.
 
-**Complexity.** O(L) per operation, O(total characters) space.
+**Complexity.** O(L) time per operation: insert, search and startsWith each walk one trie level per character of the length-L word, with O(1) average per child map lookup. O(total characters) space: the trie stores at most one node per inserted character, fewer when prefixes are shared.
 
 **Trap.** Returning true from search when only a prefix exists; conflating search and startsWith.
 
@@ -2346,7 +2447,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Build a trie of the words and DFS the grid while walking the trie simultaneously; stop at dead nodes, collect at word ends, and prune found words.
 
-**Complexity.** Bounded by O(m·n·4·3^(L−1)) but far less with pruning; O(total characters) space.
+**Complexity.** O(m·n·4·3^(L−1)) time in the worst case, far less with pruning: m·n starting cells, 4 directions on the first step, then 3 per step for L − 1 more steps, where L is the longest word length, while the trie cuts dead prefixes early. O(total characters) space: one trie node per character across all words, plus the recursion depth L.
 
 **Trap.** Duplicate results; not pruning found words or dead leaves (time limit); forgetting to unmark cells.
 
@@ -2356,6 +2457,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Two Pointers (3)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-is-palindrome">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Valid Palindrome: 'reads the same forward and backward', 'ignore non-alphanumeric', 'case-insensitive'</span></span></summary>
@@ -2370,7 +2473,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Converge from both ends, skipping invalid characters, comparing normalised characters.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: two pointers move inward, so each character is visited at most once. O(1) space: only the two indices.
 
 **Trap.** Allocating a filtered copy (fine, but O(n) space); mishandling the skip loop bounds.
 
@@ -2392,7 +2495,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Area is bounded by the shorter line; moving the shorter pointer inward is the only move that can improve the result.
 
-**Complexity.** O(n) time, O(1) space.
+**Complexity.** O(n) time: the two pointers start at the ends and one moves inward each step, so n − 1 steps in total. O(1) space: only the two indices and the best area.
 
 **Trap.** Brute-force pairs; moving the taller pointer.
 
@@ -2414,7 +2517,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 **The leap.** Sort; for each anchor, converge two pointers on the remainder; skip equal neighbours at every level to avoid duplicate triplets.
 
-**Complexity.** O(n²) time, O(1) extra space (ignoring output).
+**Complexity.** O(n²) time: sorting costs n log n, then each of the n anchors runs a two-pointer pass of up to n, which dominates. O(1) extra space: the pointers only, ignoring the output and the sort's own space.
 
 **Trap.** Forgetting to move both pointers after a hit; skipping duplicates only at the anchor.
 

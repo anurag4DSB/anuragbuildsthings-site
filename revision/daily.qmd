@@ -12,6 +12,8 @@ toc: false
 
 ## The opening and the board (5)
 
+<p class="rev-plan">Say these from memory before every mock. The two layouts are the minute budgets you write in the corner of the board.</p>
+
 <details class="rev" data-card="opening-script">
 <summary><span class="rev-head"><span class="rev-tag">SCRIPT</span><span class="rev-q">The 3-minute opening script?</span></span></summary>
 <div class="rev-a">
@@ -90,6 +92,8 @@ This prompt is functional-heavy. The interviewer dictates the requirements, asks
 </details>
 
 ## Numbers (13)
+
+<p class="rev-plan">Facts and shapes of calculation. Say the value or the formula, then open.</p>
 
 <details class="rev" data-card="six-lines">
 <summary><span class="rev-head"><span class="rev-tag">SIX LINES</span><span class="rev-q">The six lines in the room, in four minutes?</span></span></summary>
@@ -241,6 +245,8 @@ text 3-10×, video already compressed (~1×)
 </details>
 
 ## Boards: the numbers block and the diagram order (20)
+
+<p class="rev-plan">Four cards per design: the whole board, then the numbers block, the diagram order and the two deep dives on their own. On the whole-board card, write before you open.</p>
 
 <details class="rev" data-card="b01-numbers">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 01 · NUMBERS</span><span class="rev-q">Live AI copilot for 1M body-worn and industrial cameras: the numbers block (8-13 min).</span></span></summary>
