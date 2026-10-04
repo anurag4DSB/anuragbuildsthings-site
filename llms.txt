@@ -4,7 +4,7 @@
 
 ## Pages
 
-- [Prompts I Keep Coming Back To](https://anuragbuildsthings.com/posts/prompts-i-keep-coming-back-to.llms.md)
-- [The AI Tools I've Actually Used](https://anuragbuildsthings.com/posts/ai-tools-timeline.llms.md)
-- [anurag builds things](https://anuragbuildsthings.com/index.llms.md)
 - [Claude Code Agent Teams on a Real Production Chore](https://anuragbuildsthings.com/posts/claude-code-agent-teams-real-work.llms.md)
+- [anurag builds things](https://anuragbuildsthings.com/index.llms.md)
+- [The AI Tools I've Actually Used](https://anuragbuildsthings.com/posts/ai-tools-timeline.llms.md)
+- [Prompts I Keep Coming Back To](https://anuragbuildsthings.com/posts/prompts-i-keep-coming-back-to.llms.md)

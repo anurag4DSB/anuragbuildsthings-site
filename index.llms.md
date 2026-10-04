@@ -20,7 +20,7 @@ A commonplace book - prompts and magic words I’ve collected from others and ke
 
 21 May 2026
 
-[![YouTube thumbnail for the companion video: &#039;21 agents, 1 human, prod K8s driver' over a tmux split-pane showing teammates working in parallel.](./posts/figures/claude-code-agent-teams-thumb.jpg)](posts/claude-code-agent-teams-real-work.llms.md)
+[![YouTube thumbnail for the companion video: \&#039;21 agents, 1 human, prod K8s driver' over a tmux split-pane showing teammates working in parallel.](./posts/figures/claude-code-agent-teams-thumb.jpg)](posts/claude-code-agent-teams-real-work.llms.md)
 
 ### [Claude Code Agent Teams on a Real Production Chore](posts/claude-code-agent-teams-real-work.llms.md)
 
