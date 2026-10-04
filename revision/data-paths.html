@@ -94,6 +94,12 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="../favicon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@200..800&amp;family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&amp;family=Inter+Tight:wght@300..700&amp;family=JetBrains+Mono:wght@400..600&amp;family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&amp;display=optional">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0c0d0b">
 <link rel="manifest" href="manifest.webmanifest">
@@ -359,7 +365,7 @@ Note
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
-<pre class="mermaid mermaid-js">flowchart LR
+<pre class="mermaid mermaid-js">flowchart TB
   C["Client&lt;br/&gt;POST /infer, 200 KB image inline"] --&gt;|"1 bytes arrive, connection stays open"| H
   subgraph GW["One gateway process: three kinds of threads"]
     H["request handlers&lt;br/&gt;one lightweight task per open connection,&lt;br/&gt;tens of thousands per process, each holds its bytes"] --&gt;|"2 admit: one Lua script charges an ESTIMATE&lt;br/&gt;(input size + max_output_tokens)"| RD[("Redis&lt;br/&gt;tenant token buckets,&lt;br/&gt;shared by all N gateways")]
@@ -389,7 +395,7 @@ Note
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
-<pre class="mermaid mermaid-js">flowchart LR
+<pre class="mermaid mermaid-js">flowchart TB
   D["Device&lt;br/&gt;compressed video, 0.25 MB/s"] --&gt;|"1 open session (device, org, model)"| API["API gateway"]
   API --&gt;|"2 admission: concurrent-session counter per org"| RD[("Redis")]
   API --&gt;|"3 pick a host"| SR["Session router&lt;br/&gt;capacity view of GPU hosts"]
@@ -419,7 +425,7 @@ Note
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
-<pre class="mermaid mermaid-js">flowchart LR
+<pre class="mermaid mermaid-js">flowchart TB
   C["Client"] --&gt;|"1 POST /files: presigned upload, GBs"| OS[("Object storage&lt;br/&gt;video, frames, results")]
   C --&gt;|"2 POST /jobs with idempotency key"| API["API gateway"]
   API --&gt;|"3 job record, chunk ids, priority"| JQ[("Kafka job topic")]
@@ -1105,6 +1111,8 @@ For the next person figuring things out by building - <a href="mailto:anuragbuil
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('.rev-known');
     if (b) { var id = b.getAttribute('data-for'); setKnown(id, !known(id)); paint(); return; }
+    var cl = e.target.closest && e.target.closest('.rev-close');
+    if (cl) { var dd = cl.closest('details.rev'); dd.open = false; dd.scrollIntoView({ block: 'start' }); return; }
     var t = e.target.closest && e.target.closest('[data-rev]');
     if (!t) return;
     var a = t.getAttribute('data-rev');
@@ -1119,7 +1127,43 @@ For the next person figuring things out by building - <a href="mailto:anuragbuil
     if (e.key === 'j') nextUnknown();
   });
   if ('serviceWorker' in navigator) { try { navigator.serviceWorker.register('sw.js'); } catch (e) {} }
-  function init() { importMarks(); paint(); }
+  function stackTables() {
+    document.querySelectorAll('main table').forEach(function (t) {
+      var heads = Array.prototype.map.call(t.querySelectorAll('thead th'), function (th) { return th.textContent.trim(); });
+      if (heads.length < 4) return;
+      t.classList.add('rev-stack');
+      t.querySelectorAll('tbody tr').forEach(function (tr) {
+        Array.prototype.forEach.call(tr.cells, function (td, j) { td.setAttribute('data-label', heads[j] || ''); });
+      });
+    });
+  }
+  function wrapLines() {
+    document.querySelectorAll('.rev-a pre > code').forEach(function (c) {
+      if (c.querySelector('.ln')) return;
+      var lines = c.textContent.replace(/\n$/, '').split('\n'); c.textContent = '';
+      lines.forEach(function (l) { var sp = document.createElement('span'); sp.className = 'ln'; sp.textContent = l; c.appendChild(sp); });
+    });
+  }
+  function closeButtons() {
+    document.querySelectorAll('.rev-actions').forEach(function (p) {
+      if (p.querySelector('.rev-close')) return;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'rev-close'; b.textContent = 'close'; p.appendChild(b);
+    });
+  }
+  function diagrams() {
+    document.querySelectorAll('.cell-output-display svg.flowchart').forEach(function (svg) {
+      var vb = svg.viewBox.baseVal;
+      if (window.innerWidth < 600 && vb && vb.width) svg.style.width = Math.round(vb.width * 0.6) + 'px';
+      var a = document.createElement('a'); a.className = 'rev-full'; a.href = '#'; a.textContent = 'open full size';
+      a.addEventListener('click', function (e) {
+        e.preventDefault(); var c = svg.cloneNode(true);
+        c.setAttribute('width', Math.round(vb.width)); c.setAttribute('height', Math.round(vb.height)); c.removeAttribute('style');
+        window.open(URL.createObjectURL(new Blob(['<!doctype html><meta name="viewport" content="width=device-width"><body style="margin:0;background:#0c0d0b">' + c.outerHTML], { type: 'text/html' })));
+      });
+      var host = svg.closest('.cell-output-display'); if (host) host.before(a);
+    });
+  }
+  function init() { importMarks(); stackTables(); wrapLines(); closeButtons(); paint(); setTimeout(diagrams, 800); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>

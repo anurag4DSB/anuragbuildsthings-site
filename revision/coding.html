@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="100 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
+<meta name="description" content="105 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
 
 <title>Coding – anurag builds things</title>
 <style>
@@ -90,6 +90,12 @@ gtag('js', new Date());
   });
 gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 </script>
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="../favicon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@200..800&amp;family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&amp;family=Inter+Tight:wght@300..700&amp;family=JetBrains+Mono:wght@400..600&amp;family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&amp;display=optional">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0c0d0b">
 <link rel="manifest" href="manifest.webmanifest">
@@ -98,7 +104,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 
 <link rel="stylesheet" href="revision.css">
 <meta property="og:title" content="Coding – anurag builds things">
-<meta property="og:description" content="100 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
+<meta property="og:description" content="105 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
 <meta property="og:image" content="https://anuragbuildsthings.com/revision/og-default.png">
 <meta property="og:site_name" content="anurag builds things">
 </head>
@@ -296,6 +302,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
    
   <ul class="collapse">
   <li><a href="#dp-the-six-lines-4" id="toc-dp-the-six-lines-4" class="nav-link active" data-scroll-target="#dp-the-six-lines-4">DP: the six lines (4)</a></li>
+  <li><a href="#complexity-where-it-comes-from-5" id="toc-complexity-where-it-comes-from-5" class="nav-link" data-scroll-target="#complexity-where-it-comes-from-5">Complexity: where it comes from (5)</a></li>
   <li><a href="#patterns-cues-to-name-21" id="toc-patterns-cues-to-name-21" class="nav-link" data-scroll-target="#patterns-cues-to-name-21">Patterns: cues to name (21)</a></li>
   <li><a href="#recognition-1-d-dynamic-programming-10" id="toc-recognition-1-d-dynamic-programming-10" class="nav-link" data-scroll-target="#recognition-1-d-dynamic-programming-10">Recognition: 1-D Dynamic Programming (10)</a></li>
   <li><a href="#recognition-2-d-dynamic-programming-2" id="toc-recognition-2-d-dynamic-programming-2" class="nav-link" data-scroll-target="#recognition-2-d-dynamic-programming-2">Recognition: 2-D Dynamic Programming (2)</a></li>
@@ -333,7 +340,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 
 <div>
   <div class="description">
-    100 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.
+    105 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.
   </div>
 </div>
 
@@ -351,7 +358,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 
 
 <p class="rev-plan">
-One section before the two problems of the day. Say the pattern from the cues before opening. <span id="rev-progress"></span>
+One section before the two problems of the day. Say the pattern from the cues before opening. For any problem the ladder is: brute force first, then the algorithm I already know (DFS, BFS, two pointers, a hash map), then the specialised one by name and complexity if it exists. <span id="rev-progress"></span>
 </p>
 <p class="rev-nav">
 <a href="index.html">plan</a> · <a href="daily.html">daily</a> · <a href="reference.html">reference</a> · <a href="coding.html">coding</a> · <a href="data-paths.html">diagrams</a>
@@ -372,6 +379,9 @@ export marks
 </p>
 <section id="dp-the-six-lines-4" class="level2">
 <h2 class="anchored" data-anchor-id="dp-the-six-lines-4">DP: the six lines (4)</h2>
+<p class="rev-plan">
+Before any DP code, these are written as comments in the editor. Say all six for the card, then open and check the order.
+</p>
 <details class="rev" data-card="dp-six">
 <summary>
 <span class="rev-head"><span class="rev-tag">DP</span><span class="rev-q">The six lines to write as comments before any DP code?</span></span>
@@ -392,7 +402,7 @@ mark known
 </details>
 <details class="rev" data-card="dp-question">
 <summary>
-<span class="rev-head"><span class="rev-tag">DP</span><span class="rev-q">QUESTION: which words mean best, possible or count, and what operator and starting value follow?</span></span>
+<span class="rev-head"><span class="rev-tag">DP</span><span class="rev-q">Which words mean best, possible or count, and what operator and starting value follow?</span></span>
 </summary>
 <div class="rev-a">
 <table class="caption-top table">
@@ -513,11 +523,85 @@ mark known
 </div>
 </details>
 </section>
+<section id="complexity-where-it-comes-from-5" class="level2">
+<h2 class="anchored" data-anchor-id="complexity-where-it-comes-from-5">Complexity: where it comes from (5)</h2>
+<p class="rev-plan">
+Every complexity is a sentence with its source: the loop shape, the recursion tree, the number of states, or the cost per operation. Say the source before the big O.
+</p>
+<details class="rev" data-card="cx-loops">
+<summary>
+<span class="rev-head"><span class="rev-tag">COMPLEXITY</span><span class="rev-q">Loops: how do you read the time off the code?</span></span>
+</summary>
+<div class="rev-a">
+<p>Sequential blocks add, nested blocks multiply. One pass over n is O(n). A loop over n with an inner loop over m is O(n·m). A loop whose body halves the problem is O(log n), so n binary searches are O(n log n). Sorting first costs O(n log n) and then a pass adds O(n), which stays O(n log n). Say it as a sentence: “one pass, constant work per element, so linear”.</p>
+<p class="rev-actions">
+<button type="button" class="rev-known" data-for="cx-loops">
+mark known
+</button>
+</p>
+</div>
+</details>
+<details class="rev" data-card="cx-recursion">
+<summary>
+<span class="rev-head"><span class="rev-tag">COMPLEXITY</span><span class="rev-q">Recursion and backtracking: where does 2^n or n! come from?</span></span>
+</summary>
+<div class="rev-a">
+<p>Count the recursion tree: nodes × work per node. Two choices per element and depth n give 2^n leaves (subsets, take or skip). n choices then n-1 then n-2 give n! leaves (permutations), and copying each answer adds a factor of n.&nbsp;A branching factor b and depth d give b^d.&nbsp;Space is the depth of the deepest path, the call stack, plus the current partial answer. Say it as: “two branches per element, depth n, so 2^n calls, each O(1), stack depth n”.</p>
+<p class="rev-actions">
+<button type="button" class="rev-known" data-for="cx-recursion">
+mark known
+</button>
+</p>
+</div>
+</details>
+<details class="rev" data-card="cx-dp">
+<summary>
+<span class="rev-head"><span class="rev-tag">COMPLEXITY</span><span class="rev-q">Memoization and DP: how does exponential become polynomial?</span></span>
+</summary>
+<div class="rev-a">
+<p>Memoization makes each distinct state computed once, so time is number of states × work per state. One index gives n states; an index and a remaining amount give n·target; two indices give n·m. Work per state is the number of choices: O(1) for take or skip, O(k) when k coins are tried, O(n) when all earlier states are scanned (LIS is n states × n scan = n²). Space is the table, reduced to O(1) or O(m) when only the last row or the last k values are needed.</p>
+<p class="rev-actions">
+<button type="button" class="rev-known" data-for="cx-dp">
+mark known
+</button>
+</p>
+</div>
+</details>
+<details class="rev" data-card="cx-structures">
+<summary>
+<span class="rev-head"><span class="rev-tag">COMPLEXITY</span><span class="rev-q">Data structures: the costs you add per operation?</span></span>
+</summary>
+<div class="rev-a">
+<p>Hash map and set: O(1) average per lookup or insert, so n lookups are O(n). Heap: push and pop are O(log k) on a heap of size k, so n pushes are O(n log k); building one from n items is O(n). Balanced BST and sorted containers: O(log n) per operation. Trie: one step per character, O(L) per word. Union-find with path compression and union by size: near O(1) per operation. Deque and monotonic stack: amortized O(1) per element because each element enters and leaves once. Graphs: every node and edge once is O(V+E); Dijkstra adds a heap step per edge, O((V+E) log V).</p>
+<p class="rev-actions">
+<button type="button" class="rev-known" data-for="cx-structures">
+mark known
+</button>
+</p>
+</div>
+</details>
+<details class="rev" data-card="cx-say">
+<summary>
+<span class="rev-head"><span class="rev-tag">COMPLEXITY</span><span class="rev-q">How to say the complexity at the end of a problem?</span></span>
+</summary>
+<div class="rev-a">
+<p>One sentence with the source: “O(n log n) time: the sort dominates, then a single pass. O(n) space: the hash map of seen values; the output does not count.” Then the honest tail: the worst case you assumed (a skewed tree is O(n), not O(log n)) and the trade you would make if asked for less space.</p>
+<p class="rev-actions">
+<button type="button" class="rev-known" data-for="cx-say">
+mark known
+</button>
+</p>
+</div>
+</details>
+</section>
 <section id="patterns-cues-to-name-21" class="level2">
 <h2 class="anchored" data-anchor-id="patterns-cues-to-name-21">Patterns: cues to name (21)</h2>
+<p class="rev-plan">
+The question side shows only the cues, the phrases a problem statement uses. Say the pattern name, its core idea and the complexity out loud, then open. If you cannot name it in ten seconds, it is not known.
+</p>
 <details class="rev" data-card="cp-advanced-graph">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘weighted’, ‘minimum cost’, ‘cheapest path’, ‘network delay’, ‘connect all points’, ‘k stops’ · Edge weights present; BFS no longer correct</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘weighted’, ‘minimum cost’, ‘cheapest path’, ‘network delay’, ‘connect all points’, ‘k stops’</span><span class="rev-q2">Edge weights present; BFS no longer correct</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Advanced Graph / Shortest Path.</strong> Weighted shortest paths, minimum spanning trees, ordering under constraints beyond simple BFS. Blind 75 touches this only through Alien Dictionary; know the shapes for follow-ups.</p>
@@ -530,7 +614,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Dijkstra: once a node is popped with the smallest tentative distance, that distance is final (non-negative weights). MST: the cheapest edge crossing a cut is safe.</p>
 <p><strong>Shape.</strong> Dijkstra: heap of (dist, node); pop; skip stale; relax neighbours. Prim: heap of edges from the tree. Kruskal: sort edges + union-find.</p>
-<p><strong>Complexity.</strong> Dijkstra O((V+E) log V); Bellman-Ford O(V·E); Kruskal O(E log E).</p>
+<p><strong>Complexity.</strong> Dijkstra O((V+E) log V) time: each node popped once and each edge relaxed once, each pop or relaxation a heap operation of log V. O(V+E) space: the adjacency list and the heap. Bellman-Ford O(V·E) time: V − 1 rounds, each relaxing all E edges. O(V) space: the distance array. Kruskal O(E log E) time: sorting the E edges costs E log E, then E union-find calls each cost nearly O(1). O(V) space: the parent and rank arrays.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Using BFS with weights</li>
@@ -539,6 +623,7 @@ mark known
 <li>Confusing shortest-path tree with MST</li>
 </ul>
 <p><strong>Not this when.</strong> Unweighted → BFS. DAG ordering → topological sort. Connectivity only → union-find.</p>
+<p><strong>This week.</strong> Name only. Say “weighted edges, so BFS is wrong; Dijkstra, a BFS whose queue is a heap keyed by distance, O((V+E) log V)” and solve the problem in front of you with BFS or DFS. No full implementation this week.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-advanced-graph">
 mark known
@@ -548,7 +633,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-arrays-hashing">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘duplicate’, ‘anagram’, ‘group’, ‘frequency’, ‘top k’, ‘pair that sums to’ · Unsorted input and a hint that O(n log n) is not good enough · Need to look something up ‘have I seen X before?’ while scanning once</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘duplicate’, ‘anagram’, ‘group’, ‘frequency’, ‘top k’, ‘pair that sums to’</span><span class="rev-q2">Unsorted input and a hint that O(n log n) is not good enough · Need to look something up ‘have I seen X before?’ while scanning once</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Arrays / Hashing.</strong> Any question about membership, counting, grouping, or finding pairs/complements in unsorted data where O(n) is expected.</p>
@@ -560,7 +645,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Trade space for time: a hash map turns a nested search into a constant-time lookup, so one pass suffices.</p>
 <p><strong>Shape.</strong> Scan once; for each element compute a key; consult/update the map; answer derived from the map at the end or on the fly.</p>
-<p><strong>Complexity.</strong> Time O(n) (O(n·k) when the key costs k to build); space O(n) or O(alphabet).</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n elements, one O(1) average hash map lookup each. O(n·k) time when each key costs k to build, such as a count tuple, or O(n·k log k) when the key is a sorted string of length k. O(n) space: a hash map of up to n entries, or O(alphabet) for a fixed-size count array.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Inserting before checking (element pairs with itself)</li>
@@ -578,7 +663,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-backtracking">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘all combinations’, ‘all subsets’, ‘exists a path’, ‘word in grid’, ‘unlimited reuse’, ‘no reuse’ · Exponential output or search space with pruning opportunities · Choices at each step, then undo</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘all combinations’, ‘all subsets’, ‘exists a path’, ‘word in grid’, ‘unlimited reuse’, ‘no reuse’</span><span class="rev-q2">Exponential output or search space with pruning opportunities · Choices at each step, then undo</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Backtracking.</strong> Enumerate all combinations/permutations/paths under constraints; search a grid for a word; build candidates incrementally and undo.</p>
@@ -590,7 +675,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Choose → explore → un-choose; ordering constraints (start index) prevent duplicates; pruning cuts dead branches.</p>
 <p><strong>Shape.</strong> def bt(state): if goal: record; return; for choice in choices(state): apply; bt(new_state); undo.</p>
-<p><strong>Complexity.</strong> Time exponential (O(k^depth) or O(4·3^(L-1)) on grids); space O(depth).</p>
+<p><strong>Complexity.</strong> O(k^depth) time: k choices per level over depth levels give up to k^depth leaves. On grids, O(4·3^(L−1)) per start cell: 4 directions on the first step and 3 for each of the L − 1 later steps, since the path cannot step back. O(depth) space: one recursion frame and one path entry per level, output excluded.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Forgetting to undo (unmark visited, pop path)</li>
@@ -608,7 +693,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-binary-search">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘sorted’, ‘rotated’, ‘O(log n)’, ‘find minimum/target’, ‘first/last position’ · A yes/no predicate that is false…false,true…true over the search space (binary search on the answer) · Search space is a numeric range, not just an array</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘sorted’, ‘rotated’, ‘O(log n)’, ‘find minimum/target’, ‘first/last position’</span><span class="rev-q2">A yes/no predicate that is false…false,true…true over the search space (binary search on the answer) · Search space is a numeric range, not just an array</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Binary Search.</strong> Sorted or rotated-sorted data, or any monotonic predicate over a range where the answer can be found by halving.</p>
@@ -620,7 +705,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Each comparison halves the space while preserving the invariant that the answer stays inside [lo, hi].</p>
 <p><strong>Shape.</strong> lo, hi = bounds; while lo &lt; hi (or &lt;=): mid; test; move lo or hi so the invariant holds; return lo/hi with a final check.</p>
-<p><strong>Complexity.</strong> Time O(log n); space O(1).</p>
+<p><strong>Complexity.</strong> O(log n) time: each iteration halves the search range, so log n iterations of O(1) work. O(1) space: two or three indices.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Infinite loop from mid rounding with lo = mid</li>
@@ -638,7 +723,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-bst-inorder">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘BST’, ‘binary search tree’, ‘kth smallest/largest’, ‘sorted order’, ‘lowest common ancestor’ with BST · Left &lt; node &lt; right must hold for entire subtrees</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘BST’, ‘binary search tree’, ‘kth smallest/largest’, ‘sorted order’, ‘lowest common ancestor’ with BST</span><span class="rev-q2">Left &lt; node &lt; right must hold for entire subtrees</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>BST / Inorder.</strong> Binary search tree questions: kth smallest, validation, LCA, range queries — the ordering property is the tool.</p>
@@ -650,7 +735,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Inorder of a BST is sorted; comparisons at a node tell you which subtree contains what you want.</p>
 <p><strong>Shape.</strong> Iterative inorder with a stack (stop early at k); or descend from root comparing values; or DFS carrying (low, high) bounds.</p>
-<p><strong>Complexity.</strong> Time O(h) for descents, O(h + k) for kth via inorder, O(n) for full validation; space O(h).</p>
+<p><strong>Complexity.</strong> O(h) time for descents: one root-to-leaf path, the height h, log n when balanced, n when skewed. O(h + k) time for the kth smallest: descend h to the smallest node, then k inorder steps. O(n) time for full validation: every node visited once. O(h) space: the recursion or explicit stack holds one path.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Validating only against direct children</li>
@@ -668,7 +753,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-dp-1d">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘number of ways’, ‘minimum/maximum … ending at’, ‘can be segmented’, ‘fewest coins’, ‘non-adjacent’, ‘decode’, ‘longest increasing subsequence’ · Recursion with repeated states; greedy is wrong · Answer builds from smaller prefixes or smaller amounts</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘number of ways’, ‘minimum/maximum … ending at’, ‘can be segmented’, ‘fewest coins’, ‘non-adjacent’, ‘decode’, ‘longest increasing subsequence’</span><span class="rev-q2">Recursion with repeated states; greedy is wrong · Answer builds from smaller prefixes or smaller amounts</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>1-D Dynamic Programming.</strong> Optimal value or count over a sequence/amount where the answer for position i depends on a few earlier positions; overlapping subproblems. Before any DP attempt: the six questions in the DP cheat sheet.</p>
@@ -681,7 +766,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Define the state so the last decision is local; the recurrence combines a constant (or small) number of earlier states; memoise or fill bottom-up.</p>
 <p><strong>Shape.</strong> dp array sized n+1 (or amount+1) → base cases → for i in range: dp[i] = combine(dp[i−k] for valid k) → return dp[n] / max.</p>
-<p><strong>Complexity.</strong> Time O(n·choices) (O(n²) for LIS-style, O(amount·coins) for knapsack-like); space O(n) or O(1) rolled.</p>
+<p><strong>Complexity.</strong> O(n·choices) time: n states, each computed once by trying every choice. That is O(n²) for LIS-style states that each scan up to n earlier states, and O(amount·coins) for knapsack-like states that each try every coin. O(n) space: the table, one entry per state, or O(1) when each state reads only the last one or two, so rolling variables replace the table.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Wrong state definition (ending-at vs up-to)</li>
@@ -699,7 +784,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-dp-2d">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘two strings’, ‘common subsequence’, ‘grid paths’, ‘m × n’, ‘edit’, ‘match’ · Recurrence depends on (i−1, j), (i, j−1), (i−1, j−1)</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘two strings’, ‘common subsequence’, ‘grid paths’, ‘m × n’, ‘edit’, ‘match’</span><span class="rev-q2">Recurrence depends on (i−1, j), (i, j−1), (i−1, j−1)</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>2-D Dynamic Programming.</strong> Two sequences (LCS, edit distance) or a grid (paths) where the state needs two indices.</p>
@@ -712,7 +797,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Matching last elements extends the diagonal state; otherwise take the best of dropping one side; grids sum the two arrivals.</p>
 <p><strong>Shape.</strong> dp with (m+1)×(n+1) padding → fill row by row → dp[m][n]; roll rows for O(n) space.</p>
-<p><strong>Complexity.</strong> Time O(m·n); space O(m·n) or O(min(m, n)).</p>
+<p><strong>Complexity.</strong> O(m·n) time: m·n states, each computed once in O(1) from its neighbours. O(m·n) space: the full table, or O(min(m, n)) when each row reads only the previous row, so one row along the shorter side is kept.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Subsequence vs substring confusion</li>
@@ -730,7 +815,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-graph-dfs-bfs">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘connected’, ‘islands’, ‘reachable’, ‘clone’, ‘grid of 0/1’, ‘neighbors’, ‘shortest number of steps’ · Nodes and edges are explicit, or implicit in a grid</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘connected’, ‘islands’, ‘reachable’, ‘clone’, ‘grid of 0/1’, ‘neighbors’, ‘shortest number of steps’</span><span class="rev-q2">Nodes and edges are explicit, or implicit in a grid</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Graph DFS / BFS.</strong> Connectivity, components, reachability, flood fill on grids, cloning, shortest path in unweighted graphs.</p>
@@ -743,7 +828,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Each node is discovered once; a visited set (or in-place marking) guarantees O(V+E).</p>
 <p><strong>Shape.</strong> for each unvisited start: traverse (stack/recursion or queue), mark visited, collect; count/aggregate per traversal.</p>
-<p><strong>Complexity.</strong> Time O(V+E) = O(m·n) on grids; space O(V) for visited/queue.</p>
+<p><strong>Complexity.</strong> O(V+E) time: every node and edge visited once, which is O(m·n) on grids since each of the m·n cells has at most 4 edges. O(V) space: the visited set plus the queue or recursion stack, each up to V, and O(V+E) when an adjacency list must be built first.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Recursion depth on large grids (use iterative or BFS)</li>
@@ -761,7 +846,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-greedy">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘maximum/minimum with a simple structure’, ‘can reach’, ‘minimum removals’, ‘max profit one transaction’, ‘maximum subarray’ · An exchange argument works: swapping the greedy choice for any other never helps</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘maximum/minimum with a simple structure’, ‘can reach’, ‘minimum removals’, ‘max profit one transaction’, ‘maximum subarray’</span><span class="rev-q2">An exchange argument works: swapping the greedy choice for any other never helps</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Greedy.</strong> Local choice that is provably safe: earliest finishing interval, farthest reach, running max/min, Kadane-style ‘reset when negative’.</p>
@@ -773,7 +858,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> A locally optimal step preserves the possibility of a globally optimal completion; one linear scan with a running summary suffices.</p>
 <p><strong>Shape.</strong> Sort if needed → scan → maintain summary (best so far, current run, farthest reach) → update answer each step.</p>
-<p><strong>Complexity.</strong> Time O(n) or O(n log n) with sort; space O(1).</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n elements with an O(1) decision each. O(n log n) time when a sort comes first: sorting costs n log n and dominates the pass. O(1) space: a few running variables, the sort’s own space excluded.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Assuming greedy works without the exchange argument (coin change is the classic failure)</li>
@@ -791,7 +876,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-heap">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘k smallest/largest’, ‘k sorted lists’, ‘median of stream’, ‘minimum rooms’, ‘schedule’, ‘most frequent’ · Need extract-min/max in O(log n) while inserting · Only the extremes matter, not full sorted order</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘k smallest/largest’, ‘k sorted lists’, ‘median of stream’, ‘minimum rooms’, ‘schedule’, ‘most frequent’</span><span class="rev-q2">Need extract-min/max in O(log n) while inserting · Only the extremes matter, not full sorted order</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Heap / Priority Queue.</strong> Repeatedly need the current min/max among a changing set: k-way merge, top-k, medians, scheduling by earliest end.</p>
@@ -803,7 +888,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> A heap keeps the extreme available in O(1) and restores order in O(log n) per change; a size-k heap keeps the k best seen so far.</p>
 <p><strong>Shape.</strong> Build heap of initial items → loop: pop extreme, process, push replacement/new items → answer from heap contents or pop sequence.</p>
-<p><strong>Complexity.</strong> Time O(n log k) or O(n log n); space O(k) or O(n).</p>
+<p><strong>Complexity.</strong> O(n log k) time: n operations, each log k on a heap kept at size k. O(n log n) time when all n elements are pushed and popped, each log n.&nbsp;O(k) space: a size-k heap holds at most k entries, or O(n) when every element stays in the heap.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Python heapq is a min-heap: negate for max</li>
@@ -821,7 +906,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-intervals">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘intervals’, ‘meetings’, ‘overlapping’, ‘merge’, ‘rooms’, ‘non-overlapping’ · Sorting by start or by end makes the problem a single sweep</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘intervals’, ‘meetings’, ‘overlapping’, ‘merge’, ‘rooms’, ‘non-overlapping’</span><span class="rev-q2">Sorting by start or by end makes the problem a single sweep</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Intervals.</strong> Ranges with start/end: merge, insert, count overlaps, minimum removals, minimum rooms, can-attend.</p>
@@ -833,7 +918,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> After sorting, each interval interacts only with the current merged/last-kept interval (or the earliest-ending active one).</p>
 <p><strong>Shape.</strong> Sort → iterate → compare with last kept: merge/extend, skip, or count → return result.</p>
-<p><strong>Complexity.</strong> Time O(n log n); space O(n) output or O(1).</p>
+<p><strong>Complexity.</strong> O(n log n) time: sorting by start or by end costs n log n and dominates the single pass over the n intervals that merges or compares them. O(n) space: the output of up to n merged intervals, or O(1) when only a count or running end is kept.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Not taking max of ends when merging</li>
@@ -851,7 +936,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-linked-list">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘linked list’, ‘in place’, ‘O(1) space’, ‘reverse’, ‘merge’, ‘cycle’, ‘nth from end’ · The task decomposes into: find middle, reverse, merge, two-pointer gap · Node identity matters more than values</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘linked list’, ‘in place’, ‘O(1) space’, ‘reverse’, ‘merge’, ‘cycle’, ‘nth from end’</span><span class="rev-q2">The task decomposes into: find middle, reverse, merge, two-pointer gap · Node identity matters more than values</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Linked List Pointer Manipulation.</strong> Singly linked list rewiring: reverse, merge, find middle, detect cycle, remove nth-from-end, reorder — usually in O(1) extra space.</p>
@@ -863,7 +948,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Never lose a reference: save next before rewiring; a dummy head makes head-removal ordinary.</p>
 <p><strong>Shape.</strong> dummy → pointers (prev/cur/next or slow/fast) → loop with explicit save-then-rewire → return dummy.next.</p>
-<p><strong>Complexity.</strong> Time O(n); space O(1) iterative (O(n) recursive stack).</p>
+<p><strong>Complexity.</strong> O(n) time: one pass, or a constant number of passes, over n nodes. O(1) space iteratively: a few pointers. O(n) space recursively: one stack frame per node.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Losing the rest of the list by rewiring before saving next</li>
@@ -881,7 +966,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-matrix-traversal">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘rotate the image’, ‘spiral order’, ‘set row and column to zero’, ‘in place’, ‘O(1) extra space’ · The answer is about index gymnastics, not algorithms</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘rotate the image’, ‘spiral order’, ‘set row and column to zero’, ‘in place’, ‘O(1) extra space’</span><span class="rev-q2">The answer is about index gymnastics, not algorithms</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Matrix Traversal.</strong> In-place matrix transforms and ordered traversals: rotate, spiral, set zeroes, transpose; boundary bookkeeping is the whole problem.</p>
@@ -893,7 +978,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Keep explicit boundaries/markers and update them in a fixed order so each cell is touched a constant number of times.</p>
 <p><strong>Shape.</strong> Rotate: transpose then reverse rows. Spiral: top/bottom/left/right, four passes, shrink, guard against double-visit. Zeroes: mark first row/col, apply, then fix first row/col.</p>
-<p><strong>Complexity.</strong> Time O(m·n); space O(1).</p>
+<p><strong>Complexity.</strong> O(m·n) time: every cell visited a constant number of times. O(1) space: a few indices or boundaries, with changes made in place and the output excluded.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Double-visiting the last row/column in spiral for non-square matrices</li>
@@ -911,7 +996,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-sliding-window">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘substring’, ‘subarray’, ‘contiguous’, ‘window’, ‘at most k’, ‘without repeating’, ‘containing all’ · A validity condition that can be updated incrementally when one element enters or leaves · O(n) expected over strings/arrays</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘substring’, ‘subarray’, ‘contiguous’, ‘window’, ‘at most k’, ‘without repeating’, ‘containing all’</span><span class="rev-q2">A validity condition that can be updated incrementally when one element enters or leaves · O(n) expected over strings/arrays</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Sliding Window.</strong> ‘Longest/shortest/max/min contiguous subarray or substring satisfying a condition’ over a linear sequence.</p>
@@ -923,7 +1008,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Maintain a window and O(1)-updatable summary (counts, max, distinct count) so that each element enters once and leaves once.</p>
 <p><strong>Shape.</strong> right expands one at a time; update summary; while invalid: shrink left and update; record best when valid (longest: after shrink; shortest: while valid).</p>
-<p><strong>Complexity.</strong> Time O(n) (each index enters and leaves once); space O(alphabet) or O(k).</p>
+<p><strong>Complexity.</strong> O(n) time: each index enters and leaves the window at most once, so at most 2n pointer moves. O(alphabet) space: one count per distinct value inside the window, or O(k) when the window holds at most k elements.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Shrinking by one when a jump (via last-seen index) is correct</li>
@@ -941,7 +1026,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-stack">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘valid parentheses’, ‘balanced’, ‘nested’, ‘undo’, ‘evaluate expression’, ‘next greater/smaller’ · The answer for an element depends on the nearest previous element with some property · Need to process in LIFO order</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘valid parentheses’, ‘balanced’, ‘nested’, ‘undo’, ‘evaluate expression’, ‘next greater/smaller’</span><span class="rev-q2">The answer for an element depends on the nearest previous element with some property · Need to process in LIFO order</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Stack.</strong> Matching/nesting, ‘most recent unmatched thing’, next-greater-element, or simulating recursion iteratively.</p>
@@ -953,7 +1038,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> The stack holds exactly the unresolved candidates; the top is always the one the current element interacts with.</p>
 <p><strong>Shape.</strong> For each element: pop while top is resolved by it (recording answers); push the element; at the end handle leftovers.</p>
-<p><strong>Complexity.</strong> Time O(n) (each element pushed/popped once); space O(n).</p>
+<p><strong>Complexity.</strong> O(n) time: each element pushed and popped at most once, so at most 2n stack operations. O(n) space: the stack, up to n elements.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Popping from an empty stack</li>
@@ -971,7 +1056,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-topological-sort">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘prerequisites’, ‘dependencies’, ‘order’, ‘schedule’, ‘alien dictionary’, ‘build order’ · Directed edges meaning ‘must come before’ · Ask ‘is there a cycle?’ in a directed graph</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘prerequisites’, ‘dependencies’, ‘order’, ‘schedule’, ‘alien dictionary’, ‘build order’</span><span class="rev-q2">Directed edges meaning ‘must come before’ · Ask ‘is there a cycle?’ in a directed graph</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Topological Sort.</strong> Directed dependencies: can all tasks finish, in what order, is there a cycle, derive an order from pairwise constraints.</p>
@@ -984,7 +1069,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> A node can be emitted once all its predecessors are; if some nodes never reach indegree 0, there is a cycle.</p>
 <p><strong>Shape.</strong> Build adjacency + indegree → queue all indegree-0 → pop, emit, decrement neighbours, push zeros → emitted count == n else cycle.</p>
-<p><strong>Complexity.</strong> Time O(V+E); space O(V+E).</p>
+<p><strong>Complexity.</strong> O(V+E) time: in-degrees computed over all E edges, then every node dequeued once and every edge decremented once. O(V+E) space: the adjacency list plus the in-degree array and the queue of up to V nodes.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Edge direction reversed</li>
@@ -1002,7 +1087,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-tree-bfs">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘level order’, ‘level by level’, ‘each level’, ‘minimum depth’, ‘width’ · Need nodes grouped by distance from the root</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘level order’, ‘level by level’, ‘each level’, ‘minimum depth’, ‘width’</span><span class="rev-q2">Need nodes grouped by distance from the root</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Tree BFS.</strong> Level-order questions: levels as lists, right-side view, minimum depth, zigzag, connecting nodes on the same level.</p>
@@ -1014,7 +1099,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> A queue processes nodes in distance order; processing exactly len(queue) nodes handles one level.</p>
 <p><strong>Shape.</strong> queue=[root]; while queue: size=len(queue); for _ in range(size): pop, record, push children; append level result.</p>
-<p><strong>Complexity.</strong> Time O(n); space O(w) where w is max width (up to n/2).</p>
+<p><strong>Complexity.</strong> O(n) time: every node enqueued and dequeued once. O(w) space: the queue holds one level, where w is the maximum width, up to n/2 on the last level of a complete tree.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Not snapshotting the level size</li>
@@ -1031,7 +1116,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-tree-dfs">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘binary tree’, ‘subtree’, ‘path’, ‘depth/height’, ‘same/identical’, ‘invert’, ‘maximum path sum’ · The answer at a node depends only on answers from its children (post-order) · Or constraints flow down from ancestors (pre-order with parameters)</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘binary tree’, ‘subtree’, ‘path’, ‘depth/height’, ‘same/identical’, ‘invert’, ‘maximum path sum’</span><span class="rev-q2">The answer at a node depends only on answers from its children (post-order) · Or constraints flow down from ancestors (pre-order with parameters)</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Tree DFS.</strong> Anything computed per subtree: depth, sums, validity, equality, paths, invert, construct. Recursion that returns a value up.</p>
@@ -1043,7 +1128,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Post-order recursion: solve children first, combine at the node; keep a separate global when the answer is not what you pass upward.</p>
 <p><strong>Shape.</strong> def dfs(node): if not node: base; L = dfs(left); R = dfs(right); update global; return combined-for-parent.</p>
-<p><strong>Complexity.</strong> Time O(n); space O(h) recursion (worst O(n) skewed).</p>
+<p><strong>Complexity.</strong> O(n) time: every node visited once with O(1) work. O(h) space: one stack frame per level of the current path, log n when balanced and n when skewed.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Returning the two-branch path upward (only one branch can continue)</li>
@@ -1061,7 +1146,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-trie">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘prefix’, ‘autocomplete’, ‘dictionary of words’, ‘startsWith’, ‘many words on a grid’ · Repeated prefix checks that would re-scan strings</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘prefix’, ‘autocomplete’, ‘dictionary of words’, ‘startsWith’, ‘many words on a grid’</span><span class="rev-q2">Repeated prefix checks that would re-scan strings</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Trie.</strong> Prefix operations over many words: insert/search/startsWith, wildcard search, finding all dictionary words in a grid.</p>
@@ -1073,7 +1158,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Shared prefixes are stored once; walking one character per level makes prefix queries O(L).</p>
 <p><strong>Shape.</strong> Node = {children: {}, end: bool}; insert walks/creates; search walks; startsWith walks without end check; DFS for wildcards.</p>
-<p><strong>Complexity.</strong> Time O(L) per operation; space O(total characters).</p>
+<p><strong>Complexity.</strong> O(L) time per operation: one step per character of the word, each an O(1) child lookup. O(total characters) space: at most one node per character inserted, less when prefixes are shared.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Confusing search (needs end flag) with startsWith</li>
@@ -1091,7 +1176,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-two-pointers">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘sorted array’, ‘palindrome’, ‘pair/triplet’, ‘container’, ‘in place’ · A monotonic relationship: moving one pointer changes the quantity in a predictable direction · Need O(1) extra space</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘sorted array’, ‘palindrome’, ‘pair/triplet’, ‘container’, ‘in place’</span><span class="rev-q2">A monotonic relationship: moving one pointer changes the quantity in a predictable direction · Need O(1) extra space</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Two Pointers.</strong> Sorted (or sortable) sequences, palindromes, or ‘pick two elements’ questions where a brute-force pair scan is O(n²).</p>
@@ -1103,7 +1188,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Each pointer move provably discards candidates that cannot beat the current best, so every element is visited O(1) times.</p>
 <p><strong>Shape.</strong> Sort if needed → place pointers → loop while they have not crossed → compare, record, move the pointer whose move can improve the answer.</p>
-<p><strong>Complexity.</strong> Time O(n) after an O(n log n) sort; space O(1).</p>
+<p><strong>Complexity.</strong> O(n) time: the two pointers move toward each other, so each element is passed at most once. O(n log n) time when the input must be sorted first: the sort costs n log n and dominates the pass. O(1) space: two indices, the sort’s own space excluded.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>Moving the wrong pointer (the one whose move cannot improve the result)</li>
@@ -1121,7 +1206,7 @@ mark known
 </details>
 <details class="rev" data-card="cp-union-find">
 <summary>
-<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘connected components’, ‘valid tree’, ‘redundant connection’, ‘union’, ‘group’ · Edges arrive as a list and only connectivity matters, not paths · Undirected</span></span>
+<span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">‘connected components’, ‘valid tree’, ‘redundant connection’, ‘union’, ‘group’</span><span class="rev-q2">Edges arrive as a list and only connectivity matters, not paths · Undirected</span></span>
 </summary>
 <div class="rev-a">
 <p><strong>Union Find (Disjoint Set Union).</strong> Dynamic connectivity: count components, detect a cycle in an undirected graph, check if edges form a tree, group equivalent items.</p>
@@ -1133,7 +1218,7 @@ mark known
 </ul>
 <p><strong>Core idea.</strong> Each set has one representative; find returns it in near-O(1) amortised; union merges sets or reveals a cycle.</p>
 <p><strong>Shape.</strong> parent=[i]; find with path compression; union returns False if same root; components = n − successful unions.</p>
-<p><strong>Complexity.</strong> Time O((V+E) α(n)) ≈ linear; space O(V).</p>
+<p><strong>Complexity.</strong> O((V+E)·α(V)) time: V make-set calls plus up to E union or find calls, each α(V) amortized, nearly constant, with path compression and union by rank. O(V) space: the parent and rank arrays.</p>
 <p><strong>Traps.</strong></p>
 <ul>
 <li>No path compression (still passes but say why it matters)</li>
@@ -1141,6 +1226,7 @@ mark known
 <li>Using it on directed graphs (wrong tool)</li>
 </ul>
 <p><strong>Not this when.</strong> Directed dependencies → topological sort. Need the actual path → DFS/BFS. Need to un-union → offline tricks (rare).</p>
+<p><strong>This week.</strong> Twenty-minute primer on Wednesday: find with path compression, union by size, both near O(1). Its two problems (valid tree, connected components) also fall to DFS, so DFS is the answer you write; union-find is the follow-up you name.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-union-find">
 mark known
@@ -1151,6 +1237,9 @@ mark known
 </section>
 <section id="recognition-1-d-dynamic-programming-10" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-1-d-dynamic-programming-10">Recognition: 1-D Dynamic Programming (10)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-climbing-stairs">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Climbing Stairs: ‘distinct ways to reach the top’, steps of 1 or 2</span></span>
@@ -1162,7 +1251,7 @@ mark known
 <li>What was the last step?</li>
 </ul>
 <p><strong>The leap.</strong> ways(n) = ways(n − 1) + ways(n − 2); two rolling variables suffice.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: n states, each computed once in O(1) from the previous two. O(1) space: two rolling variables replace the DP table.</p>
 <p><strong>Trap.</strong> Recursion without memoisation; base cases.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-climbing-stairs">
@@ -1183,7 +1272,7 @@ mark known
 <li>Which smaller amounts does dp[amount] depend on?</li>
 </ul>
 <p><strong>The leap.</strong> dp[a] = 1 + min(dp[a − c]) over coins; fill amounts bottom-up with an infinity sentinel.</p>
-<p><strong>Complexity.</strong> O(amount × coins) time, O(amount) space.</p>
+<p><strong>Complexity.</strong> O(amount × coins) time: amount states, each scans every coin once in O(1). O(amount) space: the DP table with one entry per amount from 0 to amount.</p>
 <p><strong>Trap.</strong> Greedy; mishandling the impossible sentinel.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-coin-change">
@@ -1204,7 +1293,7 @@ mark known
 <li>Which two-digit values are valid (10-26), and when is a single ‘0’ invalid?</li>
 </ul>
 <p><strong>The leap.</strong> ways(i) = (valid one-digit ? ways(i − 1) : 0) + (valid two-digit ? ways(i − 2) : 0).</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: n states, each computed once in O(1) by checking one one-digit and one two-digit code. O(1) space: two rolling variables replace the DP table.</p>
 <p><strong>Trap.</strong> Leading zeros; ‘30’-style invalid pairs; a lone ‘0’.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-decode-ways">
@@ -1224,7 +1313,7 @@ mark known
 <li>What single new constraint does the circle add?</li>
 </ul>
 <p><strong>The leap.</strong> First and last cannot both be taken: answer = max(rob(houses[1:]), rob(houses[:-1])).</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: two runs of the linear house robber, each n states computed once in O(1). O(1) space: two rolling variables per run, provided you pass index ranges rather than slicing copies of the array.</p>
 <p><strong>Trap.</strong> Forgetting the single-house case; trying to rotate the array.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-house-robber-ii">
@@ -1244,7 +1333,7 @@ mark known
 <li>At house i, what are the two choices and what earlier states do they depend on?</li>
 </ul>
 <p><strong>The leap.</strong> best(i) = max(best(i − 1), best(i − 2) + value[i]); roll two variables.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: n states, each computed once in O(1) from the previous two. O(1) space: two rolling variables replace the DP table.</p>
 <p><strong>Trap.</strong> Greedy picking of alternates; off-by-one on the first two houses.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-house-robber">
@@ -1265,7 +1354,7 @@ mark known
 <li>What sorted array of ‘tails’ would let me binary search instead?</li>
 </ul>
 <p><strong>The leap.</strong> dp[i] = 1 + max(dp[j]) for j &lt; i with nums[j] &lt; nums[i]; or maintain the smallest tail per length and binary search.</p>
-<p><strong>Complexity.</strong> O(n²) or O(n log n) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(n²) time for the DP: n states, each scans up to n earlier states. O(n log n) time for the tails method: n iterations of a binary search, log n each. O(n) space: the dp array or the tails array, at most one entry per element.</p>
 <p><strong>Trap.</strong> Confusing subsequence with subarray; bisect side for strict increase.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-longest-increasing-subsequence">
@@ -1286,7 +1375,7 @@ mark known
 <li>Can I expand outward from each center and keep the best?</li>
 </ul>
 <p><strong>The leap.</strong> Every palindrome has a center; expand from each of the 2n − 1 centers while the ends match.</p>
-<p><strong>Complexity.</strong> O(n²) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n²) time: 2n − 1 centers, and each expansion moves outward up to n/2 steps. O(1) space: only the center indices and the best start and length, output excluded.</p>
 <p><strong>Trap.</strong> Forgetting even-length centers; returning the length instead of the substring.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-longest-palindromic-substring">
@@ -1307,7 +1396,7 @@ mark known
 <li>What does a negative number do to the current minimum?</li>
 </ul>
 <p><strong>The leap.</strong> Track both the current maximum and minimum products, because a negative flips them; zero resets both.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n elements, O(1) work to update the running maximum and minimum. O(1) space: the current maximum, the current minimum and the best answer.</p>
 <p><strong>Trap.</strong> Tracking only the max; forgetting to swap when the element is negative.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-maximum-product-subarray">
@@ -1327,7 +1416,7 @@ mark known
 <li>Same centers as the longest-palindrome problem — what do I count on each successful expansion?</li>
 </ul>
 <p><strong>The leap.</strong> Each successful expansion step from a center is one more palindrome.</p>
-<p><strong>Complexity.</strong> O(n²) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n²) time: 2n − 1 centers, each expanding outward up to n/2 steps. O(1) space: two indices and a counter.</p>
 <p><strong>Trap.</strong> Double counting; missing even centers.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-palindromic-substrings">
@@ -1348,7 +1437,7 @@ mark known
 <li>Can I bound j by the longest word length?</li>
 </ul>
 <p><strong>The leap.</strong> dp[i] is true if some j &lt; i has dp[j] true and s[j:i] in the dictionary.</p>
-<p><strong>Complexity.</strong> O(n²) time (or O(n × maxLen)), O(n) space.</p>
+<p><strong>Complexity.</strong> O(n³) time: n prefix states, each scanning up to n earlier split points j, and hashing the substring s[j:i] for the set lookup costs up to n characters. Limiting j to the last maxLen positions, maxLen being the longest word length, cuts this to O(n·maxLen²). O(n) space: the dp array of n + 1 booleans, plus the word set.</p>
 <p><strong>Trap.</strong> Greedy longest-match; recomputing without memoisation.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-word-break">
@@ -1360,6 +1449,9 @@ mark known
 </section>
 <section id="recognition-2-d-dynamic-programming-2" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-2-d-dynamic-programming-2">Recognition: 2-D Dynamic Programming (2)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-count-paths">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Unique Paths: ‘paths from top-left to bottom-right’, ‘only right or down’</span></span>
@@ -1372,7 +1464,7 @@ mark known
 <li>Is one row of state enough?</li>
 </ul>
 <p><strong>The leap.</strong> paths(i, j) = paths(i − 1, j) + paths(i, j − 1); a single rolling row suffices; also C(m + n − 2, m − 1).</p>
-<p><strong>Complexity.</strong> O(m·n) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(m·n) time: nested loops over m rows and n columns, each cell computed once in O(1) from the cell above and the cell to the left. O(n) space: a single rolling row of n entries replaces the full m·n table.</p>
 <p><strong>Trap.</strong> Edge initialisation.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-count-paths">
@@ -1392,7 +1484,7 @@ mark known
 <li>What happens when the last characters match? When they do not?</li>
 </ul>
 <p><strong>The leap.</strong> dp[i][j] = 1 + dp[i − 1][j − 1] on a match, else max(dp[i − 1][j], dp[i][j − 1]).</p>
-<p><strong>Complexity.</strong> O(m·n) time, O(m·n) space (or O(min(m, n)) rolled).</p>
+<p><strong>Complexity.</strong> O(m·n) time: nested loops over m and n characters, so m·n states, each computed once in O(1). O(m·n) space: the full DP table, or O(min(m, n)) when you roll a single row over the shorter string.</p>
 <p><strong>Trap.</strong> Subsequence vs substring; padding off-by-one.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-longest-common-subsequence">
@@ -1404,6 +1496,9 @@ mark known
 </section>
 <section id="recognition-advanced-graphs-1" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-advanced-graphs-1">Recognition: Advanced Graphs (1)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-foreign-dictionary">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · HARD</span><span class="rev-q">Alien Dictionary: ‘order of letters from a sorted list of words’, ‘return empty if invalid’, ‘hard’</span></span>
@@ -1416,7 +1511,7 @@ mark known
 <li>What makes the input invalid — cycles, and what else? (a word before its own prefix)</li>
 </ul>
 <p><strong>The leap.</strong> Adjacent words yield one edge each from their first differing characters; topologically sort all letters, including those with no edges.</p>
-<p><strong>Complexity.</strong> O(total characters + V + E) time, O(V + E) space.</p>
+<p><strong>Complexity.</strong> O(total characters + V + E) time: comparing each adjacent word pair touches every character at most twice, once against each neighbouring word, to extract edges, then the topological sort visits every letter and every edge once. O(V + E) space: the adjacency list and in-degree map, with V letters and at most one edge per adjacent word pair.</p>
 <p><strong>Trap.</strong> Missing the prefix-invalid case; forgetting isolated letters; assuming a unique order.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-foreign-dictionary">
@@ -1428,6 +1523,9 @@ mark known
 </section>
 <section id="recognition-arrays-hashing-8" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-arrays-hashing-8">Recognition: Arrays &amp; Hashing (8)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-anagram-groups">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Group Anagrams: ‘group the anagrams together’ · Many strings, output as groups</span></span>
@@ -1440,7 +1538,7 @@ mark known
 <li>Sorted string (k log k) or 26-count tuple (k) as the key?</li>
 </ul>
 <p><strong>The leap.</strong> Map each word to a canonical signature; the map’s values are the groups.</p>
-<p><strong>Complexity.</strong> O(n·k) with count-tuple keys, O(n·k log k) with sorted keys; O(n·k) space.</p>
+<p><strong>Complexity.</strong> O(n·k) time with count-tuple keys: n words of length up to k, each scanned once in k to build its key, then O(1) average per hash map lookup. O(n·k log k) time with sorted keys: n words, each sorted in k log k. O(n·k) space: the hash map stores every word once, plus one key per group.</p>
 <p><strong>Trap.</strong> Using a list as a dictionary key; over-thinking output order (any order is fine).</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-anagram-groups">
@@ -1461,7 +1559,7 @@ mark known
 <li>If extra space were forbidden, would sorting be acceptable?</li>
 </ul>
 <p><strong>The leap.</strong> A hash set answers ‘have I seen this?’ in O(1); one scan with an early exit.</p>
-<p><strong>Complexity.</strong> O(n) time, O(n) space (sort variant: O(n log n), O(1)).</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n elements, O(1) average per hash set lookup and insert. O(n) space: the hash set holds up to n elements. With sorting instead, O(n log n) time: the sort costs n log n and dominates the single pass that compares neighbours. O(1) extra space: sorting in place leaves only the loop index.</p>
 <p><strong>Trap.</strong> Nested-loop comparison, or comparing set length to array length without thinking about early exit.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-duplicate-integer">
@@ -1482,7 +1580,7 @@ mark known
 <li>Is the alphabet fixed (array of 26) or arbitrary (map)?</li>
 </ul>
 <p><strong>The leap.</strong> Two strings are anagrams iff their letter multisets are equal: compare frequency counts, not orderings.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space for a fixed alphabet.</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over each string, O(1) per count update. O(1) space for a fixed alphabet: the count array or map has at most 26 entries whatever n is.</p>
 <p><strong>Trap.</strong> Sorting both strings works but is O(n log n); assuming lowercase ASCII when Unicode is allowed.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-is-anagram">
@@ -1503,7 +1601,7 @@ mark known
 <li>What identifies the start of a run? (its predecessor is absent)</li>
 </ul>
 <p><strong>The leap.</strong> Put everything in a set; only count upward from numbers whose predecessor is missing, so every element is walked once.</p>
-<p><strong>Complexity.</strong> O(n) time, O(n) space (sort alternative O(n log n)).</p>
+<p><strong>Complexity.</strong> O(n) time: n set inserts at O(1) average, and each element is walked at most once because counting starts only where the predecessor is missing. O(n) space: the hash set holds every number. With sorting instead, O(n log n) time: the sort costs n log n and dominates the single pass that counts runs.</p>
 <p><strong>Trap.</strong> Counting from every number gives O(n²) on long runs; forgetting duplicates when sorting.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-longest-consecutive-sequence">
@@ -1524,7 +1622,7 @@ mark known
 <li>Can the output array hold the prefix pass while a scalar carries the suffix?</li>
 </ul>
 <p><strong>The leap.</strong> answer[i] = (product of prefix before i) × (product of suffix after i); two passes, the second folding the suffix into a running scalar.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) extra space (output excluded).</p>
+<p><strong>Complexity.</strong> O(n) time: one prefix pass and one suffix pass over n elements. O(1) extra space: the output array holds the prefixes and one scalar carries the suffix, output excluded.</p>
 <p><strong>Trap.</strong> Division breaks on zeros; off-by-one between exclusive and inclusive prefix.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-products-of-array-discluding-self">
@@ -1545,7 +1643,7 @@ mark known
 <li>How does the decoder know where each string ends without scanning for a delimiter?</li>
 </ul>
 <p><strong>The leap.</strong> Length-prefix framing: write the length, a separator, then the payload — the decoder reads the length and jumps; exactly how wire protocols avoid escaping.</p>
-<p><strong>Complexity.</strong> O(total length) both directions, O(1) extra beyond output.</p>
+<p><strong>Complexity.</strong> O(total length) time in both directions: encode writes each character once plus a short length prefix per string, decode reads each character once and jumps by the prefix. O(1) extra space beyond the output: a read index and the current length.</p>
 <p><strong>Trap.</strong> Choosing a delimiter character and then needing escaping; forgetting multi-digit lengths.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-string-encode-and-decode">
@@ -1567,7 +1665,7 @@ mark known
 <li>Heap of size k: what polarity, what tuple?</li>
 </ul>
 <p><strong>The leap.</strong> Count, then place values into buckets indexed by frequency and read from the top; or keep a size-k heap.</p>
-<p><strong>Complexity.</strong> O(n) bucket approach, O(n log k) heap; O(n) space.</p>
+<p><strong>Complexity.</strong> O(n) time with buckets: one counting pass over n with O(1) average hash map lookups, then one pass over n + 1 frequency buckets. O(n log k) time with a heap: up to n distinct values pushed, each log k on a heap kept at size k. O(n) space: the count map plus the buckets or the size-k heap.</p>
 <p><strong>Trap.</strong> Sorting all pairs by count when the problem asks for better; building a max-heap when a min-heap of size k is intended (or vice versa).</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-top-k-elements-in-list">
@@ -1589,7 +1687,7 @@ mark known
 <li>Can an element pair with itself?</li>
 </ul>
 <p><strong>The leap.</strong> While scanning, look up the complement in a value→index map; insert the current element only after the lookup.</p>
-<p><strong>Complexity.</strong> O(n) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n elements, one O(1) average hash map lookup each. O(n) space: the map of value to index, up to n entries.</p>
 <p><strong>Trap.</strong> Inserting before checking (pairs an element with itself); sorting destroys the required indices.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-two-integer-sum">
@@ -1601,6 +1699,9 @@ mark known
 </section>
 <section id="recognition-backtracking-2" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-backtracking-2">Recognition: Backtracking (2)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-combination-target-sum">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Combination Sum: ‘all unique combinations that sum to target’, ‘may be used unlimited times’</span></span>
@@ -1613,7 +1714,7 @@ mark known
 <li>When can I prune a branch?</li>
 </ul>
 <p><strong>The leap.</strong> Iterate candidates from a start index (never backwards) to enforce non-decreasing order; recurse with the same index to allow reuse; prune when the remainder goes negative.</p>
-<p><strong>Complexity.</strong> Exponential time (roughly O(k^(T/min))), O(T/min) depth.</p>
+<p><strong>Complexity.</strong> O(k^(T/min)) time, exponential and a loose bound: each call branches over up to k candidates, and the depth is at most T/min because every step subtracts at least min from the target, so up to k^(T/min) leaves. O(T/min) space: the recursion depth and the current combination, output excluded.</p>
 <p><strong>Trap.</strong> Producing permutations instead of combinations; no pruning.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-combination-target-sum">
@@ -1634,7 +1735,7 @@ mark known
 <li>How do I mark visited cheaply and undo it?</li>
 </ul>
 <p><strong>The leap.</strong> From each cell matching the first letter, DFS over 4 neighbours matching the next letter; mark in place and unmark on return.</p>
-<p><strong>Complexity.</strong> O(m·n·4^L) time worst case, O(L) space.</p>
+<p><strong>Complexity.</strong> O(m·n·4·3^(L−1)) time worst case: m·n starting cells, each a DFS of depth L with 4 directions on the first step and 3 on each later step, because the path never steps back onto the cell it came from. O(L) space: the recursion depth, one frame per matched character.</p>
 <p><strong>Trap.</strong> Forgetting to unmark; allowing diagonal moves; not stopping at the first success.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-search-for-word">
@@ -1646,6 +1747,9 @@ mark known
 </section>
 <section id="recognition-binary-search-2" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-binary-search-2">Recognition: Binary Search (2)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-find-minimum-in-rotated-sorted-array">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Find Minimum In Rotated Sorted Array: ‘rotated’, ‘sorted’, ‘O(log n)’, ‘minimum’</span></span>
@@ -1658,7 +1762,7 @@ mark known
 <li>Compare mid with the right end or the left end?</li>
 </ul>
 <p><strong>The leap.</strong> If nums[mid] &gt; nums[right] the minimum is right of mid; otherwise it is mid or to the left — halve accordingly.</p>
-<p><strong>Complexity.</strong> O(log n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(log n) time: binary search halves the range each iteration, so log n iterations of O(1) work. O(1) space: only the left, right and mid indices.</p>
 <p><strong>Trap.</strong> Comparing with the left end (fails when not rotated); off-by-one when shrinking toward mid.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-find-minimum-in-rotated-sorted-array">
@@ -1679,7 +1783,7 @@ mark known
 <li>Is the target inside that sorted half’s range? If not, go to the other.</li>
 </ul>
 <p><strong>The leap.</strong> One half around mid is always sorted; test membership in the sorted half to decide the direction.</p>
-<p><strong>Complexity.</strong> O(log n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(log n) time: binary search halves the range each iteration, so log n iterations of O(1) work to find the sorted half and test the target against it. O(1) space: only the left, right and mid indices.</p>
 <p><strong>Trap.</strong> Boundary conditions with ≤ vs &lt;; finding the pivot first is a valid two-step alternative but longer.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-find-target-in-rotated-sorted-array">
@@ -1691,6 +1795,9 @@ mark known
 </section>
 <section id="recognition-bit-manipulation-5" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-bit-manipulation-5">Recognition: Bit Manipulation (5)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-counting-bits">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Counting Bits: ‘number of 1 bits for every i from 0 to n’, ‘O(n)’</span></span>
@@ -1702,7 +1809,7 @@ mark known
 <li>How does i relate to i &gt;&gt; 1 or to i &amp; (i − 1)?</li>
 </ul>
 <p><strong>The leap.</strong> count[i] = count[i &amp; (i − 1)] + 1 (or count[i &gt;&gt; 1] + (i &amp; 1)).</p>
-<p><strong>Complexity.</strong> O(n) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(n) time: n + 1 states, each computed once in O(1) from a smaller index already filled. O(n) space: the output array of n + 1 counts, which doubles as the DP table.</p>
 <p><strong>Trap.</strong> Running popcount per number (fine, but misses the DP point).</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-counting-bits">
@@ -1722,7 +1829,7 @@ mark known
 <li>What cancels out if I combine indices and values?</li>
 </ul>
 <p><strong>The leap.</strong> XOR all indices 0..n with all values leaves the missing number; or n(n + 1)/2 minus the sum.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n elements, O(1) work per XOR or addition. O(1) space: a single running XOR or sum.</p>
 <p><strong>Trap.</strong> Sorting (unnecessary O(n log n)).</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-missing-number">
@@ -1742,7 +1849,7 @@ mark known
 <li>What does n &amp; (n − 1) do to n?</li>
 </ul>
 <p><strong>The leap.</strong> n &amp; (n − 1) clears the lowest set bit; count the iterations until zero.</p>
-<p><strong>Complexity.</strong> O(number of set bits) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(number of set bits) time: each n &amp; (n − 1) step clears one set bit, so the loop runs once per 1 bit, at most 32. O(1) space: one counter.</p>
 <p><strong>Trap.</strong> Negative numbers / unbounded integers in Python.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-number-of-one-bits">
@@ -1762,7 +1869,7 @@ mark known
 <li>How does bit i move to position 31 − i?</li>
 </ul>
 <p><strong>The leap.</strong> Shift the result left and OR in the input’s lowest bit, 32 times.</p>
-<p><strong>Complexity.</strong> O(32) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(32) time: one loop over the 32 bits, one shift and OR each. O(1) space: the result word.</p>
 <p><strong>Trap.</strong> Python’s unbounded integers (mask to 32 bits).</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-reverse-bits">
@@ -1782,7 +1889,7 @@ mark known
 <li>What do XOR and AND-shifted-left represent in addition?</li>
 </ul>
 <p><strong>The leap.</strong> sum = a ^ b, carry = (a &amp; b) &lt;&lt; 1; repeat until the carry is zero, masking to 32 bits in Python.</p>
-<p><strong>Complexity.</strong> O(32) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(32) time: each XOR and carry round moves the carry left by at least one bit, so at most 32 rounds on a 32-bit word. O(1) space: the sum and carry words.</p>
 <p><strong>Trap.</strong> Infinite loops with Python negatives when not masked.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-sum-of-two-integers">
@@ -1794,6 +1901,9 @@ mark known
 </section>
 <section id="recognition-graphs-6" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-graphs-6">Recognition: Graphs (6)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-clone-graph">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Clone Graph: ‘deep copy of a connected graph’, neighbours lists, cycles</span></span>
@@ -1806,7 +1916,7 @@ mark known
 <li>Where do I keep the mapping from original to clone?</li>
 </ul>
 <p><strong>The leap.</strong> A hash map from original node to its clone doubles as the visited set; create the clone before recursing into neighbours.</p>
-<p><strong>Complexity.</strong> O(V + E) time, O(V) space.</p>
+<p><strong>Complexity.</strong> O(V + E) time: every node is cloned once and every edge is followed once. O(V) space: the original-to-clone hash map holds V entries, and the recursion stack or queue holds at most V nodes.</p>
 <p><strong>Trap.</strong> Creating duplicate clones; not handling an empty graph.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-clone-graph">
@@ -1826,7 +1936,7 @@ mark known
 <li>Starting from n components, what does each successful union do?</li>
 </ul>
 <p><strong>The leap.</strong> Components = n minus the number of unions that actually merged two different sets.</p>
-<p><strong>Complexity.</strong> O(E α(n)) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(n + E·α(n)) time: initialising the parent array touches all n nodes, then E unions each cost α(n), nearly constant, with path compression and union by rank. O(n) space: the parent and rank arrays, one entry per node.</p>
 <p><strong>Trap.</strong> Building adjacency for DFS when union-find is shorter; skipping path compression is fine but say why it matters.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-count-connected-components">
@@ -1847,7 +1957,7 @@ mark known
 <li>How do I mark visited (in place or a set)?</li>
 </ul>
 <p><strong>The leap.</strong> Each unvisited land cell starts a flood fill that sinks the whole island; count the fills.</p>
-<p><strong>Complexity.</strong> O(m·n) time, O(m·n) worst-case space.</p>
+<p><strong>Complexity.</strong> O(m·n) time: nested loops over m rows and n columns visit every cell, and each flood fill sinks a land cell at most once, so every cell is processed a constant number of times. O(m·n) space in the worst case: the DFS recursion or BFS queue can hold every cell when the grid is all land.</p>
 <p><strong>Trap.</strong> Recursion depth on large grids; diagonal adjacency.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-count-number-of-islands">
@@ -1868,7 +1978,7 @@ mark known
 <li>Three-colour DFS or Kahn’s indegree queue?</li>
 </ul>
 <p><strong>The leap.</strong> A valid order exists iff there is no directed cycle: detect via DFS states (visiting/visited) or by checking that Kahn’s algorithm processes every node.</p>
-<p><strong>Complexity.</strong> O(V + E) time, O(V + E) space.</p>
+<p><strong>Complexity.</strong> O(V + E) time: the DFS or Kahn’s algorithm visits every course and every prerequisite edge once. O(V + E) space: the adjacency list of V lists and E edges, plus the state or in-degree array and the recursion stack or queue, each up to V.</p>
 <p><strong>Trap.</strong> A plain visited set cannot distinguish a back edge from a cross edge; reversed edge direction.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-course-schedule">
@@ -1889,7 +1999,7 @@ mark known
 <li>Which comparison direction do I use when climbing?</li>
 </ul>
 <p><strong>The leap.</strong> Start from each ocean’s border cells and climb to cells with height ≥ current; the answer is the intersection of the two reachable sets.</p>
-<p><strong>Complexity.</strong> O(m·n) time, O(m·n) space.</p>
+<p><strong>Complexity.</strong> O(m·n) time: one reverse DFS or BFS per ocean from its border cells, each cell visited at most once per ocean, so 2·m·n steps. O(m·n) space: two visited grids of m·n cells plus the recursion stack or queue.</p>
 <p><strong>Trap.</strong> Forward simulation per cell (quadratic); reversing the height comparison incorrectly.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-pacific-atlantic-water-flow">
@@ -1909,7 +2019,7 @@ mark known
 <li>What two properties define a tree on n nodes?</li>
 </ul>
 <p><strong>The leap.</strong> Exactly n − 1 edges and fully connected (equivalently: connected and acyclic).</p>
-<p><strong>Complexity.</strong> O(n α(n)) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(n·α(n)) time: reject unless there are exactly n − 1 edges, then n − 1 unions each cost α(n) amortized, nearly constant, with path compression and union by rank. O(n) space: the parent and rank arrays.</p>
 <p><strong>Trap.</strong> Checking only connectivity or only the edge count; undirected DFS needs parent tracking to avoid false cycles.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-valid-tree">
@@ -1921,6 +2031,9 @@ mark known
 </section>
 <section id="recognition-greedy-2" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-greedy-2">Recognition: Greedy (2)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-jump-game">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Jump Game: ‘can you reach the last index’, ‘maximum jump length’</span></span>
@@ -1933,7 +2046,7 @@ mark known
 <li>When exactly am I stuck?</li>
 </ul>
 <p><strong>The leap.</strong> Track the farthest reachable index; if the current index exceeds it, fail; or move the goal leftward from the end.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n indices, O(1) work each to update the farthest reach or the goal. O(1) space: only the farthest reachable index or the goal index.</p>
 <p><strong>Trap.</strong> Quadratic DP; confusing with the minimum-jumps variant.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-jump-game">
@@ -1954,7 +2067,7 @@ mark known
 <li>When does a prefix stop being useful?</li>
 </ul>
 <p><strong>The leap.</strong> current = max(nums[i], current + nums[i]); a negative running sum never helps.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n elements, O(1) work to extend or restart the running sum. O(1) space: the running sum and the best sum.</p>
 <p><strong>Trap.</strong> Initialising to 0 when all numbers may be negative.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-maximum-subarray">
@@ -1966,6 +2079,9 @@ mark known
 </section>
 <section id="recognition-heap-priority-queue-1" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-heap-priority-queue-1">Recognition: Heap / Priority Queue (1)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-find-median-in-a-data-stream">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · HARD</span><span class="rev-q">Find Median From Data Stream: ‘stream’, ‘median at any time’, ‘addNum / findMedian’</span></span>
@@ -1978,7 +2094,7 @@ mark known
 <li>How do I keep the two halves balanced?</li>
 </ul>
 <p><strong>The leap.</strong> Split the numbers into a lower half (max-heap) and upper half (min-heap) whose sizes differ by at most one; the median is at the tops.</p>
-<p><strong>Complexity.</strong> O(log n) per insert, O(1) per median, O(n) space.</p>
+<p><strong>Complexity.</strong> O(log n) time per insert: one push and at most one rebalancing move, each log n on a heap of up to n elements. O(1) time per median: it reads only the two heap tops. O(n) space: the two heaps together hold all n numbers.</p>
 <p><strong>Trap.</strong> Min-heap-only library (negate for the max-heap); rebalancing in the wrong direction.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-find-median-in-a-data-stream">
@@ -1990,6 +2106,9 @@ mark known
 </section>
 <section id="recognition-intervals-5" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-intervals-5">Recognition: Intervals (5)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-insert-new-interval">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Insert Interval: ‘sorted non-overlapping intervals’, ‘insert and merge if necessary’</span></span>
@@ -2001,7 +2120,7 @@ mark known
 <li>Which intervals end before the new one, which overlap, which start after?</li>
 </ul>
 <p><strong>The leap.</strong> Append everything ending before; merge everything overlapping into the new interval; append the rest.</p>
-<p><strong>Complexity.</strong> O(n) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n already-sorted intervals, each appended or merged once. O(n) space: the output list of up to n + 1 intervals.</p>
 <p><strong>Trap.</strong> Wrong overlap condition; forgetting to append the new interval when it belongs at the end.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-insert-new-interval">
@@ -2022,7 +2141,7 @@ mark known
 <li>Sort starts and ends separately, or keep a heap of end times?</li>
 </ul>
 <p><strong>The leap.</strong> Rooms = maximum concurrency: +1 at each start, −1 at each end (or the heap size after popping finished meetings).</p>
-<p><strong>Complexity.</strong> O(n log n) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(n log n) time: sorting costs n log n, then the sweep over the sorted starts and ends is one pass of n, or the heap version does up to n pushes and pops at log n each. O(n) space: the two sorted arrays or the heap of up to n meetings.</p>
 <p><strong>Trap.</strong> Tie order when a meeting ends exactly as another starts; reusing the Meeting Rooms logic.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-meeting-schedule-ii">
@@ -2042,7 +2161,7 @@ mark known
 <li>After sorting by start, what must hold for every adjacent pair?</li>
 </ul>
 <p><strong>The leap.</strong> Any start earlier than the previous end is a conflict.</p>
-<p><strong>Complexity.</strong> O(n log n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n log n) time: sorting by start costs n log n and dominates the single pass that compares each start with the previous end. O(1) space: only the previous end, when the sort is done in place.</p>
 <p><strong>Trap.</strong> Boundary semantics when one meeting ends exactly as another starts.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-meeting-schedule">
@@ -2062,7 +2181,7 @@ mark known
 <li>After sorting by start, when does the current interval overlap the last merged one?</li>
 </ul>
 <p><strong>The leap.</strong> If start ≤ last.end, extend last.end to the max; otherwise start a new interval.</p>
-<p><strong>Complexity.</strong> O(n log n) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(n log n) time: sorting by start costs n log n and dominates the single pass that extends the last interval or appends a new one. O(n) space: the output list of up to n intervals.</p>
 <p><strong>Trap.</strong> Not taking the max of ends; inclusive vs exclusive touching.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-merge-intervals">
@@ -2082,7 +2201,7 @@ mark known
 <li>When two intervals overlap, which one should I keep?</li>
 </ul>
 <p><strong>The leap.</strong> Keep the interval that ends earliest (it leaves the most room); count the others as removals.</p>
-<p><strong>Complexity.</strong> O(n log n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n log n) time: sorting by end costs n log n and dominates the single pass that keeps the earliest end. O(1) space: one running end and a removal count, the sort’s own space excluded.</p>
 <p><strong>Trap.</strong> Sorting by start and keeping the longer; not seeing the equivalence with maximum non-overlapping set.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-non-overlapping-intervals">
@@ -2094,6 +2213,9 @@ mark known
 </section>
 <section id="recognition-linked-list-6" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-linked-list-6">Recognition: Linked List (6)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-linked-list-cycle-detection">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Linked List Cycle: ‘cycle’, ‘constant memory’</span></span>
@@ -2106,7 +2228,7 @@ mark known
 <li>What null checks does the fast pointer need?</li>
 </ul>
 <p><strong>The leap.</strong> A pointer moving two steps gains one node per iteration on a pointer moving one; inside a cycle they must meet.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: the fast pointer reaches the end within n/2 steps when there is no cycle, and inside a cycle it gains one node per step, so it catches the slow pointer within one lap of at most n nodes. O(1) space: only the two pointers.</p>
 <p><strong>Trap.</strong> Missing fast.next null checks; using a set when O(1) space was expected.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-linked-list-cycle-detection">
@@ -2127,7 +2249,7 @@ mark known
 <li>Does pairwise merging in log k rounds give the same complexity?</li>
 </ul>
 <p><strong>The leap.</strong> A min-heap over the k current heads yields the next element in O(log k); or merge lists in pairs, halving the count each round.</p>
-<p><strong>Complexity.</strong> O(N log k) time, O(k) space (pairwise: O(N log k), O(1)).</p>
+<p><strong>Complexity.</strong> O(N log k) time with a heap: N total nodes, each pushed and popped once, log k on a heap of size k. O(k) space: the heap holds one head per list. Pairwise merging is also O(N log k) time: log k rounds, each touching all N nodes once. O(1) space: nodes are spliced iteratively, with no heap.</p>
 <p><strong>Trap.</strong> Sequential merging is O(N·k); heap tuples need an index tie-breaker because nodes are not comparable.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-merge-k-sorted-linked-lists">
@@ -2148,7 +2270,7 @@ mark known
 <li>What happens to the remainder of the longer list?</li>
 </ul>
 <p><strong>The leap.</strong> Splice existing nodes by comparison behind a dummy head; attach the leftover tail.</p>
-<p><strong>Complexity.</strong> O(n + m) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n + m) time: one pass over both lists, each node spliced once. O(1) space: only the dummy head and the tail pointer, because existing nodes are reused.</p>
 <p><strong>Trap.</strong> Allocating new nodes; forgetting the leftover tail.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-merge-two-sorted-linked-lists">
@@ -2169,7 +2291,7 @@ mark known
 <li>What if the node to remove is the head?</li>
 </ul>
 <p><strong>The leap.</strong> Start a lead pointer n+1 ahead from a dummy; when it reaches the end, the trailing pointer is just before the target.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(L) time: one pass over the list’s L nodes, with the lead pointer kept n + 1 nodes ahead of the trailing one. O(1) space: two pointers and a dummy head.</p>
 <p><strong>Trap.</strong> Removing the head without a dummy; off-by-one in the gap.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-remove-node-from-end-of-linked-list">
@@ -2190,7 +2312,7 @@ mark known
 <li>Where do I cut the first half so no cycle forms?</li>
 </ul>
 <p><strong>The leap.</strong> Find the middle with slow/fast, reverse the second half, then interleave the two halves.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: three passes, finding the middle, reversing the second half, then merging, each over at most n nodes. O(1) space: a few pointers, because nodes are relinked in place.</p>
 <p><strong>Trap.</strong> Not terminating the first half; odd/even middle handling.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-reorder-linked-list">
@@ -2211,7 +2333,7 @@ mark known
 <li>What does the recursive version return?</li>
 </ul>
 <p><strong>The leap.</strong> prev / cur / next: save next, point cur.next at prev, advance.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space (recursion O(n)).</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n nodes, each pointer flipped once. O(1) space iteratively: only the prev, cur and next pointers. O(n) space recursively: one stack frame per node.</p>
 <p><strong>Trap.</strong> Overwriting .next before saving it.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-reverse-a-linked-list">
@@ -2223,6 +2345,9 @@ mark known
 </section>
 <section id="recognition-math-geometry-3" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-math-geometry-3">Recognition: Math &amp; Geometry (3)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-rotate-matrix">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Rotate Image: ‘rotate 90 degrees clockwise in place’</span></span>
@@ -2234,7 +2359,7 @@ mark known
 <li>Can the rotation decompose into simpler in-place operations?</li>
 </ul>
 <p><strong>The leap.</strong> Transpose, then reverse each row (clockwise).</p>
-<p><strong>Complexity.</strong> O(n²) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n²) time: transpose then reverse each row, each of the n² cells swapped a constant number of times. O(1) space: swaps happen in place.</p>
 <p><strong>Trap.</strong> Layer-by-layer index errors; rotating the wrong way.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-rotate-matrix">
@@ -2255,7 +2380,7 @@ mark known
 <li>How do I protect the marker row/column’s own state?</li>
 </ul>
 <p><strong>The leap.</strong> Use the first row and first column as flag storage plus one extra variable for their own status; apply zeroes afterwards in the right order.</p>
-<p><strong>Complexity.</strong> O(m·n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(m·n) time: one pass over the m·n cells to mark zeros in the first row and column, then one pass to apply them. O(1) space: the first row and column act as the markers, plus one extra flag for their own status.</p>
 <p><strong>Trap.</strong> Overwriting markers before reading them; zeroing the first row/column too early.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-set-zeroes-in-matrix">
@@ -2276,7 +2401,7 @@ mark known
 <li>When must I stop early to avoid visiting cells twice?</li>
 </ul>
 <p><strong>The leap.</strong> Maintain top/bottom/left/right; traverse four edges, shrink, and re-check bounds before the bottom and left passes.</p>
-<p><strong>Complexity.</strong> O(m·n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(m·n) time: every cell visited once while four boundaries shrink inward. O(1) space: four boundary indices, the output excluded.</p>
 <p><strong>Trap.</strong> Double-visiting on a leftover single row or column.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-spiral-matrix">
@@ -2288,6 +2413,9 @@ mark known
 </section>
 <section id="recognition-sliding-window-4" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-sliding-window-4">Recognition: Sliding Window (4)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-buy-and-sell-crypto">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Best Time to Buy And Sell Stock: ‘buy one day, sell a later day’, ‘maximum profit’, single transaction</span></span>
@@ -2300,7 +2428,7 @@ mark known
 <li>Is this a running minimum plus a running best?</li>
 </ul>
 <p><strong>The leap.</strong> Track the minimum price so far; profit at day i is price − min so far; keep the best.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n prices, O(1) work per day. O(1) space: only the minimum price so far and the best profit.</p>
 <p><strong>Trap.</strong> Allowing a sale before the purchase; nested loops.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-buy-and-sell-crypto">
@@ -2321,7 +2449,7 @@ mark known
 <li>Does the max frequency need to decrease when the window shrinks?</li>
 </ul>
 <p><strong>The leap.</strong> A window is valid iff its length minus its most frequent count is ≤ k; the historical max frequency never needs decrementing to get the right answer.</p>
-<p><strong>Complexity.</strong> O(n) time, O(26) space.</p>
+<p><strong>Complexity.</strong> O(n) time: each character enters and leaves the window at most once, with O(1) per count update and max check. O(26) space: one count per uppercase letter.</p>
 <p><strong>Trap.</strong> Recomputing the max on every step (acceptable at 26) or shrinking the window incorrectly.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-longest-repeating-substring-with-replacement">
@@ -2342,7 +2470,7 @@ mark known
 <li>When a repeat enters, how far must the left edge jump?</li>
 </ul>
 <p><strong>The leap.</strong> Maintain a window of unique characters; on a repeat, move left just past the previous occurrence (never backwards).</p>
-<p><strong>Complexity.</strong> O(n) time, O(alphabet) space.</p>
+<p><strong>Complexity.</strong> O(n) time: each character enters the window once and the left pointer only moves forward, so each leaves at most once, with O(1) average per hash map lookup. O(alphabet) space: the hash map holds at most one last-seen index per distinct character.</p>
 <p><strong>Trap.</strong> Moving left by one instead of jumping; forgetting max(left, last_seen + 1).</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-longest-substring-without-duplicates">
@@ -2363,7 +2491,7 @@ mark known
 <li>Expand until formed, then shrink while still formed — what updates on each move?</li>
 </ul>
 <p><strong>The leap.</strong> Track need counts vs have counts and the number of fully satisfied characters; expand right until satisfied, shrink left while satisfied, record the smallest.</p>
-<p><strong>Complexity.</strong> O(|s| + |t|) time, O(alphabet) space.</p>
+<p><strong>Complexity.</strong> O(|s| + |t|) time: one pass over t builds the need counts, then each character of s enters and leaves the window at most once, with O(1) average per hash map update. O(alphabet) space: the need and have maps hold at most one count per distinct character.</p>
 <p><strong>Trap.</strong> Mishandling duplicate characters in t; recording the answer before the window is fully formed.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-minimum-window-with-characters">
@@ -2375,6 +2503,9 @@ mark known
 </section>
 <section id="recognition-stack-1" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-stack-1">Recognition: Stack (1)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-validate-parentheses">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Valid Parentheses: ‘brackets’, ‘valid/balanced’, ‘closed in the correct order’</span></span>
@@ -2387,7 +2518,7 @@ mark known
 <li>What is left on the stack at the end?</li>
 </ul>
 <p><strong>The leap.</strong> LIFO matching: push openers, pop and compare on closers; the stack must be empty at the end.</p>
-<p><strong>Complexity.</strong> O(n) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one pass over n characters, each bracket pushed and popped at most once. O(n) space: the stack, up to n opening brackets.</p>
 <p><strong>Trap.</strong> Popping an empty stack; forgetting leftover openers.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-validate-parentheses">
@@ -2399,6 +2530,9 @@ mark known
 </section>
 <section id="recognition-trees-11" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-trees-11">Recognition: Trees (11)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-binary-tree-from-preorder-and-inorder-traversal">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Construct Binary Tree From Preorder And Inorder Traversal: ‘preorder and inorder’, ‘construct the tree’</span></span>
@@ -2411,7 +2545,7 @@ mark known
 <li>How does that element’s position in inorder split left and right subtree sizes?</li>
 </ul>
 <p><strong>The leap.</strong> Preorder gives the root; its index in inorder gives the left size; recurse on the corresponding ranges using an index map.</p>
-<p><strong>Complexity.</strong> O(n) time with a value→index map (O(n²) with linear searches), O(n) space.</p>
+<p><strong>Complexity.</strong> O(n) time: every node is created once, and the value-to-index map makes each inorder lookup O(1) average. With linear searches instead, each of n nodes scans up to n inorder entries, so O(n²). O(n) space: the value-to-index map holds n entries, plus the recursion depth h, n when skewed.</p>
 <p><strong>Trap.</strong> Slicing arrays (hidden O(n²) copies); wrong preorder offset for the right subtree.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-binary-tree-from-preorder-and-inorder-traversal">
@@ -2432,7 +2566,7 @@ mark known
 <li>What do I do with negative contributions?</li>
 </ul>
 <p><strong>The leap.</strong> Return the best single-branch gain (floored at zero) to the parent while updating a global best with left + right + node.</p>
-<p><strong>Complexity.</strong> O(n) time, O(h) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one post-order traversal visits every node once and does O(1) work there. O(h) space: the recursion depth, the height h, log n when balanced and n when skewed.</p>
 <p><strong>Trap.</strong> Passing both branches upward; not clamping negatives.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-binary-tree-maximum-path-sum">
@@ -2452,7 +2586,7 @@ mark known
 <li>What single number does each subtree return to its parent?</li>
 </ul>
 <p><strong>The leap.</strong> height(node) = 1 + max(height(left), height(right)).</p>
-<p><strong>Complexity.</strong> O(n) time, O(h) space.</p>
+<p><strong>Complexity.</strong> O(n) time: every node is visited once with O(1) work. O(h) space: the recursion depth, the height h, log n when balanced and n when skewed.</p>
 <p><strong>Trap.</strong> Counting edges vs nodes; recursion depth on skewed trees.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-depth-of-binary-tree">
@@ -2472,7 +2606,7 @@ mark known
 <li>Is the operation purely local to each node?</li>
 </ul>
 <p><strong>The leap.</strong> Swap the children at each node and recurse; any traversal order works.</p>
-<p><strong>Complexity.</strong> O(n) time, O(h) space.</p>
+<p><strong>Complexity.</strong> O(n) time: every node is visited once and its two children swapped in O(1). O(h) space: the recursion depth, the height h, log n when balanced and n when skewed.</p>
 <p><strong>Trap.</strong> None serious — this is a warm-up to make recursion automatic.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-invert-a-binary-tree">
@@ -2493,7 +2627,7 @@ mark known
 <li>Can I stop after k nodes instead of traversing everything?</li>
 </ul>
 <p><strong>The leap.</strong> Inorder of a BST is sorted; an explicit stack lets you stop at the kth visit.</p>
-<p><strong>Complexity.</strong> O(h + k) time, O(h) space.</p>
+<p><strong>Complexity.</strong> O(h + k) time: every node pushed on the stack is either popped as one of the k visits or still waiting on the stack, which holds at most h, so at most h + k pushes and pops. O(h) space: the explicit stack holds at most one root-to-leaf path, log n when balanced and n when skewed.</p>
 <p><strong>Trap.</strong> Collecting the whole inorder list (correct but O(n)); off-by-one on k.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-kth-smallest-integer-in-bst">
@@ -2513,7 +2647,7 @@ mark known
 <li>How do I know where one level ends inside the queue?</li>
 </ul>
 <p><strong>The leap.</strong> Process exactly len(queue) nodes per round; each round is one level.</p>
-<p><strong>Complexity.</strong> O(n) time, O(w) space.</p>
+<p><strong>Complexity.</strong> O(n) time: every node is enqueued and dequeued once. O(w) space: the queue holds at most one level, the widest level w, up to about n/2 in a full tree, output excluded.</p>
 <p><strong>Trap.</strong> Not snapshotting the queue size before the inner loop.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-level-order-traversal-of-binary-tree">
@@ -2533,7 +2667,7 @@ mark known
 <li>How does the ordering tell me whether both nodes lie left, right, or split?</li>
 </ul>
 <p><strong>The leap.</strong> Walk down from the root: both smaller → left, both larger → right, otherwise the current node is the split point.</p>
-<p><strong>Complexity.</strong> O(h) time, O(1) space iteratively.</p>
+<p><strong>Complexity.</strong> O(h) time: one step down per level, the height h, log n when balanced and n when skewed. O(1) space iteratively: only the current node pointer, while a recursive walk would use O(h) for the call stack.</p>
 <p><strong>Trap.</strong> Using the general-tree LCA algorithm (works but ignores the property); forgetting a node can be its own ancestor.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-lowest-common-ancestor-in-binary-search-tree">
@@ -2553,7 +2687,7 @@ mark known
 <li>What are the base cases when one or both nodes are null?</li>
 </ul>
 <p><strong>The leap.</strong> Recurse on both trees simultaneously; equality of structure and value at every node.</p>
-<p><strong>Complexity.</strong> O(n) time, O(h) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one paired DFS, every node of both trees visited once. O(h) space: the recursion depth, the height h, log n when balanced, n when skewed.</p>
 <p><strong>Trap.</strong> Comparing values before null checks.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-same-binary-tree">
@@ -2574,7 +2708,7 @@ mark known
 <li>Which traversal is easiest to invert with a token iterator?</li>
 </ul>
 <p><strong>The leap.</strong> Preorder with explicit null markers is self-delimiting; deserialisation consumes tokens in the same order.</p>
-<p><strong>Complexity.</strong> O(n) time, O(n) space.</p>
+<p><strong>Complexity.</strong> O(n) time: every node visited once to serialize and once to rebuild. O(n) space: the serialized string with one token per node and null marker, plus the recursion depth.</p>
 <p><strong>Trap.</strong> Delimiters versus multi-digit or negative values; recursion depth.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-serialize-and-deserialize-binary-tree">
@@ -2595,7 +2729,7 @@ mark known
 <li>Can I reuse Same Tree at every candidate node?</li>
 </ul>
 <p><strong>The leap.</strong> At each node of the big tree, test identity against subRoot with the Same Tree check.</p>
-<p><strong>Complexity.</strong> O(n·m) time, O(h) space (serialisation + string matching can do better).</p>
+<p><strong>Complexity.</strong> O(n·m) time: each of the n nodes of the big tree may start a Same Tree check that walks up to m nodes. O(h) space: the recursion depth of the big tree. Serialising both trees and matching strings gives O(n + m) time: each tree is serialised once, then a linear-time matcher such as KMP scans the two strings once. O(n + m) space: the two serialised strings.</p>
 <p><strong>Trap.</strong> Accepting a partial match; forgetting the empty-subtree edge semantics.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-subtree-of-a-binary-tree">
@@ -2616,7 +2750,7 @@ mark known
 <li>What bounds does each node inherit from its ancestors?</li>
 </ul>
 <p><strong>The leap.</strong> Every node must lie strictly inside an (low, high) interval inherited from above; or the inorder sequence must be strictly increasing.</p>
-<p><strong>Complexity.</strong> O(n) time, O(h) space.</p>
+<p><strong>Complexity.</strong> O(n) time: one DFS visiting every node once, checking it against the bounds passed down. O(h) space: the recursion depth, log n when balanced, n when skewed.</p>
 <p><strong>Trap.</strong> Comparing only with children; equal values; sentinel handling for the bounds.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-valid-binary-search-tree">
@@ -2628,6 +2762,9 @@ mark known
 </section>
 <section id="recognition-tries-3" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-tries-3">Recognition: Tries (3)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-design-word-search-data-structure">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Design Add And Search Words Data Structure: ‘search with’.’ matching any letter’</span></span>
@@ -2640,7 +2777,7 @@ mark known
 <li>Where does the end-of-word check happen?</li>
 </ul>
 <p><strong>The leap.</strong> Walk the trie; on a wildcard, branch into every child (backtracking over the trie).</p>
-<p><strong>Complexity.</strong> O(26^dots · L) worst case per search, O(total characters) space.</p>
+<p><strong>Complexity.</strong> O(26^dots · L) time per search in the worst case: each wildcard branches into up to 26 children, so dots wildcards give up to 26^dots paths, each walked at most L characters deep. O(total characters) space: the trie stores at most one node per inserted character.</p>
 <p><strong>Trap.</strong> Returning only the first child’s result; ignoring the end flag at the last character.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-design-word-search-data-structure">
@@ -2661,7 +2798,7 @@ mark known
 <li>How is end-of-word distinguished from a prefix?</li>
 </ul>
 <p><strong>The leap.</strong> Children map per node plus an end flag; every operation walks one character per level.</p>
-<p><strong>Complexity.</strong> O(L) per operation, O(total characters) space.</p>
+<p><strong>Complexity.</strong> O(L) time per operation: insert, search and startsWith each walk one trie level per character of the length-L word, with O(1) average per child map lookup. O(total characters) space: the trie stores at most one node per inserted character, fewer when prefixes are shared.</p>
 <p><strong>Trap.</strong> Returning true from search when only a prefix exists; conflating search and startsWith.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-implement-prefix-tree">
@@ -2682,7 +2819,7 @@ mark known
 <li>How can a trie prune the grid DFS?</li>
 </ul>
 <p><strong>The leap.</strong> Build a trie of the words and DFS the grid while walking the trie simultaneously; stop at dead nodes, collect at word ends, and prune found words.</p>
-<p><strong>Complexity.</strong> Bounded by O(m·n·4·3^(L−1)) but far less with pruning; O(total characters) space.</p>
+<p><strong>Complexity.</strong> O(m·n·4·3^(L−1)) time in the worst case, far less with pruning: m·n starting cells, 4 directions on the first step, then 3 per step for L − 1 more steps, where L is the longest word length, while the trie cuts dead prefixes early. O(total characters) space: one trie node per character across all words, plus the recursion depth L.</p>
 <p><strong>Trap.</strong> Duplicate results; not pruning found words or dead leaves (time limit); forgetting to unmark cells.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-search-for-word-ii">
@@ -2694,6 +2831,9 @@ mark known
 </section>
 <section id="recognition-two-pointers-3" class="level2">
 <h2 class="anchored" data-anchor-id="recognition-two-pointers-3">Recognition: Two Pointers (3)</h2>
+<p class="rev-plan">
+One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.
+</p>
 <details class="rev" data-card="rec-is-palindrome">
 <summary>
 <span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Valid Palindrome: ‘reads the same forward and backward’, ‘ignore non-alphanumeric’, ‘case-insensitive’</span></span>
@@ -2706,7 +2846,7 @@ mark known
 <li>Do I need to build a cleaned string at all?</li>
 </ul>
 <p><strong>The leap.</strong> Converge from both ends, skipping invalid characters, comparing normalised characters.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: two pointers move inward, so each character is visited at most once. O(1) space: only the two indices.</p>
 <p><strong>Trap.</strong> Allocating a filtered copy (fine, but O(n) space); mishandling the skip loop bounds.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-is-palindrome">
@@ -2727,7 +2867,7 @@ mark known
 <li>Why can moving the taller side never increase the area?</li>
 </ul>
 <p><strong>The leap.</strong> Area is bounded by the shorter line; moving the shorter pointer inward is the only move that can improve the result.</p>
-<p><strong>Complexity.</strong> O(n) time, O(1) space.</p>
+<p><strong>Complexity.</strong> O(n) time: the two pointers start at the ends and one moves inward each step, so n − 1 steps in total. O(1) space: only the two indices and the best area.</p>
 <p><strong>Trap.</strong> Brute-force pairs; moving the taller pointer.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-max-water-container">
@@ -2748,7 +2888,7 @@ mark known
 <li>Where exactly do duplicates get skipped (anchor level and pointer level)?</li>
 </ul>
 <p><strong>The leap.</strong> Sort; for each anchor, converge two pointers on the remainder; skip equal neighbours at every level to avoid duplicate triplets.</p>
-<p><strong>Complexity.</strong> O(n²) time, O(1) extra space (ignoring output).</p>
+<p><strong>Complexity.</strong> O(n²) time: sorting costs n log n, then each of the n anchors runs a two-pointer pass of up to n, which dominates. O(1) extra space: the pointers only, ignoring the output and the sort’s own space.</p>
 <p><strong>Trap.</strong> Forgetting to move both pointers after a hit; skipping duplicates only at the anchor.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="rec-three-integer-sum">
@@ -3357,6 +3497,8 @@ For the next person figuring things out by building - <a href="mailto:anuragbuil
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('.rev-known');
     if (b) { var id = b.getAttribute('data-for'); setKnown(id, !known(id)); paint(); return; }
+    var cl = e.target.closest && e.target.closest('.rev-close');
+    if (cl) { var dd = cl.closest('details.rev'); dd.open = false; dd.scrollIntoView({ block: 'start' }); return; }
     var t = e.target.closest && e.target.closest('[data-rev]');
     if (!t) return;
     var a = t.getAttribute('data-rev');
@@ -3371,7 +3513,43 @@ For the next person figuring things out by building - <a href="mailto:anuragbuil
     if (e.key === 'j') nextUnknown();
   });
   if ('serviceWorker' in navigator) { try { navigator.serviceWorker.register('sw.js'); } catch (e) {} }
-  function init() { importMarks(); paint(); }
+  function stackTables() {
+    document.querySelectorAll('main table').forEach(function (t) {
+      var heads = Array.prototype.map.call(t.querySelectorAll('thead th'), function (th) { return th.textContent.trim(); });
+      if (heads.length < 4) return;
+      t.classList.add('rev-stack');
+      t.querySelectorAll('tbody tr').forEach(function (tr) {
+        Array.prototype.forEach.call(tr.cells, function (td, j) { td.setAttribute('data-label', heads[j] || ''); });
+      });
+    });
+  }
+  function wrapLines() {
+    document.querySelectorAll('.rev-a pre > code').forEach(function (c) {
+      if (c.querySelector('.ln')) return;
+      var lines = c.textContent.replace(/\n$/, '').split('\n'); c.textContent = '';
+      lines.forEach(function (l) { var sp = document.createElement('span'); sp.className = 'ln'; sp.textContent = l; c.appendChild(sp); });
+    });
+  }
+  function closeButtons() {
+    document.querySelectorAll('.rev-actions').forEach(function (p) {
+      if (p.querySelector('.rev-close')) return;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'rev-close'; b.textContent = 'close'; p.appendChild(b);
+    });
+  }
+  function diagrams() {
+    document.querySelectorAll('.cell-output-display svg.flowchart').forEach(function (svg) {
+      var vb = svg.viewBox.baseVal;
+      if (window.innerWidth < 600 && vb && vb.width) svg.style.width = Math.round(vb.width * 0.6) + 'px';
+      var a = document.createElement('a'); a.className = 'rev-full'; a.href = '#'; a.textContent = 'open full size';
+      a.addEventListener('click', function (e) {
+        e.preventDefault(); var c = svg.cloneNode(true);
+        c.setAttribute('width', Math.round(vb.width)); c.setAttribute('height', Math.round(vb.height)); c.removeAttribute('style');
+        window.open(URL.createObjectURL(new Blob(['<!doctype html><meta name="viewport" content="width=device-width"><body style="margin:0;background:#0c0d0b">' + c.outerHTML], { type: 'text/html' })));
+      });
+      var host = svg.closest('.cell-output-display'); if (host) host.before(a);
+    });
+  }
+  function init() { importMarks(); stackTables(); wrapLines(); closeButtons(); paint(); setTimeout(diagrams, 800); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>
