@@ -1,0 +1,40 @@
+toc-location: left
+toc-depth: 2
+search: false
+css: revision.css
+format:
+  html:
+    include-in-header:
+      text: |
+        <meta name="robots" content="noindex, nofollow">
+    include-after-body:
+      text: |
+        <script>
+        (function () {
+          var KEY = 'rev:known:';
+          function store() { try { return window.localStorage; } catch (e) { return null; } }
+          function known(id) { var s = store(); if (!s) return false; try { return s.getItem(KEY + id) === '1'; } catch (e) { return false; } }
+          function setKnown(id, v) { var s = store(); if (!s) return; try { if (v) s.setItem(KEY + id, '1'); else s.removeItem(KEY + id); } catch (e) {} }
+          function paint() {
+            var cards = document.querySelectorAll('details.rev'), n = 0;
+            cards.forEach(function (d) {
+              var id = d.getAttribute('data-card'), k = known(id);
+              d.classList.toggle('is-known', k);
+              var b = d.querySelector('.rev-known');
+              if (b) b.textContent = k ? 'unmark' : 'mark known';
+              if (k) n++;
+            });
+            var p = document.getElementById('rev-progress');
+            if (p) p.textContent = cards.length ? 'Known ' + n + ' of ' + cards.length + '.' : '';
+          }
+          document.addEventListener('click', function (e) {
+            var b = e.target.closest && e.target.closest('.rev-known');
+            if (b) { var id = b.getAttribute('data-for'); setKnown(id, !known(id)); paint(); return; }
+            if (e.target.id === 'rev-reset') {
+              document.querySelectorAll('details.rev').forEach(function (d) { setKnown(d.getAttribute('data-card'), false); });
+              paint();
+            }
+          });
+          if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', paint); else paint();
+        })();
+        </script>

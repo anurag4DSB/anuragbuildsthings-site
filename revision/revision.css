@@ -1,0 +1,92 @@
+/* Revision pack: flashcards as hairline-separated disclosure rows. Follows the Instrument theme:
+   paper background, mono caps labels, one signal element per card, no boxes, no radius, no shadow. */
+details.rev {
+  border-top: 1px solid var(--rule);
+  padding: 0.875rem 0 0.75rem;
+  margin: 0;
+}
+details.rev:last-of-type { border-bottom: 1px solid var(--rule); }
+details.rev > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.rev-head { display: block; min-width: 0; flex: 1 1 auto; }
+details.rev > summary::-webkit-details-marker { display: none; }
+details.rev > summary::after {
+  content: "open";
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 0.2rem;
+}
+details.rev[open] > summary::after { content: "close"; color: var(--signal); }
+details.rev > summary:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.rev-tag {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.25rem;
+}
+.rev-q {
+  display: block;
+  font-family: var(--text);
+  font-size: 1.125rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+details.rev.is-known .rev-q { color: var(--ink-3); }
+details.rev.is-known .rev-tag::after { content: " · known"; color: var(--signal); }
+.rev-a { padding: 0.75rem 0 0; }
+.rev-a p, .rev-a li { font-size: 1.0625rem; line-height: 1.6; }
+.rev-a pre, .rev-a div.sourceCode {
+  background: var(--paper-up) !important;
+  border: 0 !important;
+  border-left: 2px solid var(--rule-hi) !important;
+  padding: 0.75rem 0.875rem !important;
+  margin: 0.5rem 0 !important;
+}
+.rev-a pre, .rev-a pre code, .rev-a div.sourceCode pre, .rev-a div.sourceCode code {
+  font-family: var(--mono-code) !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.55 !important;
+  color: var(--ink) !important;
+  white-space: pre-wrap !important;
+  word-break: break-word;
+}
+.rev-a table { font-size: 0.9375rem; width: 100%; }
+.rev-a table th { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); font-weight: 400; }
+.rev-short { font-family: var(--mono); font-size: 0.6875rem; color: var(--ink-3); line-height: 1.6; }
+.rev-actions { margin: 0.5rem 0 0; }
+.rev-known, #rev-reset {
+  background: transparent;
+  border: 1px solid var(--rule-hi);
+  color: var(--ink-2);
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.rev-known:hover, #rev-reset:hover { color: var(--signal); border-color: var(--signal); }
+.rev-plan { color: var(--ink-2); }
+.rev-nav { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin: 1rem 0 1.5rem; }
+.rev-nav a { color: var(--ink-2); border-bottom-color: transparent; }
+.rev-nav a:hover { color: var(--signal); }
+#rev-progress { color: var(--ink); }
+@media (max-width: 600px) {
+  .rev-q { font-size: 1.0625rem; }
+  .rev-a p, .rev-a li { font-size: 1rem; }
+}

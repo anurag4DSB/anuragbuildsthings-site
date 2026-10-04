@@ -11,8 +11,11 @@ project:
   render:
     - "*.qmd"
     - "posts/"
+    - "revision/"
     - "!quarto-web/"
     - "!.planning/"
+  post-render:
+    - revision/_prune-sitemap.sh
 
 website:
   title: "anurag builds things"

@@ -1,0 +1,586 @@
+---
+title: "Daily"
+description: "The 38 cards I recall every day before anything else."
+toc: false
+---
+
+<p class="rev-plan">About fifteen minutes. Say or write the answer with the card closed, then open it. Boards: numbers first, then the diagram in draw order. <span id="rev-progress"></span></p>
+
+<p class="rev-nav"><a href="index.html">plan</a> · <a href="daily.html">daily</a> · <a href="reference.html">reference</a> · <a href="coding.html">coding</a> · <a href="data-paths.html">diagrams</a></p>
+
+## The opening and the board (5)
+
+<details class="rev" data-card="opening-script">
+<summary><span class="rev-head"><span class="rev-tag">SCRIPT</span><span class="rev-q">The 3-minute opening script?</span></span></summary>
+<div class="rev-a">
+
+1. Restate in one sentence: "So we are building X for Y users, and the hard part is Z." (10 s)
+2. Three clarifying questions, picked from: scale today and in two years · the one latency that matters · read or write heavy · what must never be lost · what is out of scope. Write the answers in the requirements corner as you get them. (90 s)
+3. Name the load-bearing categories aloud and cross out the rest: "This is Compute and Bandwidth; storage and memory are ordinary here." (15 s)
+4. Say the plan: "I will do requirements and numbers in ten minutes, the design in fifteen, then two deep dives, and I will leave five minutes for failures. Stop me whenever you want to go deeper." (15 s)
+5. Then start writing; never start drawing before the numbers are on the board.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="opening-script">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="sentences">
+<summary><span class="rev-head"><span class="rev-tag">SCRIPT</span><span class="rev-q">The five sentences that carry the interview?</span></span></summary>
+<div class="rev-a">
+
+- "Because X is a requirement, I need Y."
+- "The alternatives I see are A and B. I prefer A because … The cost of that choice is …"
+- "At 10× this breaks at Z first; here is how I would notice, and here is the mitigation."
+- "This is a hotspot because …; I would partition by … and accept … as a consequence."
+- "The failure I worry about most is …; recovery works like …; the blast radius is …"
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="sentences">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="layout-scale">
+<summary><span class="rev-head"><span class="rev-tag">LAYOUT</span><span class="rev-q">Board layout when scale drives the design: the eight blocks with minute budgets?</span></span></summary>
+<div class="rev-a">
+
+1. 0-8 min: Requirements, top-left
+2. 8-13 min: Numbers, top-right
+3. 13-17 min: API, left
+4. 17-21 min: Data, left under API
+5. 21-36 min: Diagram, center, in draw order
+6. 36-52 min: Two deep dives, annotate the boxes
+7. 52-57 min: Failures and trade-offs, bottom
+8. 57-60 min: Summary, said not written.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="layout-scale">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="layout-diagram-first">
+<summary><span class="rev-head"><span class="rev-tag">LAYOUT</span><span class="rev-q">Board layout for a functional-heavy prompt, diagram first?</span></span></summary>
+<div class="rev-a">
+
+1. 0-5 min: The agent loop (only if the first prompt is "Build a coding agent", otherwise these minutes go to requirements)
+2. 5-10 min: Requirements, top-left (accept what is dictated, compress, move)
+3. 10-24 min: Diagram, center, in draw order
+4. 24-26 min: One line of numbers, top-right
+5. 26-32 min: API and data, left
+6. 32-48 min: Two deep dives, annotate the boxes
+7. 48-55 min: Failures and trade-offs, bottom
+8. 55-60 min: Summary, said not written.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="layout-diagram-first">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="functional-rule">
+<summary><span class="rev-head"><span class="rev-tag">LAYOUT</span><span class="rev-q">The prompt is functional-heavy and the interviewer wants the diagram first. The rule?</span></span></summary>
+<div class="rev-a">
+
+This prompt is functional-heavy. The interviewer dictates the requirements, asks for the agent loop and the architecture, and does not want a GPU bill: model infrastructure is out of scope and cost is declared infinite. Numbers cover only what you buy: sandboxes, model calls, storage. On a functional-heavy prompt, say the one numbers line before drawing if nobody objects. If the interviewer asks for the diagram first, draw and put the numbers line right after the diagram. The board below uses the diagram-first order.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="functional-rule">mark known</button></p>
+
+</div>
+</details>
+
+## Numbers (13)
+
+<details class="rev" data-card="six-lines">
+<summary><span class="rev-head"><span class="rev-tag">SIX LINES</span><span class="rev-q">The six lines in the room, in four minutes?</span></span></summary>
+<div class="rev-a">
+
+In the room: 4 minutes, six lines (objects, egress = constraint, ingress ratio + growth, hot set, capacity vs IOPS check, network). The rest is ammunition for probes.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="six-lines">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="five-categories">
+<summary><span class="rev-head"><span class="rev-tag">CATEGORIES</span><span class="rev-q">The five estimation categories: the question each answers, its unit, and when it is load-bearing?</span></span></summary>
+<div class="rev-a">
+
+| Category | The question | Six-line method line | Typical unit | When it is load-bearing |
+|---|---|---|---|---|
+| Traffic | How many operations per second, average and peak, and which operation is the constraint? | Line 2, the constraining op/s (from line 1, objects and users) | QPS, writes/s, messages/s, frames/s | Chat, feeds, gateways, rate limiters, search, payments: anything where a request is the unit of work |
+| Bandwidth | How many bytes per second in and out, and what is the ratio? | Line 3, egress against ingress; line 6, network ports | MB/s, GB/s, Gbps; ports of 10 or 100 GbE | Video, media, object storage, backups, checkpoints, log pipelines: anything that moves large blobs |
+| Storage | How many bytes total, per day, per year, and on how many devices? | Line 3 growth; line 5, capacity against IOPS | TB, PB, disks | Blob stores, data lakes, archives, event logs kept for audit |
+| Memory | What must sit in RAM or SSD to meet latency, and does it fit on one box? | Line 4, the hot set | GB, TB, nodes | Caches, timelines, session maps, indexes, order books, ANN vectors, tries |
+| Compute | How many GPUs or cores, when the work per request is heavy? | Line 2 again, when the unit is a frame, a token or a match, divided by throughput per device | GPUs, cores, tokens/s, frames/s | Model serving, transcoding, embedding, training, matching engines |
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="five-categories">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="step-zero">
+<summary><span class="rev-head"><span class="rev-tag">CATEGORIES</span><span class="rev-q">Step 0, said aloud before any number?</span></span></summary>
+<div class="rev-a">
+
+"Before I size anything: this is a Traffic and Memory system, storage and bandwidth are small here, and there is no heavy compute. So I will size the request rate, the hot set, and check that the hot set fits in RAM on a handful of nodes." Then the six lines. Then the sentence that names the one number that forced the design.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="step-zero">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-seconds-per-day">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Seconds per day?</span></span></summary>
+<div class="rev-a">
+
+86,400 ≈ 10⁵ (so 1 M/day ≈ 12/s; 100 M/day ≈ 1,200/s)
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-seconds-per-day">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-seconds-per-year">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Seconds per year?</span></span></summary>
+<div class="rev-a">
+
+≈ 3.15 × 10⁷
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-seconds-per-year">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-kb-mb-gb-tb-pb">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">KB / MB / GB / TB / PB?</span></span></summary>
+<div class="rev-a">
+
+10³ / 10⁶ / 10⁹ / 10¹² / 10¹⁵ bytes
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-kb-mb-gb-tb-pb">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-hdd">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">HDD?</span></span></summary>
+<div class="rev-a">
+
+100-250 MB/s sequential, ~100-200 IOPS random, 16-24 TB
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-hdd">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-sata-nvme-ssd">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">SATA/NVMe SSD?</span></span></summary>
+<div class="rev-a">
+
+0.5-7 GB/s, 10⁵-10⁶ IOPS, 100 µs-1 ms latency
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-sata-nvme-ssd">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-ram">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">RAM?</span></span></summary>
+<div class="rev-a">
+
+~10-50 GB/s per socket, 100 ns access
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-ram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-nic">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">NIC?</span></span></summary>
+<div class="rev-a">
+
+25/100/400 Gb/s ≈ 3/12/50 GB/s
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-nic">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-intra-dc-rtt">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Intra-DC RTT?</span></span></summary>
+<div class="rev-a">
+
+~0.5 ms · cross-region 50-150 ms
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-intra-dc-rtt">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-one-server">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">One server?</span></span></summary>
+<div class="rev-a">
+
+~10⁴-10⁵ simple requests/s; ~10⁴ concurrent connections comfortably
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-one-server">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-compression">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Compression?</span></span></summary>
+<div class="rev-a">
+
+text 3-10×, video already compressed (~1×)
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-compression">mark known</button></p>
+
+</div>
+</details>
+
+## Boards: the numbers block and the diagram order (20)
+
+<details class="rev" data-card="b01-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 01 · NUMBERS</span><span class="rev-q">Live AI copilot for 1M body-worn and industrial cameras: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+10^4 dev × 5 fps = 5×10^4 f/s ÷ 500 f/s per GPU = 100 GPU (150-200 w/ headroom); 1M -> 10^4 GPU
+in  10^4 × 0.25 MB/s = 2.5 GB/s (2× peak)   out 10^4 × 3 × 200 B = 6 MB/s   (400:1)
+retain 20% -> 0.5 GB/s -> 43 TB/day; at 1M 4.3 PB/day -> 100 PB in 23 days
+hot  session 200 B × 10^6 = 200 MB · limiter 66 MB · state 2 MB × 10^4 = 20 GB on GPU hosts
+alerts 20/dev/day -> 2/s today, 230/s at 1M      ports at 1M: 500 GB/s ÷ 12.5 = 40 × 100 GbE
+-> GPUs force it: admission and frame sampling ARE the design; bytes and alerts are ordinary
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b01-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b01-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 01 · DIAGRAM</span><span class="rev-q">Live AI copilot for 1M body-worn and industrial cameras: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 devices -> API gateway (device certs, home region) -> admission (Redis counters) -> session store
+2 devices -> stream gateways (decode, sample to granted fps, 10 s ring) -> batcher + deadline -> GPU hosts (state) -> back
+3 stream gateway -> alert service -> Cassandra (alert + inbox) -> phone gateways / push -> phones
+4 stream gateways -> Kafka (counters every 2 s) -> roll-up per org/site -> TSDB -> supervisor view
+5 stream gateways -> object storage (consented segments only)      6 control plane -> admission, gateways
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b01-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b02-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 02 · NUMBERS</span><span class="rev-q">The multimodal AI API platform: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+10^9/day ÷ 86,400 ≈ 11,600/s -> ×3 peak ≈ 35,000/s
+sync  0.95 × 35k ≈ 33k/s ÷ 20 calls/s per GPU ≈ 1,650 GPU  <- the bill
+stream 10^4 × 5 fps = 5×10^4 f/s ÷ 500 ≈ 100-200 GPU (frame ≈ 60 tokens via streaming encoder, 1/25 of an image)
+jobs  10^4 h × 3,600 f ÷ 86,400 ≈ 420 f/s ≈ 1 GPU        total ≈ 2,000 GPU
+in ≈ 5 GB/s (2.2 sync + 2.5 stream + 0.1 jobs) · out ≈ 22 MB/s · usage events 10^9 × 200 B = 200 GB/day
+-> 35k rps is a small gateway problem; 2,000 GPUs is the cost -> count tokens and GPU-seconds, never requests
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b02-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b02-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 02 · DIAGRAM</span><span class="rev-q">The multimodal AI API platform: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 apps -> API gateway (key auth, token limiter in Redis, idempotency) 
+2 gateway -> model router (alias -> version + pool, 1 s capacity view) -> fair-share queues (tier, key) -> sync GPU pools
+3 gateway -> session router (hash session_id, session map) -> streaming pool (pinned hosts) <-> apps
+4 gateway -> job queue -> job workers (chunk, checkpoint) -> object store; workers -> same admission queues at lowest weight; DLQ; webhook sender
+5 all pools -> Kafka usage topic -> aggregator (dedup) -> ledger -> invoices/dashboard; Kafka -> raw Parquet
+6 control plane (keys, tiers, registry, rollout) -> gateway, router
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b02-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b03-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 03 · NUMBERS</span><span class="rev-q">Petabyte video lake feeding a 1,000-GPU training cluster: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+100 PB × 12/9 = 133 PB raw ÷ 20 TB = 6,700 HDD (+5% spare) in ~110 chassis of 60 · renditions 25 PB -> own pool, ~1,700 disks
+objects 100 PB ÷ 1 GB = 10^8 · segments 100 PB ÷ 3 MB = 3.3×10^10 · manifests 10^8 × 10 KB = 1 TB
+reads 1,000 GPU × 200 MB/s = 200 GB/s ÷ 3 MB = 6.7×10^4 reads/s  vs  6,700 × 40 IOPS = 2.7×10^5 -> only 4× headroom
+NVMe 125 nodes × 4 × 8 TB = 4 PB, 1.5 TB/s · hot set 5 datasets × 500 TB = 2.5 PB (63%) · stage 500 TB at 50 GB/s = 2.8 h
+rebuild 20 TB: 1 disk 28 h; declustered floor 3 GB/s -> 1.9 h (27 GB/s reads = 3% of IOPS) · ingest 42-44 PB/yr = 2,800 disks/yr
+-> IOPS forces it: 4× headroom only while healthy -> jobs read staged NVMe; HDDs see staging, misses, repair
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b03-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b03-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 03 · DIAGRAM</span><span class="rev-q">Petabyte video lake feeding a 1,000-GPU training cluster: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 board 1 gateways + licensed footage -> ingest API (multipart) -> placement + EC 9+3 (one 3 MB chunk per disk) -> HDD store
+2 placement -> manifest KV, disk index · ingest "ready" -> Kafka -> transcode workers -> renditions -> placement; attributes -> catalog
+3 researchers -> dataset service (filter -> frozen manifest) -> manifests store
+4 job scheduler -> stager (throttled prefetch) -> HDD store -> cluster NVMe (4 PB) <- data loaders (1,000 GPUs); miss -> HDD
+5 repair service (priority by redundancy left) -> disk index, HDD · scrubber -> HDD
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b03-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b04-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 04 · NUMBERS</span><span class="rev-q">The training factory: schedule, checkpoint, evaluate, ship (the infra spine): the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+125 nodes × 8 = 1,000 GPU; flagship 960 GPU on 120 nodes + 5 hot spares · 2,000 jobs/day = 0.02/s · heartbeats 12.5/s -> control plane idle
+70B fp16 = 140 GB; ×4 optimizer = 560 GB/checkpoint (≈ 1 TB with fp32 master weights) · every 30 min, keep 10 -> 5.6 TB/job
+sync to store in 2 min = 4.7 GB/s burst ✗ · per node 560 ÷ 120 = 4.7 GB -> NVMe 1.6 s + peer copy < 1 s ✓ · drain 1.5 GB/s -> durable in 6 min
+work lost = 960 × (15 + 10 restart) min ÷ 60 ≈ 400 GPU-h × 2/day ≈ 3.5% · Young: √(2 × 0.5 min × 720 min MTBF) ≈ 27 min -> 30 min
+rollout 250 hosts × 140 GB = 35 TB; origin 10 GB/s -> 1 h -> P2P
+-> 400 GPU-h per failure vs a 560 GB checkpoint forces: local commit in seconds, async drain, cadence from failure rate
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b04-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b04-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 04 · DIAGRAM</span><span class="rev-q">The training factory: schedule, checkpoint, evaluate, ship (the infra spine): the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 researchers/CLI -> job API (idempotent) -> Postgres (jobs, allocations, registry) · nightly trigger -> job API
+2 lock service -> scheduler leader (gang, quota, preempt, backfill) -> Postgres · leader -> node agents ×125 (lease 10 s) -> lock service
+3 agents -> local NVMe (writer + peer) -> object store (drain) -> registry (immutable versions)
+4 registry -> eval gates (64-GPU jobs via job API) -> rollout controller (canary per region) -> serving fleet (P2P pull) -> metrics -> controller
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b04-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b05-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 05 · NUMBERS</span><span class="rev-q">Collaborative AI video workspace for organizations (people working together, with AI participants): the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+50k rooms × 8 = 400k participants + 50 big rooms × 2k = 100k viewers -> 500k sockets
+media 400k × 7 receivers × 1 Mbps = 2.8 Tbps ≈ 350 GB/s ÷ 5 Gbps/SFU (CPU-bound) = 560 -> ~700 SFUs · 50-room worst 50×49×1 = 2.45 Gbps -> cap 9 tiles -> 225 Mbps
+state 50k × 80 msg/s = 4M/s in, ×7 = 28M/s raw -> batch 100 ms -> 500k × 10 = 5M/s ÷ 10^5 per gateway = 50 -> plan 100 (5k sockets each)
+AI 10k sessions × 5 fps = 50k f/s ÷ 500 = 100-200 GPU · room state 0.6 MB × 50k = 30 GB · op log ~14 TB/day · snapshots 500 MB/s · recordings 45 TB/day
+-> 2.8 Tbps vs 5M frames/s: two planes on different servers, media sized by CPU, state by frames per second
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b05-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b05-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 05 · DIAGRAM</span><span class="rev-q">Collaborative AI video workspace for organizations (people working together, with AI participants): the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 clients <-> SFU cluster (media plane, ~700)      2 clients <-> WS gateways (state plane, ~100) <-> room servers (CRDT merge, chat order, sticky by room+epoch)
+3 clients -> API gateway (SSO, JWT, org rate limits) -> room servers   4 room servers -> pub/sub per room -> viewer gateways (shed, batch)
+5 room servers -> Kafka (ops, chat, audit) -> stores        6 SFU -> AI workers (bot peers) <-> AI platform (board 2); AI workers -> WS (suggestion layer)
+7 identity service -> WS gateways, room servers, SFUs (revocations)    8 SFU -> recorder -> object store; SFU -> live packager -> CDN (viewers)
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b05-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b06-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 06 · NUMBERS</span><span class="rev-q">Find anything in a billion clips: search, suggest, label (the retrieval spine): the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+10⁹ clips × (1,024 dims × 2 B + 256 B HNSW links) = 2.3 KB -> 2.3 TB in RAM -> 16 shards (144 GB each, grow to 300 GB) × 3 replicas = 48 hosts
+1,000 QPS × 16 shards = 16k shard searches/s; 30 ms/core -> 32 cores ≈ 1,000/s per host -> 16 hosts per replica set
+ingest 10⁷/day ÷ 86,400 ≈ 116 clips/s ÷ 100/GPU ≈ 2 embed GPUs (plan 4) · +23 GB/day index -> 4.6B clips in a year
+labels 10⁹ × 20 × 4 B = 80 GB · filter columns 16 GB · metadata 10⁹ × 500 B = 500 GB KV · results 16 × 1.2 KB = 19 KB/query
+-> 2.3 TB of vectors in RAM forces 16 shards and a scatter-gather on every query: tail latency and filter handling are the design
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b06-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b06-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 06 · DIAGRAM</span><span class="rev-q">Find anything in a billion clips: search, suggest, label (the retrieval spine): the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 video lake (new clip events) -> embed + auto-label GPU workers -> Kafka (vectors, labels by shard) + object store (vectors) · human review -> Kafka
+2 Kafka -> 16 shard groups × 3 replicas (immutable segments + delta index) <- merge scheduler (6 h, tiered compaction)
+3 client -> API gateway (token -> org) -> query service (parse, encode 20 ms, plan by selectivity) -> result cache -> scatter to 16 shards -> merge -> re-ranker (top 200, GPU) -> metadata KV (top 50)
+4 client -> suggest servers (trie in RAM) <- streaming counts <- query logs      5 Kafka -> dataset builder -> manifests
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b06-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b07-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 07 · NUMBERS</span><span class="rev-q">Reserve and dispatch GPU capacity for live streams: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+unit = 1 live stream; 50 streams/GPU · 5 regions × 4 pools × 100 GPU × 50 = 100k units · slots 15 min -> 20 × 96 × 90 d = 172,800 rows ≈ 17 MB
+bookings 100k/day = 1.2/s, 6/s peak -> 16 slot rows each ≈ 100 row writes/s · searches 1,000:1 -> 1,200/s, 6,000 peak
+heartbeats 100k ÷ 4 s = 25k/s (Redis) · pool reports 20/s · dispatches 100k ÷ 600 s ≈ 170/s · sessions 100k × 200 B = 20 MB
+region loss at 09:00: 20k units, 14k live at 70% -> re-place in 60 s; survivors 4 × 6k = 24k free
+-> volume is trivial; the FAILURE case forces it: 14,000 streams moving in 60 s, and the free-unit margin across regions
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b07-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b07-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 07 · DIAGRAM</span><span class="rev-q">Reserve and dispatch GPU capacity for live streams: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 customers/autoscalers -> API gateway (auth, rate limit) -> search service -> availability cache (CDC from Postgres) + pricer (surge per pool/slot)
+2 gateway -> basket service -> basket store · basket -> reservation service (holds, checkout saga) -> Postgres per region -> CDC -> cache
+3 reservation service -> payment gateway (idempotent charge, ledger) · -> lock manager (basket lease + fencing token at checkout)
+4 devices -> regional dispatcher (pool table in RAM) -> Redis (pool load, claims, sessions) <- GPU pools report every 1 s · dispatcher -> Postgres (reservation check) · -> admission bucket (reconnects) -> gateway_url back to device
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b07-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b08-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 08 · NUMBERS</span><span class="rev-q">Usage metering, quotas, and a spot auction for scarce GPU capacity: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+peak 10⁶ ev/s, avg ≈ 333k/s -> 2.9×10¹⁰/day · 500 B each -> 500 MB/s = 4 Gbps in · 100k keys, 10k orgs, biggest org 10%
+Kafka: 10 MB/s per partition -> 50, take 256 (headroom, hot org) · 15 TB/day × 3 d × 3 copies = 135 TB -> 24 brokers × 8 TB
+dedup ids 12 min TTL: 10⁶ × 720 × 16 B ≈ 11.5 GB (~20 GB in RocksDB), 80 MB per slot · real-time store 100k keys × 3 × 2 per 10 s = 60k writes/s (17× reduction)
+raw Parquet 3 TB/day × 400 d = 1.2 PB · bids 10k/s vs exchange's 100k · market data 1 MB/s
+-> 10⁶ events/s with ~20 GB of dedup state forces a stream processor; 72 h lateness forces a separate exact batch for billing; 10 s freshness forces early results
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b08-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b08-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 08 · DIAGRAM</span><span class="rev-q">Usage metering, quotas, and a spot auction for scarce GPU capacity: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 gateways + workers -> Kafka (256 partitions by org+shard) -> stream processor (dedup, 10 s windows, early results, watermark 2 min)
+2 processor -> Cassandra (aggregates) · -> TSDB (dashboards) · -> Redis (daily spend) · aggregates + spend -> pacing/quota controller (5 s) -> rate rules -> gateway RAM
+3 Kafka -> object store (raw Parquet) -> batch job (hourly/nightly, exact) -> billing ledger -> invoicer (day 4) · batch -> reconciler (stream vs batch, 0.5%)
+4 bidders -> sequencer (one log per pool, CLOSE marker) -> matching engine (one thread per pool) -> market data -> bidders · -> clearing results -> board 7 dispatcher · hot standby replays same log
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b08-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b09-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 09 · NUMBERS</span><span class="rev-q">Model hub feed and recommendations for a research community: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+5M users, 1M DAU · 170k followable things besides people (100k models, 50k datasets, 20k teams) · follows 5M × 50 = 2.5×10⁸ · collaboration edges 10⁸ · posts 100k/day = 1.2/s
+degree badges 1M × 50 pages × 20 = 10⁹/day ≈ 11,500/s -> 58k peak · feed reads 1M × 20 = 230/s -> 1,200 peak · typeahead 580/s
+fan-out (non-celebrity) 100k × 200 = 2×10⁷/day = 230/s · celebrity line 10k followers (~500 models, datasets or people above it) · 1M-follower push = 10⁶ writes (2-20 node-s), ×10 versions = 10⁷
+hot: timelines 1M × 800 × 8 B = 6.4 GB · second-degree sets 3.2 GB · suggestions 6 GB · trie 1.6 GB · degree graph (collaborators + mutual follows) ≈ 6 GB -> fits every degree server
+-> two numbers: 10⁶ writes per celebrity post (head-of-line blocking), and 58k degree reads/s on a graph small enough to replicate
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b09-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b09-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 09 · DIAGRAM</span><span class="rev-q">Model hub feed and recommendations for a research community: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 clients -> API gateway -> post service -> Cassandra; -> Kafka (post + follow events)
+2 Kafka -> fan-out workers (push if author < 10k followers; read follow_by_followee) -> Redis timelines · celebrity -> recent:{author} only
+3 gateway -> feed service (read timeline + pull 5 celeb lists via 2 s near cache, merge, collapse bursts, rank) -> Memcached posts, metrics store (timeout)
+4 gateway -> follow service -> Postgres edges -> Kafka       5 gateway -> degree service (graph in RAM, 8 replicas) -> second-degree sets; KV adjacency -> degree service, Spark
+6 job scheduler (nightly) -> Spark (2-hop, 3-hop, sampled co-follow) -> suggestion lists -> suggestion service (last-mile filter)     7 gateway -> typeahead servers (trie)
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b09-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b10-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 10 · NUMBERS</span><span class="rev-q">Evaluation and testing harness for LLM coding agents: the numbers block (24-26 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+10^4 agents x 100 turns (cap) = 10^6 turns · natural 10^4 / 10 s per turn ≈ 1,000 calls/s · floor 10^6 / 1,500 s ≈ 670/s (25-min cap)
+quota ask ≈ 1,000 calls/s x 30k tokens ≈ 2x10^9 TPM · 15 s per turn at the cap, model p50 5-10 s, so queues stay near empty
+storage 10^6 turns x 20 KB = 20 GB events + 10 GB artifacts ≈ 30 GB/run · 30 GB / 1,800 s ≈ 17 MB/s, small
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b10-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b10-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 10 · DIAGRAM</span><span class="rev-q">Evaluation and testing harness for LLM coding agents: the diagram in draw order (10-24 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 UI / CI -> API (auth, idem) -> Postgres (run, samples expanded from the suite)
+2 scheduler -> lease try with epoch -> sandbox host · all 10,000 start in a 30 s ramp
+3 host: restore microVM = base snapshot (toolchain hash) + task disk layer (content hash, lazy copy-on-write) -> workspace only
+  runner + tool broker run OUTSIDE the SBX on the host · tools exec in the SBX over vsock
+4 runner -> model GW (least-slack-first, retries, per-run quota) -> model API · SBX egress = frozen package mirror only
+5 runner -> event log (append, seq, epoch) -> object storage (Parquet + blobs) and ClickHouse
+6 final answer -> runner exports diff -> object storage · scheduler starts evaluator in a FRESH SBX
+  evaluator: apply diff, restore hidden tests + protected paths, flag a diff that touches them -> tests, compile, LLM judge -> scores
+7 destroy SBX, host checks no VMM process, tap device or disk layer outlives the lease
+8 replay service: render from the log, or re-execute in a new SBX · results UI queries ClickHouse + scores
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b10-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<p class="rev-nav"><button type="button" id="rev-reset">reset this page</button></p>
