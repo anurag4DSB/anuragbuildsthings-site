@@ -12,6 +12,8 @@ toc: true
 
 ## DP: the six lines (4)
 
+<p class="rev-plan">Before any DP code, these are written as comments in the editor. Say all six for the card, then open and check the order.</p>
+
 <details class="rev" data-card="dp-six">
 <summary><span class="rev-head"><span class="rev-tag">DP</span><span class="rev-q">The six lines to write as comments before any DP code?</span></span></summary>
 <div class="rev-a">
@@ -81,6 +83,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Patterns: cues to name (21)
+
+<p class="rev-plan">The question side shows only the cues, the phrases a problem statement uses. Say the pattern name, its core idea and the complexity out loud, then open. If you cannot name it in ten seconds, it is not known.</p>
 
 <details class="rev" data-card="cp-advanced-graph">
 <summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'weighted', 'minimum cost', 'cheapest path', 'network delay', 'connect all points', 'k stops' · Edge weights present; BFS no longer correct</span></span></summary>
@@ -759,6 +763,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Recognition: 1-D Dynamic Programming (10)
 
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
+
 <details class="rev" data-card="rec-climbing-stairs">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Climbing Stairs: 'distinct ways to reach the top', steps of 1 or 2</span></span></summary>
 <div class="rev-a">
@@ -977,6 +983,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Recognition: 2-D Dynamic Programming (2)
 
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
+
 <details class="rev" data-card="rec-count-paths">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Unique Paths: 'paths from top-left to bottom-right', 'only right or down'</span></span></summary>
 <div class="rev-a">
@@ -1022,6 +1030,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Recognition: Advanced Graphs (1)
 
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
+
 <details class="rev" data-card="rec-foreign-dictionary">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · HARD</span><span class="rev-q">Alien Dictionary: 'order of letters from a sorted list of words', 'return empty if invalid', 'hard'</span></span></summary>
 <div class="rev-a">
@@ -1045,6 +1055,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Arrays & Hashing (8)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-anagram-groups">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Group Anagrams: 'group the anagrams together' · Many strings, output as groups</span></span></summary>
@@ -1226,6 +1238,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Recognition: Backtracking (2)
 
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
+
 <details class="rev" data-card="rec-combination-target-sum">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Combination Sum: 'all unique combinations that sum to target', 'may be used unlimited times'</span></span></summary>
 <div class="rev-a">
@@ -1272,6 +1286,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Recognition: Binary Search (2)
 
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
+
 <details class="rev" data-card="rec-find-minimum-in-rotated-sorted-array">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Find Minimum In Rotated Sorted Array: 'rotated', 'sorted', 'O(log n)', 'minimum'</span></span></summary>
 <div class="rev-a">
@@ -1317,6 +1333,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Bit Manipulation (5)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-counting-bits">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Counting Bits: 'number of 1 bits for every i from 0 to n', 'O(n)'</span></span></summary>
@@ -1424,6 +1442,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Graphs (6)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-clone-graph">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Clone Graph: 'deep copy of a connected graph', neighbours lists, cycles</span></span></summary>
@@ -1557,6 +1577,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Recognition: Greedy (2)
 
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
+
 <details class="rev" data-card="rec-jump-game">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Jump Game: 'can you reach the last index', 'maximum jump length'</span></span></summary>
 <div class="rev-a">
@@ -1603,6 +1625,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Recognition: Heap / Priority Queue (1)
 
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
+
 <details class="rev" data-card="rec-find-median-in-a-data-stream">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · HARD</span><span class="rev-q">Find Median From Data Stream: 'stream', 'median at any time', 'addNum / findMedian'</span></span></summary>
 <div class="rev-a">
@@ -1626,6 +1650,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Intervals (5)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-insert-new-interval">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Insert Interval: 'sorted non-overlapping intervals', 'insert and merge if necessary'</span></span></summary>
@@ -1734,6 +1760,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Linked List (6)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-linked-list-cycle-detection">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Linked List Cycle: 'cycle', 'constant memory'</span></span></summary>
@@ -1869,6 +1897,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Recognition: Math & Geometry (3)
 
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
+
 <details class="rev" data-card="rec-rotate-matrix">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Rotate Image: 'rotate 90 degrees clockwise in place'</span></span></summary>
 <div class="rev-a">
@@ -1935,6 +1965,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Sliding Window (4)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-buy-and-sell-crypto">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Best Time to Buy And Sell Stock: 'buy one day, sell a later day', 'maximum profit', single transaction</span></span></summary>
@@ -2026,6 +2058,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Recognition: Stack (1)
 
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
+
 <details class="rev" data-card="rec-validate-parentheses">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Valid Parentheses: 'brackets', 'valid/balanced', 'closed in the correct order'</span></span></summary>
 <div class="rev-a">
@@ -2049,6 +2083,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Trees (11)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-binary-tree-from-preorder-and-inorder-traversal">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Construct Binary Tree From Preorder And Inorder Traversal: 'preorder and inorder', 'construct the tree'</span></span></summary>
@@ -2289,6 +2325,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Recognition: Tries (3)
 
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
+
 <details class="rev" data-card="rec-design-word-search-data-structure">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · MEDIUM</span><span class="rev-q">Design Add And Search Words Data Structure: 'search with '.' matching any letter'</span></span></summary>
 <div class="rev-a">
@@ -2356,6 +2394,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </details>
 
 ## Recognition: Two Pointers (3)
+
+<p class="rev-plan">One card per problem: the name and its cues on the question side. Say the pattern, the key leap and the complexity, then open. Mark known only when all three came without thinking.</p>
 
 <details class="rev" data-card="rec-is-palindrome">
 <summary><span class="rev-head"><span class="rev-tag">RECOGNITION · EASY</span><span class="rev-q">Valid Palindrome: 'reads the same forward and backward', 'ignore non-alphanumeric', 'case-insensitive'</span></span></summary>
