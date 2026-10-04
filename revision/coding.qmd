@@ -4,7 +4,7 @@ description: "100 cards: cues on the question side, the pattern, the leap, the c
 toc: true
 ---
 
-<p class="rev-plan">One section before the two problems of the day. Say the pattern from the cues before opening. <span id="rev-progress"></span></p>
+<p class="rev-plan">One section before the two problems of the day. Say the pattern from the cues before opening. For any problem the ladder is: brute force first, then the algorithm I already know (DFS, BFS, two pointers, a hash map), then the specialised one by name and complexity if it exists. <span id="rev-progress"></span></p>
 
 <p class="rev-nav"><a href="index.html">plan</a> · <a href="daily.html">daily</a> · <a href="reference.html">reference</a> · <a href="coding.html">coding</a> · <a href="data-paths.html">diagrams</a></p>
 
@@ -113,6 +113,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 - Confusing shortest-path tree with MST
 
 **Not this when.** Unweighted → BFS. DAG ordering → topological sort. Connectivity only → union-find.
+
+**This week.** Name only. Say "weighted edges, so BFS is wrong; Dijkstra, a BFS whose queue is a heap keyed by distance, O((V+E) log V)" and solve the problem in front of you with BFS or DFS. No full implementation this week.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-advanced-graph">mark known</button></p>
 
@@ -755,6 +757,8 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 - Using it on directed graphs (wrong tool)
 
 **Not this when.** Directed dependencies → topological sort. Need the actual path → DFS/BFS. Need to un-union → offline tricks (rare).
+
+**This week.** Twenty-minute primer on Wednesday: find with path compression, union by size, both near O(1). Its two problems (valid tree, connected components) also fall to DFS, so DFS is the answer you write; union-find is the follow-up you name.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-union-find">mark known</button></p>
 
