@@ -1,6 +1,6 @@
 ---
 title: "Reference"
-description: "All 148 cards by topic, in the order of the original pages."
+description: "All 221 cards by topic, in the order of the original pages."
 toc: true
 ---
 
@@ -1471,6 +1471,937 @@ Say the dimension first ("this is capacity-aware routing") and the interviewer k
 Next read: Model routing, which model serves a request and on which replica.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="api-sentences">mark known</button></p>
+
+</div>
+</details>
+
+## AI API design and GPU infrastructure (22)
+
+<p class="rev-plan">The API knowledge behind the shapes: sync against async, job APIs, idempotency, retries, pagination, quotas, streaming, versioning, errors, and how GPUs change each of them. Say the section's rule, then open.</p>
+
+<details class="rev" data-card="apid-sync-vs-async">
+<summary><span class="rev-head"><span class="rev-tag">AI API DESIGN</span><span class="rev-q">API design for AI and infrastructure services: sync vs async?</span></span></summary>
+<div class="rev-a">
+
+- **Sync** (request → result in one call): only when the work reliably finishes within the client's timeout (say < 10-30 s). Simple, but ties up connections and fails badly under load.
+- **Async / job API**: `POST /jobs` → `202 {job_id}`; `GET /jobs/{id}` → status; results via `GET /jobs/{id}/result`, webhook/callback, or a message. Use when work is long, variable, or scarce-resource-bound (GPUs). Always for video processing.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="apid-sync-vs-async">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="apid-job-api-essentials">
+<summary><span class="rev-head"><span class="rev-tag">AI API DESIGN</span><span class="rev-q">API design for AI and infrastructure services: job API essentials?</span></span></summary>
+<div class="rev-a">
+
+States: `queued → running → succeeded | failed | cancelled` (+ `retrying`). Fields: id, tenant, created/started/finished, attempts, priority, model version, input refs, output refs, error code. Support cancel, list with filters + cursor, and TTL for results.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="apid-job-api-essentials">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="apid-idempotency">
+<summary><span class="rev-head"><span class="rev-tag">AI API DESIGN</span><span class="rev-q">API design for AI and infrastructure services: idempotency?</span></span></summary>
+<div class="rev-a">
+
+Clients retry; the network duplicates. Every create/mutate accepts an `Idempotency-Key`; the server stores key → response for a window and returns the same response on replay. Downstream operations are made idempotent by natural keys (e.g. `(job_id, attempt)`), upserts, or compare-and-set on versions.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="apid-idempotency">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="apid-retry-semantics">
+<summary><span class="rev-head"><span class="rev-tag">AI API DESIGN</span><span class="rev-q">API design for AI and infrastructure services: retry semantics?</span></span></summary>
+<div class="rev-a">
+
+- Server tells the client what to do: `429`/`503` + `Retry-After`; `409` for conflicts (don't retry blindly); `4xx` others are permanent.
+- Clients: exponential backoff with jitter, capped attempts, retry budgets, no retry on non-idempotent calls without a key.
+- Servers: deduplicate by key; make handlers safe to re-run; dead-letter after N failures.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="apid-retry-semantics">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="apid-pagination">
+<summary><span class="rev-head"><span class="rev-tag">AI API DESIGN</span><span class="rev-q">API design for AI and infrastructure services: pagination?</span></span></summary>
+<div class="rev-a">
+
+Opaque **cursor** (encodes position, stable under inserts) over offset/limit (skips/duplicates under change). Return `next_cursor`; cap page size; document ordering.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="apid-pagination">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="apid-rate-limits-quotas-admission-control">
+<summary><span class="rev-head"><span class="rev-tag">AI API DESIGN</span><span class="rev-q">API design for AI and infrastructure services: rate limits, quotas, admission control?</span></span></summary>
+<div class="rev-a">
+
+Rate limit per key/tenant/endpoint (token bucket), headers `X-RateLimit-Limit/Remaining/Reset`. Quotas on scarce resources (GPU-seconds, storage bytes, concurrent jobs) with soft/hard tiers. Admission control inside: bounded queues per priority class, shed low-priority when saturated, estimate cost per request before admitting.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="apid-rate-limits-quotas-admission-control">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="apid-streaming-results">
+<summary><span class="rev-head"><span class="rev-tag">AI API DESIGN</span><span class="rev-q">API design for AI and infrastructure services: streaming results?</span></span></summary>
+<div class="rev-a">
+
+For long generations or progressive outputs: server-sent events or chunked HTTP for one-way streams; WebSocket/gRPC streaming when bidirectional. Design for resumption (sequence numbers, `Last-Event-ID`), partial results on failure, and backpressure (client-driven flow control).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="apid-streaming-results">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="apid-versioning-and-compatibility">
+<summary><span class="rev-head"><span class="rev-tag">AI API DESIGN</span><span class="rev-q">API design for AI and infrastructure services: versioning and compatibility?</span></span></summary>
+<div class="rev-a">
+
+Version the API (path or header) and the **model** independently; let clients pin `model_version`; publish deprecation windows; never change the meaning of an existing field.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="apid-versioning-and-compatibility">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="apid-errors-that-help">
+<summary><span class="rev-head"><span class="rev-tag">AI API DESIGN</span><span class="rev-q">API design for AI and infrastructure services: errors that help?</span></span></summary>
+<div class="rev-a">
+
+Machine-readable code, human message, request id, retryable flag, and for jobs a `failure_reason` taxonomy (input invalid, quota exceeded, model error, infrastructure error).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="apid-errors-that-help">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="apid-interview-ready-statements">
+<summary><span class="rev-head"><span class="rev-tag">AI API DESIGN</span><span class="rev-q">API design for AI and infrastructure services: interview-ready statements?</span></span></summary>
+<div class="rev-a">
+
+- "Anything that touches a GPU is asynchronous behind a job API with idempotency keys."
+- "Retries are a contract: the server says whether and when, the client obeys with jittered backoff and a budget."
+- "Cursors, not offsets; quotas on the scarce resource, not just requests per second."
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="apid-interview-ready-statements">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-training-vs-inference">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: training vs inference?</span></span></summary>
+<div class="rev-a">
+
+| | Training | Inference |
+|---|---|---|
+| Shape | Long-running job, many GPUs in lockstep, epochs over a dataset | Request-driven, many small independent calls |
+| Bottleneck | Data feed + interconnect + checkpoint I/O | Latency per request, GPU memory, batching |
+| Failure cost | Lost work since last checkpoint × all GPUs | One failed request; retry |
+| Storage pattern | Massive sequential/random reads of the dataset; periodic huge writes (checkpoints) | Model weights read at load time; results written per request |
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-training-vs-inference">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-online-vs-batch-inference">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: online vs batch inference?</span></span></summary>
+<div class="rev-a">
+
+Online: latency SLO (tens to hundreds of ms), request queue, small dynamic batches, warm models resident on GPUs. Batch: throughput SLO, large static batches, can run on cheaper/preemptible capacity, results to storage.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-online-vs-batch-inference">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-batching-and-dynamic-batching">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: batching and dynamic batching?</span></span></summary>
+<div class="rev-a">
+
+Batching amortises weight reads and kernel launches: throughput rises roughly linearly with batch size until compute saturates; latency rises too. **Dynamic batching** waits up to a small window (e.g. 5-20 ms) to collect requests, then runs one batch; tune window vs p99. For LLMs, *continuous batching* admits new sequences as others finish.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-batching-and-dynamic-batching">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-gpu-utilisation-and-memory">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: gPU utilisation and memory?</span></span></summary>
+<div class="rev-a">
+
+- Utilisation = fraction of time kernels run. Idle causes: waiting for data, CPU preprocessing, small batches, synchronisation stalls, host↔device copies.
+- Memory = weights + activations (∝ batch × sequence) + optimizer state (training, 2-3× weights) + KV cache (inference). Out of memory → smaller batch, mixed precision, sharding weights, offloading.
+- Rule of thumb: fp16 weights = 2 bytes/param; 7B ≈ 14 GB, 70B ≈ 140 GB.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-gpu-utilisation-and-memory">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-cpu-preprocessing-prefetch-data-loaders">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: cPU preprocessing, prefetch, data loaders?</span></span></summary>
+<div class="rev-a">
+
+The data loader decodes (video/JPEG), augments, shuffles, batches, and pins memory before the GPU step. Use many CPU workers per GPU, **prefetch** N batches ahead into a bounded buffer, overlap host→device copies with compute. Measure *data wait time* per step; if it is non-zero the GPU is starving. For video: decoding is expensive — consider pre-decoded/pre-chunked formats, GPU decoding, or a preprocessing tier.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-cpu-preprocessing-prefetch-data-loaders">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-model-placement-and-versioning">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: model placement and versioning?</span></span></summary>
+<div class="rev-a">
+
+Placement: which GPUs hold which model (memory fit, load time, traffic). Warm pools and lazy loading trade cost for cold-start latency. **Versioning**: immutable model artifacts with content hashes; a registry maps `model:version → artifact`; requests may pin a version; rollouts are canaried; rollback = flip the pointer.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-model-placement-and-versioning">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-checkpointing">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: checkpointing?</span></span></summary>
+<div class="rev-a">
+
+Periodic snapshot of weights + optimizer state to durable storage. Cadence balances lost-work-on-failure vs write cost (a checkpoint can be hundreds of GB and stall training if synchronous). Techniques: asynchronous checkpointing from a CPU copy, sharded checkpoints written in parallel, keep last N, verify by checksum, resume from checkpoint on failure.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-checkpointing">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-data-parallelism-vs-model-parallelism">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: data parallelism vs model parallelism?</span></span></summary>
+<div class="rev-a">
+
+- **Data parallel**: every GPU has the full model, processes a different shard of the batch, gradients are all-reduced each step. Interconnect bandwidth matters; the slowest GPU sets the pace.
+- **Model parallel**: the model is split across GPUs — tensor parallel (split layers), pipeline parallel (split stages; needs micro-batches to avoid bubbles). Used when the model does not fit.
+- Real systems combine them (3D parallelism) and shard optimizer state (ZeRO/FSDP).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-data-parallelism-vs-model-parallelism">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-stragglers">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: stragglers?</span></span></summary>
+<div class="rev-a">
+
+In synchronous training one slow worker delays every step. Causes: bad hardware, thermal throttling, noisy neighbour, slow storage path. Mitigations: detect via per-step timing, replace the node, speculative/backup work for input fetching, asynchronous or bounded-staleness variants for some workloads.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-stragglers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-backpressure-in-ai-pipelines">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: backpressure in AI pipelines?</span></span></summary>
+<div class="rev-a">
+
+Bounded queues between storage → decode → GPU; when GPU is the bottleneck the loader should idle rather than fill RAM; when storage is the bottleneck, increase parallelism/prefetch or fix locality. Expose queue depths per stage.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-backpressure-in-ai-pipelines">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aiinf-interview-ready-statements">
+<summary><span class="rev-head"><span class="rev-tag">AI INFRASTRUCTURE</span><span class="rev-q">AI infrastructure: interview-ready statements?</span></span></summary>
+<div class="rev-a">
+
+- "GPU time is the currency; I design the storage and CPU tiers so the accelerator never waits."
+- "Checkpoint cadence is the RPO of a training job."
+- "Dynamic batching trades p99 latency for throughput; the window is a tunable I would expose per model."
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aiinf-interview-ready-statements">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="aigpu-essentials">
+<summary><span class="rev-head"><span class="rev-tag">GPU INFRASTRUCTURE</span><span class="rev-q">AI and GPU infrastructure: the design-interview essentials?</span></span></summary>
+<div class="rev-a">
+
+Deeper treatment in AI infrastructure. The design-interview essentials:
+- **GPUs are the cost centre.** Every design question becomes "how do I keep utilisation high?": batching, prefetch, fast storage, avoiding CPU bottlenecks, avoiding stragglers.
+- **Training**: long-running, synchronous across many GPUs (data parallel), needs checkpoints (large, periodic, to durable storage), a data pipeline that never starves the accelerators, and restart-from-checkpoint on failure.
+- **Inference**: request-driven; online (latency-bound, dynamic batching windows of a few ms) vs batch (throughput-bound). Model loading time drives placement and warm pools. Model versions must be pinnable and rollback-able.
+- **Data pipeline**: storage → (network) → CPU decode/preprocess → host RAM buffer → GPU. Size buffers to cover latency variance; measure "GPU waiting for data" directly.
+- **Memory**: model weights + activations + KV cache must fit; batch size trades throughput for memory; sharding weights across GPUs (tensor/pipeline parallel) when they do not fit.
+- **Failures**: a straggler slows every synchronous step; detect and replace; checkpoint cadence = acceptable lost work.
+- **Numbers**: a training job may read 1-5 GB/s per node; a 70B-parameter model ≈ 140 GB in fp16; H100 ≈ 3 TB/s HBM, 80 GB.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="aigpu-essentials">mark known</button></p>
+
+</div>
+</details>
+
+## Patterns, one page each (51)
+
+<p class="rev-plan">The topic notes behind the decision cheat sheet, one card per section: what to say about caching, partitioning, consistency, queues, limits, failure, observability, coordination. Reading material; mark known only what you can say unprompted.</p>
+
+<details class="rev" data-card="pp-requirements-functional-requirements-2-minutes">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Requirements & non-functional requirements: functional requirements (2 minutes)?</span></span></summary>
+<div class="rev-a">
+
+- List the 3-5 things the system must do. Cut everything else explicitly: "Out of scope: X, Y."
+- Identify the primary actors and the one flow that matters most (the "money path").
+- Ask: read-heavy or write-heavy? Who are the clients (humans, services, GPUs)?
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-requirements-functional-requirements-2-minutes">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-requirements-non-functional-requirements-2-minutes">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Requirements & non-functional requirements: non-functional requirements (2 minutes)?</span></span></summary>
+<div class="rev-a">
+
+| Dimension | Ask | Typical answer shapes |
+|---|---|---|
+| Availability | How many nines? What is the cost of a minute down? | 99.9 % (8.7 h/yr) · 99.99 % (52 min/yr) |
+| Latency | p50 vs **p99** targets per operation | 10 ms cache · 100 ms API · seconds for jobs |
+| Consistency | Read-your-writes? Monotonic? Linearizable? | Strong for money/metadata, eventual for feeds |
+| Durability | Can we lose data? How much? | 11 nines for storage; at-least-once for events |
+| Scale | Users, QPS, data volume, growth per year | Drive the estimation page |
+| Cost | Is there a budget ceiling? | Changes tiering, replication factor, regions |
+| Security / tenancy | Multi-tenant? Isolation? | Affects quotas, auth, noisy-neighbour control |
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-requirements-non-functional-requirements-2-minutes">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-requirements-the-dominant-constraint-1-minute-the-most-import">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Requirements & non-functional requirements: the dominant constraint (1 minute, the most important sentence)?</span></span></summary>
+<div class="rev-a">
+
+Say it out loud: *"The thing that shapes this design is ___."* Examples: 100 PB capacity at low $/GB; 3 MB random reads at very high aggregate throughput; GPU idle cost; exactly-once payment; sub-100 ms fan-out to millions. Every later decision refers back to it.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-requirements-the-dominant-constraint-1-minute-the-most-import">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-requirements-questions-i-always-ask">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Requirements & non-functional requirements: questions I always ask?</span></span></summary>
+<div class="rev-a">
+
+- What is the read:write ratio? What is the hottest key/object?
+- What happens if this is unavailable for 10 minutes? For a day?
+- Is there a natural partition key? Is there a natural time dimension?
+- What must never happen (double charge, data loss, duplicate GPU job)?
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-requirements-questions-i-always-ask">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-api-and-data-api-only-what-the-flows-need">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">API design & data modeling: aPI (only what the flows need)?</span></span></summary>
+<div class="rev-a">
+
+- Resource-oriented: `POST /jobs`, `GET /jobs/{id}`, `GET /jobs/{id}/results?cursor=`; verbs for actions that are not CRUD (`POST /jobs/{id}:cancel`).
+- Every mutating call takes an **idempotency key**; every list call is **paginated with an opaque cursor**; every long operation returns **202 + job id**.
+- Errors: 4xx = caller must change something, 5xx = retry with backoff, 429 = slow down (include `Retry-After`).
+- Versioning: in the path or header; never break existing fields; add, deprecate, remove.
+- Auth and tenancy on every request; quotas keyed by tenant.
+- Payload discipline: bulk endpoints for hot paths; avoid chatty N+1 calls.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-api-and-data-api-only-what-the-flows-need">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-api-and-data-data-modeling">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">API design & data modeling: data modeling?</span></span></summary>
+<div class="rev-a">
+
+1. Start from access patterns, not entities: "for each request, which key do I read/write?"
+2. Choose the partition key from the hottest read; verify writes do not all land on one shard.
+3. Decide what is a document (denormalised, read in one shot) vs what is a relation (needs joins/transactions).
+4. Immutable/append-only where possible (events, versions) — simpler replication and audit.
+5. Time-series: partition by time × entity; set retention/TTL up front.
+6. Secondary indexes cost writes; every index is a second table to keep consistent.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-api-and-data-data-modeling">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-api-and-data-typical-entity-sketches">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">API design & data modeling: typical entity sketches?</span></span></summary>
+<div class="rev-a">
+
+- Object storage: `bucket/key → {version, size, checksum, chunks[], placement[], created}`; metadata store separate from bytes.
+- Job system: `job {id, tenant, status, payload_ref, attempts, lease_owner, lease_expiry, idempotency_key, result_ref}`.
+- Social/feed: `user`, `follow(user→user)`, `post`, `timeline(user, post_id, ts)` (fan-out on write vs read).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-api-and-data-typical-entity-sketches">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-storage-choi-storage-internals-worth-saying">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Database / storage choice: storage internals worth saying?</span></span></summary>
+<div class="rev-a">
+
+- LSM trees favour writes (sequential), pay on reads (levels, bloom filters) and compaction.
+- B-trees favour reads and range scans; in-place writes.
+- Write-ahead log + fsync is what durability means; group commit for throughput.
+- Erasure coding (e.g. 8+4) ≈ 1.5× overhead vs 3× replication; costs CPU and cross-node reads on repair.
+- Tiering: SSD hot / HDD warm / tape or cold object storage; promotion by access recency and frequency.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-storage-choi-storage-internals-worth-saying">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-storage-choi-media-delivery-vocabulary-from-day-1">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Database / storage choice: media delivery vocabulary (from Day 1)?</span></span></summary>
+<div class="rev-a">
+
+- **Codec** = how frames are compressed. **H.264/AVC**: universal, cheap to decode, larger files. **H.265/HEVC**: ~30-50 % smaller at the same quality, costlier to encode, patchier support. **AV1**: royalty-free, smaller still, slowest to encode. Transcoding = re-encoding one upload into several codec × resolution × bitrate renditions.
+- **Container** = the file wrapping the encoded frames and audio (MP4, fMP4, MKV).
+- **Adaptive bitrate streaming**: the video is cut into 2-10 s segments per rendition; the player switches renditions per segment based on measured bandwidth.
+- **HLS** (Apple): playlist/manifest file **.m3u8** listing renditions and segment URLs (.ts or fMP4). **DASH** (MPEG): manifest **.mpd** (XML), fMP4 segments. Same idea, different manifest formats; players often support both.
+- Interview line: "the transcoder writes renditions plus a manifest to object storage; the CDN serves manifest and segments; the player does the bitrate switching, so the origin never touches the hot path."
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-storage-choi-media-delivery-vocabulary-from-day-1">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-storage-choi-the-sentence">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Database / storage choice: the sentence?</span></span></summary>
+<div class="rev-a">
+
+"I am choosing X because the access pattern is Y; the alternative Z would give me A but cost B."
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-storage-choi-the-sentence">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-caching-where-a-cache-can-live">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Caching: where a cache can live?</span></span></summary>
+<div class="rev-a">
+
+Client · CDN/edge · API gateway · application (in-process) · distributed cache (Redis/Memcached) · database buffer pool · storage tier (SSD in front of HDD).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-caching-where-a-cache-can-live">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-caching-patterns">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Caching: patterns?</span></span></summary>
+<div class="rev-a">
+
+- **Cache-aside** (read-through by the app): simplest; stale until TTL or invalidation.
+- **Write-through**: consistent, higher write latency. **Write-back**: fast writes, risk of loss.
+- **Refresh-ahead** for predictable hot keys.
+- **Negative caching** for "not found" storms.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-caching-patterns">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-caching-what-to-say-about-correctness">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Caching: what to say about correctness?</span></span></summary>
+<div class="rev-a">
+
+- Invalidation strategy: TTL, event-driven purge, versioned keys (`key@v7`).
+- Stale reads: acceptable? For how long? Which flows must bypass the cache?
+- Thundering herd: request coalescing / single-flight, jittered TTLs, stale-while-revalidate.
+- Hot keys: replicate the key across nodes, local L1 cache, or shard by key + suffix.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-caching-what-to-say-about-correctness">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-caching-sizing-and-metrics">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Caching: sizing and metrics?</span></span></summary>
+<div class="rev-a">
+
+- Hit rate needed = 1 − backend_capacity/total_load. Track hit rate, p99 latency, evictions, memory fragmentation.
+- Eviction: LRU default; LFU when a small set is very hot; TTL for freshness; size-aware for large objects.
+- Consistent hashing with virtual nodes to add/remove cache nodes without mass misses.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-caching-sizing-and-metrics">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-caching-storage-tier-caching-ssd-in-front-of-hdd">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Caching: storage-tier caching (SSD in front of HDD)?</span></span></summary>
+<div class="rev-a">
+
+Admission policy (do not cache streaming scans), promotion on second hit, write-around for large sequential writes, read-ahead for known sequential access, per-tier hit-rate metrics.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-caching-storage-tier-caching-ssd-in-front-of-hdd">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-partitioning-partitioning-sharding">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Partitioning, replication, hotspots: partitioning (sharding)?</span></span></summary>
+<div class="rev-a">
+
+- **Hash** partitioning: even spread, no range scans. **Range**: scans and locality, risk of hot ranges (time!). **Directory**: lookup service maps key→shard, flexible, one more hop.
+- Consistent hashing / virtual nodes for elastic membership; or fixed partition count with partition→node mapping (easier rebalancing).
+- Rebalancing costs: data movement bandwidth, dual-writes during migration, client routing updates.
+- Secondary indexes: local (scatter-gather reads) vs global (write to two shards).
+- Choose the key so the hottest operation touches one shard; verify writes spread too.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-partitioning-partitioning-sharding">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-partitioning-replication">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Partitioning, replication, hotspots: replication?</span></span></summary>
+<div class="rev-a">
+
+- **Leader-based**: writes to leader, reads from followers (stale) or leader (fresh). Failover needs a new leader election and fencing of the old.
+- **Multi-leader**: geo-writes, conflict resolution (LWW, CRDT, app-level).
+- **Leaderless / quorum** (N, W, R with W+R>N): tunable consistency; read repair, hinted handoff.
+- **Sync vs async** replication: durability vs write latency. Say the RPO/RTO consequence.
+- Erasure coding for capacity tiers, replication for hot/low-latency tiers.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-partitioning-replication">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-partitioning-hotspots">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Partitioning, replication, hotspots: hotspots?</span></span></summary>
+<div class="rev-a">
+
+Detection: per-key/per-shard QPS and latency histograms. Mitigation: key salting (append shard suffix, aggregate on read), request coalescing, dedicated shards for celebrities/tenants, caching the hot key, write buffering and batching, adaptive splitting of hot ranges, rate limiting the tenant.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-partitioning-hotspots">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-partitioning-sentences">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Partitioning, replication, hotspots: sentences?</span></span></summary>
+<div class="rev-a">
+
+- "I partition by X so the read path is single-shard; the price is scatter-gather for Y."
+- "Replication factor 3 across racks; async cross-region with RPO ≈ seconds."
+- "The hot object gets replicated to N nodes on demand and read round-robin."
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-partitioning-sentences">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-consistency-models-weakest-to-strongest">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Consistency: models, weakest to strongest?</span></span></summary>
+<div class="rev-a">
+
+Eventual → causal → read-your-writes / monotonic reads (session guarantees) → snapshot isolation → linearizable (single-copy illusion) → strict serializability (linearizable + transactions).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-consistency-models-weakest-to-strongest">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-consistency-what-each-costs">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Consistency: what each costs?</span></span></summary>
+<div class="rev-a">
+
+- Linearizable writes need consensus or a single leader: +1 RTT and a quorum; unavailable under partition (CAP: pick consistency or availability when partitioned; PACELC adds latency in the normal case).
+- Eventual consistency needs conflict handling: last-writer-wins (data loss risk), version vectors, CRDTs, or app-level merge.
+- Session guarantees are often the sweet spot for user-facing features: route a user to the same replica, or carry a version token.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-consistency-what-each-costs">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-consistency-mechanisms-to-name">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Consistency: mechanisms to name?</span></span></summary>
+<div class="rev-a">
+
+- Consensus (Raft/Paxos) for metadata, configuration, leader election, locks.
+- Quorums (W+R>N) for tunable KV stores.
+- Two-phase commit for cross-shard atomicity (blocking, coordinator failure), or **sagas** with compensations for long workflows.
+- Idempotent, versioned writes (compare-and-set on a version) to make retries safe.
+- Fencing tokens so a stale leader/lock-holder cannot corrupt state.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-consistency-mechanisms-to-name">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-consistency-where-i-insist-on-strong-consistency">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Consistency: where I insist on strong consistency?</span></span></summary>
+<div class="rev-a">
+
+Money, inventory, metadata that maps logical objects to physical bytes, leadership, quotas that must not be exceeded. Where I relax: feeds, counters, analytics, caches, search indexes.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-consistency-where-i-insist-on-strong-consistency">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-consistency-sentence">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Consistency: sentence?</span></span></summary>
+<div class="rev-a">
+
+"Reads here can be stale by ~1 s because …; the write path is linearizable through the leader because a lost update would mean …"
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-consistency-sentence">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-queues-strea-queue-vs-stream">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Queues, streams, backpressure: queue vs stream?</span></span></summary>
+<div class="rev-a">
+
+| | Queue (SQS/RabbitMQ style) | Log / stream (Kafka style) |
+|---|---|---|
+| Consumption | each message consumed once (competing consumers) | each consumer group reads all; offsets; replay |
+| Ordering | per-queue or FIFO group | per partition |
+| Retention | until acked | time/size bounded |
+| Use | work distribution, job scheduling | event sourcing, fan-out, change data capture, analytics |
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-queues-strea-queue-vs-stream">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-queues-strea-semantics-to-state-explicitly">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Queues, streams, backpressure: semantics to state explicitly?</span></span></summary>
+<div class="rev-a">
+
+- At-most-once / at-least-once / effectively-once (at-least-once + idempotent consumer + dedup key).
+- Visibility timeout / lease + heartbeat; redelivery on failure; **dead-letter queue** after N attempts.
+- Ordering vs parallelism: partition by entity key when order matters for that entity.
+- Poison messages, message size limits, schema evolution.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-queues-strea-semantics-to-state-explicitly">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-queues-strea-backpressure-the-part-senior-candidates-get-righ">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Queues, streams, backpressure: backpressure (the part senior candidates get right)?</span></span></summary>
+<div class="rev-a">
+
+- Bounded buffers everywhere; an unbounded queue just moves the failure to the OOM.
+- Signals: queue depth, consumer lag, p99 latency, error rate. Actions: slow producers (429/credit-based flow control), shed load (drop lowest priority), degrade (cheaper path), scale consumers.
+- Prefer **pull** by consumers at their own pace; producers observe lag.
+- In pipelines (e.g. storage → decode → GPU): size each stage's buffer to cover the downstream's latency variance, no more; watch the slowest stage; batch to amortise per-item cost.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-queues-strea-backpressure-the-part-senior-candidates-get-righ">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-queues-strea-live-capture-ingest-webrtc-the-one-paragraph-ver">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Queues, streams, backpressure: live capture ingest (WebRTC) — the one-paragraph version?</span></span></summary>
+<div class="rev-a">
+
+WebRTC is the browser/mobile standard for real-time media: the device negotiates a session through a **signalling** server (offer/answer, ICE candidates; STUN/TURN help it cross NATs), then streams encoded audio/video over UDP (SRTP) with congestion control, trading reliability for latency. In a capture pipeline the stream terminates at a media server (an **SFU** or ingest gateway) that either forwards it to viewers or, for storage, **records** it: the gateway re-packetises frames into segments (for example 2-8 s fragmented MP4), writes each segment to object storage as it closes, and publishes segment metadata as it goes. Consequences for design: many long-lived connections (state per stream, sticky routing to a gateway), the write path is a stream of small sequential segments per source rather than large uploads, "the object is complete" is an explicit end-of-stream event, and a gateway failure mid-stream must be resumable (client reconnects, segments already written are kept). Contrast with bulk ingest: large multipart uploads over HTTP, no session, no real-time constraint.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-queues-strea-live-capture-ingest-webrtc-the-one-paragraph-ver">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-queues-strea-retries-interact-with-queues">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Queues, streams, backpressure: retries interact with queues?</span></span></summary>
+<div class="rev-a">
+
+Exponential backoff with jitter, retry budgets (max % of traffic), circuit breakers, idempotency keys so redelivery is safe.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-queues-strea-retries-interact-with-queues">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-rate-limitin-algorithms">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Rate limiting & admission control: algorithms?</span></span></summary>
+<div class="rev-a">
+
+- **Token bucket**: rate r, burst b; the default. **Leaky bucket**: smooths output.
+- **Fixed window**: simple, edge spikes. **Sliding window log/counter**: accurate, more memory.
+- Distributed: per-node local buckets with periodic sync (approximate), or central Redis with Lua atomics (exact, one more hop), or client-side quotas handed out by a coordinator.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-rate-limitin-algorithms">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-rate-limitin-dimensions">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Rate limiting & admission control: dimensions?</span></span></summary>
+<div class="rev-a">
+
+Per user, per tenant, per API key, per endpoint, per resource (GPU-seconds, bytes), global. Return `429` with `Retry-After` and quota headers.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-rate-limitin-dimensions">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-rate-limitin-admission-control-vs-rate-limiting">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Rate limiting & admission control: admission control vs rate limiting?</span></span></summary>
+<div class="rev-a">
+
+Rate limiting protects fairness at the edge; **admission control** protects the system from itself: bounded concurrency per dependency, queue length limits, load shedding by priority when p99 or CPU crosses a threshold, brownout (disable expensive features first).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-rate-limitin-admission-control-vs-rate-limiting">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-rate-limitin-quotas">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Rate limiting & admission control: quotas?</span></span></summary>
+<div class="rev-a">
+
+Hard (reject) vs soft (throttle, bill). Reserve capacity for internal/critical tenants. Make quota checks cheap (local cache + async reconciliation) and make overshoot bounded rather than impossible.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-rate-limitin-quotas">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-rate-limitin-for-gpu-ai-platforms">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Rate limiting & admission control: for GPU/AI platforms?</span></span></summary>
+<div class="rev-a">
+
+Queue per priority class; admission by estimated GPU-seconds; per-tenant concurrent job cap; preemption of low-priority batch work; fairness (weighted fair queuing) rather than FIFO.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-rate-limitin-for-gpu-ai-platforms">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-failure-reco-enumerate-failures-out-loud">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Failure handling & recovery: enumerate failures out loud?</span></span></summary>
+<div class="rev-a">
+
+Node crash · disk failure · network partition · slow node (gray failure) · dependency down · bad deploy · data corruption · operator error · region loss · clock skew.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-failure-reco-enumerate-failures-out-loud">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-failure-reco-standard-mitigations">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Failure handling & recovery: standard mitigations?</span></span></summary>
+<div class="rev-a">
+
+- **Timeouts** on every call; **retries** with exponential backoff + jitter and a retry budget; **idempotency keys** so retries are safe.
+- **Circuit breakers** and **bulkheads** (isolate pools per dependency).
+- **Health checks** distinct from readiness; remove from rotation before killing.
+- **Replication** for availability, **erasure coding** for durability at lower cost, **checksums** end to end to detect corruption, **scrubbing** to find it early.
+- **Leases + fencing** so exactly one worker acts; **heartbeats** to detect the dead.
+- **Graceful degradation**: read-only mode, stale cache, reduced features.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-failure-reco-standard-mitigations">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-failure-reco-recovery">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Failure handling & recovery: recovery?</span></span></summary>
+<div class="rev-a">
+
+- RPO (data you may lose) and RTO (time to be back) drive backup cadence, replication mode, failover automation.
+- Rebuild after disk/node loss: repair bandwidth budget vs foreground traffic, prioritise the most-degraded data (fewest surviving replicas/fragments first).
+- Replay from log/checkpoint; snapshots + WAL; point-in-time recovery.
+- Runbooks and game days; automate the common failures, page for the rare ones.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-failure-reco-recovery">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-failure-reco-blast-radius">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Failure handling & recovery: blast radius?</span></span></summary>
+<div class="rev-a">
+
+Cell-based architecture, per-tenant isolation, staged rollouts with automatic rollback, feature flags, canaries. Say: "a failure here affects X % of users for Y minutes".
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-failure-reco-blast-radius">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-failure-reco-storage-specific-line">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Failure handling & recovery: storage-specific line?</span></span></summary>
+<div class="rev-a">
+
+"When a disk dies I need to answer three questions fast: which logical objects lost redundancy, in what order do I repair, and how do I prove afterwards that nothing is lost."
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-failure-reco-storage-specific-line">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-observabilit-three-signals-plus-one">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Observability: three signals plus one?</span></span></summary>
+<div class="rev-a">
+
+- **Metrics**: counters, gauges, histograms (p50/p95/p99, never averages for latency). RED (rate, errors, duration) per endpoint; USE (utilisation, saturation, errors) per resource.
+- **Logs**: structured, sampled at high volume, with request/trace IDs.
+- **Traces**: end-to-end request path across services; find the slow hop.
+- **Events/audit**: who changed what, deploys, config changes, alarms.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-observabilit-three-signals-plus-one">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-observabilit-what-i-would-put-on-the-dashboard-for-this-desig">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Observability: what I would put on the dashboard for this design?</span></span></summary>
+<div class="rev-a">
+
+Throughput, p99 latency per operation, error rate, saturation of the bottleneck resource (GPU utilisation, disk queue depth, consumer lag, connection count), queue depths, cache hit rate, replication lag, repair backlog, cost per unit.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-observabilit-what-i-would-put-on-the-dashboard-for-this-desig">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-observabilit-alerting">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Observability: alerting?</span></span></summary>
+<div class="rev-a">
+
+Alert on symptoms (SLO burn rate) not causes; page only for user-visible impact; every alert has a runbook; watch for alert fatigue.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-observabilit-alerting">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-observabilit-slis-slos-error-budget">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Observability: sLIs → SLOs → error budget?</span></span></summary>
+<div class="rev-a">
+
+Define the SLI (e.g. fraction of reads under 100 ms), set the SLO (99.9 % over 30 days), spend the error budget on releases; freeze when exhausted.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-observabilit-slis-slos-error-budget">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-observabilit-cardinality-and-cost">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Observability: cardinality and cost?</span></span></summary>
+<div class="rev-a">
+
+Metrics with unbounded labels (user id) explode storage; aggregate or move to logs/traces. Downsample old data. Retention per signal.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-observabilit-cardinality-and-cost">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-coordination-coordination-primitives">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Distributed coordination & job scheduling: coordination primitives?</span></span></summary>
+<div class="rev-a">
+
+- **Consensus service** (ZooKeeper/etcd/Chubby): small, strongly consistent, for leader election, locks, membership, configuration. Not a data store.
+- **Leader election**: ephemeral node/lease; new leader must **fence** the old one (epoch/fencing token carried on every write).
+- **Distributed lock**: lease with TTL + heartbeat renewal; clients must handle lease expiry mid-work; prefer idempotent operations so a lost lock is not a disaster.
+- **Membership & failure detection**: heartbeats, phi-accrual detectors, gossip for scale.
+- **Clocks**: never trust wall clocks for ordering; use logical clocks, versions, or TrueTime-style bounded uncertainty.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-coordination-coordination-primitives">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-coordination-job-scheduler-cron-at-scale">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Distributed coordination & job scheduling: job scheduler (cron at scale)?</span></span></summary>
+<div class="rev-a">
+
+- Components: job store (definitions, schedules), scheduler (computes next run, enqueues), queue, workers with leases, result/status store, API.
+- Guarantees to discuss: at-least-once with idempotent jobs; missed-run policy (skip, catch up, run once); exactly one scheduler active per partition (leader per shard).
+- Scale: partition jobs by hash; time-wheel/priority heap per partition; avoid the thundering herd at :00 with jitter.
+- Failure: worker dies mid-job → lease expires → redelivery; scheduler dies → new leader recomputes from persistent state; poison jobs → dead-letter + alert.
+- Observability: scheduling delay, run duration histograms, failure rate, queue depth per priority.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-coordination-job-scheduler-cron-at-scale">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-coordination-gpu-job-scheduling-specifics">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Distributed coordination & job scheduling: gPU job scheduling specifics?</span></span></summary>
+<div class="rev-a">
+
+Gang scheduling (all workers or none), bin-packing by GPU memory, preemption of low priority, checkpoint before preemption, locality with the data, fairness across tenants, backfill of short jobs.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-coordination-gpu-job-scheduling-specifics">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-communicatio-structure-the-hour">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Communication: structure the hour?</span></span></summary>
+<div class="rev-a">
+
+Say the plan first: "I'll do requirements, numbers, API, architecture, then go deep on X and attack the design." Then keep to it and announce transitions.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-communicatio-structure-the-hour">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-communicatio-sentence-templates">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Communication: sentence templates?</span></span></summary>
+<div class="rev-a">
+
+- "Because X is a requirement, I need Y."
+- "The alternatives I see are A and B. I prefer A because … The cost is …"
+- "Let me trace one write end to end to check the design holds."
+- "At 10× this breaks first at …; I'd notice via …; mitigation is …"
+- "I'm not sure about …; I'd validate by …"
+- "Summary: we built …, the key tradeoff was …, next I would …"
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-communicatio-sentence-templates">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-communicatio-habits">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Communication: habits?</span></span></summary>
+<div class="rev-a">
+
+- Numbers before names. Draw only boxes that earn their place; label arrows with what flows.
+- Check in briefly every 10 minutes: "Should I go deeper here or move on?"
+- When corrected, integrate it out loud instead of defending.
+- Time-box: if a deep dive passes 12 minutes, summarise and move.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-communicatio-habits">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pp-communicatio-coding-rounds-same-principle">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN PAGE</span><span class="rev-q">Communication: coding rounds (same principle)?</span></span></summary>
+<div class="rev-a">
+
+Restate → clarify → naive → waste → optimal → invariant → code while narrating → test edge cases → time → space. Silence longer than ~30 seconds should be broken with "I'm considering … versus …".
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pp-communicatio-coding-rounds-same-principle">mark known</button></p>
 
 </div>
 </details>
