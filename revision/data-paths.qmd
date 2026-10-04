@@ -1,0 +1,125 @@
+---
+title: "Where the Bytes Go"
+description: "Five data paths behind the revision cards: sync, stream, batch, fair share across gateways, and inside the model gateway."
+toc: true
+mermaid:
+  theme: dark
+---
+
+::: {.callout-note}
+**Companion to the data-path cards.** A queue holds small records. The bytes travel directly when the work starts within a second, and through object storage when the wait is long. Every arrow is numbered in the order things happen.
+:::
+
+## 1. Sync call: the queue lives inside the gateway
+
+```{mermaid}
+flowchart LR
+  C["Client<br/>POST /infer, 200 KB image inline"] -->|"1 bytes arrive, connection stays open"| H
+  subgraph GW["One gateway process: three kinds of threads"]
+    H["request handlers<br/>one lightweight task per open connection,<br/>tens of thousands per process, each holds its bytes"] -->|"2 admit: one Lua script charges an ESTIMATE<br/>(input size + max_output_tokens)"| RD[("Redis<br/>tenant token buckets,<br/>shared by all N gateways")]
+    H -->|"3 enqueue a record: request id + pointer to the bytes"| Q["fair-share queue in memory<br/>deque per key, deficit counter per key,<br/>in-flight count per host"]
+    Q -->|"4 next by tier weight, round robin per key"| S["scheduler loop<br/>owns the queue state, no money counters"]
+    CFG["config watcher thread"] -->|"0 atomic swap: weights, quota ÷ N<br/>(every 5 s, independent of any request)"| S
+  end
+  CTRL["Controller"] -->|"0 every 5 s"| CFG
+  S -->|"5 which pool and host? lookup, no bytes"| RT["Router<br/>alias to version and pool,<br/>1 s capacity view"]
+  RT -->|"6 pool P, host H, decision id"| S
+  S -->|"7 gRPC push: the bytes make one hop;<br/>the stream handle goes back to the handler"| W["GPU worker on host H<br/>prefill, decode"]
+  W -->|"8 tokens streamed back + usage (ACTUAL tokens)"| H
+  H -->|"9 settle: second Lua script, refund estimate minus actual"| RD
+  H -->|"10 response + usage on the open connection"| C
+  W -->|"11 usage event, async: source of truth for billing"| K[("Kafka usage topic")]
+```
+
+## 2. Stream: frames pushed straight to the pinned host
+
+```{mermaid}
+flowchart LR
+  D["Device<br/>compressed video, 0.25 MB/s"] -->|"1 open session (device, org, model)"| API["API gateway"]
+  API -->|"2 admission: concurrent-session counter per org"| RD[("Redis")]
+  API -->|"3 pick a host"| SR["Session router<br/>capacity view of GPU hosts"]
+  SR -->|"4 write session to host"| SM[("Session map<br/>session to host, TTL")]
+  API -->|"5 gateway_url, token, granted fps"| D
+  D -->|"6 video over WebRTC or QUIC"| SG["Stream gateway<br/>decode, sample 5 fps,<br/>10 s ring buffer"]
+  SG -->|"7 read once: which host"| SM
+  SG -->|"8 gRPC: one sampled frame at a time, tens of KB"| PQ
+  subgraph H["Pinned GPU host"]
+    PQ["per-stream queue in memory<br/>a few frames deep, each with a deadline"] -->|"9 next batch, late frames dropped"| B["batcher"]
+    B -->|"10 run with this stream's state"| M["model<br/>running state per stream"]
+    M -->|"11 result, result_seq, kept 60 s unacked"| R["results ring"]
+  end
+  R -->|"12 result to the gateway"| SG
+  SG -->|"13 down the session, device acks result_seq"| D
+```
+
+## 3. Batch job: object storage and Kafka, because the wait is long
+
+```{mermaid}
+flowchart LR
+  C["Client"] -->|"1 POST /files: presigned upload, GBs"| OS[("Object storage<br/>video, frames, results")]
+  C -->|"2 POST /jobs with idempotency key"| API["API gateway"]
+  API -->|"3 job record, chunk ids, priority"| JQ[("Kafka job topic")]
+  JQ -->|"4 chunk to extract"| FX["Frame extractor"]
+  FX -->|"5 read video, write frames per chunk"| OS
+  FX -->|"6 chunk ready"| JQ
+  JQ -->|"7 pull a ready chunk id, lowest weight"| JW["Job workers"]
+  JW -->|"8 read that chunk's frames"| OS
+  JW -->|"9 same admission queues as sync, in the valleys"| GPU["GPU pool"]
+  GPU -->|"10 results"| JW
+  JW -->|"11 partial results per chunk"| OS
+  JW -->|"12 webhook (signed, retried) or the client polls"| C
+```
+
+## 4. Fair share with many gateways
+
+```{mermaid}
+flowchart TB
+  T["Tenants A, B, C ... (10,000 developers)"] -->|"1 every call"| LB["Load balancer<br/>round robin, NOT sticky:<br/>every gateway sees a representative slice of every tenant"]
+  LB -->|"2a"| E1
+  LB -->|"2b"| E2
+  LB -->|"2c"| E3
+  subgraph G1["Gateway 1"]
+    E1["Enterprise / Pro / Free queues<br/>deques per key"] -->|"3 pick 5 / 3 / 1, round robin per key"| S1["scheduler"]
+  end
+  subgraph G2["Gateway 2"]
+    E2["Enterprise / Pro / Free queues"] -->|"3 pick 5 / 3 / 1"| S2["scheduler"]
+  end
+  subgraph G3["Gateway N"]
+    E3["Enterprise / Pro / Free queues"] -->|"3 pick 5 / 3 / 1"| S3["scheduler"]
+  end
+  S1 -->|"4 gRPC to the host the router named"| POOL["GPU pools"]
+  S2 -->|"4"| POOL
+  S3 -->|"4"| POOL
+  POOL -->|"5 usage events"| K[("Kafka")]
+  K -->|"6 aggregates per tenant"| CTRL["Controller<br/>every 5 s: per-tenant rates,<br/>quota ÷ N per gateway, rebalanced by skew"]
+  S1 -->|"7 queue depth per tier"| CTRL
+  CTRL -->|"8 same weights and shares to every gateway"| S1
+  CTRL -->|"8"| S2
+  CTRL -->|"8"| S3
+```
+
+## 5. Inside the "model gateway": a router for control, a serving process on each GPU host for data
+
+```{mermaid}
+flowchart TB
+  CP["Control plane<br/>registry, rollout"] -->|"0 policy pushed by pub/sub"| RT
+  subgraph GW["Gateway (one of N)"]
+    Q["fair-share queue"] -->|"1 next request"| S["scheduler"]
+  end
+  S -->|"2 which pool and host? lookup, no bytes"| RT["Router (control plane)<br/>alias to version table<br/>capacity view refreshed every 1 s<br/>canary and rollout policy"]
+  RT -->|"3 pool, host, decision id"| S
+  S -->|"4 gRPC over HTTP/2, pooled long-lived connection: request bytes in"| SRV
+  subgraph HOST["GPU host"]
+    SRV["serving process: gRPC server"] -->|"5 admit, deadline attached"| HQ["bounded in-memory request queue<br/>a few hundred entries"]
+    HQ -->|"6 group what is waiting"| BT["continuous batcher"]
+    BT -->|"7 next GPU step"| MR["model runtime on the GPU<br/>prefill then decode, KV cache per request"]
+    MR -->|"8 tokens as generated"| SRV
+    MR -.->|"reads free slots"| REP["reporter"]
+  end
+  REP -->|"9 free capacity, queue depth, version, every 1 s"| RT
+  MR -->|"10 usage event per request"| K[("Kafka")]
+  SRV -->|"11 tokens streamed back on the same connection"| S
+```
+
+
+<p class="rev-nav"><a href="index.html">plan</a> · <a href="daily.html">daily</a> · <a href="reference.html">reference</a> · <a href="coding.html">coding</a> · <a href="data-paths.html">diagrams</a></p>

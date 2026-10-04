@@ -1,0 +1,2898 @@
+---
+title: "Reference"
+description: "All 148 cards by topic, in the order of the original pages."
+toc: true
+---
+
+<p class="rev-plan">Read one or two sections a day in rotation. Open only the cards you cannot say. <span id="rev-progress"></span></p>
+
+<p class="rev-nav"><a href="index.html">plan</a> · <a href="daily.html">daily</a> · <a href="reference.html">reference</a> · <a href="coding.html">coding</a> · <a href="data-paths.html">diagrams</a></p>
+
+## The opening and the board (7)
+
+<details class="rev" data-card="opening-script">
+<summary><span class="rev-head"><span class="rev-tag">SCRIPT</span><span class="rev-q">The 3-minute opening script?</span></span></summary>
+<div class="rev-a">
+
+1. Restate in one sentence: "So we are building X for Y users, and the hard part is Z." (10 s)
+2. Three clarifying questions, picked from: scale today and in two years · the one latency that matters · read or write heavy · what must never be lost · what is out of scope. Write the answers in the requirements corner as you get them. (90 s)
+3. Name the load-bearing categories aloud and cross out the rest: "This is Compute and Bandwidth; storage and memory are ordinary here." (15 s)
+4. Say the plan: "I will do requirements and numbers in ten minutes, the design in fifteen, then two deep dives, and I will leave five minutes for failures. Stop me whenever you want to go deeper." (15 s)
+5. Then start writing; never start drawing before the numbers are on the board.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="opening-script">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="sentences">
+<summary><span class="rev-head"><span class="rev-tag">SCRIPT</span><span class="rev-q">The five sentences that carry the interview?</span></span></summary>
+<div class="rev-a">
+
+- "Because X is a requirement, I need Y."
+- "The alternatives I see are A and B. I prefer A because … The cost of that choice is …"
+- "At 10× this breaks at Z first; here is how I would notice, and here is the mitigation."
+- "This is a hotspot because …; I would partition by … and accept … as a consequence."
+- "The failure I worry about most is …; recovery works like …; the blast radius is …"
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="sentences">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="layout-scale">
+<summary><span class="rev-head"><span class="rev-tag">LAYOUT</span><span class="rev-q">Board layout when scale drives the design: the eight blocks with minute budgets?</span></span></summary>
+<div class="rev-a">
+
+1. 0-8 min: Requirements, top-left
+2. 8-13 min: Numbers, top-right
+3. 13-17 min: API, left
+4. 17-21 min: Data, left under API
+5. 21-36 min: Diagram, center, in draw order
+6. 36-52 min: Two deep dives, annotate the boxes
+7. 52-57 min: Failures and trade-offs, bottom
+8. 57-60 min: Summary, said not written.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="layout-scale">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="layout-diagram-first">
+<summary><span class="rev-head"><span class="rev-tag">LAYOUT</span><span class="rev-q">Board layout for a functional-heavy prompt, diagram first?</span></span></summary>
+<div class="rev-a">
+
+1. 0-5 min: The agent loop (only if the first prompt is "Build a coding agent", otherwise these minutes go to requirements)
+2. 5-10 min: Requirements, top-left (accept what is dictated, compress, move)
+3. 10-24 min: Diagram, center, in draw order
+4. 24-26 min: One line of numbers, top-right
+5. 26-32 min: API and data, left
+6. 32-48 min: Two deep dives, annotate the boxes
+7. 48-55 min: Failures and trade-offs, bottom
+8. 55-60 min: Summary, said not written.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="layout-diagram-first">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="functional-rule">
+<summary><span class="rev-head"><span class="rev-tag">LAYOUT</span><span class="rev-q">The prompt is functional-heavy and the interviewer wants the diagram first. The rule?</span></span></summary>
+<div class="rev-a">
+
+This prompt is functional-heavy. The interviewer dictates the requirements, asks for the agent loop and the architecture, and does not want a GPU bill: model infrastructure is out of scope and cost is declared infinite. Numbers cover only what you buy: sandboxes, model calls, storage. On a functional-heavy prompt, say the one numbers line before drawing if nobody objects. If the interviewer asks for the diagram first, draw and put the numbers line right after the diagram. The board below uses the diagram-first order.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="functional-rule">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="flow-50">
+<summary><span class="rev-head"><span class="rev-tag">FLOW</span><span class="rev-q">The 50-minute flow: phases, minutes, and what each is scored on?</span></span></summary>
+<div class="rev-a">
+
+| Minutes | Phase | What the interviewer is scoring |
+|---|---|---|
+| 0-5 | Requirements: functional, non-functional, scale, **dominant constraint** | Do you ask the right questions and pick what matters? |
+| 5-10 | Estimation: QPS, bandwidth, storage/day and /year, connections, workers, cache size, partitions | Are your numbers in the right order of magnitude, and do you use them later? |
+| 10-15 | API and data model, only what matters | Can you define contracts crisply? |
+| 15-30 | High-level architecture + trace one flow end to end | Does every box earn its place? Can you follow a request through it? |
+| 30-42 | Deep dive on one or two areas the constraint points to | Depth where it matters; tradeoffs stated with costs |
+| 42-48 | Attack the design: hotspots, partitioning, replication, consistency, failure, retry, recovery, backpressure, caching, observability, capacity, tail latency | Do you find your own weaknesses before the interviewer does? |
+| 48-50 | Summary: what you built, what you would do next, what you are unsure about | Judgment |
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="flow-50">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="principal">
+<summary><span class="rev-head"><span class="rev-tag">FLOW</span><span class="rev-q">What a Principal-level interviewer expects to see?</span></span></summary>
+<div class="rev-a">
+
+- You drive. The interviewer should rarely need to steer.
+- Numbers first, technology names second. "Because we need 40 GB/s of reads across 100 PB, I need N nodes at X GB/s each" beats "I'd use S3."
+- Name the alternative you rejected and what it would have cost.
+- Operability is part of the design: how you deploy, observe, degrade, recover.
+- Say what you do not know and how you would find out.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="principal">mark known</button></p>
+
+</div>
+</details>
+
+## Numbers (20)
+
+<details class="rev" data-card="num-seconds-per-day">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Seconds per day?</span></span></summary>
+<div class="rev-a">
+
+86,400 ≈ 10⁵ (so 1 M/day ≈ 12/s; 100 M/day ≈ 1,200/s)
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-seconds-per-day">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-seconds-per-year">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Seconds per year?</span></span></summary>
+<div class="rev-a">
+
+≈ 3.15 × 10⁷
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-seconds-per-year">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-kb-mb-gb-tb-pb">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">KB / MB / GB / TB / PB?</span></span></summary>
+<div class="rev-a">
+
+10³ / 10⁶ / 10⁹ / 10¹² / 10¹⁵ bytes
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-kb-mb-gb-tb-pb">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-hdd">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">HDD?</span></span></summary>
+<div class="rev-a">
+
+100-250 MB/s sequential, ~100-200 IOPS random, 16-24 TB
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-hdd">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-sata-nvme-ssd">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">SATA/NVMe SSD?</span></span></summary>
+<div class="rev-a">
+
+0.5-7 GB/s, 10⁵-10⁶ IOPS, 100 µs-1 ms latency
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-sata-nvme-ssd">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-ram">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">RAM?</span></span></summary>
+<div class="rev-a">
+
+~10-50 GB/s per socket, 100 ns access
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-ram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-nic">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">NIC?</span></span></summary>
+<div class="rev-a">
+
+25/100/400 Gb/s ≈ 3/12/50 GB/s
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-nic">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-intra-dc-rtt">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Intra-DC RTT?</span></span></summary>
+<div class="rev-a">
+
+~0.5 ms · cross-region 50-150 ms
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-intra-dc-rtt">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-one-server">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">One server?</span></span></summary>
+<div class="rev-a">
+
+~10⁴-10⁵ simple requests/s; ~10⁴ concurrent connections comfortably
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-one-server">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="num-compression">
+<summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Compression?</span></span></summary>
+<div class="rev-a">
+
+text 3-10×, video already compressed (~1×)
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-compression">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="shape-qps">
+<summary><span class="rev-head"><span class="rev-tag">SHAPE OF CALCULATION</span><span class="rev-q">How do you compute QPS?</span></span></summary>
+<div class="rev-a">
+
+QPS = daily ops / 10⁵; peak = 2-5× average.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="shape-qps">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="shape-bandwidth">
+<summary><span class="rev-head"><span class="rev-tag">SHAPE OF CALCULATION</span><span class="rev-q">How do you compute Bandwidth?</span></span></summary>
+<div class="rev-a">
+
+Bandwidth = QPS × payload size (bytes/s → ×8 for bits).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="shape-bandwidth">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="shape-storage-day">
+<summary><span class="rev-head"><span class="rev-tag">SHAPE OF CALCULATION</span><span class="rev-q">How do you compute Storage/day?</span></span></summary>
+<div class="rev-a">
+
+Storage/day = writes/day × object size × replication (or × 1.5 for erasure coding); **/year** × 365; add index/metadata ~1-5 %.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="shape-storage-day">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="shape-connections">
+<summary><span class="rev-head"><span class="rev-tag">SHAPE OF CALCULATION</span><span class="rev-q">How do you compute Connections?</span></span></summary>
+<div class="rev-a">
+
+Connections = concurrent users × connections each; long-lived (chat, streaming) ≠ request/response.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="shape-connections">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="shape-workers">
+<summary><span class="rev-head"><span class="rev-tag">SHAPE OF CALCULATION</span><span class="rev-q">How do you compute Workers?</span></span></summary>
+<div class="rev-a">
+
+Workers = arrival rate × service time (Little's law: L = λW); add headroom 30-50 %.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="shape-workers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="shape-cache-size">
+<summary><span class="rev-head"><span class="rev-tag">SHAPE OF CALCULATION</span><span class="rev-q">How do you compute Cache size?</span></span></summary>
+<div class="rev-a">
+
+Cache size = hot fraction (often 20 %) × working set; hit rate you need = 1 − (backend capacity / total load).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="shape-cache-size">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="shape-partition-size">
+<summary><span class="rev-head"><span class="rev-tag">SHAPE OF CALCULATION</span><span class="rev-q">How do you compute Partition size?</span></span></summary>
+<div class="rev-a">
+
+Partition size = total / target-per-shard (e.g. 50-100 GB per hot shard, 1-2 TB per cold shard).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="shape-partition-size">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="six-lines">
+<summary><span class="rev-head"><span class="rev-tag">SIX LINES</span><span class="rev-q">The six lines in the room, in four minutes?</span></span></summary>
+<div class="rev-a">
+
+In the room: 4 minutes, six lines (objects, egress = constraint, ingress ratio + growth, hot set, capacity vs IOPS check, network). The rest is ammunition for probes.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="six-lines">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="five-categories">
+<summary><span class="rev-head"><span class="rev-tag">CATEGORIES</span><span class="rev-q">The five estimation categories: the question each answers, its unit, and when it is load-bearing?</span></span></summary>
+<div class="rev-a">
+
+| Category | The question | Six-line method line | Typical unit | When it is load-bearing |
+|---|---|---|---|---|
+| Traffic | How many operations per second, average and peak, and which operation is the constraint? | Line 2, the constraining op/s (from line 1, objects and users) | QPS, writes/s, messages/s, frames/s | Chat, feeds, gateways, rate limiters, search, payments: anything where a request is the unit of work |
+| Bandwidth | How many bytes per second in and out, and what is the ratio? | Line 3, egress against ingress; line 6, network ports | MB/s, GB/s, Gbps; ports of 10 or 100 GbE | Video, media, object storage, backups, checkpoints, log pipelines: anything that moves large blobs |
+| Storage | How many bytes total, per day, per year, and on how many devices? | Line 3 growth; line 5, capacity against IOPS | TB, PB, disks | Blob stores, data lakes, archives, event logs kept for audit |
+| Memory | What must sit in RAM or SSD to meet latency, and does it fit on one box? | Line 4, the hot set | GB, TB, nodes | Caches, timelines, session maps, indexes, order books, ANN vectors, tries |
+| Compute | How many GPUs or cores, when the work per request is heavy? | Line 2 again, when the unit is a frame, a token or a match, divided by throughput per device | GPUs, cores, tokens/s, frames/s | Model serving, transcoding, embedding, training, matching engines |
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="five-categories">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="step-zero">
+<summary><span class="rev-head"><span class="rev-tag">CATEGORIES</span><span class="rev-q">Step 0, said aloud before any number?</span></span></summary>
+<div class="rev-a">
+
+"Before I size anything: this is a Traffic and Memory system, storage and bandwidth are small here, and there is no heavy compute. So I will size the request rate, the hot set, and check that the hot set fits in RAM on a handful of nodes." Then the six lines. Then the sentence that names the one number that forced the design.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="step-zero">mark known</button></p>
+
+</div>
+</details>
+
+## API shapes (7)
+
+<details class="rev" data-card="api-sync-request-response">
+<summary><span class="rev-head"><span class="rev-tag">API SHAPE</span><span class="rev-q">API shape: Sync request/response. When, the request and response, and what gets probed?</span></span></summary>
+<div class="rev-a">
+
+**When.** one input, one answer, seconds
+
+**Request and response.** `POST /v1/<verb> {inputs, options}` + bearer auth + `Idempotency-Key` → `200 {id, result, usage, version}`; `429 + Retry-After`; `4xx` validation
+
+**What the interviewer probes (say these unasked).** retry: same key returns the stored answer, no second charge (24 h record) · timeout: client retries with backoff, server keeps working · long answers: stream tokens (SSE), first token in under a second, `max_tokens` cap · version: alias by default, pinned version allowed, `Deprecation` header for 90 days · large inputs by `file_id`, not inline · `request_id` in a response header for disputes
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="api-sync-request-response">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="api-streaming-session">
+<summary><span class="rev-head"><span class="rev-tag">API SHAPE</span><span class="rev-q">API shape: Streaming session. When, the request and response, and what gets probed?</span></span></summary>
+<div class="rev-a">
+
+**When.** live data in, results out, state between messages
+
+**Request and response.** `POST /v1/sessions {client_id, model, options}` → `{session_id, gateway_url, token, expires_at, version}`; up `{session_id, seq, ts, payload}`; down `{result_seq, ts, type, payload, version}` + control messages
+
+**What the interviewer probes (say these unasked).** **resume**: `POST /sessions/{id}/resume {token, last_result_seq}` inside a grace window (60 s), server resends only results after last_result_seq, nothing replayed, nothing lost · acks: client acks result_seq, server keeps unacked results for the grace window · heartbeat every few seconds, 3 misses = dead · token expires and is renewed over the open socket · control messages down (granted rate, backpressure) · version pinned for the session's life, never switched mid-stream · explicit close releases quota at once · byte-rate cap per session
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="api-streaming-session">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="api-async-job">
+<summary><span class="rev-head"><span class="rev-tag">API SHAPE</span><span class="rev-q">API shape: Async job. When, the request and response, and what gets probed?</span></span></summary>
+<div class="rev-a">
+
+**When.** minutes to hours of work
+
+**Request and response.** `POST /v1/jobs {file_ids, options, callback_url}` + `Idempotency-Key` → `202 {job_id, state}`; `GET /jobs/{id}` → `{state, progress}`; `GET /jobs/{id}/results?cursor`; `DELETE /jobs/{id}`
+
+**What the interviewer probes (say these unasked).** same key + same body → same job, same key + other body → 409 · state machine with named states · progress in chunks, partial results pageable as chunks finish · chunk retries with backoff, dead-letter after N, the job reports the failed chunk · webhook signed and retried for 24 h, idempotent on the receiver · results expire (TTL) · priority: jobs run at the lowest weight on spare capacity
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="api-async-job">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="api-upload">
+<summary><span class="rev-head"><span class="rev-tag">API SHAPE</span><span class="rev-q">API shape: Upload. When, the request and response, and what gets probed?</span></span></summary>
+<div class="rev-a">
+
+**When.** bytes larger than a request
+
+**Request and response.** `POST /v1/files` → presigned URL + `file_id` (expires in minutes); multipart `PUT ?upload_id&part=N` idempotent per part; `complete {parts, checksums}` → READY
+
+**What the interviewer probes (say these unasked).** bytes never cross the API servers · checksum per part and at complete · abort cleans incomplete uploads (lifecycle rule) · size and format validated before READY · the file_id is referenced by later calls, never the bytes
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="api-upload">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="api-read-list">
+<summary><span class="rev-head"><span class="rev-tag">API SHAPE</span><span class="rev-q">API shape: Read / list. When, the request and response, and what gets probed?</span></span></summary>
+<div class="rev-a">
+
+**When.** feeds, search, dashboards
+
+**Request and response.** `GET /v1/<thing>?cursor=&limit=` filters in the query, tenant from the token never the body → `{items, next_cursor, as_of}`
+
+**What the interviewer probes (say these unasked).** keyset cursor, not offset, so inserts do not shift pages · limit capped · `as_of` or watermark says how stale · ETag / If-None-Match for caching · "seconds stale is fine" said aloud when it is
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="api-read-list">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="api-write-with-a-guard">
+<summary><span class="rev-head"><span class="rev-tag">API SHAPE</span><span class="rev-q">API shape: Write with a guard. When, the request and response, and what gets probed?</span></span></summary>
+<div class="rev-a">
+
+**When.** booking, inventory, money
+
+**Request and response.** `POST ... {resource, amount, version}` + `Idempotency-Key` → `201` or `409` conflict, `402` payment required
+
+**What the interviewer probes (say these unasked).** optimistic version (If-Match) or a conditional update on the row · holds with TTL and a limited number of extensions · saga with compensation across shards, no 2PC · the retry after a timeout must find the existing record, not create a second
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="api-write-with-a-guard">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="api-fields">
+<summary><span class="rev-head"><span class="rev-tag">API SHAPE</span><span class="rev-q">Which fields always exist in the API?</span></span></summary>
+<div class="rev-a">
+
+Fields that always exist: `id`, `created_at`, `version`, `request_id` header, `usage` or `cost` where billing exists, `Retry-After` on every 429 and 503.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="api-fields">mark known</button></p>
+
+</div>
+</details>
+
+## Which store (11)
+
+<details class="rev" data-card="store-transactions-money-status-machines-metadata-with">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The requirement says transactions, money, status machines, metadata with joins. Which store, why, and the nuance?</span></span></summary>
+<div class="rev-a">
+
+**Store.** Postgres, sharded by tenant or listing id past ~1 TB
+
+**Why.** ACID, unique constraints as guards
+
+**The nuance to say.** shard key is the one you look up by; read replicas for the read path; hot rows serialize at ~200/s
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-transactions-money-status-machines-metadata-with">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="store-counters-sessions-locks-rate-limits-anything-wit">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The requirement says counters, sessions, locks, rate limits, anything with a TTL. Which store, why, and the nuance?</span></span></summary>
+<div class="rev-a">
+
+**Store.** Redis cluster, shard by key
+
+**Why.** sub-ms, atomic Lua, TTL cleans up
+
+**The nuance to say.** not durable: never the booking truth, never the ledger; hot key for the biggest tenant, split it
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-counters-sessions-locks-rate-limits-anything-wit">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="store-high-write-rate-append-only-time-ordered-reads">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The requirement says high write rate, append-only, time-ordered reads. Which store, why, and the nuance?</span></span></summary>
+<div class="rev-a">
+
+**Store.** Cassandra / ScyllaDB, partition by (owner, time bucket)
+
+**Why.** writes scale, one partition scan per read
+
+**The nuance to say.** partitions under ~100 MB (add a bucket); no delete-on-ack queues (tombstones), use a flag + TTL; no joins
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-high-write-rate-append-only-time-ordered-reads">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="store-blobs-video-images-checkpoints-artifacts-archive">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The requirement says blobs: video, images, checkpoints, artifacts, archives. Which store, why, and the nuance?</span></span></summary>
+<div class="rev-a">
+
+**Store.** object storage, erasure coded
+
+**Why.** cheapest durable bytes, presigned access
+
+**The nuance to say.** lifecycle rules for expiry; listing is eventual; multipart for anything over a few MB
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-blobs-video-images-checkpoints-artifacts-archive">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="store-events-between-services-buffering-replay">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The requirement says events between services, buffering, replay. Which store, why, and the nuance?</span></span></summary>
+<div class="rev-a">
+
+**Store.** Kafka, partition by the key you aggregate on
+
+**Why.** absorbs bursts, at-least-once, replay from offset
+
+**The nuance to say.** order only inside a partition; retention bounds replay; consumer lag is the health signal; hot partition for a hot tenant
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-events-between-services-buffering-replay">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="store-full-text-or-vector-search">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The requirement says full-text or vector search. Which store, why, and the nuance?</span></span></summary>
+<div class="rev-a">
+
+**Store.** inverted index / ANN shards in RAM, document-partitioned, replicated
+
+**Why.** every query to every shard, merge by raw score
+
+**The nuance to say.** tail = slowest shard, hedge at p95; delta index for freshness; filters inside the shard
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-full-text-or-vector-search">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="store-time-series-metrics-dashboards">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The requirement says time series, metrics, dashboards. Which store, why, and the nuance?</span></span></summary>
+<div class="rev-a">
+
+**Store.** TSDB with roll-ups
+
+**Why.** compression, cheap ranges
+
+**The nuance to say.** cardinality is the limit: pre-aggregate per site or tenant
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-time-series-metrics-dashboards">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="store-analytics-disputes-audit-over-months">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The requirement says analytics, disputes, audit over months. Which store, why, and the nuance?</span></span></summary>
+<div class="rev-a">
+
+**Store.** Parquet in object storage (+ ClickHouse for interactive)
+
+**Why.** immutable, scan when needed
+
+**The nuance to say.** partition by date and tenant; the ledger is elsewhere, this is evidence
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-analytics-disputes-audit-over-months">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="store-per-user-lists-adjacency-timelines">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The requirement says per-user lists, adjacency, timelines. Which store, why, and the nuance?</span></span></summary>
+<div class="rev-a">
+
+**Store.** Redis lists / KV
+
+**Why.** ids only, O(1) by key
+
+**The nuance to say.** active users only, rebuild on return; celebrity keys get a near cache
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-per-user-lists-adjacency-timelines">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="store-read-heavy-hot-path">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The requirement says read-heavy hot path. Which store, why, and the nuance?</span></span></summary>
+<div class="rev-a">
+
+**Store.** cache (read-through or cache-aside) + near cache
+
+**Why.** the cache is the system at 100:1
+
+**The nuance to say.** invalidation on write; TTL as the backstop; fail-open or fail-closed, say which
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-read-heavy-hot-path">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="store-rule">
+<summary><span class="rev-head"><span class="rev-tag">STORE</span><span class="rev-q">The rule for choosing a store?</span></span></summary>
+<div class="rev-a">
+
+Rule: the store follows the access pattern, not the data type. Say the pattern ("one partition scan in time order"), then the store.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="store-rule">mark known</button></p>
+
+</div>
+</details>
+
+## Pattern per requirement (16)
+
+<details class="rev" data-card="pat-many-readers-per-write-feeds">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: many readers per write (feeds). The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** fan-out on write below a threshold, on read above, merge two sorted lists at read
+
+**Say this.** "push under 10k followers, pull above"
+
+**The nuance that gets probed.** inactive users get no push; bursts collapsed at read; the hot celebrity list behind a near cache
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-many-readers-per-write-feeds">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-real-time-state-between-messages">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: real-time, state between messages. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** sticky session: gateway = disposable pipe, state host = sticky, session map, resume by last seq
+
+**Say this.** "two sticky pieces, one disposable"
+
+**The nuance that gets probed.** grace window; who re-pins when the host dies; replay the last seconds from a ring buffer; ids keyed on the event, not the message, so replay makes no duplicates
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-real-time-state-between-messages">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-latency-budget-under-a-second">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: latency budget under a second. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** deadline queue per host: drop late work, never serve it late; degrade before refuse
+
+**Say this.** "a late frame is useless"
+
+**The nuance that gets probed.** the floor rate below which you refuse new work; priority tags decide who degrades first
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-latency-budget-under-a-second">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-shared-scarce-resource-gpus">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: shared scarce resource (GPUs). The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** admission before state exists; weighted fair queues per tier, round robin per key
+
+**Say this.** "count the unit that costs, never requests"
+
+**The nuance that gets probed.** quota per tenant not per key; charge the estimate, refund after; batch at the lowest weight in the valleys
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-shared-scarce-resource-gpus">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-protect-from-floods">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: protect from floods. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** edge limiter: sliding window or token bucket in Redis, BLOCKED flag in RAM 1 s
+
+**Say this.** "fail-open or fail-closed, which one"
+
+**The nuance that gets probed.** hot key: split quota across gateways, rebalance every few seconds; uneven load → one-off top-ups
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-protect-from-floods">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-money-anything-billed">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: money, anything billed. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** one id from gateway to ledger; double-entry, append-only; corrections as new rows; nightly reconcile
+
+**Say this.** "exactly once is an effect: stable id + idempotent writes"
+
+**The nuance that gets probed.** emit the event where the work ran; dedup window ≥ log retention; set totals, never increment; late events as revision rows
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-money-anything-billed">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-no-double-booking">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: no double booking. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** conditional update on the inventory row; hold with TTL; saga across shards
+
+**Say this.** "the row is the guard, no lock spans a bank call"
+
+**The nuance that gets probed.** lock rows in a fixed order; sweep expired holds inline on a failed guard; holds protected during payment; overbooking policy stated with its refund
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-no-double-booking">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-search-freshness">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: search freshness. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** delta index + immutable segments, periodic merge, atomic swap
+
+**Say this.** "minutes fresh, rollback by swap"
+
+**The nuance that gets probed.** tiered compaction bounds segment count; RAM for the swap; replicas out of rotation during merges
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-search-freshness">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-rollout-of-anything">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: rollout of anything. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** alias → version; canary by key; gates vs the OLD version; old version resident; rollback = pointer flip
+
+**Say this.** "rollback in under a minute because nothing unloads"
+
+**The nuance that gets probed.** quality gate, not only latency; freeze all regions on a breach; sticky per key so a client sees one version
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-rollout-of-anything">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-one-leader-coordination">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: one leader, coordination. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** lock service with sessions + fencing tokens checked at the resource
+
+**Say this.** "two leaders must never both act"
+
+**The nuance that gets probed.** failover floor = session TTL; the token is checked in the same transaction as the write; a paused leader does not know it lost
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-one-leader-coordination">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-big-data-read-by-many-machines">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: big data read by many machines. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** pre-stage from known demand; disposable cache tier; immutable manifests
+
+**Say this.** "demand is forecastable, push before pull"
+
+**The nuance that gets probed.** refcounts pin what is running and next; LRU only the unpinned; misses read through with a prefetch buffer
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-big-data-read-by-many-machines">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-durability-at-pb-scale">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: durability at PB scale. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** EC (9+3), one chunk per disk, declustered rebuild at a floor rate, stripes never mix objects
+
+**Say this.** "loss scales with T³ of the rebuild window"
+
+**The nuance that gets probed.** per object, not per stripe; the floor is a durability decision; deletion must not re-encode
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-durability-at-pb-scale">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-many-services-one-entry">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: many services, one entry. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** API gateway: auth from RAM, routes from a control plane, stateless, under 20 ms
+
+**Say this.** "config pushed by pub/sub"
+
+**The nuance that gets probed.** local counters multiply a limit by the node count unless the quota is split
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-many-services-one-entry">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-derived-read-views">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: derived read views. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** CDC from the primary into the cache or search view
+
+**Say this.** "seconds stale, the guard still decides"
+
+**The nuance that gets probed.** alert on CDC lag; the write path never reads the view
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-derived-read-views">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-offline-capable-devices">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: offline-capable devices. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** store and forward with priority tiers; on-device fallback; resumable upload
+
+**Say this.** "alerts first, raw video later"
+
+**The nuance that gets probed.** buffer size in hours; what the device does with no connection; dedup when buffered data arrives late
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-offline-capable-devices">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="pat-consent-retention-residency">
+<summary><span class="rev-head"><span class="rev-tag">PATTERN</span><span class="rev-q">Requirement: consent, retention, residency. The pattern, what you say, and the nuance that gets probed?</span></span></summary>
+<div class="rev-a">
+
+**Pattern.** a flag checked at the fork; delete job for stored data; manifests exclude; region pairs inside a residency zone
+
+**Say this.** "stop new copies at once, delete old ones in the background"
+
+**The nuance that gets probed.** revocation must not touch the live path; failover never crosses the zone
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="pat-consent-retention-residency">mark known</button></p>
+
+</div>
+</details>
+
+## The failure line per component (17)
+
+<details class="rev" data-card="fail-stateless-server-dies">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: stateless server dies. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** LB health check
+
+**Do.** next request lands elsewhere
+
+**User sees.** nothing
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-stateless-server-dies">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-stateful-host-dies-session-gpu-state">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: stateful host dies (session, GPU state). Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** missed heartbeat 1-3 s
+
+**Do.** session map re-pins; replay the last seconds from a ring buffer
+
+**User sees.** a gap of seconds, no duplicates
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-stateful-host-dies-session-gpu-state">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-queue-or-log-lags">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: queue or log lags. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** consumer lag, watermark age
+
+**Do.** freeze derived rates, serve stale with an "as of", billing waits
+
+**User sees.** "as of 5 minutes ago"
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-queue-or-log-lags">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-cache-down">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: cache down. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** errors, hit rate drop
+
+**Do.** fail-open (safety) or fail-closed (money); local last-known values
+
+**User sees.** slower or briefly over-permissive
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-cache-down">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-db-primary-down">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: DB primary down. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** replication health
+
+**Do.** promote a replica; writes pause seconds; idempotent retries
+
+**User sees.** brief write errors, retried
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-db-primary-down">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-region-lost">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: region lost. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** cross-region checks 10-30 s
+
+**Do.** paired region in the same zone; jittered reconnects; admission on the resume rate
+
+**User sees.** under 60 s
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-region-lost">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-hot-key-hot-partition">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: hot key / hot partition. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** one node's latency
+
+**Do.** sub-partition the key; near cache; local buckets
+
+**User sees.** nothing, if caught
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-hot-key-hot-partition">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-thundering-herd-mass-reconnect">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: thundering herd (mass reconnect). Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** reconnect rate
+
+**Do.** jitter 0-30 s + token bucket on reconnects
+
+**User sees.** staggered recovery
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-thundering-herd-mass-reconnect">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-disk-dies">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: disk dies. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** scrub, read errors
+
+**Do.** degraded reads from parity; declustered rebuild at the floor; repair queue by redundancy left
+
+**User sees.** nothing
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-disk-dies">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-a-version-regresses">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: a version regresses. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** canary p99 and quality vs old
+
+**Do.** alias back, old version resident
+
+**User sees.** minutes for the canary slice
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-a-version-regresses">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-a-tenant-floods">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: a tenant floods. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** 429 rate per key
+
+**Do.** edge limiter, per-key queue cap, BLOCKED flag
+
+**User sees.** the flooder gets 429s, others nothing
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-a-tenant-floods">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-lost-ack-duplicate-delivery">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: lost ack / duplicate delivery. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** the same id seen twice
+
+**Do.** dedup by the stable id at the sink
+
+**User sees.** nothing
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-lost-ack-duplicate-delivery">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-clock-skew-between-hosts">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: clock skew between hosts. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** ordering disputes
+
+**Do.** a sequencer or hybrid logical clocks define order, never wall clocks
+
+**User sees.** nothing
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-clock-skew-between-hosts">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-zombie-leader-after-a-gc-pause">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: zombie leader after a GC pause. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** its writes carry an old fencing token
+
+**Do.** the resource rejects them
+
+**User sees.** nothing
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-zombie-leader-after-a-gc-pause">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-retry-storm-after-an-outage">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: retry storm after an outage. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** request rate spike at recovery
+
+**Do.** exponential backoff with jitter on clients; admission at the edge
+
+**User sees.** slower recovery, not a second outage
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-retry-storm-after-an-outage">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-poison-message">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: poison message. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** the same message fails N times
+
+**Do.** dead-letter queue, alert, skip
+
+**User sees.** one item delayed, the queue flows
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-poison-message">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="fail-config-push-missed-by-a-node">
+<summary><span class="rev-head"><span class="rev-tag">FAILURE</span><span class="rev-q">Failure: config push missed by a node. Detect, do, and what the user sees?</span></span></summary>
+<div class="rev-a">
+
+**Detect.** stale permission or quota on one node
+
+**Do.** short token expiry as the backstop (60 s); periodic full sync
+
+**User sees.** seconds of stale behavior
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="fail-config-push-missed-by-a-node">mark known</button></p>
+
+</div>
+</details>
+
+## Phrases that signal the pattern (16)
+
+<details class="rev" data-card="phr-live-real-time-within-a-second">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "live", "real time", "within a second". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+sticky session, resume, deadline queue, degrade before refuse
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-live-real-time-within-a-second">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-billing-invoice-pay-usage">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "billing", "invoice", "pay", "usage". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+idempotency key through gateway, meter and ledger; reconciliation
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-billing-invoice-pay-usage">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-followers-feed-timeline">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "followers", "feed", "timeline". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+hybrid fan-out, timeline cache of ids, collapse bursts
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-followers-feed-timeline">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-search-find-similar-suggest">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "search", "find", "similar", "suggest". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+sharded index, scatter-gather, hedging, delta index, trie for prefixes
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-search-find-similar-suggest">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-book-reserve-inventory-seat">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "book", "reserve", "inventory", "seat". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+conditional update, hold with TTL, saga, overbooking policy
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-book-reserve-inventory-seat">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-upload-video-hours-of">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "upload", "video", "hours of". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+presigned multipart, segments, object storage, transcoding pipeline
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-upload-video-hours-of">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-rollout-version-deploy-model-update">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "rollout", "version", "deploy", "model update". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+alias, canary vs old, old resident, pointer flip
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-rollout-version-deploy-model-update">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-gpus-model-inference-frames">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "GPUs", "model", "inference", "frames". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+GPUs force the design; frames or tokens per GPU; admission in that unit
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-gpus-model-inference-frames">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-petabytes-retain-durable-disks-fail">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "petabytes", "retain", "durable", "disks fail". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+EC, segments, manifests, rebuild floor, per-object durability
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-petabytes-retain-durable-disks-fail">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-chat-messages-rooms-viewers">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "chat", "messages", "rooms", "viewers". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+REST send, WebSocket receive, inbox per recipient, relay tree for hot rooms
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-chat-messages-rooms-viewers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-many-customers-tenants-organizations">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "many customers", "tenants", "organizations". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+quotas per tenant, isolation inside every shard, tenant from the token
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-many-customers-tenants-organizations">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-offline-intermittent-edge">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "offline", "intermittent", "edge". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+store and forward, on-device fallback, resumable upload
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-offline-intermittent-edge">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-consent-privacy-residency">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "consent", "privacy", "residency". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+flag at the fork, delete job, manifests exclude, failover inside the zone
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-consent-privacy-residency">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-schedule-nightly-cron">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "schedule", "nightly", "cron". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+due-job scan, leases, at-least-once with idempotent jobs, missed-run policy
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-schedule-nightly-cron">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="phr-collaborate-edit-together-canvas">
+<summary><span class="rev-head"><span class="rev-tag">PHRASE</span><span class="rev-q">The prompt says "collaborate", "edit together", "canvas". What do you write and say?</span></span></summary>
+<div class="rev-a">
+
+CRDT or OT, per-property registers, snapshot plus op log, presence
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="phr-collaborate-edit-together-canvas">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="five-questions">
+<summary><span class="rev-head"><span class="rev-tag">FIVE QUESTIONS</span><span class="rev-q">The five questions that generate the nuances for any box?</span></span></summary>
+<div class="rev-a">
+
+1. What is its unit of work, and what does one unit cost? (a request, a frame, a token, a chunk, a byte)
+2. What state does it hold, and for how long? (none → disposable; seconds → ring buffer; a session → sticky with a map; forever → a store with a durability number)
+3. What happens when it dies mid-work? (who notices, in how long, who takes over, what is replayed, what could be duplicated and what id prevents that)
+4. What is its hot key? (the one tenant, celebrity, partition or row that gets all the traffic, and how it is split)
+5. How does it find the others, and what happens when that lookup is stale? (session map, capacity view, config push, CDC; and the TTL or token that bounds the staleness)
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="five-questions">mark known</button></p>
+
+</div>
+</details>
+
+## Where the bytes go (10)
+
+<details class="rev" data-card="dp-rule">
+<summary><span class="rev-head"><span class="rev-tag">DATA PATH</span><span class="rev-q">Where do the bytes go? The rule to say.</span></span></summary>
+<div class="rev-a">
+
+"Queues carry references; bytes live where they are cheapest to keep for as long as they must wait: memory for a second, object storage for minutes or hours. The GPU never waits on a storage round trip for live work."
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="dp-rule">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="dp-sync">
+<summary><span class="rev-head"><span class="rev-tag">DATA PATH</span><span class="rev-q">Sync call: where is the queue, where are the bytes, and which thread touches which counter?</span></span></summary>
+<div class="rev-a">
+
+Three kinds of threads, three kinds of state. A request handler is a lightweight task (goroutine, asyncio task), not an OS thread, so one gateway runs tens of thousands of them at once, one per open connection. Each handler owns its connection and its bytes; it is the only thing that touches the money counter in Redis, twice: an estimate at admission (arrow 2) and a settle with the worker's actual usage at the end (arrow 9), both as atomic Lua scripts because N gateways share the same bucket. The scheduler loop owns the local fairness state (deque lengths, deficit counters, in-flight per host) and never touches Redis. The config watcher receives the controller's weights and quota-divided-by-N every 5 seconds and swaps them in atomically, so the scheduler reads them without a lock. The bytes never enter the queue; the queue is a list of who waits.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="dp-sync">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="dp-stream">
+<summary><span class="rev-head"><span class="rev-tag">DATA PATH</span><span class="rev-q">Stream: how do frames reach the GPU, and who decides the host?</span></span></summary>
+<div class="rev-a">
+
+No queue system in the path: the stream gateway pushes each frame directly to the host that owns the session, and the only queue is a small in-memory buffer inside that host where frames wait for the next batch. The session router decides the host once, at open; the data plane never asks it again.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="dp-stream">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="dp-batch">
+<summary><span class="rev-head"><span class="rev-tag">DATA PATH</span><span class="rev-q">Batch job: why object storage and Kafka?</span></span></summary>
+<div class="rev-a">
+
+Here the bytes are hours of video and may wait for hours, so they live in object storage and Kafka carries only chunk ids; a worker fetches a chunk's frames when its turn comes, and partial results go back to storage as each chunk finishes.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="dp-batch">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="dp-fair">
+<summary><span class="rev-head"><span class="rev-tag">DATA PATH</span><span class="rev-q">Fair share across many gateways without a shared queue?</span></span></summary>
+<div class="rev-a">
+
+Why it adds up without a shared queue: the load balancer gives every gateway the same mix of tenants, so N local 5/3/1 schedulers behave like one global 5/3/1; the controller gives every gateway the same weights and each tenant's quota divided by N, and moves shares between gateways when the reported usage is skewed. The one case that breaks the picture is a tenant stuck on few gateways (a sticky hash); that tenant is handled by a shared Redis bucket or a central admission service instead.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="dp-fair">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="dp-controller">
+<summary><span class="rev-head"><span class="rev-tag">DATA PATH</span><span class="rev-q">What the controller does, in one line?</span></span></summary>
+<div class="rev-a">
+
+gateways report usage every 5 seconds, the controller sums it, splits each quota across gateways in proportion, and pushes the same versioned config to all of them
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="dp-controller">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="dp-counters">
+<summary><span class="rev-head"><span class="rev-tag">DATA PATH</span><span class="rev-q">Who updates which counter? The sentence to say.</span></span></summary>
+<div class="rev-a">
+
+Redis holds the money counter, updated by the request handler with an estimate-then-settle pair of atomic scripts. The scheduler holds only local fairness state. The controller refreshes the shares every 5 seconds and the config watcher swaps them in.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="dp-counters">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="dp-router">
+<summary><span class="rev-head"><span class="rev-tag">DATA PATH</span><span class="rev-q">Inside the model gateway: router and serving process, what to say?</span></span></summary>
+<div class="rev-a">
+
+the router is a lookup, the bytes make one gRPC hop from the gateway to the host's serving process, the host batches whatever is waiting into each GPU step, and streams tokens back on the same connection; capacity flows the other way once a second so the router never sends to a full host.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="dp-router">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="dp-push">
+<summary><span class="rev-head"><span class="rev-tag">DATA PATH</span><span class="rev-q">Does the scheduler push to the GPU host, or does the worker pull? And if asked why not pull?</span></span></summary>
+<div class="rev-a">
+
+Push. The scheduler makes a gRPC call on a pooled, long-lived connection to the serving process on host H and sends the bytes inside the call. The worker never pulls. Pull needs the worker to know which gateway holds work, which means a broker in the middle, and that is the hop you avoid for a sub-second call. Backpressure comes from the host instead: it keeps a bounded queue, rejects fast with RESOURCE_EXHAUSTED when full, and the scheduler retries on another host. That retry is rare because the router's 1-second capacity view already steered the request away from full hosts. Pull is the right shape in diagram 3, where workers pull chunk ids from Kafka because the wait is long and the bytes sit in object storage.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="dp-push">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="dp-settle">
+<summary><span class="rev-head"><span class="rev-tag">DATA PATH</span><span class="rev-q">Why charge an estimate at admission and settle at completion?</span></span></summary>
+<div class="rev-a">
+
+Why the estimate and the settle: it is the card authorization pattern. The gateway must decide admission before the work runs, and nobody knows the output token count until generation ends, so it reserves the worst case (input estimate plus max_output_tokens) and settles to the actual number at the end. Charging nothing until the end would let a tenant launch 1,000 concurrent requests and pass its quota before the first one finished. A reservation carries a TTL of a minute or two, so a gateway crash cannot leave tokens reserved forever, and a reaper reconciles from the Kafka usage events. A tenant that sets a huge max_output_tokens reserves more per call and gets fewer concurrent calls, which is the right incentive.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="dp-settle">mark known</button></p>
+
+</div>
+</details>
+
+## Model routing and the AI API, in sentences (4)
+
+<details class="rev" data-card="route-dims">
+<summary><span class="rev-head"><span class="rev-tag">MODEL ROUTING</span><span class="rev-q">What do you route on? Name the dimensions before the mechanism.</span></span></summary>
+<div class="rev-a">
+
+| Dimension | Signal | Example decision |
+|---|---|---|
+| Difficulty and quality | prompt length, task type, a small classifier, the user's tier | easy classification to the 8B model, open reasoning to the large model |
+| Cost and budget | tenant plan, remaining daily budget, tokens in the request | budget nearly spent: downgrade to the cheaper model, never refuse silently |
+| Latency budget | the caller's deadline, interactive against batch | interactive under 1 s to the small model or a warm large replica; batch to the cheapest queue |
+| Modality and features | image, video, audio, tools, context length | 2-hour video to the long-context model; a frame to the vision model |
+| Version and experiment | model alias, canary percentage, A/B bucket by key | 5% of keys to v2, sticky per key so a conversation never flips versions |
+| Capacity and locality | replica queue depth, KV-cache or prefix-cache hit, GPU pool health | route the next turn to the replica that already holds this conversation's cache |
+| Region and data rules | tenant residency, on-premises requirement | EU tenant never leaves EU pools |
+| Fallback | provider error rate, rate-limit responses, timeouts | after two 429s from the vendor, fail over to own pool for 60 s |
+
+Say the dimension first ("this is capacity-aware routing") and the interviewer knows you know the taxonomy.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="route-dims">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="route-say">
+<summary><span class="rev-head"><span class="rev-tag">MODEL ROUTING</span><span class="rev-q">Model routing in 60 seconds, said in the interview?</span></span></summary>
+<div class="rev-a">
+
+"Requests come through the gateway with tenant, tier, modality and size. A stateless router reads a policy from the registry and a one-second capacity view from the replicas, and picks a pool. Rules and heuristics do most of the routing; a small classifier separates easy from hard prompts once we have judged logs; the batch path uses a cascade because latency is cheap there. Conversations and streams are routed once and stay on their replica for cache and state locality, with a session map for failover. New versions enter behind the same alias at a small percentage per tenant, judged on quality as well as latency, rolled back by a policy change. Every decision is logged with a reason so cost and quality can be explained per tenant."
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="route-say">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="route-pushes">
+<summary><span class="rev-head"><span class="rev-tag">MODEL ROUTING</span><span class="rev-q">The pushes to expect on model routing, and the answers?</span></span></summary>
+<div class="rev-a">
+
+"How do you know the small model's answer was good enough?" (a verifier or judge, sampled, feeding retraining) · "Your classifier adds 15 ms to a 300 ms budget; worth it?" (only where the cost saving is large; skip it for interactive tier-1) · "A tenant pins v1 and you must retire it" (deprecation window, alias default, headers announce) · "Two replicas hold the same conversation's cache after a failover; which one?" (the session map is the truth; the orphan evicts) · "Route to the cheapest vendor per request?" (only with per-request quality parity and an idempotent retry; otherwise per-tenant, not per-request).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="route-pushes">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="api-sentences">
+<summary><span class="rev-head"><span class="rev-tag">AI API</span><span class="rev-q">The AI API sentences to have ready?</span></span></summary>
+<div class="rev-a">
+
+- "I would upload the video once, reference it in each request, and cache the prefix so ten questions about it cost one prefill."
+- "For the corpus I would use the batch endpoint; for the analyst in the loop, streaming with a sub-second first token; for the live camera, a streaming session with a frame-drop deadline rather than a queue that grows."
+- "Rate limits are per tokens and per requests; my client backs off with jitter and my service enforces its own quotas per tenant before it ever reaches the provider."
+
+Next read: Model routing, which model serves a request and on which replica.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="api-sentences">mark known</button></p>
+
+</div>
+</details>
+
+## Boards (40)
+
+<details class="rev" data-card="b01-board">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 01 · WHOLE BOARD</span><span class="rev-q">Live AI copilot for 1M body-worn and industrial cameras: write the whole board, scale first.</span></span></summary>
+<div class="rev-a">
+
+**0-8 min · Requirements, top-left**
+
+```text
+FR   device opens session, streams video+audio+IMU, gets predictions+alerts back
+     phone gets every alert once, also after offline (ack)
+     supervisor fleet view: streams, lag, drop rate, open alerts
+     quotas per org and device · consent fork to storage, revocable
+NFR  alert p95 < 1 s on device, < 2 s on phone · region loss -> back < 60 s
+     10^4 -> 10^6 devices, same design, partition by device id
+     GPU short -> lower fps before any refusal · alerts at-least-once, dedup by id
+OUT  training, phone UI, billing, firmware
+```
+
+**8-13 min · Numbers, top-right**
+
+```text
+10^4 dev × 5 fps = 5×10^4 f/s ÷ 500 f/s per GPU = 100 GPU (150-200 w/ headroom); 1M -> 10^4 GPU
+in  10^4 × 0.25 MB/s = 2.5 GB/s (2× peak)   out 10^4 × 3 × 200 B = 6 MB/s   (400:1)
+retain 20% -> 0.5 GB/s -> 43 TB/day; at 1M 4.3 PB/day -> 100 PB in 23 days
+hot  session 200 B × 10^6 = 200 MB · limiter 66 MB · state 2 MB × 10^4 = 20 GB on GPU hosts
+alerts 20/dev/day -> 2/s today, 230/s at 1M      ports at 1M: 500 GB/s ÷ 12.5 = 40 × 100 GbE
+-> GPUs force it: admission and frame sampling ARE the design; bytes and alerts are ordinary
+```
+
+**13-17 min · API, left**
+
+```text
+POST /sessions {device, org, model, retain} -> {session_id, gateway_url, token, granted_fps}  (idempotent per device)
+stream up: {seq, ts, frame|audio|imu}   down: {result_seq, type, alert_id, payload} + ctrl {granted_fps}; device acks result_seq
+POST /sessions/{id}/resume {token, last_result_seq}  (60 s grace) -> gateway_url
+WS /connect (phone) down: {alert_id, device, severity, summary}  up ack {alert_id}
+GET /orgs/{o}/fleet?window=5s · PUT /devices/{d}/consent {retain:false}
+```
+
+**17-21 min · Data, left under API**
+
+```text
+session(session_id; idx device_id): gateway, gpu_host, granted_fps, retain -> Redis TTL, per region
+model state + unacked results (60 s ring)                       -> GPU host memory
+counters(org concurrent sessions; device open rate)             -> Redis
+alert(alert_id = hash(device, 2 s window, type))                -> Cassandra (org, day, bucket)
+inbox(user_id, alert_id, acked, TTL 7 d) · phone_map(user)      -> Cassandra · Redis
+metrics -> Kafka -> TSDB · orgs, devices, quotas, consent -> Postgres
+```
+
+**21-36 min · Diagram, center, in draw order**
+
+```text
+1 devices -> API gateway (device certs, home region) -> admission (Redis counters) -> session store
+2 devices -> stream gateways (decode, sample to granted fps, 10 s ring) -> batcher + deadline -> GPU hosts (state) -> back
+3 stream gateway -> alert service -> Cassandra (alert + inbox) -> phone gateways / push -> phones
+4 stream gateways -> Kafka (counters every 2 s) -> roll-up per org/site -> TSDB -> supervisor view
+5 stream gateways -> object storage (consented segments only)      6 control plane -> admission, gateways
+```
+
+**36-52 min · Two deep dives, annotate the boxes**
+
+```text
+A stickiness/resume: gateway = pipe, GPU host = state; session names both · device carries last_result_seq
+  host keeps 60 s unacked results -> new gateway resends only those · gateway dies: 3 s heartbeat, 0-5 s jitter, same host, 3-8 s gap
+  host dies: replay 10 s ring (50 frames ≈ 0.1 GPU-s) · both: device replays flash · REJECT stateless GWs; state checkpoints (67 GB/s at 1M)
+B admission: L1 at open, before GPU state: concurrent-session counter per org + open rate per device; contract in frames/s
+  L2 live: controller reads GPU queue age each 1 s -> lower granted_fps by priority tag (fixed low-risk 5->2 first, hazard wearers last)
+  floor 1 fps -> 429 for new low-priority only; open sessions never cut · limiter down -> fail-open at last rate · REJECT queueing; arrival order
+```
+
+**52-57 min · Failures and trade-offs, bottom**
+
+```text
+gateway dies   -> 3 s heartbeats      -> jittered resume, same host, resend from host   -> 3-8 s without cloud alerts
+region lost    -> 10-30 s cross checks -> paired region, device replay, fps down          -> alerts back < 60 s
+GPU saturates  -> queue age vs deadline -> fps by priority, 429 new low-prio             -> safety classes unchanged
+chose: frames/s quotas over RPS · degrade over refuse · disposable GW + sticky host · replay over checkpoint · event-keyed alert id · GW-side metrics · consent flag at GW
+```
+
+**57-60 min · Summary, said not written.** "Devices stream to regional gateways, a world model answers within a second, each phone gets each alert once. 5×10^4 frames/s is 100 to 200 GPUs today and 10^4 at a million, so admission in frames per second and degrade-before-refuse are the design; a disposable gateway plus a sticky GPU host makes resume cheap; an event-keyed alert id makes duplicates collapse."
+
+<p class="rev-short">Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.</p>
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b01-board">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b01-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 01 · NUMBERS</span><span class="rev-q">Live AI copilot for 1M body-worn and industrial cameras: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+10^4 dev × 5 fps = 5×10^4 f/s ÷ 500 f/s per GPU = 100 GPU (150-200 w/ headroom); 1M -> 10^4 GPU
+in  10^4 × 0.25 MB/s = 2.5 GB/s (2× peak)   out 10^4 × 3 × 200 B = 6 MB/s   (400:1)
+retain 20% -> 0.5 GB/s -> 43 TB/day; at 1M 4.3 PB/day -> 100 PB in 23 days
+hot  session 200 B × 10^6 = 200 MB · limiter 66 MB · state 2 MB × 10^4 = 20 GB on GPU hosts
+alerts 20/dev/day -> 2/s today, 230/s at 1M      ports at 1M: 500 GB/s ÷ 12.5 = 40 × 100 GbE
+-> GPUs force it: admission and frame sampling ARE the design; bytes and alerts are ordinary
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b01-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b01-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 01 · DIAGRAM</span><span class="rev-q">Live AI copilot for 1M body-worn and industrial cameras: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 devices -> API gateway (device certs, home region) -> admission (Redis counters) -> session store
+2 devices -> stream gateways (decode, sample to granted fps, 10 s ring) -> batcher + deadline -> GPU hosts (state) -> back
+3 stream gateway -> alert service -> Cassandra (alert + inbox) -> phone gateways / push -> phones
+4 stream gateways -> Kafka (counters every 2 s) -> roll-up per org/site -> TSDB -> supervisor view
+5 stream gateways -> object storage (consented segments only)      6 control plane -> admission, gateways
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b01-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b01-deepdives">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 01 · DEEP DIVES</span><span class="rev-q">Live AI copilot for 1M body-worn and industrial cameras: the two deep dives (36-52 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+A stickiness/resume: gateway = pipe, GPU host = state; session names both · device carries last_result_seq
+  host keeps 60 s unacked results -> new gateway resends only those · gateway dies: 3 s heartbeat, 0-5 s jitter, same host, 3-8 s gap
+  host dies: replay 10 s ring (50 frames ≈ 0.1 GPU-s) · both: device replays flash · REJECT stateless GWs; state checkpoints (67 GB/s at 1M)
+B admission: L1 at open, before GPU state: concurrent-session counter per org + open rate per device; contract in frames/s
+  L2 live: controller reads GPU queue age each 1 s -> lower granted_fps by priority tag (fixed low-risk 5->2 first, hazard wearers last)
+  floor 1 fps -> 429 for new low-priority only; open sessions never cut · limiter down -> fail-open at last rate · REJECT queueing; arrival order
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b01-deepdives">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b02-board">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 02 · WHOLE BOARD</span><span class="rev-q">The multimodal AI API platform: write the whole board, scale first.</span></span></summary>
+<div class="rev-a">
+
+**0-8 min · Requirements, top-left**
+
+```text
+FR   sync infer (image + text -> answer, optional token stream) · stream session (video in, results out, resume)
+     async job (hours of video -> poll/webhook, partial results) · keys, tiers, quotas -> 429 + Retry-After
+     usage per key, dashboard, monthly invoice · aliases, pinned versions, canary, rollback, deprecation
+NFR  sync p95 < 2 s, first token < 1 s · stream result < 500 ms · gateway < 20 ms
+     every billable event in the ledger exactly once · a 100× flooder moves others' p95 < 10% · rollback < 1 min
+OUT  model internals, card payments, portal UI, moderation policy
+```
+
+**8-13 min · Numbers, top-right**
+
+```text
+10^9/day ÷ 86,400 ≈ 11,600/s -> ×3 peak ≈ 35,000/s
+sync  0.95 × 35k ≈ 33k/s ÷ 20 calls/s per GPU ≈ 1,650 GPU  <- the bill
+stream 10^4 × 5 fps = 5×10^4 f/s ÷ 500 ≈ 100-200 GPU (frame ≈ 60 tokens via streaming encoder, 1/25 of an image)
+jobs  10^4 h × 3,600 f ÷ 86,400 ≈ 420 f/s ≈ 1 GPU        total ≈ 2,000 GPU
+in ≈ 5 GB/s (2.2 sync + 2.5 stream + 0.1 jobs) · out ≈ 22 MB/s · usage events 10^9 × 200 B = 200 GB/day
+-> 35k rps is a small gateway problem; 2,000 GPUs is the cost -> count tokens and GPU-seconds, never requests
+```
+
+**13-17 min · API, left**
+
+```text
+POST /infer  {model: alias|version, content: [{image file_id}, {text}], max_tokens, stream}  + Idempotency-Key
+             -> {id, model_version, content, usage {in, out, gpu_ms}, decision_id}   SSE deltas when stream=true
+POST /files -> presigned URL + file_id
+POST /sessions {model} -> {session_id, stream_url, token} · POST /sessions/{id}/resume {last_result_seq}
+POST /jobs {file_ids, model, callback_url} + Idempotency-Key -> 202 {job_id} · GET /jobs/{id} · /results?cursor
+GET  /usage?key&from&to&granularity=hour
+```
+
+**17-21 min · Data, left under API**
+
+```text
+key(key_hash): tenant, tier, status               -> Postgres, copied to gateway RAM
+limiter(tenant + window; key sub-limit)           -> Redis, TTL 2× window
+idem(tenant, idempotency_key) -> response hash/ptr -> Postgres UNIQUE (Redis fast path); bodies -> object store
+session(session_id): pinned host, last_result_seq -> Redis TTL, 60 s grace
+job(job_id) / chunk(job_id, n) state machine      -> Postgres; inputs and partial results -> object store
+usage_event(event_id) -> Kafka by tenant -> Parquet · ledger(key, version, hour, revision) -> Postgres double-entry
+routing policy (alias -> version, weight) · decision log(request_id)
+```
+
+**21-36 min · Diagram, center, in draw order**
+
+```text
+1 apps -> API gateway (key auth, token limiter in Redis, idempotency) 
+2 gateway -> model router (alias -> version + pool, 1 s capacity view) -> fair-share queues (tier, key) -> sync GPU pools
+3 gateway -> session router (hash session_id, session map) -> streaming pool (pinned hosts) <-> apps
+4 gateway -> job queue -> job workers (chunk, checkpoint) -> object store; workers -> same admission queues at lowest weight; DLQ; webhook sender
+5 all pools -> Kafka usage topic -> aggregator (dedup) -> ledger -> invoices/dashboard; Kafka -> raw Parquet
+6 control plane (keys, tiers, registry, rollout) -> gateway, router
+```
+
+**36-52 min · Two deep dives, annotate the boxes**
+
+```text
+A fair share: bucket per TENANT in tokens/min + concurrency, key sub-limits · admission cost = counted input + max_tokens, refund after
+  weighted fair queues per tier 5/3/1, Enterprise reserved pool · round-robin per key + queue cap · deadline -> fast 429/503, Free shed first
+  jobs at lowest weight, yield at chunk boundary · REJECT rps-only limits (1 h video = 10 tokens); strict priority (Free starves)
+B metering: one id gateway -> meter -> ledger (request_id = hash(tenant, idem key)) · emit where the work ran (sync per request, stream per 10 s, job per chunk)
+  Kafka at-least-once; dedup set covers 7 d retention (112 GB over 256 partitions), commits with offsets · sum per (key, version, hour)
+  ledger insert UNIQUE aggregate_id · late event -> revision row, never an edit · nightly raw Parquet vs ledger -> page on mismatch
+  REJECT count at gateway (bills failed calls, never sees GPU time); balance row per request (35k hot writes/s)
+```
+
+**52-57 min · Failures and trade-offs, bottom**
+
+```text
+tenant floods 100×  -> 429 rate per key        -> BLOCKED flag 1 s in gateway RAM, per-key queue cap   -> others see nothing
+version regresses   -> per-version p99 + judge -> freeze canary, alias back to v1 (resident)          -> minutes of slow answers for canary keys
+metering lags       -> consumer lag, hour late -> 7 d retention, scale aggregators, invoices wait     -> dashboard late, bills late never wrong
+chose: one gateway for 3 shapes · tokens/GPU-s per tenant · WFQ over strict priority · one id + idempotent sink · hourly ledger · session map · alias + resident old version
+```
+
+**57-60 min · Summary, said not written.** "One gateway and one key model for three shapes. 35k requests a second is small; 2,000 GPUs is the bill, so I limit and share in tokens and GPU-seconds per tenant with weighted fair queues, carry one id from the gateway into a double-entry ledger so a retry is never billed twice, and route aliases with canaries per key and rollback by policy."
+
+<p class="rev-short">Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.</p>
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b02-board">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b02-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 02 · NUMBERS</span><span class="rev-q">The multimodal AI API platform: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+10^9/day ÷ 86,400 ≈ 11,600/s -> ×3 peak ≈ 35,000/s
+sync  0.95 × 35k ≈ 33k/s ÷ 20 calls/s per GPU ≈ 1,650 GPU  <- the bill
+stream 10^4 × 5 fps = 5×10^4 f/s ÷ 500 ≈ 100-200 GPU (frame ≈ 60 tokens via streaming encoder, 1/25 of an image)
+jobs  10^4 h × 3,600 f ÷ 86,400 ≈ 420 f/s ≈ 1 GPU        total ≈ 2,000 GPU
+in ≈ 5 GB/s (2.2 sync + 2.5 stream + 0.1 jobs) · out ≈ 22 MB/s · usage events 10^9 × 200 B = 200 GB/day
+-> 35k rps is a small gateway problem; 2,000 GPUs is the cost -> count tokens and GPU-seconds, never requests
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b02-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b02-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 02 · DIAGRAM</span><span class="rev-q">The multimodal AI API platform: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 apps -> API gateway (key auth, token limiter in Redis, idempotency) 
+2 gateway -> model router (alias -> version + pool, 1 s capacity view) -> fair-share queues (tier, key) -> sync GPU pools
+3 gateway -> session router (hash session_id, session map) -> streaming pool (pinned hosts) <-> apps
+4 gateway -> job queue -> job workers (chunk, checkpoint) -> object store; workers -> same admission queues at lowest weight; DLQ; webhook sender
+5 all pools -> Kafka usage topic -> aggregator (dedup) -> ledger -> invoices/dashboard; Kafka -> raw Parquet
+6 control plane (keys, tiers, registry, rollout) -> gateway, router
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b02-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b02-deepdives">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 02 · DEEP DIVES</span><span class="rev-q">The multimodal AI API platform: the two deep dives (36-52 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+A fair share: bucket per TENANT in tokens/min + concurrency, key sub-limits · admission cost = counted input + max_tokens, refund after
+  weighted fair queues per tier 5/3/1, Enterprise reserved pool · round-robin per key + queue cap · deadline -> fast 429/503, Free shed first
+  jobs at lowest weight, yield at chunk boundary · REJECT rps-only limits (1 h video = 10 tokens); strict priority (Free starves)
+B metering: one id gateway -> meter -> ledger (request_id = hash(tenant, idem key)) · emit where the work ran (sync per request, stream per 10 s, job per chunk)
+  Kafka at-least-once; dedup set covers 7 d retention (112 GB over 256 partitions), commits with offsets · sum per (key, version, hour)
+  ledger insert UNIQUE aggregate_id · late event -> revision row, never an edit · nightly raw Parquet vs ledger -> page on mismatch
+  REJECT count at gateway (bills failed calls, never sees GPU time); balance row per request (35k hot writes/s)
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b02-deepdives">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b03-board">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 03 · WHOLE BOARD</span><span class="rev-q">Petabyte video lake feeding a 1,000-GPU training cluster: write the whole board, scale first.</span></span></summary>
+<div class="rev-a">
+
+**0-8 min · Requirements, top-left**
+
+```text
+FR   ingest device streams + licensed footage; originals immutable · transcode to training renditions, 3 MB shards
+     dataset = filter over catalog -> frozen immutable manifest · pre-stage a job's shards to cluster NVMe; read at line rate
+     detect disk loss, rebuild, report degraded/lost objects · consent revoke -> delete originals, exclude from new versions
+NFR  11 nines/object/yr for originals (renditions rebuildable) · 200 GB/s sustained, GPU data-wait < 1%
+     ingest 1.4 GB/s, 2× peak · manifest lookup p99 < 10 ms · rebuild one disk < 2 h · a running job never sees input change
+OUT  training code, labeling, embedding search, human playback
+```
+
+**8-13 min · Numbers, top-right**
+
+```text
+100 PB × 12/9 = 133 PB raw ÷ 20 TB = 6,700 HDD (+5% spare) in ~110 chassis of 60 · renditions 25 PB -> own pool, ~1,700 disks
+objects 100 PB ÷ 1 GB = 10^8 · segments 100 PB ÷ 3 MB = 3.3×10^10 · manifests 10^8 × 10 KB = 1 TB
+reads 1,000 GPU × 200 MB/s = 200 GB/s ÷ 3 MB = 6.7×10^4 reads/s  vs  6,700 × 40 IOPS = 2.7×10^5 -> only 4× headroom
+NVMe 125 nodes × 4 × 8 TB = 4 PB, 1.5 TB/s · hot set 5 datasets × 500 TB = 2.5 PB (63%) · stage 500 TB at 50 GB/s = 2.8 h
+rebuild 20 TB: 1 disk 28 h; declustered floor 3 GB/s -> 1.9 h (27 GB/s reads = 3% of IOPS) · ingest 42-44 PB/yr = 2,800 disks/yr
+-> IOPS forces it: 4× headroom only while healthy -> jobs read staged NVMe; HDDs see staging, misses, repair
+```
+
+**13-17 min · API, left**
+
+```text
+POST /:bucket/:obj?uploads -> upload_id · PUT ?upload_id&part=N (3 MB, idempotent) · POST complete {parts, checksums} -> READY
+POST /datasets {filter} -> dataset_id · POST /datasets/{id}/versions -> 202 {version, manifest_ref, shards, bytes}
+POST /stagings {dataset, version, job_id, deadline} -> 202 · GET /stagings/{id} -> {bytes_staged, bytes_total}
+GET  /shards/{id} -> 3 MB (loader lib: local NVMe first, store on miss) · GET /incidents/{disk_id} -> degraded/lost
+```
+
+**17-21 min · Data, left under API**
+
+```text
+manifest(bucket, object): segments, checksums, 12 chunk locations/stripe -> KV, 3 replicas, quorum (write-once)
+disk_index(disk_id) -> chunks held                                          -> same KV (rebuild w/o scanning manifests)
+stripe_state(stripe_id): chunks alive, repair priority                     -> Raft-replicated (changes during repair)
+catalog(object_id): device, org, consent, time, labels, clip ranges        -> Parquet + query engine
+dataset_version(dataset, v): sorted shard ids (2.7 GB per 500 TB)           -> object store, immutable
+staging_map(version, shard) -> node                                          -> stager KV, rebuildable
+```
+
+**21-36 min · Diagram, center, in draw order**
+
+```text
+1 board 1 gateways + licensed footage -> ingest API (multipart) -> placement + EC 9+3 (one 3 MB chunk per disk) -> HDD store
+2 placement -> manifest KV, disk index · ingest "ready" -> Kafka -> transcode workers -> renditions -> placement; attributes -> catalog
+3 researchers -> dataset service (filter -> frozen manifest) -> manifests store
+4 job scheduler -> stager (throttled prefetch) -> HDD store -> cluster NVMe (4 PB) <- data loaders (1,000 GPUs); miss -> HDD
+5 repair service (priority by redundancy left) -> disk index, HDD · scrubber -> HDD
+```
+
+**36-52 min · Two deep dives, annotate the boxes**
+
+```text
+A EC layout + rebuild: stripe = 9 consecutive segments of ONE object + 3 parity, 12 disks in 12 chassis; 37 stripes per 1 GB object
+  read touches 1 disk; parity only on failure · delete frees whole stripes (consent) · declustered: all disks rebuild in parallel
+  loss/stripe/yr ≈ 12·AFR·C(11,3)·p³, p = AFR·T/8,760: AFR 5%, T 28 h -> 4×10⁻¹⁰/stripe -> ×37 = 1.5×10⁻⁸/object (7.8 nines)
+  T 1.9 h (3 GB/s floor) -> 1.3×10⁻¹³/stripe -> 5×10⁻¹²/object = 11 nines · loss ∝ T³ · fallback 9+4 = 14 nines at 44% overhead
+  REJECT 3× replication (15,000 disks); striping a segment over 9 disks (6×10⁵ reads/s > 2.7×10⁵); mixed-object stripes (deletion re-encodes)
+B staging tier: job queue = demand forecast (Netflix at night) · stager copies next job's manifest to NVMe at ≤ 50 GB/s
+  keyed by shard id -> overlapping datasets share bytes; refcount pins running + next; LRU on unpinned · start gate = first epoch staged
+  misses read through; loader prefetch buffer absorbs · lost node: refetch 32 TB at 5 GB/s < 2 h · REJECT pull cache (cold epoch vs HDD IOPS); second PFS
+```
+
+**52-57 min · Failures and trade-offs, bottom**
+
+```text
+disk dies daily      -> loader errors, scrubber -> degraded reads 9 of 11, rebuild 1.9 h from disk index -> nothing (jobs read NVMe)
+2 disks same stripes -> stripe state = 2 missing -> those ~11,000 stripes first (66 GB at 3 GB/s ≈ 20 s)   -> nothing
+manifest replica dies-> quorum health          -> 2 of 3 serve, rebuild from peers, loaders keep cached manifests -> nothing
+chose: 9+3 one chunk per disk over 3× · whole segment over striping · per-object stripes · declustered 3 GB/s floor · pre-stage over pull · disposable NVMe · immutable manifests · clips as ranges, packed on freeze
+```
+
+**57-60 min · Summary, said not written.** "A 100 PB immutable lake feeding 1,000 GPUs at 200 GB/s. IOPS is the forcing number: 6,700 disks for capacity but only 4× read headroom, so jobs read pre-staged NVMe and the HDDs see staging, misses and repair. One 3 MB chunk per disk in 9+3 stripes that never mix objects, declustered rebuild at a 3 GB/s floor for 11 nines, and immutable manifests so a running job never sees its input change."
+
+<p class="rev-short">Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.</p>
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b03-board">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b03-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 03 · NUMBERS</span><span class="rev-q">Petabyte video lake feeding a 1,000-GPU training cluster: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+100 PB × 12/9 = 133 PB raw ÷ 20 TB = 6,700 HDD (+5% spare) in ~110 chassis of 60 · renditions 25 PB -> own pool, ~1,700 disks
+objects 100 PB ÷ 1 GB = 10^8 · segments 100 PB ÷ 3 MB = 3.3×10^10 · manifests 10^8 × 10 KB = 1 TB
+reads 1,000 GPU × 200 MB/s = 200 GB/s ÷ 3 MB = 6.7×10^4 reads/s  vs  6,700 × 40 IOPS = 2.7×10^5 -> only 4× headroom
+NVMe 125 nodes × 4 × 8 TB = 4 PB, 1.5 TB/s · hot set 5 datasets × 500 TB = 2.5 PB (63%) · stage 500 TB at 50 GB/s = 2.8 h
+rebuild 20 TB: 1 disk 28 h; declustered floor 3 GB/s -> 1.9 h (27 GB/s reads = 3% of IOPS) · ingest 42-44 PB/yr = 2,800 disks/yr
+-> IOPS forces it: 4× headroom only while healthy -> jobs read staged NVMe; HDDs see staging, misses, repair
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b03-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b03-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 03 · DIAGRAM</span><span class="rev-q">Petabyte video lake feeding a 1,000-GPU training cluster: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 board 1 gateways + licensed footage -> ingest API (multipart) -> placement + EC 9+3 (one 3 MB chunk per disk) -> HDD store
+2 placement -> manifest KV, disk index · ingest "ready" -> Kafka -> transcode workers -> renditions -> placement; attributes -> catalog
+3 researchers -> dataset service (filter -> frozen manifest) -> manifests store
+4 job scheduler -> stager (throttled prefetch) -> HDD store -> cluster NVMe (4 PB) <- data loaders (1,000 GPUs); miss -> HDD
+5 repair service (priority by redundancy left) -> disk index, HDD · scrubber -> HDD
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b03-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b03-deepdives">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 03 · DEEP DIVES</span><span class="rev-q">Petabyte video lake feeding a 1,000-GPU training cluster: the two deep dives (36-52 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+A EC layout + rebuild: stripe = 9 consecutive segments of ONE object + 3 parity, 12 disks in 12 chassis; 37 stripes per 1 GB object
+  read touches 1 disk; parity only on failure · delete frees whole stripes (consent) · declustered: all disks rebuild in parallel
+  loss/stripe/yr ≈ 12·AFR·C(11,3)·p³, p = AFR·T/8,760: AFR 5%, T 28 h -> 4×10⁻¹⁰/stripe -> ×37 = 1.5×10⁻⁸/object (7.8 nines)
+  T 1.9 h (3 GB/s floor) -> 1.3×10⁻¹³/stripe -> 5×10⁻¹²/object = 11 nines · loss ∝ T³ · fallback 9+4 = 14 nines at 44% overhead
+  REJECT 3× replication (15,000 disks); striping a segment over 9 disks (6×10⁵ reads/s > 2.7×10⁵); mixed-object stripes (deletion re-encodes)
+B staging tier: job queue = demand forecast (Netflix at night) · stager copies next job's manifest to NVMe at ≤ 50 GB/s
+  keyed by shard id -> overlapping datasets share bytes; refcount pins running + next; LRU on unpinned · start gate = first epoch staged
+  misses read through; loader prefetch buffer absorbs · lost node: refetch 32 TB at 5 GB/s < 2 h · REJECT pull cache (cold epoch vs HDD IOPS); second PFS
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b03-deepdives">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b04-board">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 04 · WHOLE BOARD</span><span class="rev-q">The training factory: schedule, checkpoint, evaluate, ship (the infra spine): write the whole board, scale first.</span></span></summary>
+<div class="rev-a">
+
+**0-8 min · Requirements, top-left**
+
+```text
+FR   submit/cancel/watch train + eval jobs, one-off or nightly · gang: all GPUs or none, within team quota + priority
+     preempt lower priority (checkpoint before kill), backfill · auto checkpoint/resume after node failure
+     registry: immutable artifact + lineage (data manifest, commit, config) · promote through eval gates, roll out per region, auto-rollback
+NFR  never two leaders / zero double-allocated GPUs (fencing) · scheduler failover < 30 s, running jobs unaffected
+     work lost/failure avg 25 min, max 40 · checkpoint stall < 2 min (target 30 s) · goodput > 94% · rollback < 1 min
+OUT  training code + parallelism, object store internals (board 3), serving data plane (board 2), chargeback
+```
+
+**8-13 min · Numbers, top-right**
+
+```text
+125 nodes × 8 = 1,000 GPU; flagship 960 GPU on 120 nodes + 5 hot spares · 2,000 jobs/day = 0.02/s · heartbeats 12.5/s -> control plane idle
+70B fp16 = 140 GB; ×4 optimizer = 560 GB/checkpoint (≈ 1 TB with fp32 master weights) · every 30 min, keep 10 -> 5.6 TB/job
+sync to store in 2 min = 4.7 GB/s burst ✗ · per node 560 ÷ 120 = 4.7 GB -> NVMe 1.6 s + peer copy < 1 s ✓ · drain 1.5 GB/s -> durable in 6 min
+work lost = 960 × (15 + 10 restart) min ÷ 60 ≈ 400 GPU-h × 2/day ≈ 3.5% · Young: √(2 × 0.5 min × 720 min MTBF) ≈ 27 min -> 30 min
+rollout 250 hosts × 140 GB = 35 TB; origin 10 GB/s -> 1 h -> P2P
+-> 400 GPU-h per failure vs a 560 GB checkpoint forces: local commit in seconds, async drain, cadence from failure rate
+```
+
+**13-17 min · API, left**
+
+```text
+POST /jobs {team, priority, gpus, image_digest, dataset_manifest_id, config, max_runtime, preemptible, idempotency_key} -> 201 {job_id, QUEUED}
+GET  /jobs/{id}/events?stream (SSE): QUEUED RESERVING RUNNING CHECKPOINTING PREEMPTED RESTARTING SUCCEEDED FAILED
+POST /schedules {cron, job_template, missed_run_policy: run_late_within_4h|skip}
+POST /models/{name}/versions {checkpoint_uri, sha256, lineage} -> {version_id} (same digest -> same version)
+POST /rollouts {model, version, regions, steps [1,10,50,100], gates {p99, error, eval}} -> 202 · POST /rollouts/{id}/rollback
+```
+
+**17-21 min · Data, left under API**
+
+```text
+job(job_id) state machine, quota sums per team          -> Postgres
+allocation(node, gpu) -> job, written with epoch check   -> Postgres (1 row per GPU = double booking is a constraint violation)
+scheduler_epoch (single row, fencing token)             -> Postgres, SELECT FOR UPDATE in every allocation tx
+leader lease · node leases (10 s KeepAlive, 20 s TTL)   -> lock service, 5-node consensus
+checkpoint_manifest(job, step): LOCAL_COMMITTED|DURABLE, shards, checksums, holders -> Postgres; shards -> NVMe (writer + peer) -> object store
+model_version(model, id) + lineage -> Postgres; blob by sha256 -> object store · rollout(rollout_id, region, step) -> Postgres
+```
+
+**21-36 min · Diagram, center, in draw order**
+
+```text
+1 researchers/CLI -> job API (idempotent) -> Postgres (jobs, allocations, registry) · nightly trigger -> job API
+2 lock service -> scheduler leader (gang, quota, preempt, backfill) -> Postgres · leader -> node agents ×125 (lease 10 s) -> lock service
+3 agents -> local NVMe (writer + peer) -> object store (drain) -> registry (immutable versions)
+4 registry -> eval gates (64-GPU jobs via job API) -> rollout controller (canary per region) -> serving fleet (P2P pull) -> metrics -> controller
+```
+
+**36-52 min · Two deep dives, annotate the boxes**
+
+```text
+A gang + preempt: queues per team by deficit vs quota; prod > research > backfill · reserve N GPUs in one island -> commit all or release all, 60 s timeout
+  every allocation tx locks epoch row, compares fencing token, aborts if lower · preempt: fewest lowest-priority victims freeing an island, "checkpoint now", 5 min grace, kill
+  backfill jobs with max_runtime < time to next big reservation · anti-starvation: big job waiting > 2 h gets a reservation
+  REJECT pod-by-pod K8s (two 512 jobs each hold 400 forever); optimistic multi-scheduler (half-cluster jobs conflict with everything)
+B checkpoint path: GPU -> pinned host RAM (only stall) -> NVMe 1.6 s + peer NVMe -> LOCAL_COMMITTED ~10 s -> drain 1.5 GB/s -> DURABLE ~6 min
+  cadence Young √(2·cost·MTBF) = 27 -> 30 min · manifest lists shards+checksums+holders; partial step never resumed · resume from newest LOCAL_COMMITTED with live holders, else DURABLE
+  reshard on resume · keep 10 + milestones, GC after manifest expired · REJECT sync write to store (4.7 GB/s, slowest shard stalls all); PFS sized for burst (idle 28/30 min)
+```
+
+**52-57 min · Failures and trade-offs, bottom**
+
+```text
+node dies mid-step  -> lease 20 s + agent aborts collectives -> spare node, restart from LOCAL_COMMITTED -> RESTARTING, ≤ 30 + 10 min lost
+leader dies/pauses  -> session TTL 20 s, standby takes lock 1 s -> reads Postgres; stale writes fail epoch check -> queue waits ~21 s, jobs unaffected
+rollout degrades p99-> gate breach 2 min vs OLD version   -> flip pointer back (old resident), freeze, page  -> minutes of higher p99 for 1-10%
+chose: reserve->commit over pod-by-pod · one leader + epoch fencing · cadence from failure rate · LOCAL_COMMITTED then DURABLE · 960 + 5 spares · content-addressed versions, pointer flip · P2P weights
+```
+
+**57-60 min · Summary, said not written.** "The control plane of a 1,000-GPU cluster growing to 10,000. A 560 GB checkpoint and 400 GPU-hours per failure twice a day force the design: one leader with fencing on every allocation and reserve-then-commit gangs so no GPU is booked twice; checkpoints committed on writer plus peer NVMe in seconds with an async drain so the recovery point is fresh; immutable versions rolled out by pointer flip with the old version resident."
+
+<p class="rev-short">Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.</p>
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b04-board">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b04-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 04 · NUMBERS</span><span class="rev-q">The training factory: schedule, checkpoint, evaluate, ship (the infra spine): the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+125 nodes × 8 = 1,000 GPU; flagship 960 GPU on 120 nodes + 5 hot spares · 2,000 jobs/day = 0.02/s · heartbeats 12.5/s -> control plane idle
+70B fp16 = 140 GB; ×4 optimizer = 560 GB/checkpoint (≈ 1 TB with fp32 master weights) · every 30 min, keep 10 -> 5.6 TB/job
+sync to store in 2 min = 4.7 GB/s burst ✗ · per node 560 ÷ 120 = 4.7 GB -> NVMe 1.6 s + peer copy < 1 s ✓ · drain 1.5 GB/s -> durable in 6 min
+work lost = 960 × (15 + 10 restart) min ÷ 60 ≈ 400 GPU-h × 2/day ≈ 3.5% · Young: √(2 × 0.5 min × 720 min MTBF) ≈ 27 min -> 30 min
+rollout 250 hosts × 140 GB = 35 TB; origin 10 GB/s -> 1 h -> P2P
+-> 400 GPU-h per failure vs a 560 GB checkpoint forces: local commit in seconds, async drain, cadence from failure rate
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b04-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b04-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 04 · DIAGRAM</span><span class="rev-q">The training factory: schedule, checkpoint, evaluate, ship (the infra spine): the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 researchers/CLI -> job API (idempotent) -> Postgres (jobs, allocations, registry) · nightly trigger -> job API
+2 lock service -> scheduler leader (gang, quota, preempt, backfill) -> Postgres · leader -> node agents ×125 (lease 10 s) -> lock service
+3 agents -> local NVMe (writer + peer) -> object store (drain) -> registry (immutable versions)
+4 registry -> eval gates (64-GPU jobs via job API) -> rollout controller (canary per region) -> serving fleet (P2P pull) -> metrics -> controller
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b04-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b04-deepdives">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 04 · DEEP DIVES</span><span class="rev-q">The training factory: schedule, checkpoint, evaluate, ship (the infra spine): the two deep dives (36-52 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+A gang + preempt: queues per team by deficit vs quota; prod > research > backfill · reserve N GPUs in one island -> commit all or release all, 60 s timeout
+  every allocation tx locks epoch row, compares fencing token, aborts if lower · preempt: fewest lowest-priority victims freeing an island, "checkpoint now", 5 min grace, kill
+  backfill jobs with max_runtime < time to next big reservation · anti-starvation: big job waiting > 2 h gets a reservation
+  REJECT pod-by-pod K8s (two 512 jobs each hold 400 forever); optimistic multi-scheduler (half-cluster jobs conflict with everything)
+B checkpoint path: GPU -> pinned host RAM (only stall) -> NVMe 1.6 s + peer NVMe -> LOCAL_COMMITTED ~10 s -> drain 1.5 GB/s -> DURABLE ~6 min
+  cadence Young √(2·cost·MTBF) = 27 -> 30 min · manifest lists shards+checksums+holders; partial step never resumed · resume from newest LOCAL_COMMITTED with live holders, else DURABLE
+  reshard on resume · keep 10 + milestones, GC after manifest expired · REJECT sync write to store (4.7 GB/s, slowest shard stalls all); PFS sized for burst (idle 28/30 min)
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b04-deepdives">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b05-board">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 05 · WHOLE BOARD</span><span class="rev-q">Collaborative AI video workspace for organizations (people working together, with AI participants): write the whole board, scale first.</span></span></summary>
+<div class="rev-a">
+
+**0-8 min · Requirements, top-left**
+
+```text
+FR   orgs, roles, SSO, audit · live video room ≤ 50 (WebRTC), recording · shared canvas + notes that converge (offline too)
+     room chat, opened read-only to thousands · presence + cursors · AI assistants join as participants (transcribe, summarize, detect, answer)
+NFR  media < 300 ms glass-to-glass · state/cursors < 100 ms · chat < 200 ms · AI events < 1 s
+     removed user loses every plane < 1 s · zero lost acked edits; viewer chat may shed, history may not · media failure never stops editing · AI cost per org bounded
+OUT  the model/serving (board 2), codec/SFU internals, billing, mobile push
+```
+
+**8-13 min · Numbers, top-right**
+
+```text
+50k rooms × 8 = 400k participants + 50 big rooms × 2k = 100k viewers -> 500k sockets
+media 400k × 7 receivers × 1 Mbps = 2.8 Tbps ≈ 350 GB/s ÷ 5 Gbps/SFU (CPU-bound) = 560 -> ~700 SFUs · 50-room worst 50×49×1 = 2.45 Gbps -> cap 9 tiles -> 225 Mbps
+state 50k × 80 msg/s = 4M/s in, ×7 = 28M/s raw -> batch 100 ms -> 500k × 10 = 5M/s ÷ 10^5 per gateway = 50 -> plan 100 (5k sockets each)
+AI 10k sessions × 5 fps = 50k f/s ÷ 500 = 100-200 GPU · room state 0.6 MB × 50k = 30 GB · op log ~14 TB/day · snapshots 500 MB/s · recordings 45 TB/day
+-> 2.8 Tbps vs 5M frames/s: two planes on different servers, media sized by CPU, state by frames per second
+```
+
+**13-17 min · API, left**
+
+```text
+POST /rooms {org, mode: meeting|broadcast, recording, assistants[]} + idempotency_key -> 201 {room_id}
+POST /rooms/{id}/join -> {sfu_url, ice, media_token, state_ws_url, state_token, snapshot_url, snapshot_seq}  (tokens expire in 60 s and carry perm_version, the permission version they were issued under)
+WS up: {op_id: client+counter, doc: canvas|notes, update: CRDT bytes}   down: every 100 ms {seq_from, seq_to, updates, cursors, presence}; reconnect {last_seq}
+POST /rooms/{id}/messages {client_nonce, text} -> {message_id (Snowflake)}   (REST send, WS receive, as Discord)
+POST /rooms/{id}/assistants {assistant, scopes [media:video, canvas:suggest, chat:post], fps} -> {participant_id} · 429 when org AI quota spent
+```
+
+**17-21 min · Data, left under API**
+
+```text
+org, user, role, membership                         -> Postgres
+permission snapshot(room:user, perm_version)        -> Redis, deleted on role event
+room directory(room_id -> room server, SFU, epoch)   -> Redis 10 s lease; epoch bumped on reassignment (fencing)
+canvas/notes snapshot(room, doc, seq)               -> object store (600 KB, every 60 s or 5,000 ops)
+CRDT update log(room, doc, seq)                     -> Kafka -> Cassandra · chat(room + day, Snowflake) -> ScyllaDB
+audit(org, ts) -> Kafka -> write-once object store · recordings(org/room/segment) -> object store
+```
+
+**21-36 min · Diagram, center, in draw order**
+
+```text
+1 clients <-> SFU cluster (media plane, ~700)      2 clients <-> WS gateways (state plane, ~100) <-> room servers (CRDT merge, chat order, sticky by room+epoch)
+3 clients -> API gateway (SSO, JWT, org rate limits) -> room servers   4 room servers -> pub/sub per room -> viewer gateways (shed, batch)
+5 room servers -> Kafka (ops, chat, audit) -> stores        6 SFU -> AI workers (bot peers) <-> AI platform (board 2); AI workers -> WS (suggestion layer)
+7 identity service -> WS gateways, room servers, SFUs (revocations)    8 SFU -> recorder -> object store; SFU -> live packager -> CDN (viewers)
+```
+
+**36-52 min · Two deep dives, annotate the boxes**
+
+```text
+A editing consistency: canvas = CRDT map shape_id -> per-property LWW registers (HLC + client id); move and recolor both survive; delete beats concurrent move; tombstones to snapshot
+  notes = sequence CRDT (Y.js style), unique id per insert · room server relays + assigns delivery seq for resume; correctness never depends on its order
+  offline: client keeps state + unacked ops, sends state vector on reconnect, both merge · AI writes suggestion layer only; human accept -> human op
+  chat is NOT a CRDT: Snowflake id per room · REJECT central OT (every op needs server, hours offline transform badly); whole-object LWW (loses one of two edits)
+B large-room fan-out: ≤ 50 participants direct; viewers read-only behind relay · room server publishes once -> topic -> viewer gateways -> own sockets (one RPC per gateway)
+  shed above 50 msg/s to ~10/s per viewer; Kafka/Scylla keep 100% · never shed host/moderator/AI summary; reactions -> counts · slow client: drop oldest queued
+  late joiners: snapshot URL + AI summary of last 10 min · perm_version on each socket, recheck on next message · viewers' media = CDN, never SFU
+  REJECT room server writes every socket (10⁶ sends/s from one process); polling (10⁴ req/s per room, seconds late)
+```
+
+**52-57 min · Failures and trade-offs, bottom**
+
+```text
+SFU dies        -> 3 s RTCP silence -> fence old SFU (epoch), standby SFU, new URL over WS, renegotiate 1-2 s -> video freezes 4-6 s, chat/canvas fine
+WS gateway dies -> ~5k sockets drop   -> reconnect 0-5 s jitter with last_seq; room server lease lapses, epoch bump, load snapshot+log -> banner seconds, no lost edits
+AI slow         -> result p95 > 2 s, 429s -> breaker, drop late frames, 5 -> 1 fps, "delayed" status -> captions late/sparser, humans unaffected
+chose: separate media/state planes · CRDT over OT · per-property registers · Snowflake for chat · relay tree + shedding · AI as bot peer with scopes · push revocation + 60 s tokens · snapshots on time not on ops
+```
+
+**57-60 min · Summary, said not written.** "Teams watch video, draw, write and chat with AI participants in 50,000 rooms. 2.8 Tbps of media against 5 million state frames a second means two planes sized separately. Per-property CRDT registers for the canvas, a sequence CRDT for notes and AI edits in a suggestion layer keep three kinds of writer converging; a relay tree with shedding serves large rooms while history keeps every message; AI participants are bot peers under per-org quotas."
+
+<p class="rev-short">Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.</p>
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b05-board">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b05-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 05 · NUMBERS</span><span class="rev-q">Collaborative AI video workspace for organizations (people working together, with AI participants): the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+50k rooms × 8 = 400k participants + 50 big rooms × 2k = 100k viewers -> 500k sockets
+media 400k × 7 receivers × 1 Mbps = 2.8 Tbps ≈ 350 GB/s ÷ 5 Gbps/SFU (CPU-bound) = 560 -> ~700 SFUs · 50-room worst 50×49×1 = 2.45 Gbps -> cap 9 tiles -> 225 Mbps
+state 50k × 80 msg/s = 4M/s in, ×7 = 28M/s raw -> batch 100 ms -> 500k × 10 = 5M/s ÷ 10^5 per gateway = 50 -> plan 100 (5k sockets each)
+AI 10k sessions × 5 fps = 50k f/s ÷ 500 = 100-200 GPU · room state 0.6 MB × 50k = 30 GB · op log ~14 TB/day · snapshots 500 MB/s · recordings 45 TB/day
+-> 2.8 Tbps vs 5M frames/s: two planes on different servers, media sized by CPU, state by frames per second
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b05-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b05-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 05 · DIAGRAM</span><span class="rev-q">Collaborative AI video workspace for organizations (people working together, with AI participants): the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 clients <-> SFU cluster (media plane, ~700)      2 clients <-> WS gateways (state plane, ~100) <-> room servers (CRDT merge, chat order, sticky by room+epoch)
+3 clients -> API gateway (SSO, JWT, org rate limits) -> room servers   4 room servers -> pub/sub per room -> viewer gateways (shed, batch)
+5 room servers -> Kafka (ops, chat, audit) -> stores        6 SFU -> AI workers (bot peers) <-> AI platform (board 2); AI workers -> WS (suggestion layer)
+7 identity service -> WS gateways, room servers, SFUs (revocations)    8 SFU -> recorder -> object store; SFU -> live packager -> CDN (viewers)
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b05-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b05-deepdives">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 05 · DEEP DIVES</span><span class="rev-q">Collaborative AI video workspace for organizations (people working together, with AI participants): the two deep dives (36-52 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+A editing consistency: canvas = CRDT map shape_id -> per-property LWW registers (HLC + client id); move and recolor both survive; delete beats concurrent move; tombstones to snapshot
+  notes = sequence CRDT (Y.js style), unique id per insert · room server relays + assigns delivery seq for resume; correctness never depends on its order
+  offline: client keeps state + unacked ops, sends state vector on reconnect, both merge · AI writes suggestion layer only; human accept -> human op
+  chat is NOT a CRDT: Snowflake id per room · REJECT central OT (every op needs server, hours offline transform badly); whole-object LWW (loses one of two edits)
+B large-room fan-out: ≤ 50 participants direct; viewers read-only behind relay · room server publishes once -> topic -> viewer gateways -> own sockets (one RPC per gateway)
+  shed above 50 msg/s to ~10/s per viewer; Kafka/Scylla keep 100% · never shed host/moderator/AI summary; reactions -> counts · slow client: drop oldest queued
+  late joiners: snapshot URL + AI summary of last 10 min · perm_version on each socket, recheck on next message · viewers' media = CDN, never SFU
+  REJECT room server writes every socket (10⁶ sends/s from one process); polling (10⁴ req/s per room, seconds late)
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b05-deepdives">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b06-board">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 06 · WHOLE BOARD</span><span class="rev-q">Find anything in a billion clips: search, suggest, label (the retrieval spine): write the whole board, scale first.</span></span></summary>
+<div class="rev-a">
+
+**0-8 min · Requirements, top-left**
+
+```text
+FR   search by text, by example clip, by metadata (org, device, time) · hybrid ranking over embeddings + labels with filters
+     new footage searchable in minutes, new labels within an hour · typeahead over tags/entities
+     auto-labels (model) + human review, label versions · datasets = immutable manifests over one label version
+NFR  search p99 < 500 ms · typeahead < 100 ms · freshness 5 min clips / 1 h labels · recall@50 ≥ 95% vs exact, nightly
+     tenant isolation enforced inside every shard · 99.9%, partial results beat none
+OUT  the lake (board 3), training the embedder, annotation UI, billing
+```
+
+**8-13 min · Numbers, top-right**
+
+```text
+10⁹ clips × (1,024 dims × 2 B + 256 B HNSW links) = 2.3 KB -> 2.3 TB in RAM -> 16 shards (144 GB each, grow to 300 GB) × 3 replicas = 48 hosts
+1,000 QPS × 16 shards = 16k shard searches/s; 30 ms/core -> 32 cores ≈ 1,000/s per host -> 16 hosts per replica set
+ingest 10⁷/day ÷ 86,400 ≈ 116 clips/s ÷ 100/GPU ≈ 2 embed GPUs (plan 4) · +23 GB/day index -> 4.6B clips in a year
+labels 10⁹ × 20 × 4 B = 80 GB · filter columns 16 GB · metadata 10⁹ × 500 B = 500 GB KV · results 16 × 1.2 KB = 19 KB/query
+-> 2.3 TB of vectors in RAM forces 16 shards and a scatter-gather on every query: tail latency and filter handling are the design
+```
+
+**13-17 min · API, left**
+
+```text
+POST /search {query: text|example_clip_id, filters {device_ids, time, labels}, k, index_version, cursor} -> {results [{clip_id, score, labels, thumb}], label_version, partial}
+     (org_id from token, never the body)
+GET  /suggest?prefix=fork -> {suggestions [{text, kind, count}]}  (client debounce 100 ms)
+POST /clips/{id}/labels {label, source: model|human, model_version, supersedes, idempotency_key} -> {label_event_id, label_version}
+POST /datasets {name, filter, label_as_of} -> 202 {dataset_version_id}
+POST /index-builds {embedding_model} -> 202 · PUT /index-aliases/prod {build_id}  (flip; second flip = rollback)
+```
+
+**17-21 min · Data, left under API**
+
+```text
+clip metadata(clip_id; idx org+time)            -> KV, p99 < 10 ms (hydration)
+vectors(clip_id, model)                         -> object store, columnar = source of truth; every index rebuilt from it
+ANN segments(shard, segment, index_version)     -> RAM on shard hosts; files on object store (immutable, swap as units)
+label postings(term -> clip_ids) per shard · filter bitmaps(org, day) per shard -> same shard hosts
+label events(clip_id, label_event_id)           -> Kafka -> Cassandra (append-only)
+dataset manifest(version) -> object store + Postgres row · result cache(hash(query, filters, version), TTL 60 s) -> distributed cache · trie snapshot -> suggest RAM
+```
+
+**21-36 min · Diagram, center, in draw order**
+
+```text
+1 video lake (new clip events) -> embed + auto-label GPU workers -> Kafka (vectors, labels by shard) + object store (vectors) · human review -> Kafka
+2 Kafka -> 16 shard groups × 3 replicas (immutable segments + delta index) <- merge scheduler (6 h, tiered compaction)
+3 client -> API gateway (token -> org) -> query service (parse, encode 20 ms, plan by selectivity) -> result cache -> scatter to 16 shards -> merge -> re-ranker (top 200, GPU) -> metadata KV (top 50)
+4 client -> suggest servers (trie in RAM) <- streaming counts <- query logs      5 Kafka -> dataset builder -> manifests
+```
+
+**36-52 min · Two deep dives, annotate the boxes**
+
+```text
+A sharding + filters: shard by hash(clip_id) = document-partitioned (Search); each shard a full 62M-clip index with org/day bitmaps -> planner reads counts
+  > 10% of shard: HNSW then post-filter, over-fetch k/selectivity · 1-10%: filtered traversal (admit only matching ids, wider beam) · < 1%: skip graph, exact scan (625k × 1,024 ≈ 64 ms/core, 8 ms on 8 cores; 0.01% -> < 1 ms)
+  shards return RAW cosine + RAW label score (global IDF), never fused ranks -> query service merges each list, fuses once (RRF) · nightly recall@50 per plan
+  REJECT post-filter only (0.01% needs 10,000× over-fetch); partition by vector cluster (hot clusters, filtered recall drops)
+B freshness: immutable segments + one small mutable delta HNSW per shard; query reads both · new vector -> shard's Kafka partition -> every replica inserts to delta (< 5 min)
+  1.4 GB/shard/day -> merge every 6 h off to the side, tiered compaction keeps < 10 segments; swap atomic, double-buffered; merges on one replica at a time (2× headroom left)
+  labels: postings updated in minutes, each carries label_version; results return it · deletes: tombstone bitmap at query time · REJECT nightly rebuild (24 h stale); in-place inserts into big graph
+```
+
+**52-57 min · Failures and trade-offs, bottom**
+
+```text
+shard host dies   -> no reply by hedge deadline -> hedge to replica; rebuild from segment files + Kafka offset -> nothing or one slower query; all replicas down -> partial: true
+embed queue lags  -> Kafka lag > 5 min           -> add embed GPUs; index labels/metadata first             -> new clips late in vector search only
+bad label batch   -> reviewers overturn > 5%     -> stop that model version, superseding events; datasets stay pinned -> wrong labels ≤ 1 h
+chose: shard by clip id · plan by selectivity · vectors+labels+filters in one shard · delta + immutable segments · versioned label events · hedge at shard p95 (15% of queries hit some p99) · trie rebuilt offline
+```
+
+**57-60 min · Summary, said not written.** "Search over a billion clips by text, example and metadata. 2.3 TB of vectors in RAM means 16 shards and a scatter-gather on every query inside 500 ms, so the design is a filter planner that picks post-filter, filtered traversal or exact scan by selectivity, immutable segments plus a small delta for minutes of freshness, and versioned label events so re-labeling never changes a dataset in flight."
+
+<p class="rev-short">Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.</p>
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b06-board">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b06-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 06 · NUMBERS</span><span class="rev-q">Find anything in a billion clips: search, suggest, label (the retrieval spine): the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+10⁹ clips × (1,024 dims × 2 B + 256 B HNSW links) = 2.3 KB -> 2.3 TB in RAM -> 16 shards (144 GB each, grow to 300 GB) × 3 replicas = 48 hosts
+1,000 QPS × 16 shards = 16k shard searches/s; 30 ms/core -> 32 cores ≈ 1,000/s per host -> 16 hosts per replica set
+ingest 10⁷/day ÷ 86,400 ≈ 116 clips/s ÷ 100/GPU ≈ 2 embed GPUs (plan 4) · +23 GB/day index -> 4.6B clips in a year
+labels 10⁹ × 20 × 4 B = 80 GB · filter columns 16 GB · metadata 10⁹ × 500 B = 500 GB KV · results 16 × 1.2 KB = 19 KB/query
+-> 2.3 TB of vectors in RAM forces 16 shards and a scatter-gather on every query: tail latency and filter handling are the design
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b06-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b06-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 06 · DIAGRAM</span><span class="rev-q">Find anything in a billion clips: search, suggest, label (the retrieval spine): the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 video lake (new clip events) -> embed + auto-label GPU workers -> Kafka (vectors, labels by shard) + object store (vectors) · human review -> Kafka
+2 Kafka -> 16 shard groups × 3 replicas (immutable segments + delta index) <- merge scheduler (6 h, tiered compaction)
+3 client -> API gateway (token -> org) -> query service (parse, encode 20 ms, plan by selectivity) -> result cache -> scatter to 16 shards -> merge -> re-ranker (top 200, GPU) -> metadata KV (top 50)
+4 client -> suggest servers (trie in RAM) <- streaming counts <- query logs      5 Kafka -> dataset builder -> manifests
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b06-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b06-deepdives">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 06 · DEEP DIVES</span><span class="rev-q">Find anything in a billion clips: search, suggest, label (the retrieval spine): the two deep dives (36-52 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+A sharding + filters: shard by hash(clip_id) = document-partitioned (Search); each shard a full 62M-clip index with org/day bitmaps -> planner reads counts
+  > 10% of shard: HNSW then post-filter, over-fetch k/selectivity · 1-10%: filtered traversal (admit only matching ids, wider beam) · < 1%: skip graph, exact scan (625k × 1,024 ≈ 64 ms/core, 8 ms on 8 cores; 0.01% -> < 1 ms)
+  shards return RAW cosine + RAW label score (global IDF), never fused ranks -> query service merges each list, fuses once (RRF) · nightly recall@50 per plan
+  REJECT post-filter only (0.01% needs 10,000× over-fetch); partition by vector cluster (hot clusters, filtered recall drops)
+B freshness: immutable segments + one small mutable delta HNSW per shard; query reads both · new vector -> shard's Kafka partition -> every replica inserts to delta (< 5 min)
+  1.4 GB/shard/day -> merge every 6 h off to the side, tiered compaction keeps < 10 segments; swap atomic, double-buffered; merges on one replica at a time (2× headroom left)
+  labels: postings updated in minutes, each carries label_version; results return it · deletes: tombstone bitmap at query time · REJECT nightly rebuild (24 h stale); in-place inserts into big graph
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b06-deepdives">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b07-board">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 07 · WHOLE BOARD</span><span class="rev-q">Reserve and dispatch GPU capacity for live streams: write the whole board, scale first.</span></span></summary>
+<div class="rev-a">
+
+**0-8 min · Requirements, top-left**
+
+```text
+FR   search free capacity by region + time, with price/slot · basket holds that expire · checkout: pay + confirm all or none
+     dispatch a live stream to nearest pool with free units, reservation first · re-dispatch after pool/region failure · cancel with stated refund
+NFR  never double book (except stated 10% overbooking) · search p99 < 300 ms, seconds stale ok · checkout < 2 s + bank call
+     dispatch < 100 ms, 99.99% · booking = consistency over availability; dispatch = availability · re-place a failed region inside 60 s resume grace
+OUT  GPU serving, model routing (board 2), spot market (board 8), invoicing, fraud
+```
+
+**8-13 min · Numbers, top-right**
+
+```text
+unit = 1 live stream; 50 streams/GPU · 5 regions × 4 pools × 100 GPU × 50 = 100k units · slots 15 min -> 20 × 96 × 90 d = 172,800 rows ≈ 17 MB
+bookings 100k/day = 1.2/s, 6/s peak -> 16 slot rows each ≈ 100 row writes/s · searches 1,000:1 -> 1,200/s, 6,000 peak
+heartbeats 100k ÷ 4 s = 25k/s (Redis) · pool reports 20/s · dispatches 100k ÷ 600 s ≈ 170/s · sessions 100k × 200 B = 20 MB
+region loss at 09:00: 20k units, 14k live at 70% -> re-place in 60 s; survivors 4 × 6k = 24k free
+-> volume is trivial; the FAILURE case forces it: 14,000 streams moving in 60 s, and the free-unit margin across regions
+```
+
+**13-17 min · API, left**
+
+```text
+GET  /capacity/search?region&start&end&units -> [{pool, slots [{slot, free, price}], quote_id (10 min)}]
+POST /baskets/{id}/items {pool, start, end, units, quote_id} + Idempotency-Key -> {hold_id, expires_at, locked_price} · 409 if gone
+POST /baskets/{id}/checkout {payment_token} + Idempotency-Key -> 202 {order_id, PENDING} -> CONFIRMED | FAILED (webhook/poll); all or none
+POST /streams/dispatch {reservation_id | on_demand, device_region, model} -> {pool, gateway_url, token, lease_expires}; 429 + jittered Retry-After in storms
+DELETE /reservations/{id} -> {refund}  (full > 24 h before, half after)
+```
+
+**17-21 min · Data, left under API**
+
+```text
+slot(pool, slot_start): total, sellable (= units we may sell: total, or 1.1 × total where overbooking is allowed), reserved, held, version -> Postgres, one primary per region; conditional update = the guard
+hold(hold_id; idx pool+slot): units, slots, expires_at, IN_CHECKOUT, fencing token -> same shard, same tx as slot rows
+reservation(id): customer, pool, slots, units, status -> Postgres · basket(customer) -> DynamoDB + Redis write-through (cart)
+idem(customer, key) -> Postgres UNIQUE · ledger(entry) -> Postgres append-only (Stripe)
+pool_load(pool): free units, healthy, report_seq -> Redis per region, TTL 3 s · claims(pool, report_seq) -> Redis counter · session(session_id) -> Redis TTL 15 s
+price_multiplier(pool, slot) -> Redis, rewritten each minute
+```
+
+**21-36 min · Diagram, center, in draw order**
+
+```text
+1 customers/autoscalers -> API gateway (auth, rate limit) -> search service -> availability cache (CDC from Postgres) + pricer (surge per pool/slot)
+2 gateway -> basket service -> basket store · basket -> reservation service (holds, checkout saga) -> Postgres per region -> CDC -> cache
+3 reservation service -> payment gateway (idempotent charge, ledger) · -> lock manager (basket lease + fencing token at checkout)
+4 devices -> regional dispatcher (pool table in RAM) -> Redis (pool load, claims, sessions) <- GPU pools report every 1 s · dispatcher -> Postgres (reservation check) · -> admission bucket (reconnects) -> gateway_url back to device
+```
+
+**36-52 min · Two deep dives, annotate the boxes**
+
+```text
+A no double booking: (pool, slot) row = AirBnB's (listing, date) · hold = one conditional UPDATE: held += u WHERE sellable - reserved - held ≥ u, all 32 rows in slot order, one tx (~5 ms, ~200/s on the hottest row vs 6/s)
+  any row fails -> rollback -> 409 · one region = one primary -> local tx; saga only across regions (hold A, hold B, release A on failure); no 2PC, a hold is already reversible
+  checkout: lease on basket (lock manager), idem key, holds -> IN_CHECKOUT with expiry pushed past 2 min payment timeout + fencing token, order PENDING, COMMIT, then bank call
+  expired holds swept every 10 s AND inline on guard failure · overbook 10% only where ≥ 20% idle history; failure -> nearest region, else 429 + 2× credit
+  REJECT SELECT FOR UPDATE through checkout (2-5 s lock, pool drains); Redis as booking truth (not in the durable tx)
+B dispatch under failure: regional dispatchers, static pool table + neighbor regions by latency; 20 pools need no geohash (Uber's lesson that survives: in-memory state with TTL)
+  pools report free units each 1 s; 3 missed -> suspect, no new streams · its streams call resume -> same region first, then nearest neighbor; reserved first, spot shed
+  admission 1,000 dispatches/s per region + client jitter 0-30 s -> 14k streams placed ~35 s after detection · survivors 24k free vs 14k -> overbooking STOPS on any degradation
+  REJECT global dispatcher (cross-region RTT 50-150 ms breaks 100 ms; one failure for the fleet); instant reconnect (thundering herd)
+```
+
+**52-57 min · Failures and trade-offs, bottom**
+
+```text
+region loses power 09:00 -> 3 missed reports, connections drop -> pools down, sellable -> 0, re-dispatch via admission, reserved first -> 5-35 s gap, +50-150 ms, auto credit
+payment times out       -> PENDING > 2 min                    -> reconciler asks bank; retry with same key finds order          -> "processing", never charged twice
+basket hoarding         -> hold age, units per customer       -> 10 min TTL, 2 extensions, 3 baskets, held ≤ 2× confirmed spend  -> "expired, re-check price"
+chose: conditional update over row lock through checkout · saga+holds over 2PC · fenced lease only at checkout · TTL inline + sweeper · price shown with search · regional dispatchers · admission + jitter on resume
+```
+
+**57-60 min · Summary, said not written.** "A booking system for GPU stream capacity plus a dispatcher for live streams. Bookings are small, about 6 a second on 172,800 slot rows; the failure case is large, 14,000 live streams moving in 60 seconds. A conditional update on the pool-slot row is the only double-booking guard, holds protected through checkout carry the payment, and regional dispatchers with admission control and jitter absorb the reconnect storm, with overbooking that stops the moment a region degrades."
+
+<p class="rev-short">Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.</p>
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b07-board">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b07-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 07 · NUMBERS</span><span class="rev-q">Reserve and dispatch GPU capacity for live streams: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+unit = 1 live stream; 50 streams/GPU · 5 regions × 4 pools × 100 GPU × 50 = 100k units · slots 15 min -> 20 × 96 × 90 d = 172,800 rows ≈ 17 MB
+bookings 100k/day = 1.2/s, 6/s peak -> 16 slot rows each ≈ 100 row writes/s · searches 1,000:1 -> 1,200/s, 6,000 peak
+heartbeats 100k ÷ 4 s = 25k/s (Redis) · pool reports 20/s · dispatches 100k ÷ 600 s ≈ 170/s · sessions 100k × 200 B = 20 MB
+region loss at 09:00: 20k units, 14k live at 70% -> re-place in 60 s; survivors 4 × 6k = 24k free
+-> volume is trivial; the FAILURE case forces it: 14,000 streams moving in 60 s, and the free-unit margin across regions
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b07-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b07-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 07 · DIAGRAM</span><span class="rev-q">Reserve and dispatch GPU capacity for live streams: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 customers/autoscalers -> API gateway (auth, rate limit) -> search service -> availability cache (CDC from Postgres) + pricer (surge per pool/slot)
+2 gateway -> basket service -> basket store · basket -> reservation service (holds, checkout saga) -> Postgres per region -> CDC -> cache
+3 reservation service -> payment gateway (idempotent charge, ledger) · -> lock manager (basket lease + fencing token at checkout)
+4 devices -> regional dispatcher (pool table in RAM) -> Redis (pool load, claims, sessions) <- GPU pools report every 1 s · dispatcher -> Postgres (reservation check) · -> admission bucket (reconnects) -> gateway_url back to device
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b07-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b07-deepdives">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 07 · DEEP DIVES</span><span class="rev-q">Reserve and dispatch GPU capacity for live streams: the two deep dives (36-52 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+A no double booking: (pool, slot) row = AirBnB's (listing, date) · hold = one conditional UPDATE: held += u WHERE sellable - reserved - held ≥ u, all 32 rows in slot order, one tx (~5 ms, ~200/s on the hottest row vs 6/s)
+  any row fails -> rollback -> 409 · one region = one primary -> local tx; saga only across regions (hold A, hold B, release A on failure); no 2PC, a hold is already reversible
+  checkout: lease on basket (lock manager), idem key, holds -> IN_CHECKOUT with expiry pushed past 2 min payment timeout + fencing token, order PENDING, COMMIT, then bank call
+  expired holds swept every 10 s AND inline on guard failure · overbook 10% only where ≥ 20% idle history; failure -> nearest region, else 429 + 2× credit
+  REJECT SELECT FOR UPDATE through checkout (2-5 s lock, pool drains); Redis as booking truth (not in the durable tx)
+B dispatch under failure: regional dispatchers, static pool table + neighbor regions by latency; 20 pools need no geohash (Uber's lesson that survives: in-memory state with TTL)
+  pools report free units each 1 s; 3 missed -> suspect, no new streams · its streams call resume -> same region first, then nearest neighbor; reserved first, spot shed
+  admission 1,000 dispatches/s per region + client jitter 0-30 s -> 14k streams placed ~35 s after detection · survivors 24k free vs 14k -> overbooking STOPS on any degradation
+  REJECT global dispatcher (cross-region RTT 50-150 ms breaks 100 ms; one failure for the fleet); instant reconnect (thundering herd)
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b07-deepdives">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b08-board">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 08 · WHOLE BOARD</span><span class="rev-q">Usage metering, quotas, and a spot auction for scarce GPU capacity: write the whole board, scale first.</span></span></summary>
+<div class="rev-a">
+
+**0-8 min · Requirements, top-left**
+
+```text
+FR   usage per key/org within seconds (dashboard) · quota enforcement within seconds · exact monthly invoice, each line traceable to raw events
+     pace each org's daily budget evenly · per-minute auction per pool for surplus capacity, market data to bidders · auditable, replayable
+NFR  ingest 10⁶ events/s, no back pressure on the API path · quota + dashboard freshness < 10 s p99
+     each event billed exactly once · bid ack < 50 ms, clearing < 1 s after close · any minute's auction reproducible from its log for 400 days
+OUT  gateway itself (board 2), GPU dispatch (board 7), tax/payments, fraud
+```
+
+**8-13 min · Numbers, top-right**
+
+```text
+peak 10⁶ ev/s, avg ≈ 333k/s -> 2.9×10¹⁰/day · 500 B each -> 500 MB/s = 4 Gbps in · 100k keys, 10k orgs, biggest org 10%
+Kafka: 10 MB/s per partition -> 50, take 256 (headroom, hot org) · 15 TB/day × 3 d × 3 copies = 135 TB -> 24 brokers × 8 TB
+dedup ids 12 min TTL: 10⁶ × 720 × 16 B ≈ 11.5 GB (~20 GB in RocksDB), 80 MB per slot · real-time store 100k keys × 3 × 2 per 10 s = 60k writes/s (17× reduction)
+raw Parquet 3 TB/day × 400 d = 1.2 PB · bids 10k/s vs exchange's 100k · market data 1 MB/s
+-> 10⁶ events/s with ~20 GB of dedup state forces a stream processor; 72 h lateness forces a separate exact batch for billing; 10 s freshness forces early results
+```
+
+**13-17 min · API, left**
+
+```text
+usage event -> Kafka: {event_id = idem_key + part, org, key, pool, model, metric: tokens|frames|gpu_ms, qty, event_time, producer}  acks=all, disk spool
+GET  /usage?org&key&from&to&granularity=10s|1m|1h -> {series, as_of_watermark}
+PUT  /budgets/{org} {daily_limit_usd, pacing: even|asap}
+POST /spot/bids {pool, minute, units, max_price, client_order_id} -> 202 {bid_id, seq} · DELETE before close · WS market data {pool, minute, clearing_price, filled, depth (after close)}
+GET  /invoices/{id}/lines/{line}/evidence -> {ledger_entry, batch_run_id, input_manifest, event_count, sample_ids}
+```
+
+**17-21 min · Data, left under API**
+
+```text
+usage events(partition by org, shard)                    -> Kafka 256 partitions, 3 d · raw archive(date, org, event_id) -> object store Parquet 400 d
+dedup set(event_id, TTL 12 min)                          -> processor RocksDB state, checkpointed with windows
+real-time aggregate(key, metric, pool, window_start 10 s) -> Cassandra (SET, not increment) · series -> TSDB roll-ups
+quota/pacing rates(key) -> rules store -> gateway RAM · daily spend(org, day) -> Redis SET to running total
+ledger + invoice lines(org, day, metric, pool, batch_run) -> Postgres append-only, double-entry
+sequenced bids(pool, seq) -> Kafka 1 partition per pool -> archive · order book(pool, minute) -> engine RAM · clearing(pool, minute) -> Postgres idempotent
+```
+
+**21-36 min · Diagram, center, in draw order**
+
+```text
+1 gateways + workers -> Kafka (256 partitions by org+shard) -> stream processor (dedup, 10 s windows, early results, watermark 2 min)
+2 processor -> Cassandra (aggregates) · -> TSDB (dashboards) · -> Redis (daily spend) · aggregates + spend -> pacing/quota controller (5 s) -> rate rules -> gateway RAM
+3 Kafka -> object store (raw Parquet) -> batch job (hourly/nightly, exact) -> billing ledger -> invoicer (day 4) · batch -> reconciler (stream vs batch, 0.5%)
+4 bidders -> sequencer (one log per pool, CLOSE marker) -> matching engine (one thread per pool) -> market data -> bidders · -> clearing results -> board 7 dispatcher · hot standby replays same log
+```
+
+**36-52 min · Two deep dives, annotate the boxes**
+
+```text
+A exactly-once as an effect: at-least-once everywhere + stable id + idempotent writes · id = gateway idempotency key + part -> same id through gateway, meter, ledger
+  dedup set per partition, 12 min TTL · 10 s tumbling event-time windows; early total every 10 s (dashboard, quotas), final when watermark (2 min) passes
+  ≤ 10 min late -> window re-fires corrected total · later -> late topic, correction row · sink = SET per (key, metric, pool, window); crash -> checkpoint 30 s earlier, replay rewrites same values
+  batch: no TTL, dedups the whole day, counts 72 h stragglers; ONLY batch writes the ledger · stream vs batch > 0.5% -> alert before invoice
+  REJECT invoice from stream (12 min memory); central Redis SETNX per event (15-20 nodes + a hop per event)
+B matching engine: pool = symbol · bids for m+1 open until sequencer writes CLOSE(m): cutoff is a seq number, not a clock -> primary and standby agree
+  one thread per pool reads the log; book = tree by price desc, seq asc within price · supply = board 7 surplus forecast · fill from top, last fill partial
+  uniform clearing price = highest REJECTED bid, reserve as floor -> truthful for 1-unit bidders, only reduces shading for multi-unit (say it) · publish fills, price, 1-min leases; result keyed (pool, minute) -> duplicate publish harmless
+  REJECT continuous double auction (one seller, fastest bot wins); multi-threaded or DB-backed book (locks cost more than matching, no total order = no proof)
+```
+
+**52-57 min · Failures and trade-offs, bottom**
+
+```text
+partition lags 5 min -> consumer lag, watermark age > 3 min (2 is normal) -> freeze rates for its keys; > 90% quota -> safe rate -> dashboard "as of 5 min ago", billing unaffected
+engine host dies    -> missed heartbeats                            -> hot standby holds every bid from the log, clears on time -> nothing, or 1-2 s late
+hot org skews       -> lag on one partition, 50 MB/s from one org   -> sub-partition (org, shard), merge in second stage        -> others keep 10 s freshness
+chose: invoice from batch only · gateway idem key as event id · SET totals not increments · limiter local, controller rewrites rates · (org, shard) partitions · per-minute call auction, uniform price · one sequencer + one thread per pool
+```
+
+**57-60 min · Summary, said not written.** "Metering and a market on top of the API platform. A million events a second at 500 bytes is 4 Gbps and about 20 GB of de-duplication state, and events can be 72 hours late. Two paths over one log: a stream with 10-second windows and early results for quotas and dashboards, and an exact batch that alone writes the ledger. Exactly-once is an effect of the gateway's idempotency key as the event id plus idempotent window writes. One sequencer and one engine thread per pool clear a uniform price each minute, and replaying the log proves who came first."
+
+<p class="rev-short">Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.</p>
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b08-board">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b08-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 08 · NUMBERS</span><span class="rev-q">Usage metering, quotas, and a spot auction for scarce GPU capacity: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+peak 10⁶ ev/s, avg ≈ 333k/s -> 2.9×10¹⁰/day · 500 B each -> 500 MB/s = 4 Gbps in · 100k keys, 10k orgs, biggest org 10%
+Kafka: 10 MB/s per partition -> 50, take 256 (headroom, hot org) · 15 TB/day × 3 d × 3 copies = 135 TB -> 24 brokers × 8 TB
+dedup ids 12 min TTL: 10⁶ × 720 × 16 B ≈ 11.5 GB (~20 GB in RocksDB), 80 MB per slot · real-time store 100k keys × 3 × 2 per 10 s = 60k writes/s (17× reduction)
+raw Parquet 3 TB/day × 400 d = 1.2 PB · bids 10k/s vs exchange's 100k · market data 1 MB/s
+-> 10⁶ events/s with ~20 GB of dedup state forces a stream processor; 72 h lateness forces a separate exact batch for billing; 10 s freshness forces early results
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b08-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b08-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 08 · DIAGRAM</span><span class="rev-q">Usage metering, quotas, and a spot auction for scarce GPU capacity: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 gateways + workers -> Kafka (256 partitions by org+shard) -> stream processor (dedup, 10 s windows, early results, watermark 2 min)
+2 processor -> Cassandra (aggregates) · -> TSDB (dashboards) · -> Redis (daily spend) · aggregates + spend -> pacing/quota controller (5 s) -> rate rules -> gateway RAM
+3 Kafka -> object store (raw Parquet) -> batch job (hourly/nightly, exact) -> billing ledger -> invoicer (day 4) · batch -> reconciler (stream vs batch, 0.5%)
+4 bidders -> sequencer (one log per pool, CLOSE marker) -> matching engine (one thread per pool) -> market data -> bidders · -> clearing results -> board 7 dispatcher · hot standby replays same log
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b08-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b08-deepdives">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 08 · DEEP DIVES</span><span class="rev-q">Usage metering, quotas, and a spot auction for scarce GPU capacity: the two deep dives (36-52 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+A exactly-once as an effect: at-least-once everywhere + stable id + idempotent writes · id = gateway idempotency key + part -> same id through gateway, meter, ledger
+  dedup set per partition, 12 min TTL · 10 s tumbling event-time windows; early total every 10 s (dashboard, quotas), final when watermark (2 min) passes
+  ≤ 10 min late -> window re-fires corrected total · later -> late topic, correction row · sink = SET per (key, metric, pool, window); crash -> checkpoint 30 s earlier, replay rewrites same values
+  batch: no TTL, dedups the whole day, counts 72 h stragglers; ONLY batch writes the ledger · stream vs batch > 0.5% -> alert before invoice
+  REJECT invoice from stream (12 min memory); central Redis SETNX per event (15-20 nodes + a hop per event)
+B matching engine: pool = symbol · bids for m+1 open until sequencer writes CLOSE(m): cutoff is a seq number, not a clock -> primary and standby agree
+  one thread per pool reads the log; book = tree by price desc, seq asc within price · supply = board 7 surplus forecast · fill from top, last fill partial
+  uniform clearing price = highest REJECTED bid, reserve as floor -> truthful for 1-unit bidders, only reduces shading for multi-unit (say it) · publish fills, price, 1-min leases; result keyed (pool, minute) -> duplicate publish harmless
+  REJECT continuous double auction (one seller, fastest bot wins); multi-threaded or DB-backed book (locks cost more than matching, no total order = no proof)
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b08-deepdives">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b09-board">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 09 · WHOLE BOARD</span><span class="rev-q">Model hub feed and recommendations for a research community: write the whole board, scale first.</span></span></summary>
+<div class="rev-a">
+
+**0-8 min · Requirements, top-left**
+
+```text
+FR   follow/unfollow models, datasets, teams, people · ranked home feed (versions, eval results, discussions)
+     "you may want to follow" from the collaboration graph, with a reason · connection degree (1st/2nd/3rd) on every badge · typeahead over names
+NFR  feed p99 < 200 ms · degree < 50 ms any pair · typeahead < 100 ms · new post in followers' feeds < 10 s, even from a 1M-follower model
+     suggestions ≤ 24 h stale, minutes for a new connection · 99.9%, stale beats error
+OUT  hosting model files, running evals, discussion threads, notifications, moderation
+```
+
+**8-13 min · Numbers, top-right**
+
+```text
+5M users, 1M DAU · 170k followable things besides people (100k models, 50k datasets, 20k teams) · follows 5M × 50 = 2.5×10⁸ · collaboration edges 10⁸ · posts 100k/day = 1.2/s
+degree badges 1M × 50 pages × 20 = 10⁹/day ≈ 11,500/s -> 58k peak · feed reads 1M × 20 = 230/s -> 1,200 peak · typeahead 580/s
+fan-out (non-celebrity) 100k × 200 = 2×10⁷/day = 230/s · celebrity line 10k followers (~500 models, datasets or people above it) · 1M-follower push = 10⁶ writes (2-20 node-s), ×10 versions = 10⁷
+hot: timelines 1M × 800 × 8 B = 6.4 GB · second-degree sets 3.2 GB · suggestions 6 GB · trie 1.6 GB · degree graph (collaborators + mutual follows) ≈ 6 GB -> fits every degree server
+-> two numbers: 10⁶ writes per celebrity post (head-of-line blocking), and 58k degree reads/s on a graph small enough to replicate
+```
+
+**13-17 min · API, left**
+
+```text
+GET  /feed?limit=20&cursor -> {items [{post_id, type, author, created_at, eval_delta, collapsed_count}], next_cursor}
+POST /posts {author_entity, type: version|eval|discussion, body, version_ref} + Idempotency-Key -> 201 {post_id}  (fan-out async)
+POST /follows {target_type, target_id} · DELETE  (publish follow event)
+GET  /suggestions?limit=20 -> {items [{entity_id, reason "3 shared co-authors", score}]} · DELETE /suggestions/{id}
+POST /degree/batch {target_ids[]} -> {u1: 1, u2: 2, u3: 3}  (one call per page of badges)
+```
+
+**17-21 min · Data, left under API**
+
+```text
+post(post_id Snowflake; partition by author)                  -> Cassandra · post objects -> Memcached (multi-get)
+follow(follower, followee) sharded by follower + follow_by_followee(followee, follower) sharded by followee -> Postgres (both sides)
+degree adjacency(user -> neighbors: collaborators + mutual follows) -> KV, loaded into degree servers RAM (6 GB × 8)
+timeline:{user} last 800 ids (14 d inactive expiry) · recent:{celebrity} last 100 -> Redis
+suggestions:{user} sorted set -> Redis (Cassandra behind) · second_degree:{user} set or Bloom filter, TTL 24 h -> Redis
+eval metrics(model, benchmark, version) -> time-series store, read with 30 ms timeout · trie snapshot hourly -> object store -> RAM
+```
+
+**21-36 min · Diagram, center, in draw order**
+
+```text
+1 clients -> API gateway -> post service -> Cassandra; -> Kafka (post + follow events)
+2 Kafka -> fan-out workers (push if author < 10k followers; read follow_by_followee) -> Redis timelines · celebrity -> recent:{author} only
+3 gateway -> feed service (read timeline + pull 5 celeb lists via 2 s near cache, merge, collapse bursts, rank) -> Memcached posts, metrics store (timeout)
+4 gateway -> follow service -> Postgres edges -> Kafka       5 gateway -> degree service (graph in RAM, 8 replicas) -> second-degree sets; KV adjacency -> degree service, Spark
+6 job scheduler (nightly) -> Spark (2-hop, 3-hop, sampled co-follow) -> suggestion lists -> suggestion service (last-mile filter)     7 gateway -> typeahead servers (trie)
+```
+
+**36-52 min · Two deep dives, annotate the boxes**
+
+```text
+A hybrid fan-out: push < 10k followers (deliberately 10× below Twitter's line; small Redis fleet), pull above · 10k push < 1 s; 1M = 10⁶ writes blocking the queue, ×10 versions = 10⁷
+  ~500 celebrities, ~5 followed per user -> pull = one multi-get of 5 short lists per read (6k list reads/s at peak), near cache 2 s absorbs the hot key
+  merge two sorted lists in memory at read; collapse 10 versions/day into one card with a count · timelines for active users only; rebuild on return by pull
+  REJECT pure push (10⁷ writes, minutes of lag for everyone queued behind); pure pull (50 lists per read = 60k list reads/s, long p99)
+B recommendation precompute: nightly Spark on a graph snapshot at 02:00; output keyed by snapshot date -> rerun overwrites · sources: collaborators², co-follow, same org
+  collaborators 5M × 20² = 2×10⁹ pair votes; co-follow dominates -> sample 200 followers per entity -> 170k × 200² ≈ 7×10⁹; exclude entities > 10k followers (10¹² pairs); cap collaborators at 500 -> ~10¹⁰ total, a few hours
+  3-hop only for users with < 5 two-hop candidates · top 100 per user = 6 GB into a new keyspace, switch once · follow event -> mini-update for both users in minutes
+  cold start: org from email domain/SSO -> what colleagues follow; else trending in chosen topics; after 3 follows a per-user job · REJECT on-request (30k² pairs); random walks now (later, as degree grows)
+```
+
+**52-57 min · Failures and trade-offs, bottom**
+
+```text
+1M-follower model posts 10 versions -> post rate per author, near-cache hit rate -> pull path, no fan-out; collapse -> one card "10 new versions"
+recompute fails 2 nights            -> age of live keyspace > 26 h (not exit codes) -> serve last good lists; last-mile filter hides new follows -> up to 3 days stale, still valid
+metrics store down                  -> 30 ms timeouts trip breaker              -> rank on recency/affinity/type, cards "eval pending"            -> slightly duller feed, never an error
+chose: push < 10k / pull above · collapse bursts at read · nightly Spark + event mini-updates · exclude supernodes, sample followers · replicate 6 GB graph in RAM over sharding · metrics behind a timeout · hourly offline trie
+```
+
+**57-60 min · Summary, said not written.** "A social layer for a model hub: feed, follow suggestions, degree badges and typeahead for 5 million users following models, datasets, teams and people. Two numbers forced it: a million-follower post is a million timeline writes that block the queue, and degree badges run at 58,000 reads a second on a graph of only 6 gigabytes. So hybrid fan-out with bursts collapsed at read, nightly two-hop suggestions with supernodes excluded and event-driven mini-updates, and the whole degree graph in RAM on every degree server."
+
+<p class="rev-short">Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.</p>
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b09-board">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b09-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 09 · NUMBERS</span><span class="rev-q">Model hub feed and recommendations for a research community: the numbers block (8-13 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+5M users, 1M DAU · 170k followable things besides people (100k models, 50k datasets, 20k teams) · follows 5M × 50 = 2.5×10⁸ · collaboration edges 10⁸ · posts 100k/day = 1.2/s
+degree badges 1M × 50 pages × 20 = 10⁹/day ≈ 11,500/s -> 58k peak · feed reads 1M × 20 = 230/s -> 1,200 peak · typeahead 580/s
+fan-out (non-celebrity) 100k × 200 = 2×10⁷/day = 230/s · celebrity line 10k followers (~500 models, datasets or people above it) · 1M-follower push = 10⁶ writes (2-20 node-s), ×10 versions = 10⁷
+hot: timelines 1M × 800 × 8 B = 6.4 GB · second-degree sets 3.2 GB · suggestions 6 GB · trie 1.6 GB · degree graph (collaborators + mutual follows) ≈ 6 GB -> fits every degree server
+-> two numbers: 10⁶ writes per celebrity post (head-of-line blocking), and 58k degree reads/s on a graph small enough to replicate
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b09-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b09-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 09 · DIAGRAM</span><span class="rev-q">Model hub feed and recommendations for a research community: the diagram in draw order (21-36 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 clients -> API gateway -> post service -> Cassandra; -> Kafka (post + follow events)
+2 Kafka -> fan-out workers (push if author < 10k followers; read follow_by_followee) -> Redis timelines · celebrity -> recent:{author} only
+3 gateway -> feed service (read timeline + pull 5 celeb lists via 2 s near cache, merge, collapse bursts, rank) -> Memcached posts, metrics store (timeout)
+4 gateway -> follow service -> Postgres edges -> Kafka       5 gateway -> degree service (graph in RAM, 8 replicas) -> second-degree sets; KV adjacency -> degree service, Spark
+6 job scheduler (nightly) -> Spark (2-hop, 3-hop, sampled co-follow) -> suggestion lists -> suggestion service (last-mile filter)     7 gateway -> typeahead servers (trie)
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b09-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b09-deepdives">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 09 · DEEP DIVES</span><span class="rev-q">Model hub feed and recommendations for a research community: the two deep dives (36-52 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+A hybrid fan-out: push < 10k followers (deliberately 10× below Twitter's line; small Redis fleet), pull above · 10k push < 1 s; 1M = 10⁶ writes blocking the queue, ×10 versions = 10⁷
+  ~500 celebrities, ~5 followed per user -> pull = one multi-get of 5 short lists per read (6k list reads/s at peak), near cache 2 s absorbs the hot key
+  merge two sorted lists in memory at read; collapse 10 versions/day into one card with a count · timelines for active users only; rebuild on return by pull
+  REJECT pure push (10⁷ writes, minutes of lag for everyone queued behind); pure pull (50 lists per read = 60k list reads/s, long p99)
+B recommendation precompute: nightly Spark on a graph snapshot at 02:00; output keyed by snapshot date -> rerun overwrites · sources: collaborators², co-follow, same org
+  collaborators 5M × 20² = 2×10⁹ pair votes; co-follow dominates -> sample 200 followers per entity -> 170k × 200² ≈ 7×10⁹; exclude entities > 10k followers (10¹² pairs); cap collaborators at 500 -> ~10¹⁰ total, a few hours
+  3-hop only for users with < 5 two-hop candidates · top 100 per user = 6 GB into a new keyspace, switch once · follow event -> mini-update for both users in minutes
+  cold start: org from email domain/SSO -> what colleagues follow; else trending in chosen topics; after 3 follows a per-user job · REJECT on-request (30k² pairs); random walks now (later, as degree grows)
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b09-deepdives">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b10-board">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 10 · WHOLE BOARD</span><span class="rev-q">Evaluation and testing harness for LLM coding agents: write the whole board, diagram first.</span></span></summary>
+<div class="rev-a">
+
+**0-5 min · The agent loop (only if the first prompt is "Build a coding agent", otherwise these minutes go to requirements)**
+
+```text
+LOOP     user msg -> context = system prompt + tool schemas + history -> model call (streamed)
+         -> tool_use? -> permission check (allow / ask / deny, per tool and per path) -> run tool -> append tool_result -> loop
+         -> stop on a final answer, max turns, or user interrupt
+TOOLS    read / write / edit file · shell command (compiler, tests) in a sandbox · code search (grep, glob, symbol index) · web fetch
+CONTEXT  stable prefix cached (system + tools) · compaction near the window limit: summarize old turns, keep plan + files touched
+SESSION  every event appended to a server-side session log (same schema as the harness trajectory)
+         laptop -> phone = a thin client reattaches by session_id and tails the live log (Kafka or a hot store) from its last seq
+MEDIA    images / audio in -> upload -> file_id in the message · out: text, diffs, Mermaid or image diagrams
+```
+
+**5-10 min · Requirements, top-left (accept what is dictated, compress, move)**
+
+```text
+FR   run a suite: N tasks x agent build x model version -> k samples per task, each try in its own fresh sandbox
+     tools against the sandbox: files, shell, compiler and test output, code search · multimodal task inputs
+     score each sample: hidden unit tests, compile, LLM judge · compare run A vs run B per task, same suite version
+     record the full trajectory (model calls, tool calls, outputs, latency) · replay and debug any try
+NFR  one release run = 10,000 agents x up to 100 turns, done in < 30 min (task in -> final score)
+     no state survives between tries · deterministic where we control it · control plane 99.99%
+     99.99% = Postgres sync replica across 3 AZs · scheduler leader election · Kafka RF 3 · hosts across 3 AZs
+     keep everything for replay · hot 30 days, then cold
+OUT  model serving, weights, inference engine, GPUs, cost (declared infinite)
+```
+
+**10-24 min · Diagram, center, in draw order**
+
+```text
+1 UI / CI -> API (auth, idem) -> Postgres (run, samples expanded from the suite)
+2 scheduler -> lease try with epoch -> sandbox host · all 10,000 start in a 30 s ramp
+3 host: restore microVM = base snapshot (toolchain hash) + task disk layer (content hash, lazy copy-on-write) -> workspace only
+  runner + tool broker run OUTSIDE the SBX on the host · tools exec in the SBX over vsock
+4 runner -> model GW (least-slack-first, retries, per-run quota) -> model API · SBX egress = frozen package mirror only
+5 runner -> event log (append, seq, epoch) -> object storage (Parquet + blobs) and ClickHouse
+6 final answer -> runner exports diff -> object storage · scheduler starts evaluator in a FRESH SBX
+  evaluator: apply diff, restore hidden tests + protected paths, flag a diff that touches them -> tests, compile, LLM judge -> scores
+7 destroy SBX, host checks no VMM process, tap device or disk layer outlives the lease
+8 replay service: render from the log, or re-execute in a new SBX · results UI queries ClickHouse + scores
+```
+
+**24-26 min · One line of numbers, top-right**
+
+```text
+10^4 agents x 100 turns (cap) = 10^6 turns · natural 10^4 / 10 s per turn ≈ 1,000 calls/s · floor 10^6 / 1,500 s ≈ 670/s (25-min cap)
+quota ask ≈ 1,000 calls/s x 30k tokens ≈ 2x10^9 TPM · 15 s per turn at the cap, model p50 5-10 s, so queues stay near empty
+storage 10^6 turns x 20 KB = 20 GB events + 10 GB artifacts ≈ 30 GB/run · 30 GB / 1,800 s ≈ 17 MB/s, small
+```
+
+**26-32 min · API and data, left**
+
+```text
+POST /v1/suites {tasks: [{repo_snapshot, prompt, inputs: file_ids, hidden_tests, protected_paths, timeout}]} -> {suite_id, version} (immutable)
+POST /v1/runs {suite_id@version, agent_build_hash, model_version, samples_per_task, seed} + Idempotency-Key -> 202 {run_id}
+GET  /v1/runs/{id} -> {state, done, passed, failed, timed_out, infra}   · POST /v1/runs/{id}:cancel (CANCELLING, CANCELLED)
+GET  /v1/runs/{a}/compare/{b} (409 if suite versions differ) · GET /v1/tries/{id}/events?from_seq · POST .../replay {mode}
+run (run_id): pins suite version, agent build, model version, image hash, mirror snapshot -> Postgres
+sample (run_id, task_id, sample_no) · try (sample_id, try_no): host, lease_epoch, lease_until, state -> Postgres
+event (attempt_id, try_no, seq): type, payload <= 4 KB or blob hash, content_hash -> Kafka -> Parquet (truth) + ClickHouse
+artifact, score (attempt_id, evaluator, evaluator_version) -> object storage, Postgres
+```
+
+**32-48 min · Two deep dives, annotate the boxes**
+
+```text
+A isolation + determinism: fresh microVM per try, workspace only · runner and credentials outside · egress = frozen mirror
+  pinned toolchain hash, mirror snapshot, repo commit · fixed seed, clock set at boot · destroy at end · host leak checks
+  limits: the clock moves after boot, parallel test order, thread scheduling, so tool outputs are recorded, never assumed
+  REJECT reused containers with cleanup (caches, /tmp, background processes leak) · REJECT live internet (non-reproducible)
+B trajectory + replay: event = (attempt_id, try_no, seq, type, payload or blob hash, content_hash), append-only, deltas
+  replay 1 render: read the log, no compute
+  replay 2 re-execute: new SBX, model responses served from the log by request hash, tools run for real
+    outputs normalized (durations, PIDs, temp paths stripped) before hashing · divergence = first seq whose normalized hash differs
+  replay 3 agent-only: recorded tool results too, fully deterministic, for testing a new agent build
+  retention hot 30 d / cold 1 yr · task code can be customer code: encrypted, access-logged, never in the analytics rows
+```
+
+**48-55 min · Failures and trade-offs, bottom**
+
+```text
+stuck agent      tool call > 90 s or model call > 60 s · no event 120 s · attempt > 25 min   kill, TIMED_OUT (agent fault, scored fail)
+sandbox leak     lease without heartbeat · VMM process, tap device or disk layer outlives lease   reaper destroys, host drained after 3 leaks
+model GW 429     429 rate, queue time per turn          backoff + jitter, least-slack-first, short quota: stratified sample, run PARTIAL
+poison task      same task fails INFRA 3 times across hosts                                       quarantine, report, run finishes
+scheduler crash  leader lease lost    new leader · hosts renew try leases in Postgres · re-lease bumps epoch, stale epoch writes rejected
+chose: runner outside SBX · microVM per try · admission to quota · record model + tool outputs · log is truth · INFRA != agent failure
+```
+
+**55-60 min · Summary, said not written.** "A run is 10,000 samples. Each try gets a fresh microVM workspace restored from a pinned snapshot, while the agent runner stays outside it on the host with the credentials. Every model call and tool call is an append-only event with a sequence number and a content hash, so any try can be re-rendered exactly, or re-executed against its recorded model responses until the first normalized divergence. The 30-minute budget is a per-turn latency budget: up to 100 sequential turns in 25 minutes, so the gateway serves the least-slack agent first and the quota is sized to the natural rate, not the average."
+
+<p class="rev-short">Shorthand used on this board: SBX = sandbox (one microVM, workspace only) · runner = the trusted agent runner on the host · GW = gateway · idem = idempotency key · seq = per-try event sequence number · epoch = lease fencing token · INFRA = infra error, not the agent's fault · TPM = tokens per minute · p50 = median latency · LLM judge = a model that grades an output against a rubric.</p>
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b10-board">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b10-numbers">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 10 · NUMBERS</span><span class="rev-q">Evaluation and testing harness for LLM coding agents: the numbers block (24-26 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+10^4 agents x 100 turns (cap) = 10^6 turns · natural 10^4 / 10 s per turn ≈ 1,000 calls/s · floor 10^6 / 1,500 s ≈ 670/s (25-min cap)
+quota ask ≈ 1,000 calls/s x 30k tokens ≈ 2x10^9 TPM · 15 s per turn at the cap, model p50 5-10 s, so queues stay near empty
+storage 10^6 turns x 20 KB = 20 GB events + 10 GB artifacts ≈ 30 GB/run · 30 GB / 1,800 s ≈ 17 MB/s, small
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b10-numbers">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b10-diagram">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 10 · DIAGRAM</span><span class="rev-q">Evaluation and testing harness for LLM coding agents: the diagram in draw order (10-24 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+1 UI / CI -> API (auth, idem) -> Postgres (run, samples expanded from the suite)
+2 scheduler -> lease try with epoch -> sandbox host · all 10,000 start in a 30 s ramp
+3 host: restore microVM = base snapshot (toolchain hash) + task disk layer (content hash, lazy copy-on-write) -> workspace only
+  runner + tool broker run OUTSIDE the SBX on the host · tools exec in the SBX over vsock
+4 runner -> model GW (least-slack-first, retries, per-run quota) -> model API · SBX egress = frozen package mirror only
+5 runner -> event log (append, seq, epoch) -> object storage (Parquet + blobs) and ClickHouse
+6 final answer -> runner exports diff -> object storage · scheduler starts evaluator in a FRESH SBX
+  evaluator: apply diff, restore hidden tests + protected paths, flag a diff that touches them -> tests, compile, LLM judge -> scores
+7 destroy SBX, host checks no VMM process, tap device or disk layer outlives the lease
+8 replay service: render from the log, or re-execute in a new SBX · results UI queries ClickHouse + scores
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b10-diagram">mark known</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="b10-deepdives">
+<summary><span class="rev-head"><span class="rev-tag">BOARD 10 · DEEP DIVES</span><span class="rev-q">Evaluation and testing harness for LLM coding agents: the two deep dives (32-48 min).</span></span></summary>
+<div class="rev-a">
+
+```text
+A isolation + determinism: fresh microVM per try, workspace only · runner and credentials outside · egress = frozen mirror
+  pinned toolchain hash, mirror snapshot, repo commit · fixed seed, clock set at boot · destroy at end · host leak checks
+  limits: the clock moves after boot, parallel test order, thread scheduling, so tool outputs are recorded, never assumed
+  REJECT reused containers with cleanup (caches, /tmp, background processes leak) · REJECT live internet (non-reproducible)
+B trajectory + replay: event = (attempt_id, try_no, seq, type, payload or blob hash, content_hash), append-only, deltas
+  replay 1 render: read the log, no compute
+  replay 2 re-execute: new SBX, model responses served from the log by request hash, tools run for real
+    outputs normalized (durations, PIDs, temp paths stripped) before hashing · divergence = first seq whose normalized hash differs
+  replay 3 agent-only: recorded tool results too, fully deterministic, for testing a new agent build
+  retention hot 30 d / cold 1 yr · task code can be customer code: encrypted, access-logged, never in the analytics rows
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b10-deepdives">mark known</button></p>
+
+</div>
+</details>
+
+<p class="rev-nav"><button type="button" id="rev-reset">reset this page</button></p>

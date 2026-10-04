@@ -1,0 +1,64 @@
+---
+title: "Top of Memory"
+description: "The boards, numbers and decision lines I keep at the top of my memory for system design interviews, plus the coding patterns: one daily set to recall, one reference to read, one coding deck."
+toc: true
+---
+
+::: {.callout-note}
+**Revision pack, rebuilt from my own notes.** Every card here is something I wrote while practicing: ten whiteboard boards, the numbers I keep in my head, and the decision lines I say before an interviewer asks. No lesson material from anyone else.
+:::
+
+## What this is
+
+I kept re-reading long design write-ups the night before a practice session and remembering none of it the next morning. What survives a 60-minute whiteboard is small: the layout of the board, the five or six numbers that force the design, the API shape, the store choice, the failure line per component, and the sentence I say when I draw a box. This pack is only that, as 148 cards: a question with the answer folded away.
+
+Three pages, used differently.
+
+- [Daily](daily.html): 38 cards I recall every day with the answer closed first. The opening script, the two board layouts, the six lines and the numbers to keep in my head, then the numbers block and the diagram order of every board. About fifteen minutes.
+- [Reference](reference.html): all 148 design cards by topic, in the order of the original pages. I read one or two sections a day in rotation and open only the cards I cannot say.
+- [Coding](coding.html): 100 cards for the other interview. The question side shows the cues of a problem or a pattern, the answer side names the pattern, the leap, the complexity and the trap. One section before the day's two problems.
+
+Marking a card known hides nothing; it dims the card so the unknown ones stand out, and the marks live in this browser only.
+
+## How I use it
+
+1. Daily page first, phone or laptop, answers closed, say it or write it, then open.
+2. One board a day on paper: the whole board in twelve minutes, then compare with its card in the reference.
+3. Reference sections in rotation: API shapes and stores, patterns, failure lines, phrases, data paths, routing.
+4. One Coding section before the two problems of the day: say the pattern from the cues, then open.
+5. Any card I open twice without getting it goes on a sticky note for the next day.
+6. Every page, every day, but time only on the cards that are not dimmed: on the first day that is about an hour, from the second day the known cards are grey and the full pass shrinks toward twenty minutes while the missed ones keep coming back.
+7. Sunday night, reset the marks on every page so the whole set is tested again from scratch.
+
+## The day
+
+| When | Block | Minutes | Where | Done means |
+|---|---|---|---|---|
+| Morning | Daily recall, answers closed | 15 | [Daily](daily.html) | every card said once; the ones I missed stay unmarked |
+| Morning | The day's board (see [the week](#the-week)) written out in full on a blank sheet, nothing open: requirements, numbers, API, data, diagram order, deep dives, failures, summary | 12 + 5 | blank sheet, then the whole-board card in [Reference](reference.html), Boards | written in 12, compared with the card, misses on one sticky note |
+| Before coding | The day's Coding section (see [the week](#the-week)), card by card, dimmed ones included: say the pattern, the leap and the complexity, then open | 10 | [Coding](coding.html) | every card in the section said before it was opened |
+| Coding | Two problems, six lines spoken first, complexity said at the end | 50 | editor | both passed, or the miss written down |
+| Gaps in the day | One Reference section, on the phone | 10 to 15 | [Reference](reference.html) | opened only the cards I could not say |
+| Evening | A 60-minute design mock (external, or a composite redo on a blank board) | 60 + 15 | blank board | scores and the pushes I could not answer dictated the same evening |
+| Night | Stop | | | screens off by 22:30 |
+
+## The week
+
+| Day | Board on paper | Reference section | Coding section | Evening |
+|---|---|---|---|---|
+| Monday | 2, the multimodal AI API platform | API shapes, Which store | DP six lines, 1-D DP | external mock |
+| Tuesday | 1, live AI copilot for cameras | Pattern per requirement | Patterns: cues to name, first half | external mock |
+| Wednesday | 10, evaluation harness for coding agents | The failure line per component | Patterns: cues to name, second half | composite redo |
+| Thursday | 3, petabyte video lake | Phrases, the five questions | Arrays and hashing, two pointers, sliding window | composite redo |
+| Friday | 4, the training factory | Where the bytes go | Trees, tries | composite redo |
+| Saturday | 5, collaborative AI video workspace | Model routing, the AI API | Graphs, advanced graphs, intervals, greedy | composite redo |
+| Sunday | 6, search over a billion clips | Numbers: shapes and categories | Linked list, stack, heap, binary search, bit manipulation, math, backtracking, 2-D DP | composite redo |
+
+Boards 7, 8 and 9 take the following Monday to Wednesday, then the rotation starts again from board 2. The rotation says which section gets the slow, on-paper treatment that day; every page still gets its quick pass.
+
+## Pages
+
+- [Daily](daily.html)
+- [Reference](reference.html)
+- [Coding](coding.html)
+- [Data-path diagrams](data-paths.html): the five flows the data-path cards describe, drawn out.
