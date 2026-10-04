@@ -1,6 +1,6 @@
 ---
 title: "Daily"
-description: "The 38 cards I recall every day before anything else."
+description: "The 41 cards I recall every day before anything else."
 toc: false
 ---
 
@@ -10,11 +10,63 @@ toc: false
 
 <p class="rev-tools"><button type="button" data-rev="next">next unknown (j)</button><button type="button" data-rev="expand">expand all</button><button type="button" data-rev="collapse">collapse all</button><button type="button" data-rev="export">export marks</button></p>
 
+## Pushes from mocks (2)
+
+<p class="rev-plan">Each push I could not answer in a mock, as a question, added the same evening. These come first because they are the freshest gaps.</p>
+
+<details class="rev" data-card="push-a-functional-heavy-prompt-with-no-scale-what-cha" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">PUSH</span><span class="rev-q">Pushes from mocks: a functional-heavy prompt with no scale: what changes in the first ten minutes??</span></span></summary>
+<div class="rev-a">
+
+Accept the dictated requirements, compress them into three lines and move. Write one line of numbers only for what you buy (sandboxes, model calls, storage) and have the diagram on the board by minute 8 to 10. Numbers that do not change a box are not written.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="push-a-functional-heavy-prompt-with-no-scale-what-cha">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="push-10-000-agents-100-turns-in-30-minutes-which-numb" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">PUSH</span><span class="rev-q">Pushes from mocks: "10,000 agents × 100 turns in 30 minutes": which numbers matter??</span></span></summary>
+<div class="rev-a">
+
+10,000 is a count per run, not per second. 10^6 turns ÷ 1,800 s ≈ 560 model calls per second on average, about 1,000 per second at the natural pace of one call per 10 seconds per agent. The constraint is per turn: 100 sequential turns in 25 minutes is 15 seconds per turn, and the model takes 5 to 10 of them, so queues must stay near empty and admission matches the model quota. Ingress bandwidth is not a number here.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="push-10-000-agents-100-turns-in-30-minutes-which-numb">got it</button></p>
+
+</div>
+</details>
+
+## Ten boards, ten numbers (1)
+
+<p class="rev-plan">One card, ten rows. Say the number and the move for each board before opening; this table is the whole pack in ten lines.</p>
+
+<details class="rev" data-card="forcing-numbers" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">TEN BOARDS</span><span class="rev-q">For each of the ten boards: the number that forced the design, and the move it forces?</span></span></summary>
+<div class="rev-a">
+
+| Board | The number that forced it | What it forces |
+|---|---|---|
+| 1 live AI copilot for cameras | 5×10^4 frames/s today, 10^4 GPUs at a million devices | admission in frames per second, degrade before refuse, sticky GPU host behind a disposable gateway |
+| 2 multimodal AI API platform | 35k requests/s is small; 2,000 GPUs is the bill | meter and share in tokens and GPU-seconds, weighted fair queues per tier, one id from gateway to ledger |
+| 3 petabyte video lake | 6,700 disks for capacity but only 4× read headroom | jobs read pre-staged NVMe; HDDs see staging, misses and repair; one 3 MB chunk per disk |
+| 4 training factory | a 560 GB checkpoint and 400 GPU-hours lost per failure, twice a day | one leader with fencing on every allocation, reserve-then-commit gangs, checkpoint to peer NVMe in seconds |
+| 5 collaborative AI video workspace | 2.8 Tbps of media against 5 million state frames/s | two planes sized separately; CRDT registers for the canvas, relay tree with shedding for large rooms |
+| 6 search over a billion clips | 2.3 TB of vectors in RAM | 16 shards, scatter-gather inside 500 ms, a filter planner by selectivity, immutable segments plus a delta |
+| 7 reserve and dispatch GPU capacity | bookings 6/s on 172,800 slot rows; 14,000 live streams moving in 60 s | a conditional update on the slot row as the only guard, holds through checkout, regional dispatch with admission and jitter |
+| 8 metering, quotas and a spot auction | 10^6 events/s, 500 B each, up to 72 h late | two paths over one log: a 10 s stream for quotas, an exact batch that alone writes the ledger; exactly once from the idempotency key |
+| 9 model hub feed | a million-follower post is a million timeline writes; 58,000 degree reads/s on a 6 GB graph | hybrid fan-out with bursts collapsed at read, the whole degree graph in RAM on every server |
+| 10 evaluation harness for coding agents | 100 turns in 25 minutes is 15 s per turn, the model takes 5 to 10 | admission matched to the model quota, least-slack-first serving, a fresh microVM per try with the runner outside it |
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="forcing-numbers">got it</button></p>
+
+</div>
+</details>
+
 ## The opening and the board (5)
 
-<p class="rev-plan">Say these from memory before every mock. The two layouts are the minute budgets you write in the corner of the board.</p>
+<p class="rev-plan">Say these from memory before every mock. The two layouts are the minute budgets you write in the corner of the board. Remember the board as a route: corners, spine, centre, bottom, mouth.</p>
 
-<details class="rev" data-card="opening-script">
+<details class="rev" data-card="opening-script" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">SCRIPT</span><span class="rev-q">The 3-minute opening script?</span></span></summary>
 <div class="rev-a">
 
@@ -24,12 +76,14 @@ toc: false
 4. Say the plan: "I will do requirements and numbers in ten minutes, the design in fifteen, then two deep dives, and I will leave five minutes for failures. Stop me whenever you want to go deeper." (15 s)
 5. Then start writing; never start drawing before the numbers are on the board.
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="opening-script">mark known</button></p>
+**Remember by.** restate, three questions, cross out categories, say the plan, then write; numbers before any drawing.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="opening-script">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="sentences">
+<details class="rev" data-card="sentences" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">SCRIPT</span><span class="rev-q">The five sentences that carry the interview?</span></span></summary>
 <div class="rev-a">
 
@@ -38,13 +92,16 @@ toc: false
 - "At 10× this breaks at Z first; here is how I would notice, and here is the mitigation."
 - "This is a hotspot because …; I would partition by … and accept … as a consequence."
 - "The failure I worry about most is …; recovery works like …; the blast radius is …"
+- "Let me trace one write end to end to check the design holds."
+- "At 10× this breaks first at …; I'd notice via …; mitigation is …"
+- "I'm not sure about …; I'd validate by …"
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="sentences">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="sentences">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="layout-scale">
+<details class="rev" data-card="layout-scale" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">LAYOUT</span><span class="rev-q">Board layout when scale drives the design: the eight blocks with minute budgets?</span></span></summary>
 <div class="rev-a">
 
@@ -57,12 +114,14 @@ toc: false
 7. 52-57 min: Failures and trade-offs, bottom
 8. 57-60 min: Summary, said not written.
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="layout-scale">mark known</button></p>
+**Remember by.** a route on the board: corners first (requirements top-left, numbers top-right), the spine down the left (API, then data), the centre (diagram, then the deep dives written onto its boxes), the bottom (failures and trade-offs), and the mouth (the summary is spoken, never written).
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="layout-scale">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="layout-diagram-first">
+<details class="rev" data-card="layout-diagram-first" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">LAYOUT</span><span class="rev-q">Board layout for a functional-heavy prompt, diagram first?</span></span></summary>
 <div class="rev-a">
 
@@ -75,18 +134,20 @@ toc: false
 7. 48-55 min: Failures and trade-offs, bottom
 8. 55-60 min: Summary, said not written.
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="layout-diagram-first">mark known</button></p>
+**Remember by.** the same route with the centre moved up: corners, centre, one numbers line, spine, deep dives on the boxes, bottom, mouth.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="layout-diagram-first">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="functional-rule">
+<details class="rev" data-card="functional-rule" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">LAYOUT</span><span class="rev-q">The prompt is functional-heavy and the interviewer wants the diagram first. The rule?</span></span></summary>
 <div class="rev-a">
 
 This prompt is functional-heavy. The interviewer dictates the requirements, asks for the agent loop and the architecture, and does not want a GPU bill: model infrastructure is out of scope and cost is declared infinite. Numbers cover only what you buy: sandboxes, model calls, storage. On a functional-heavy prompt, say the one numbers line before drawing if nobody objects. If the interviewer asks for the diagram first, draw and put the numbers line right after the diagram. The board below uses the diagram-first order.
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="functional-rule">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="functional-rule">got it</button></p>
 
 </div>
 </details>
@@ -95,18 +156,20 @@ This prompt is functional-heavy. The interviewer dictates the requirements, asks
 
 <p class="rev-plan">Facts and shapes of calculation. Say the value or the formula, then open.</p>
 
-<details class="rev" data-card="six-lines">
+<details class="rev" data-card="six-lines" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">SIX LINES</span><span class="rev-q">The six lines in the room, in four minutes?</span></span></summary>
 <div class="rev-a">
 
-In the room: 4 minutes, six lines (objects, egress = constraint, ingress ratio + growth, hot set, capacity vs IOPS check, network). The rest is ammunition for probes.
+In the room: 4 minutes, six lines (1 objects and users; 2 the constraining rate, operations per second or bytes per second; 3 ingress against egress, and growth; 4 the hot set; 5 capacity against IOPS; 6 network ports). The rest is ammunition for probes.
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="six-lines">mark known</button></p>
+**Remember by.** six words in order: count, rate, in and grow, hot, check, wire.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="six-lines">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="five-categories">
+<details class="rev" data-card="five-categories" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">CATEGORIES</span><span class="rev-q">The five estimation categories: the question each answers, its unit, and when it is load-bearing?</span></span></summary>
 <div class="rev-a">
 
@@ -118,137 +181,149 @@ In the room: 4 minutes, six lines (objects, egress = constraint, ingress ratio +
 | Memory | What must sit in RAM or SSD to meet latency, and does it fit on one box? | Line 4, the hot set | GB, TB, nodes | Caches, timelines, session maps, indexes, order books, ANN vectors, tries |
 | Compute | How many GPUs or cores, when the work per request is heavy? | Line 2 again, when the unit is a frame, a token or a match, divided by throughput per device | GPUs, cores, tokens/s, frames/s | Model serving, transcoding, embedding, training, matching engines |
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="five-categories">mark known</button></p>
+**Remember by.** the life of a byte: it arrives (traffic), moves (bandwidth), lands (storage), stays hot (memory), gets worked on (compute). A causal chain, not an acronym.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="five-categories">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="step-zero">
+<details class="rev" data-card="step-zero" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">CATEGORIES</span><span class="rev-q">Step 0, said aloud before any number?</span></span></summary>
 <div class="rev-a">
 
 "Before I size anything: this is a Traffic and Memory system, storage and bandwidth are small here, and there is no heavy compute. So I will size the request rate, the hot set, and check that the hot set fits in RAM on a handful of nodes." Then the six lines. Then the sentence that names the one number that forced the design.
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="step-zero">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="step-zero">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="num-seconds-per-day">
+<details class="rev" data-card="num-seconds-per-day" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Seconds per day?</span></span></summary>
 <div class="rev-a">
 
 86,400 ≈ 10⁵ (so 1 M/day ≈ 12/s; 100 M/day ≈ 1,200/s)
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="num-seconds-per-day">mark known</button></p>
+**Remember by.** twelve per second per million per day.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-seconds-per-day">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="num-seconds-per-year">
+<details class="rev" data-card="num-seconds-per-year" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Seconds per year?</span></span></summary>
 <div class="rev-a">
 
 ≈ 3.15 × 10⁷
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="num-seconds-per-year">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-seconds-per-year">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="num-kb-mb-gb-tb-pb">
+<details class="rev" data-card="num-kb-mb-gb-tb-pb" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">KB / MB / GB / TB / PB?</span></span></summary>
 <div class="rev-a">
 
 10³ / 10⁶ / 10⁹ / 10¹² / 10¹⁵ bytes
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="num-kb-mb-gb-tb-pb">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-kb-mb-gb-tb-pb">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="num-hdd">
+<details class="rev" data-card="num-hdd" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">HDD?</span></span></summary>
 <div class="rev-a">
 
 100-250 MB/s sequential, ~100-200 IOPS random, 16-24 TB
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="num-hdd">mark known</button></p>
+**Remember by.** the device triple: HDD 100 IOPS, SSD 100k IOPS, RAM 100 ns.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-hdd">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="num-sata-nvme-ssd">
+<details class="rev" data-card="num-sata-nvme-ssd" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">SATA/NVMe SSD?</span></span></summary>
 <div class="rev-a">
 
 0.5-7 GB/s, 10⁵-10⁶ IOPS, 100 µs-1 ms latency
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="num-sata-nvme-ssd">mark known</button></p>
+**Remember by.** the device triple: HDD 100 IOPS, SSD 100k IOPS, RAM 100 ns.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-sata-nvme-ssd">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="num-ram">
+<details class="rev" data-card="num-ram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">RAM?</span></span></summary>
 <div class="rev-a">
 
 ~10-50 GB/s per socket, 100 ns access
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="num-ram">mark known</button></p>
+**Remember by.** the device triple: HDD 100 IOPS, SSD 100k IOPS, RAM 100 ns.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-ram">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="num-nic">
+<details class="rev" data-card="num-nic" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">NIC?</span></span></summary>
 <div class="rev-a">
 
 25/100/400 Gb/s ≈ 3/12/50 GB/s
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="num-nic">mark known</button></p>
+**Remember by.** eight 100 GbE ports per 100 GB/s, because one port is 12.5 GB/s.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-nic">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="num-intra-dc-rtt">
+<details class="rev" data-card="num-intra-dc-rtt" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Intra-DC RTT?</span></span></summary>
 <div class="rev-a">
 
 ~0.5 ms · cross-region 50-150 ms
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="num-intra-dc-rtt">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-intra-dc-rtt">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="num-one-server">
+<details class="rev" data-card="num-one-server" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">One server?</span></span></summary>
 <div class="rev-a">
 
 ~10⁴-10⁵ simple requests/s; ~10⁴ concurrent connections comfortably
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="num-one-server">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-one-server">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="num-compression">
+<details class="rev" data-card="num-compression" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">NUMBER</span><span class="rev-q">Compression?</span></span></summary>
 <div class="rev-a">
 
 text 3-10×, video already compressed (~1×)
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="num-compression">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="num-compression">got it</button></p>
 
 </div>
 </details>
 
-## Boards: the numbers block and the diagram order (20)
+## Boards on Daily: the numbers block and the diagram order (20)
 
-<p class="rev-plan">Four cards per design: the whole board, then the numbers block, the diagram order and the two deep dives on their own. On the whole-board card, write before you open.</p>
+<p class="rev-plan">Two cards per design on this page: the numbers block and the diagram in draw order. Say them with the card closed, pen in hand.</p>
 
-<details class="rev" data-card="b01-numbers">
+<details class="rev" data-card="b01-numbers" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 01 · NUMBERS</span><span class="rev-q">Live AI copilot for 1M body-worn and industrial cameras: the numbers block (8-13 min).</span></span></summary>
 <div class="rev-a">
 
@@ -261,12 +336,12 @@ alerts 20/dev/day -> 2/s today, 230/s at 1M      ports at 1M: 500 GB/s ÷ 12.5 =
 -> GPUs force it: admission and frame sampling ARE the design; bytes and alerts are ordinary
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b01-numbers">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b01-numbers">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b01-diagram">
+<details class="rev" data-card="b01-diagram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 01 · DIAGRAM</span><span class="rev-q">Live AI copilot for 1M body-worn and industrial cameras: the diagram in draw order (21-36 min).</span></span></summary>
 <div class="rev-a">
 
@@ -278,12 +353,12 @@ alerts 20/dev/day -> 2/s today, 230/s at 1M      ports at 1M: 500 GB/s ÷ 12.5 =
 5 stream gateways -> object storage (consented segments only)      6 control plane -> admission, gateways
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b01-diagram">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b01-diagram">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b02-numbers">
+<details class="rev" data-card="b02-numbers" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 02 · NUMBERS</span><span class="rev-q">The multimodal AI API platform: the numbers block (8-13 min).</span></span></summary>
 <div class="rev-a">
 
@@ -296,12 +371,12 @@ in ≈ 5 GB/s (2.2 sync + 2.5 stream + 0.1 jobs) · out ≈ 22 MB/s · usage eve
 -> 35k rps is a small gateway problem; 2,000 GPUs is the cost -> count tokens and GPU-seconds, never requests
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b02-numbers">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b02-numbers">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b02-diagram">
+<details class="rev" data-card="b02-diagram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 02 · DIAGRAM</span><span class="rev-q">The multimodal AI API platform: the diagram in draw order (21-36 min).</span></span></summary>
 <div class="rev-a">
 
@@ -314,12 +389,12 @@ in ≈ 5 GB/s (2.2 sync + 2.5 stream + 0.1 jobs) · out ≈ 22 MB/s · usage eve
 6 control plane (keys, tiers, registry, rollout) -> gateway, router
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b02-diagram">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b02-diagram">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b03-numbers">
+<details class="rev" data-card="b03-numbers" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 03 · NUMBERS</span><span class="rev-q">Petabyte video lake feeding a 1,000-GPU training cluster: the numbers block (8-13 min).</span></span></summary>
 <div class="rev-a">
 
@@ -332,12 +407,12 @@ rebuild 20 TB: 1 disk 28 h; declustered floor 3 GB/s -> 1.9 h (27 GB/s reads = 3
 -> IOPS forces it: 4× headroom only while healthy -> jobs read staged NVMe; HDDs see staging, misses, repair
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b03-numbers">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b03-numbers">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b03-diagram">
+<details class="rev" data-card="b03-diagram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 03 · DIAGRAM</span><span class="rev-q">Petabyte video lake feeding a 1,000-GPU training cluster: the diagram in draw order (21-36 min).</span></span></summary>
 <div class="rev-a">
 
@@ -349,12 +424,12 @@ rebuild 20 TB: 1 disk 28 h; declustered floor 3 GB/s -> 1.9 h (27 GB/s reads = 3
 5 repair service (priority by redundancy left) -> disk index, HDD · scrubber -> HDD
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b03-diagram">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b03-diagram">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b04-numbers">
+<details class="rev" data-card="b04-numbers" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 04 · NUMBERS</span><span class="rev-q">The training factory: schedule, checkpoint, evaluate, ship (the infra spine): the numbers block (8-13 min).</span></span></summary>
 <div class="rev-a">
 
@@ -367,12 +442,12 @@ rollout 250 hosts × 140 GB = 35 TB; origin 10 GB/s -> 1 h -> P2P
 -> 400 GPU-h per failure vs a 560 GB checkpoint forces: local commit in seconds, async drain, cadence from failure rate
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b04-numbers">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b04-numbers">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b04-diagram">
+<details class="rev" data-card="b04-diagram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 04 · DIAGRAM</span><span class="rev-q">The training factory: schedule, checkpoint, evaluate, ship (the infra spine): the diagram in draw order (21-36 min).</span></span></summary>
 <div class="rev-a">
 
@@ -383,12 +458,12 @@ rollout 250 hosts × 140 GB = 35 TB; origin 10 GB/s -> 1 h -> P2P
 4 registry -> eval gates (64-GPU jobs via job API) -> rollout controller (canary per region) -> serving fleet (P2P pull) -> metrics -> controller
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b04-diagram">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b04-diagram">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b05-numbers">
+<details class="rev" data-card="b05-numbers" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 05 · NUMBERS</span><span class="rev-q">Collaborative AI video workspace for organizations (people working together, with AI participants): the numbers block (8-13 min).</span></span></summary>
 <div class="rev-a">
 
@@ -400,12 +475,12 @@ AI 10k sessions × 5 fps = 50k f/s ÷ 500 = 100-200 GPU · room state 0.6 MB × 
 -> 2.8 Tbps vs 5M frames/s: two planes on different servers, media sized by CPU, state by frames per second
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b05-numbers">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b05-numbers">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b05-diagram">
+<details class="rev" data-card="b05-diagram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 05 · DIAGRAM</span><span class="rev-q">Collaborative AI video workspace for organizations (people working together, with AI participants): the diagram in draw order (21-36 min).</span></span></summary>
 <div class="rev-a">
 
@@ -416,12 +491,12 @@ AI 10k sessions × 5 fps = 50k f/s ÷ 500 = 100-200 GPU · room state 0.6 MB × 
 7 identity service -> WS gateways, room servers, SFUs (revocations)    8 SFU -> recorder -> object store; SFU -> live packager -> CDN (viewers)
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b05-diagram">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b05-diagram">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b06-numbers">
+<details class="rev" data-card="b06-numbers" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 06 · NUMBERS</span><span class="rev-q">Find anything in a billion clips: search, suggest, label (the retrieval spine): the numbers block (8-13 min).</span></span></summary>
 <div class="rev-a">
 
@@ -433,12 +508,12 @@ labels 10⁹ × 20 × 4 B = 80 GB · filter columns 16 GB · metadata 10⁹ × 5
 -> 2.3 TB of vectors in RAM forces 16 shards and a scatter-gather on every query: tail latency and filter handling are the design
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b06-numbers">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b06-numbers">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b06-diagram">
+<details class="rev" data-card="b06-diagram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 06 · DIAGRAM</span><span class="rev-q">Find anything in a billion clips: search, suggest, label (the retrieval spine): the diagram in draw order (21-36 min).</span></span></summary>
 <div class="rev-a">
 
@@ -449,12 +524,12 @@ labels 10⁹ × 20 × 4 B = 80 GB · filter columns 16 GB · metadata 10⁹ × 5
 4 client -> suggest servers (trie in RAM) <- streaming counts <- query logs      5 Kafka -> dataset builder -> manifests
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b06-diagram">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b06-diagram">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b07-numbers">
+<details class="rev" data-card="b07-numbers" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 07 · NUMBERS</span><span class="rev-q">Reserve and dispatch GPU capacity for live streams: the numbers block (8-13 min).</span></span></summary>
 <div class="rev-a">
 
@@ -466,12 +541,12 @@ region loss at 09:00: 20k units, 14k live at 70% -> re-place in 60 s; survivors 
 -> volume is trivial; the FAILURE case forces it: 14,000 streams moving in 60 s, and the free-unit margin across regions
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b07-numbers">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b07-numbers">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b07-diagram">
+<details class="rev" data-card="b07-diagram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 07 · DIAGRAM</span><span class="rev-q">Reserve and dispatch GPU capacity for live streams: the diagram in draw order (21-36 min).</span></span></summary>
 <div class="rev-a">
 
@@ -482,12 +557,12 @@ region loss at 09:00: 20k units, 14k live at 70% -> re-place in 60 s; survivors 
 4 devices -> regional dispatcher (pool table in RAM) -> Redis (pool load, claims, sessions) <- GPU pools report every 1 s · dispatcher -> Postgres (reservation check) · -> admission bucket (reconnects) -> gateway_url back to device
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b07-diagram">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b07-diagram">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b08-numbers">
+<details class="rev" data-card="b08-numbers" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 08 · NUMBERS</span><span class="rev-q">Usage metering, quotas, and a spot auction for scarce GPU capacity: the numbers block (8-13 min).</span></span></summary>
 <div class="rev-a">
 
@@ -499,12 +574,12 @@ raw Parquet 3 TB/day × 400 d = 1.2 PB · bids 10k/s vs exchange's 100k · marke
 -> 10⁶ events/s with ~20 GB of dedup state forces a stream processor; 72 h lateness forces a separate exact batch for billing; 10 s freshness forces early results
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b08-numbers">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b08-numbers">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b08-diagram">
+<details class="rev" data-card="b08-diagram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 08 · DIAGRAM</span><span class="rev-q">Usage metering, quotas, and a spot auction for scarce GPU capacity: the diagram in draw order (21-36 min).</span></span></summary>
 <div class="rev-a">
 
@@ -515,12 +590,12 @@ raw Parquet 3 TB/day × 400 d = 1.2 PB · bids 10k/s vs exchange's 100k · marke
 4 bidders -> sequencer (one log per pool, CLOSE marker) -> matching engine (one thread per pool) -> market data -> bidders · -> clearing results -> board 7 dispatcher · hot standby replays same log
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b08-diagram">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b08-diagram">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b09-numbers">
+<details class="rev" data-card="b09-numbers" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 09 · NUMBERS</span><span class="rev-q">Model hub feed and recommendations for a research community: the numbers block (8-13 min).</span></span></summary>
 <div class="rev-a">
 
@@ -532,12 +607,12 @@ hot: timelines 1M × 800 × 8 B = 6.4 GB · second-degree sets 3.2 GB · suggest
 -> two numbers: 10⁶ writes per celebrity post (head-of-line blocking), and 58k degree reads/s on a graph small enough to replicate
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b09-numbers">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b09-numbers">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b09-diagram">
+<details class="rev" data-card="b09-diagram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 09 · DIAGRAM</span><span class="rev-q">Model hub feed and recommendations for a research community: the diagram in draw order (21-36 min).</span></span></summary>
 <div class="rev-a">
 
@@ -549,12 +624,12 @@ hot: timelines 1M × 800 × 8 B = 6.4 GB · second-degree sets 3.2 GB · suggest
 6 job scheduler (nightly) -> Spark (2-hop, 3-hop, sampled co-follow) -> suggestion lists -> suggestion service (last-mile filter)     7 gateway -> typeahead servers (trie)
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b09-diagram">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b09-diagram">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b10-numbers">
+<details class="rev" data-card="b10-numbers" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 10 · NUMBERS</span><span class="rev-q">Evaluation and testing harness for LLM coding agents: the numbers block (24-26 min).</span></span></summary>
 <div class="rev-a">
 
@@ -564,12 +639,12 @@ quota ask ≈ 1,000 calls/s x 30k tokens ≈ 2x10^9 TPM · 15 s per turn at the 
 storage 10^6 turns x 20 KB = 20 GB events + 10 GB artifacts ≈ 30 GB/run · 30 GB / 1,800 s ≈ 17 MB/s, small
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b10-numbers">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b10-numbers">got it</button></p>
 
 </div>
 </details>
 
-<details class="rev" data-card="b10-diagram">
+<details class="rev" data-card="b10-diagram" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">BOARD 10 · DIAGRAM</span><span class="rev-q">Evaluation and testing harness for LLM coding agents: the diagram in draw order (10-24 min).</span></span></summary>
 <div class="rev-a">
 
@@ -586,7 +661,7 @@ storage 10^6 turns x 20 KB = 20 GB events + 10 GB artifacts ≈ 30 GB/run · 30 
 8 replay service: render from the log, or re-execute in a new SBX · results UI queries ClickHouse + scores
 ```
 
-<p class="rev-actions"><button type="button" class="rev-known" data-for="b10-diagram">mark known</button></p>
+<p class="rev-actions"><button type="button" class="rev-known" data-for="b10-diagram">got it</button></p>
 
 </div>
 </details>
