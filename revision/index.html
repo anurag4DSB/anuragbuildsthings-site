@@ -91,6 +91,9 @@ gtag('js', new Date());
 gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 </script>
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0c0d0b">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="quarto:status" content="draft">
 
 
 <link rel="stylesheet" href="revision.css">
@@ -265,7 +268,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -1055,27 +1058,76 @@ For the next person figuring things out by building - <a href="mailto:anuragbuil
   function store() { try { return window.localStorage; } catch (e) { return null; } }
   function known(id) { var s = store(); if (!s) return false; try { return s.getItem(KEY + id) === '1'; } catch (e) { return false; } }
   function setKnown(id, v) { var s = store(); if (!s) return; try { if (v) s.setItem(KEY + id, '1'); else s.removeItem(KEY + id); } catch (e) {} }
+  function cards() { return Array.prototype.slice.call(document.querySelectorAll('details.rev')); }
+  function say(msg) { var p = document.getElementById('rev-progress'); if (p) p.textContent = msg; }
   function paint() {
-    var cards = document.querySelectorAll('details.rev'), n = 0;
-    cards.forEach(function (d) {
+    var all = cards(), n = 0;
+    all.forEach(function (d) {
       var id = d.getAttribute('data-card'), k = known(id);
       d.classList.toggle('is-known', k);
       var b = d.querySelector('.rev-known');
       if (b) b.textContent = k ? 'unmark' : 'mark known';
       if (k) n++;
     });
-    var p = document.getElementById('rev-progress');
-    if (p) p.textContent = cards.length ? 'Known ' + n + ' of ' + cards.length + '.' : '';
+    say(all.length ? 'Known ' + n + ' of ' + all.length + '.' : '');
+    document.querySelectorAll('section.level2 > h2').forEach(function (h) {
+      var sec = h.parentNode, cs = sec.querySelectorAll('details.rev');
+      if (!cs.length) return;
+      var k = sec.querySelectorAll('details.rev.is-known').length;
+      var span = h.querySelector('.rev-sec');
+      if (!span) { span = document.createElement('span'); span.className = 'rev-sec'; h.appendChild(span); }
+      span.textContent = k + ' of ' + cs.length + ' known';
+    });
+  }
+  function nextUnknown() {
+    var y = window.scrollY, open = cards().filter(function (d) { return d.open; });
+    var list = cards().filter(function (d) { return !d.classList.contains('is-known'); });
+    var d = null;
+    for (var i = 0; i < list.length; i++) {
+      var top = list[i].getBoundingClientRect().top + window.scrollY;
+      if (top > y + 24 && open.indexOf(list[i]) < 0) { d = list[i]; break; }
+    }
+    if (!d) d = list[0];
+    if (!d) { say('Every card on this page is marked known.'); return; }
+    open.forEach(function (x) { x.open = false; });
+    d.open = true;
+    d.scrollIntoView({ block: 'start' });
+  }
+  function setAll(open) { cards().forEach(function (d) { d.open = open; }); }
+  function exportMarks() {
+    var ids = cards().filter(function (d) { return d.classList.contains('is-known'); }).map(function (d) { return d.getAttribute('data-card'); });
+    var url = location.origin + location.pathname + '#marks=' + encodeURIComponent(ids.join(','));
+    var done = function () { say('Link with ' + ids.length + ' marks copied. Open it in the other browser.'); };
+    var show = function () { var p = document.getElementById('rev-progress'); if (p) { p.textContent = ''; var a = document.createElement('a'); a.href = url; a.textContent = 'marks link (' + ids.length + ')'; p.appendChild(a); } };
+    if (navigator.share) { navigator.share({ title: 'Revision marks', url: url }).then(done, show); return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, show); else show();
+  }
+  function importMarks() {
+    var m = /[#&]marks=([^&]*)/.exec(location.hash);
+    if (!m) return;
+    var ids = decodeURIComponent(m[1]).split(',').filter(Boolean);
+    ids.forEach(function (id) { setKnown(id, true); });
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
   }
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('.rev-known');
     if (b) { var id = b.getAttribute('data-for'); setKnown(id, !known(id)); paint(); return; }
-    if (e.target.id === 'rev-reset') {
-      document.querySelectorAll('details.rev').forEach(function (d) { setKnown(d.getAttribute('data-card'), false); });
-      paint();
-    }
+    var t = e.target.closest && e.target.closest('[data-rev]');
+    if (!t) return;
+    var a = t.getAttribute('data-rev');
+    if (a === 'next') nextUnknown();
+    else if (a === 'expand') setAll(true);
+    else if (a === 'collapse') setAll(false);
+    else if (a === 'export') exportMarks();
+    else if (a === 'reset') { cards().forEach(function (d) { setKnown(d.getAttribute('data-card'), false); }); paint(); }
   });
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', paint); else paint();
+  document.addEventListener('keydown', function (e) {
+    if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    if (e.key === 'j') nextUnknown();
+  });
+  if ('serviceWorker' in navigator) { try { navigator.serviceWorker.register('sw.js'); } catch (e) {} }
+  function init() { importMarks(); paint(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>
 
