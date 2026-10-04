@@ -26,28 +26,42 @@ format:
           function setKnown(id, v) { var s = store(); if (!s) return; try { if (v) s.setItem(KEY + id, '1'); else s.removeItem(KEY + id); } catch (e) {} }
           function cards() { return Array.prototype.slice.call(document.querySelectorAll('details.rev')); }
           function say(msg) { var p = document.getElementById('rev-progress'); if (p) p.textContent = msg; }
+          var ONCE = 'rev:once:', DRAWN = 'rev:drawn:';
+          function today() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+          function get(k) { var s = store(); if (!s) return null; try { return s.getItem(k); } catch (e) { return null; } }
+          function set(k, v) { var s = store(); if (!s) return; try { if (v === null) s.removeItem(k); else s.setItem(k, v); } catch (e) {} }
+          function counts(d) { var k = d.getAttribute('data-kind') || 'say'; return k === 'say' || k === 'name'; }
           function paint() {
-            var all = cards(), n = 0;
+            var all = cards(), n = 0, total = 0;
             all.forEach(function (d) {
-              var id = d.getAttribute('data-card'), k = known(id);
+              var id = d.getAttribute('data-card'), k = known(id), once = get(ONCE + id);
               d.classList.toggle('is-known', k);
+              d.classList.toggle('is-once', !k && !!once);
               var b = d.querySelector('.rev-known');
-              if (b) b.textContent = k ? 'unmark' : 'mark known';
-              if (k) n++;
+              if (b) b.textContent = k ? 'unmark' : (once ? (once === today() ? 'got it (again tomorrow)' : 'got it again') : 'got it');
+              var dr = d.querySelector('.rev-drawn');
+              if (dr) { var when = get(DRAWN + id); dr.textContent = when ? 'drawn ' + when + ' (draw again)' : 'drawn today'; d.setAttribute('data-drawn', when || ''); var tg = d.querySelector('.rev-tag'); if (tg) tg.setAttribute('data-drawn', when || ''); }
+              if (counts(d)) { total++; if (k) n++; }
             });
-            say(all.length ? 'Known ' + n + ' of ' + all.length + '.' : '');
+            say(total ? 'Known ' + n + ' of ' + total + ' recall cards.' : '');
             document.querySelectorAll('section.level2 > h2').forEach(function (h) {
-              var sec = h.parentNode, cs = sec.querySelectorAll('details.rev');
-              if (!cs.length) return;
-              var k = sec.querySelectorAll('details.rev.is-known').length;
+              var sec = h.parentNode, cs = Array.prototype.filter.call(sec.querySelectorAll('details.rev'), counts);
               var span = h.querySelector('.rev-sec');
+              if (!cs.length) { if (span) span.remove(); return; }
+              var k = cs.filter(function (d) { return d.classList.contains('is-known'); }).length;
               if (!span) { span = document.createElement('span'); span.className = 'rev-sec'; h.appendChild(span); }
               span.textContent = k + ' of ' + cs.length + ' known';
             });
           }
+          function mark(id) {
+            if (known(id)) { setKnown(id, false); set(ONCE + id, null); return; }
+            var once = get(ONCE + id);
+            if (once && once !== today()) { setKnown(id, true); set(ONCE + id, null); return; }
+            set(ONCE + id, today());
+          }
           function nextUnknown() {
             var y = window.scrollY, open = cards().filter(function (d) { return d.open; });
-            var list = cards().filter(function (d) { return !d.classList.contains('is-known'); });
+            var list = cards().filter(function (d) { return counts(d) && !d.classList.contains('is-known'); });
             var d = null;
             for (var i = 0; i < list.length; i++) {
               var top = list[i].getBoundingClientRect().top + window.scrollY;
@@ -77,7 +91,9 @@ format:
           }
           document.addEventListener('click', function (e) {
             var b = e.target.closest && e.target.closest('.rev-known');
-            if (b) { var id = b.getAttribute('data-for'); setKnown(id, !known(id)); paint(); return; }
+            if (b) { mark(b.getAttribute('data-for')); paint(); return; }
+            var dr = e.target.closest && e.target.closest('.rev-drawn');
+            if (dr) { set(DRAWN + dr.getAttribute('data-for'), today()); paint(); return; }
             var cl = e.target.closest && e.target.closest('.rev-close');
             if (cl) { var dd = cl.closest('details.rev'); dd.open = false; dd.scrollIntoView({ block: 'start' }); return; }
             var t = e.target.closest && e.target.closest('[data-rev]');
@@ -87,7 +103,7 @@ format:
             else if (a === 'expand') setAll(true);
             else if (a === 'collapse') setAll(false);
             else if (a === 'export') exportMarks();
-            else if (a === 'reset') { cards().forEach(function (d) { setKnown(d.getAttribute('data-card'), false); }); paint(); }
+            else if (a === 'reset') { cards().forEach(function (d) { var id = d.getAttribute('data-card'); setKnown(id, false); set(ONCE + id, null); }); paint(); }
           });
           document.addEventListener('keydown', function (e) {
             if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;

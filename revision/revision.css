@@ -45,6 +45,11 @@ details.rev > summary:focus-visible { outline: 2px solid var(--signal); outline-
   color: var(--ink);
 }
 details.rev.is-known .rev-q { color: var(--ink-3); }
+details.rev.is-once .rev-q { color: var(--ink-2); }
+details.rev.is-once .rev-tag::after { content: " · once, again tomorrow"; color: var(--ink-2); }
+details.rev[data-kind="read"] .rev-tag::before { content: "read · "; }
+details.rev[data-kind="do"] .rev-tag::before { content: "on paper · "; }
+.rev-tag[data-drawn]:not([data-drawn=""])::after { content: " · drawn " attr(data-drawn); color: var(--signal); }
 details.rev.is-known .rev-tag::after { content: " · known"; color: var(--signal); }
 .rev-a { padding: 0.75rem 0 0; }
 .rev-a p, .rev-a li { font-size: 1.0625rem; line-height: 1.6; }
@@ -78,7 +83,7 @@ details.rev.is-known .rev-tag::after { content: " · known"; color: var(--signal
   margin-left: 0.75rem;
 }
 .rev-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.5rem; }
-.rev-tools button, .rev-known, .rev-close, [data-rev="reset"] {
+.rev-tools button, .rev-known, .rev-drawn, .rev-close, [data-rev="reset"] {
   background: transparent;
   border: 1px solid var(--rule-hi);
   color: var(--ink-2);
@@ -91,7 +96,7 @@ details.rev.is-known .rev-tag::after { content: " · known"; color: var(--signal
   cursor: pointer;
   transition: color 120ms ease, border-color 120ms ease;
 }
-.rev-tools button:hover, .rev-known:hover, .rev-close:hover, [data-rev="reset"]:hover { color: var(--signal); border-color: var(--signal); }
+.rev-tools button:hover, .rev-known:hover, .rev-drawn:hover, .rev-close:hover, [data-rev="reset"]:hover { color: var(--signal); border-color: var(--signal); }
 .rev-plan { color: var(--ink-2); }
 .rev-nav { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin: 1rem 0 1.5rem; }
 .rev-nav a { color: var(--ink-2); border-bottom-color: transparent; }
@@ -112,7 +117,7 @@ details.rev.is-known .rev-q2 { color: var(--ink-3); }
 @media (max-width: 600px) {
   .rev-q { font-size: 1.0625rem; }
   .rev-a p, .rev-a li { font-size: 1rem; }
-  .rev-tools button, .rev-known, .rev-close, [data-rev="reset"] { min-height: 44px; padding: 0 0.875rem; }
+  .rev-tools button, .rev-known, .rev-drawn, .rev-close, [data-rev="reset"] { min-height: 44px; padding: 0 0.875rem; }
   .rev-nav { line-height: 2.75rem; margin: 0.5rem 0 1rem; }
   .rev-nav a { display: inline-block; }
   table.rev-stack, table.rev-stack tbody, table.rev-stack tr, table.rev-stack td { display: block; width: 100%; }
