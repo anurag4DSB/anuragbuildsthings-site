@@ -586,7 +586,7 @@ got it
 <section id="patterns-cues-to-name-21" class="level2">
 <h2 class="anchored" data-anchor-id="patterns-cues-to-name-21">Patterns: cues to name (21)</h2>
 <p class="rev-plan">
-The question side shows only the cues, the phrases a problem statement uses. Say the pattern name, its core idea and the complexity out loud, then open. If you cannot name it in ten seconds, it is not known.
+The question side shows only the cues, the phrases a problem statement uses. Say the pattern name, its core idea and the complexity out loud, then open. If you cannot name it in ten seconds, it is not known. To learn a pattern rather than test it: open its card, read the core idea once, then solve the problems listed under Practise on, in that order, and come back to the card after each one to say which line the problem used.
 </p>
 <details class="rev" data-card="cp-advanced-graph" data-kind="say">
 <summary>
@@ -612,6 +612,7 @@ The question side shows only the cues, the phrases a problem statement uses. Say
 <li>Confusing shortest-path tree with MST</li>
 </ul>
 <p><strong>Not this when.</strong> Unweighted → BFS. DAG ordering → topological sort. Connectivity only → union-find.</p>
+<p><strong>Practise on.</strong> Alien Dictionary, Course Schedule. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p><strong>This week.</strong> Name only. Say “weighted edges, so BFS is wrong; Dijkstra, a BFS whose queue is a heap keyed by distance, O((V+E) log V)” and solve the problem in front of you with BFS or DFS. No full implementation this week.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-advanced-graph">
@@ -643,6 +644,7 @@ got it
 <li>Sorting when the problem forbids or when O(n) is expected</li>
 </ul>
 <p><strong>Not this when.</strong> Input is sorted or must be processed in place with O(1) space → two pointers or in-place marking. Order/adjacency matters → sliding window or stack.</p>
+<p><strong>Practise on.</strong> Contains Duplicate, Valid Anagram, Two Sum, Group Anagrams, Top K Frequent Elements, Product of Array Except Self, Encode and Decode Strings, Longest Consecutive Sequence. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-arrays-hashing">
 got it
@@ -673,6 +675,7 @@ got it
 <li>Copying the path instead of referencing then copying on record</li>
 </ul>
 <p><strong>Not this when.</strong> Counting the number of ways (not listing them) → DP. Shortest path → BFS. Optimal value with overlapping subproblems → DP.</p>
+<p><strong>Practise on.</strong> Combination Sum, Word Search, Word Search II, Design Add And Search Words Data Structure. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-backtracking">
 got it
@@ -703,6 +706,7 @@ got it
 <li>Duplicates break the ‘which half is sorted’ test</li>
 </ul>
 <p><strong>Not this when.</strong> Data unsorted with no monotonic predicate → hashing/sorting first. Need all matches, not one → scan or two pointers.</p>
+<p><strong>Practise on.</strong> Find Minimum In Rotated Sorted Array, Search In Rotated Sorted Array, Longest Increasing Subsequence. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-binary-search">
 got it
@@ -733,6 +737,7 @@ got it
 <li>Collecting the whole inorder list when early stop was possible</li>
 </ul>
 <p><strong>Not this when.</strong> Tree is not a BST → general DFS/BFS. Need frequent kth queries with updates → augmented tree/order statistics (out of scope).</p>
+<p><strong>Practise on.</strong> Validate Binary Search Tree, Kth Smallest Element In a Bst, Lowest Common Ancestor of a Binary Search Tree. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-bst-inorder">
 got it
@@ -764,6 +769,7 @@ got it
 <li>Forgetting the min/max tracking pair when negatives flip signs (product problems)</li>
 </ul>
 <p><strong>Not this when.</strong> Two sequences or a grid → 2-D DP. Need to enumerate solutions → backtracking. Local choice provably safe → greedy.</p>
+<p><strong>Practise on.</strong> Climbing Stairs, House Robber, House Robber II, Longest Palindromic Substring, Palindromic Substrings, Decode Ways, Coin Change, Maximum Product Subarray, Word Break, Longest Increasing Subsequence. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-dp-1d">
 got it
@@ -795,6 +801,7 @@ got it
 <li>Trying 1-D when two indices are genuinely needed</li>
 </ul>
 <p><strong>Not this when.</strong> Single sequence → 1-D DP. Palindromes in one string → expand-around-center is usually simpler than 2-D DP.</p>
+<p><strong>Practise on.</strong> Unique Paths, Longest Common Subsequence, Longest Palindromic Substring. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-dp-2d">
 got it
@@ -826,6 +833,7 @@ got it
 <li>Simulating from every source instead of reversing from the targets</li>
 </ul>
 <p><strong>Not this when.</strong> Ordering constraints → topological sort. Weighted shortest path → Dijkstra. Only components count without traversal → union-find.</p>
+<p><strong>Practise on.</strong> Number of Islands, Clone Graph, Pacific Atlantic Water Flow, Word Search, Graph Valid Tree, Number of Connected Components In An Undirected Graph. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-graph-dfs-bfs">
 got it
@@ -856,6 +864,7 @@ got it
 <li>Confusing with the harder variant (Jump Game II, multiple transactions)</li>
 </ul>
 <p><strong>Not this when.</strong> Choices interact and local optimum can be wrong → DP. Need all solutions → backtracking.</p>
+<p><strong>Practise on.</strong> Maximum Subarray, Jump Game, Best Time to Buy And Sell Stock, Non Overlapping Intervals, Container With Most Water. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-greedy">
 got it
@@ -886,6 +895,7 @@ got it
 <li>Using a heap when bucket counting gives O(n)</li>
 </ul>
 <p><strong>Not this when.</strong> Value range small → bucket sort. Need arbitrary deletes or order statistics → balanced BST/sorted container. Only one pass extreme → single variable.</p>
+<p><strong>Practise on.</strong> Top K Frequent Elements, Merge K Sorted Lists, Find Median From Data Stream, Meeting Rooms II. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-heap">
 got it
@@ -916,6 +926,7 @@ got it
 <li>Tie order in sweep line (end before start at equal time when touching is allowed)</li>
 </ul>
 <p><strong>Not this when.</strong> Intervals on a tree/graph → different structure. Need dynamic insert/query of overlaps → interval tree / segment tree (rare in interviews).</p>
+<p><strong>Practise on.</strong> Insert Interval, Merge Intervals, Non Overlapping Intervals, Meeting Rooms, Meeting Rooms II. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-intervals">
 got it
@@ -946,6 +957,7 @@ got it
 <li>Off-by-one in the gap for nth-from-end</li>
 </ul>
 <p><strong>Not this when.</strong> Random access or sorting needed → arrays. Values (not structure) matter → hashing is acceptable when space is allowed.</p>
+<p><strong>Practise on.</strong> Reverse Linked List, Merge Two Sorted Lists, Linked List Cycle, Reorder List, Remove Nth Node From End of List, Merge K Sorted Lists. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-linked-list">
 got it
@@ -976,6 +988,7 @@ got it
 <li>Layer-by-layer index errors when transpose+reverse was available</li>
 </ul>
 <p><strong>Not this when.</strong> Grid connectivity → graph DFS/BFS. Counting paths → 2-D DP. Searching words → backtracking.</p>
+<p><strong>Practise on.</strong> Rotate Image, Spiral Matrix, Set Matrix Zeroes, Word Search, Number of Islands. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-matrix-traversal">
 got it
@@ -1006,6 +1019,7 @@ got it
 <li>Windows over negative numbers break monotonicity (then prefix sums, not windows)</li>
 </ul>
 <p><strong>Not this when.</strong> Elements not contiguous → DP/hashing. Condition not incrementally maintainable (e.g., median) → different structure. Negative numbers with sum constraint → prefix sums + hashing.</p>
+<p><strong>Practise on.</strong> Best Time to Buy And Sell Stock, Longest Substring Without Repeating Characters, Longest Repeating Character Replacement, Minimum Window Substring. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-sliding-window">
 got it
@@ -1036,6 +1050,7 @@ got it
 <li>Confusing which direction a monotonic stack should be monotonic</li>
 </ul>
 <p><strong>Not this when.</strong> FIFO order needed → queue/BFS. Need min/max over a sliding window → deque. Random access needed → arrays.</p>
+<p><strong>Practise on.</strong> Valid Parentheses, Kth Smallest Element In a Bst, Serialize And Deserialize Binary Tree. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-stack">
 got it
@@ -1067,6 +1082,7 @@ got it
 <li>Alien dictionary: prefix case (‘abc’ before ‘ab’) is invalid; multiple valid orders</li>
 </ul>
 <p><strong>Not this when.</strong> Undirected graph → components/union-find. Need shortest path → BFS/Dijkstra. Order not constrained → sorting.</p>
+<p><strong>Practise on.</strong> Course Schedule, Alien Dictionary. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-topological-sort">
 got it
@@ -1096,6 +1112,7 @@ got it
 <li>Using BFS when the problem is really per-subtree (DFS simpler)</li>
 </ul>
 <p><strong>Not this when.</strong> Per-subtree values → DFS. Sorted order from BST → inorder DFS.</p>
+<p><strong>Practise on.</strong> Binary Tree Level Order Traversal, Serialize And Deserialize Binary Tree. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-tree-bfs">
 got it
@@ -1126,6 +1143,7 @@ got it
 <li>Recursion depth on skewed trees (use iterative if huge)</li>
 </ul>
 <p><strong>Not this when.</strong> Need level-by-level order or shortest path in an unweighted tree → BFS. Need sorted order from a BST → inorder.</p>
+<p><strong>Practise on.</strong> Invert Binary Tree, Maximum Depth of Binary Tree, Same Tree, Subtree of Another Tree, Binary Tree Maximum Path Sum, Validate Binary Search Tree, Construct Binary Tree From Preorder And Inorder Traversal, Serialize And Deserialize Binary Tree. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-tree-dfs">
 got it
@@ -1156,6 +1174,7 @@ got it
 <li>Recursion depth for long words is fine; grid DFS unmark is the usual bug</li>
 </ul>
 <p><strong>Not this when.</strong> Single string matching → hashing/KMP. Suffix queries → suffix structures. Few words → a set is enough.</p>
+<p><strong>Practise on.</strong> Implement Trie Prefix Tree, Design Add And Search Words Data Structure, Word Search II. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-trie">
 got it
@@ -1186,6 +1205,7 @@ got it
 <li>Forgetting to skip invalid characters (palindromes)</li>
 </ul>
 <p><strong>Not this when.</strong> Need to consider a contiguous range with a running property → sliding window. Need arbitrary lookups in unsorted data → hashing.</p>
+<p><strong>Practise on.</strong> Valid Palindrome, 3Sum, Container With Most Water, Reorder List, Remove Nth Node From End of List. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-two-pointers">
 got it
@@ -1215,6 +1235,7 @@ got it
 <li>Using it on directed graphs (wrong tool)</li>
 </ul>
 <p><strong>Not this when.</strong> Directed dependencies → topological sort. Need the actual path → DFS/BFS. Need to un-union → offline tricks (rare).</p>
+<p><strong>Practise on.</strong> Graph Valid Tree, Number of Connected Components In An Undirected Graph, Number of Islands, Longest Consecutive Sequence. Read this card, then solve those in this order; each problem’s own card names the leap that connects back here.</p>
 <p><strong>This week.</strong> Twenty-minute primer on Wednesday: find with path compression, union by size, both near O(1). Its two problems (valid tree, connected components) also fall to DFS, so DFS is the answer you write; union-find is the follow-up you name.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="cp-union-find">
