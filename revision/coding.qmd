@@ -145,7 +145,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 ## Patterns: cues to name (21)
 
-<p class="rev-plan">The question side shows only the cues, the phrases a problem statement uses. Say the pattern name, its core idea and the complexity out loud, then open. If you cannot name it in ten seconds, it is not known.</p>
+<p class="rev-plan">The question side shows only the cues, the phrases a problem statement uses. Say the pattern name, its core idea and the complexity out loud, then open. If you cannot name it in ten seconds, it is not known. To learn a pattern rather than test it: open its card, read the core idea once, then solve the problems listed under Practise on, in that order, and come back to the card after each one to say which line the problem used.</p>
 
 <details class="rev" data-card="cp-advanced-graph" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">PATTERN · CUES</span><span class="rev-q">'weighted', 'minimum cost', 'cheapest path', 'network delay', 'connect all points', 'k stops'</span><span class="rev-q2">Edge weights present; BFS no longer correct</span></span></summary>
@@ -174,6 +174,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Confusing shortest-path tree with MST
 
 **Not this when.** Unweighted → BFS. DAG ordering → topological sort. Connectivity only → union-find.
+
+**Practise on.** Alien Dictionary, Course Schedule. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 **This week.** Name only. Say "weighted edges, so BFS is wrong; Dijkstra, a BFS whose queue is a heap keyed by distance, O((V+E) log V)" and solve the problem in front of you with BFS or DFS. No full implementation this week.
 
@@ -209,6 +211,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Not this when.** Input is sorted or must be processed in place with O(1) space → two pointers or in-place marking. Order/adjacency matters → sliding window or stack.
 
+**Practise on.** Contains Duplicate, Valid Anagram, Two Sum, Group Anagrams, Top K Frequent Elements, Product of Array Except Self, Encode and Decode Strings, Longest Consecutive Sequence. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-arrays-hashing">got it</button></p>
 
 </div>
@@ -240,6 +244,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Copying the path instead of referencing then copying on record
 
 **Not this when.** Counting the number of ways (not listing them) → DP. Shortest path → BFS. Optimal value with overlapping subproblems → DP.
+
+**Practise on.** Combination Sum, Word Search, Word Search II, Design Add And Search Words Data Structure. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-backtracking">got it</button></p>
 
@@ -273,6 +279,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Not this when.** Data unsorted with no monotonic predicate → hashing/sorting first. Need all matches, not one → scan or two pointers.
 
+**Practise on.** Find Minimum In Rotated Sorted Array, Search In Rotated Sorted Array, Longest Increasing Subsequence. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-binary-search">got it</button></p>
 
 </div>
@@ -304,6 +312,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Collecting the whole inorder list when early stop was possible
 
 **Not this when.** Tree is not a BST → general DFS/BFS. Need frequent kth queries with updates → augmented tree/order statistics (out of scope).
+
+**Practise on.** Validate Binary Search Tree, Kth Smallest Element In a Bst, Lowest Common Ancestor of a Binary Search Tree. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-bst-inorder">got it</button></p>
 
@@ -338,6 +348,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Not this when.** Two sequences or a grid → 2-D DP. Need to enumerate solutions → backtracking. Local choice provably safe → greedy.
 
+**Practise on.** Climbing Stairs, House Robber, House Robber II, Longest Palindromic Substring, Palindromic Substrings, Decode Ways, Coin Change, Maximum Product Subarray, Word Break, Longest Increasing Subsequence. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-dp-1d">got it</button></p>
 
 </div>
@@ -370,6 +382,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Trying 1-D when two indices are genuinely needed
 
 **Not this when.** Single sequence → 1-D DP. Palindromes in one string → expand-around-center is usually simpler than 2-D DP.
+
+**Practise on.** Unique Paths, Longest Common Subsequence, Longest Palindromic Substring. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-dp-2d">got it</button></p>
 
@@ -404,6 +418,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Not this when.** Ordering constraints → topological sort. Weighted shortest path → Dijkstra. Only components count without traversal → union-find.
 
+**Practise on.** Number of Islands, Clone Graph, Pacific Atlantic Water Flow, Word Search, Graph Valid Tree, Number of Connected Components In An Undirected Graph. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-graph-dfs-bfs">got it</button></p>
 
 </div>
@@ -435,6 +451,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Confusing with the harder variant (Jump Game II, multiple transactions)
 
 **Not this when.** Choices interact and local optimum can be wrong → DP. Need all solutions → backtracking.
+
+**Practise on.** Maximum Subarray, Jump Game, Best Time to Buy And Sell Stock, Non Overlapping Intervals, Container With Most Water. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-greedy">got it</button></p>
 
@@ -468,6 +486,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Not this when.** Value range small → bucket sort. Need arbitrary deletes or order statistics → balanced BST/sorted container. Only one pass extreme → single variable.
 
+**Practise on.** Top K Frequent Elements, Merge K Sorted Lists, Find Median From Data Stream, Meeting Rooms II. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-heap">got it</button></p>
 
 </div>
@@ -499,6 +519,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Tie order in sweep line (end before start at equal time when touching is allowed)
 
 **Not this when.** Intervals on a tree/graph → different structure. Need dynamic insert/query of overlaps → interval tree / segment tree (rare in interviews).
+
+**Practise on.** Insert Interval, Merge Intervals, Non Overlapping Intervals, Meeting Rooms, Meeting Rooms II. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-intervals">got it</button></p>
 
@@ -532,6 +554,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Not this when.** Random access or sorting needed → arrays. Values (not structure) matter → hashing is acceptable when space is allowed.
 
+**Practise on.** Reverse Linked List, Merge Two Sorted Lists, Linked List Cycle, Reorder List, Remove Nth Node From End of List, Merge K Sorted Lists. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-linked-list">got it</button></p>
 
 </div>
@@ -563,6 +587,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Layer-by-layer index errors when transpose+reverse was available
 
 **Not this when.** Grid connectivity → graph DFS/BFS. Counting paths → 2-D DP. Searching words → backtracking.
+
+**Practise on.** Rotate Image, Spiral Matrix, Set Matrix Zeroes, Word Search, Number of Islands. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-matrix-traversal">got it</button></p>
 
@@ -596,6 +622,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Not this when.** Elements not contiguous → DP/hashing. Condition not incrementally maintainable (e.g., median) → different structure. Negative numbers with sum constraint → prefix sums + hashing.
 
+**Practise on.** Best Time to Buy And Sell Stock, Longest Substring Without Repeating Characters, Longest Repeating Character Replacement, Minimum Window Substring. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-sliding-window">got it</button></p>
 
 </div>
@@ -627,6 +655,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Confusing which direction a monotonic stack should be monotonic
 
 **Not this when.** FIFO order needed → queue/BFS. Need min/max over a sliding window → deque. Random access needed → arrays.
+
+**Practise on.** Valid Parentheses, Kth Smallest Element In a Bst, Serialize And Deserialize Binary Tree. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-stack">got it</button></p>
 
@@ -661,6 +691,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Not this when.** Undirected graph → components/union-find. Need shortest path → BFS/Dijkstra. Order not constrained → sorting.
 
+**Practise on.** Course Schedule, Alien Dictionary. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-topological-sort">got it</button></p>
 
 </div>
@@ -691,6 +723,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Using BFS when the problem is really per-subtree (DFS simpler)
 
 **Not this when.** Per-subtree values → DFS. Sorted order from BST → inorder DFS.
+
+**Practise on.** Binary Tree Level Order Traversal, Serialize And Deserialize Binary Tree. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-tree-bfs">got it</button></p>
 
@@ -724,6 +758,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Not this when.** Need level-by-level order or shortest path in an unweighted tree → BFS. Need sorted order from a BST → inorder.
 
+**Practise on.** Invert Binary Tree, Maximum Depth of Binary Tree, Same Tree, Subtree of Another Tree, Binary Tree Maximum Path Sum, Validate Binary Search Tree, Construct Binary Tree From Preorder And Inorder Traversal, Serialize And Deserialize Binary Tree. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-tree-dfs">got it</button></p>
 
 </div>
@@ -755,6 +791,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Recursion depth for long words is fine; grid DFS unmark is the usual bug
 
 **Not this when.** Single string matching → hashing/KMP. Suffix queries → suffix structures. Few words → a set is enough.
+
+**Practise on.** Implement Trie Prefix Tree, Design Add And Search Words Data Structure, Word Search II. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-trie">got it</button></p>
 
@@ -788,6 +826,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 
 **Not this when.** Need to consider a contiguous range with a running property → sliding window. Need arbitrary lookups in unsorted data → hashing.
 
+**Practise on.** Valid Palindrome, 3Sum, Container With Most Water, Reorder List, Remove Nth Node From End of List. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="cp-two-pointers">got it</button></p>
 
 </div>
@@ -818,6 +858,8 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Using it on directed graphs (wrong tool)
 
 **Not this when.** Directed dependencies → topological sort. Need the actual path → DFS/BFS. Need to un-union → offline tricks (rare).
+
+**Practise on.** Graph Valid Tree, Number of Connected Components In An Undirected Graph, Number of Islands, Longest Consecutive Sequence. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
 **This week.** Twenty-minute primer on Wednesday: find with path compression, union by size, both near O(1). Its two problems (valid tree, connected components) also fall to DFS, so DFS is the answer you write; union-find is the follow-up you name.
 
