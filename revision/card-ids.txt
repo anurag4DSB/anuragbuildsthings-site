@@ -136,6 +136,7 @@ gb-graph-five
 gb-idea
 gb-ladder-graphs
 gb-ladder-trees
+gb-order
 gb-traps
 layout-diagram-first
 layout-scale
