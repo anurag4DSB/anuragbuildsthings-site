@@ -1,6 +1,6 @@
 ---
 title: "Coding"
-description: "105 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side."
+description: "116 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side."
 toc: true
 ---
 
@@ -80,6 +80,241 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 | Expand / interval | center or `dp[l][r]` |
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="dp-families">got it</button></p>
+
+</div>
+</details>
+
+## Tree DFS: the five questions (4)
+
+<p class="rev-plan">The DP six lines for trees. Before any tree recursion, write HAND UP, EMPTY, BUILD, SAVE, ORDER as comments; the SAVE test decides whether a global exists.</p>
+
+<details class="rev" data-card="tree-five" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">The five questions to answer as comments before any tree recursion?</span></span></summary>
+<div class="rev-a">
+
+```text
+HAND UP   what one value does this node give its parent? (a number or bool, in words)
+EMPTY     what does a missing child hand up?
+BUILD     how does the node make its hand-up value from the two children's values?
+SAVE      is the real answer something the parent could not continue as one line,
+          because it uses both children? then compute it here and keep the best in a global;
+          the hand-up stays the straight-line version
+ORDER     children first (post-order), almost always for trees
+```
+
+Everything rests on one fact: **a path is a single line, it never forks.** Each node hands one value up to its parent, and the parent can only use that value by continuing the line upward. So the hand-up value must describe a straight line that ends at the node.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="tree-five">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="tree-save" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">SAVE: when does a tree answer need a global, and what is the one-sentence test?</span></span></summary>
+<div class="rev-a">
+
+Some answers are not straight lines. They come up from one child, pass through the node, and go down into the other child, like the shape ∧ with the node at the top. The parent cannot continue such a shape, because continuing it would mean entering the node twice. A node can therefore have two numbers: the straight-line value it hands up, and the full answer at this node, which it saves in a global because nobody above can use it.
+
+The test for SAVE is one sentence: "could my parent continue this value as a single line?" If yes, hand it up. If no, save it.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="tree-save">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="tree-table" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">Max Depth, Same Tree, Balanced, Diameter, Max Path Sum: hand up, empty, build, save for each?</span></span></summary>
+<div class="rev-a">
+
+| Problem | HAND UP | EMPTY | BUILD | SAVE |
+|---|---|---|---|---|
+| Max Depth | height of this subtree | 0 | 1 + max(left, right) | nothing, a parent continues a height by adding 1 |
+| Same Tree | are these two subtrees equal | both None: True | values equal AND left same AND right same | nothing |
+| Balanced Tree | height, or -1 if unbalanced below | 0 | -1 if a side is -1 or the heights differ by more than 1, else 1 + max | nothing |
+| Diameter | height of this subtree | 0 | 1 + max(left, right) | left height + right height, the ∧ path with its top here |
+| Max Path Sum | best one-sided arm | 0 | node + max(arms, floored at 0) | node + both arms |
+
+Diameter and Max Path Sum are the same problem with different weights, every edge worth 1 instead of node values.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="tree-table">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="tree-maxpath" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">Maximum Path Sum derived from the five questions, not memorised?</span></span></summary>
+<div class="rev-a">
+
+- HAND UP: the best sum of a straight line that starts at this node and goes down one side.
+- EMPTY: 0, an empty arm adds nothing.
+- BUILD: node + max(left arm, right arm), with any arm below 0 treated as 0 (a negative arm only lowers the sum, so the path skips that side).
+- SAVE: node + left arm + right arm, the ∧ path with its top here; compare with a global best that starts at the root value, never at 0, because a single node is a valid path.
+- ORDER: children first.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="tree-maxpath">got it</button></p>
+
+</div>
+</details>
+
+## DFS and BFS: the system (7)
+
+<p class="rev-plan">The whole traversal family on seven cards: the one idea, how to choose, the five graph questions and the three shapes, the two ladders easy to hard, the traps, the complexity. Read the ladder card, then solve in that order.</p>
+
+<details class="rev" data-card="gb-idea" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">DFS and BFS in one idea: what is the only real choice?</span></span></summary>
+<div class="rev-a">
+
+One idea runs through every problem here: **a traversal visits every node once, and the only choices are the order you visit in and what you carry along.** Recursion or a stack gives depth-first (DFS): go as deep as you can, then back up. A queue gives breadth-first (BFS): finish everything at distance 1, then distance 2, and so on. Everything else is bookkeeping.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="gb-idea">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="gb-choose" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">Which words in a problem pick BFS, DFS, topological order, or a cycle check?</span></span></summary>
+<div class="rev-a">
+
+| The problem says | Use | Why |
+|---|---|---|
+| "shortest", "fewest steps", "minimum moves", "nearest", "level by level", "each level" | BFS | the first time BFS reaches a node is by the fewest edges, and the queue holds exactly one level at a time |
+| "is there a path", "connected", "count the islands or components", "all paths", "can be finished", anything computed from the children upward | DFS | recursion carries the path for free, and the return value carries what the children found |
+| a tree, and the answer depends on the subtrees | DFS with the five questions | hand up, empty, build, save, order |
+| "order the tasks", "prerequisites", "which comes first" | topological order | a DFS or a BFS with in-degrees, on a directed graph |
+| "is it a tree", "cycle", "connected and no cycle" | DFS with a parent, or union-find by name | an undirected cycle is an edge to a visited node that is not the parent |
+
+If both work, say so and pick the one whose bookkeeping is smaller. BFS costs the width of a level in memory, DFS costs the depth of the recursion.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="gb-choose">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="gb-graph-five" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">The five graph questions to answer as comments, and the three shapes A, B, C?</span></span></summary>
+<div class="rev-a">
+
+A graph problem never says "graph". It says grid, friends, prerequisites, cities, words. Before any code, answer these as comments:
+
+```
+NODES      what is a node, and how do I list its neighbours?
+           (edges -> adjacency list; a grid cell -> the 4 cells around it; a word -> words one letter away)
+VISITED    what marks a node as done, so I never visit it twice?
+           (a set of ids; or write into the grid, for example flip '1' to '0')
+START      where do I start, and how many times?
+           (the given node once; every unvisited node, for components; every source at once, for multi-source)
+CARRY      what travels with the node?
+           (nothing; the depth; the parent, to allow one back edge; the path so far)
+STOP       when am I done?
+           (the queue or stack is empty; the target is found; every node has an order)
+```
+
+Three shapes cover the whole list:
+
+**Shape A, explore one component.** Start somewhere, mark it, visit every neighbour you have not marked. Count how many times you had to start, or what you found inside. Islands, Clone Graph, Connected Components, Graph Valid Tree, Pacific Atlantic.
+
+```
+def dfs(node):
+    mark node visited
+    for each neighbour of node:
+        if neighbour not visited:
+            dfs(neighbour)
+```
+
+**Shape B, order with dependencies (topological sort).** Directed graph. Either count in-degrees, put every zero-in-degree node in a queue, pop and lower the in-degree of its targets (Kahn's algorithm, a BFS); or DFS with three colors, white unseen, grey on the current path, black finished, where meeting grey means a cycle. If the order has fewer nodes than the graph, there was a cycle. Course Schedule, Alien Dictionary.
+
+**Shape C, fewest steps (BFS by levels).** A queue, a visited set that you mark **when you enqueue**, and a loop that drains one level per step. The level counter is the distance. Level Order in a tree, Word Ladder, Rotting Oranges, any grid "minimum moves".
+
+```
+queue = deque([start]); visited = {start}; steps = 0
+while queue:
+    for _ in range(len(queue)):          # exactly one level
+        node = queue.popleft()
+        if node is the target: return steps
+        for nb in neighbours(node):
+            if nb not in visited:
+                visited.add(nb)           # mark on enqueue, never on dequeue
+                queue.append(nb)
+    steps += 1
+```
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="gb-graph-five">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="gb-ladder-trees" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">The tree ladder, easy to hard: hand up, empty, build, save for all thirteen?</span></span></summary>
+<div class="rev-a">
+
+| # | Problem | Hand up | Empty | Build | Save / pass down |
+|---|---|---|---|---|---|
+| 1 | Invert Binary Tree | the node, children swapped | None | swap, then recurse | none |
+| 2 | Maximum Depth | height | 0 | 1 + max(left, right) | none |
+| 3 | Same Tree (two trees walked together) | are these equal | both None: True; one None: False | values equal AND left AND right | none |
+| 4 | Balanced Binary Tree | height, or -1 if broken below | 0 | -1 if a side is -1 or they differ by more than 1, else 1 + max | none |
+| 5 | Diameter | height | 0 | 1 + max | SAVE left + right |
+| 6 | Level Order Traversal | BFS, shape C, collect each level into a list | | | |
+| 7 | Subtree of Another Tree | two recursions: same-tree with AND, search with OR | | | none |
+| 8 | Validate BST | is this subtree valid within bounds | True | node inside (low, high) AND left AND right | PASS DOWN the bounds: left gets (low, node), right gets (node, high) |
+| 9 | Kth Smallest in a BST | in-order walk, left, node, right | | | SAVE a counter; the kth node visited is the answer |
+| 10 | Lowest Common Ancestor in a BST | no recursion needed: walk down; both smaller go left, both larger go right, else this node | | | |
+| 11 | Build Tree from Preorder and Inorder | preorder[0] is the root; find it in inorder; left of it is the left subtree | | | PASS DOWN index ranges |
+| 12 | Maximum Path Sum | best one-sided arm | 0 | node + max(arms floored at 0) | SAVE node + both arms; global starts at root value |
+| 13 | Serialize and Deserialize | pre-order with a marker for None; rebuild from an iterator in the same order | | | |
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="gb-ladder-trees">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="gb-ladder-graphs" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">The graph ladder: nodes, visited, start, carry and shape for all seven?</span></span></summary>
+<div class="rev-a">
+
+| # | Problem | Nodes | Visited | Start | Carry | Shape |
+|---|---|---|---|---|---|---|
+| 1 | Number of Islands | grid cells, 4 neighbours | flip '1' to '0' in place, or a set | every cell still '1' | nothing | A, count the starts |
+| 2 | Clone Graph | given nodes, their neighbour lists | a map old node to new node, which is also the visited set | the given node | nothing | A, create the copy before recursing into neighbours |
+| 3 | Connected Components | adjacency list from the edge list | a set | every unvisited node | nothing | A, count the starts |
+| 4 | Graph Valid Tree | adjacency list | a set | node 0 | the parent | A; a tree has n - 1 edges, one component, and no neighbour visited except the parent |
+| 5 | Course Schedule | courses; edges from prerequisite to course | in-degree counts, or three colors | all zero in-degree | nothing | B; finishable if the order has n courses |
+| 6 | Pacific Atlantic | grid cells | one visited set per ocean | every border cell of that ocean, all at once | nothing | A run backwards: from the ocean uphill; answer is cells in both sets |
+| 7 | Alien Dictionary | letters; an edge from the first differing letter of adjacent words | three colors or in-degrees | all zero in-degree | nothing | B; a cycle or a prefix problem means no order |
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="gb-ladder-graphs">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="gb-traps" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">The six traps, in the order they bite?</span></span></summary>
+<div class="rev-a">
+
+- Marking visited on dequeue instead of enqueue in BFS: the same node enters the queue many times and the answer is still right, but the time is no longer O(V + E).
+- Forgetting the parent in an undirected cycle check: every edge looks like a cycle.
+- Using a visited set in a directed cycle check: a node visited by another path is not a cycle; only grey, on the current path, is.
+- Grid bounds and the already-flipped check in the wrong order: check bounds first, then the cell value.
+- Mutating the input grid when the problem forbids it: say it, then use a set.
+- Recursion depth on a 10^5-node chain: say "I would switch to an explicit stack".
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="gb-traps">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="gb-complexity" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">Traversal complexity with its source, and the sentence to say?</span></span></summary>
+<div class="rev-a">
+
+- Any traversal: O(V + E) time, every node once and every edge once from each side; for a grid that is O(rows × cols) with 4 edges per cell.
+- Space: the visited set O(V), plus the recursion depth or the queue: depth is the longest path for DFS, the widest level for BFS.
+- Topological sort: O(V + E) for both methods; the in-degree array is O(V).
+- Clone Graph: O(V + E) time, O(V) for the map.
+
+The sentence to say: "every node and edge once, so O(V + E); the visited set is O(V), and the stack or queue is the depth or the width."
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="gb-complexity">got it</button></p>
 
 </div>
 </details>
@@ -173,7 +408,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Dijkstra with negative edges
 - Confusing shortest-path tree with MST
 
-**Not this when.** Unweighted → BFS. DAG ordering → topological sort. Connectivity only → union-find.
+**Use a different pattern when.** Unweighted → BFS. DAG ordering → topological sort. Connectivity only → union-find.
 
 **Practise on.** Alien Dictionary, Course Schedule. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -209,7 +444,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Forgetting a bounded value range enables counting sort / buckets
 - Sorting when the problem forbids or when O(n) is expected
 
-**Not this when.** Input is sorted or must be processed in place with O(1) space → two pointers or in-place marking. Order/adjacency matters → sliding window or stack.
+**Use a different pattern when.** Input is sorted or must be processed in place with O(1) space → two pointers or in-place marking. Order/adjacency matters → sliding window or stack.
 
 **Practise on.** Contains Duplicate, Valid Anagram, Two Sum, Group Anagrams, Top K Frequent Elements, Product of Array Except Self, Encode and Decode Strings, Longest Consecutive Sequence. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -243,7 +478,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - No pruning → TLE
 - Copying the path instead of referencing then copying on record
 
-**Not this when.** Counting the number of ways (not listing them) → DP. Shortest path → BFS. Optimal value with overlapping subproblems → DP.
+**Use a different pattern when.** Counting the number of ways (not listing them) → DP. Shortest path → BFS. Optimal value with overlapping subproblems → DP.
 
 **Practise on.** Combination Sum, Word Search, Word Search II, Design Add And Search Words Data Structure. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -277,7 +512,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Rotated arrays: identify the sorted half before deciding
 - Duplicates break the 'which half is sorted' test
 
-**Not this when.** Data unsorted with no monotonic predicate → hashing/sorting first. Need all matches, not one → scan or two pointers.
+**Use a different pattern when.** Data unsorted with no monotonic predicate → hashing/sorting first. Need all matches, not one → scan or two pointers.
 
 **Practise on.** Find Minimum In Rotated Sorted Array, Search In Rotated Sorted Array, Longest Increasing Subsequence. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -311,7 +546,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Using ±infinity sentinels incorrectly
 - Collecting the whole inorder list when early stop was possible
 
-**Not this when.** Tree is not a BST → general DFS/BFS. Need frequent kth queries with updates → augmented tree/order statistics (out of scope).
+**Use a different pattern when.** Tree is not a BST → general DFS/BFS. Need frequent kth queries with updates → augmented tree/order statistics (out of scope).
 
 **Practise on.** Validate Binary Search Tree, Kth Smallest Element In a Bst, Lowest Common Ancestor of a Binary Search Tree. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -346,7 +581,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Off-by-one on indices with a padded dp[0]
 - Forgetting the min/max tracking pair when negatives flip signs (product problems)
 
-**Not this when.** Two sequences or a grid → 2-D DP. Need to enumerate solutions → backtracking. Local choice provably safe → greedy.
+**Use a different pattern when.** Two sequences or a grid → 2-D DP. Need to enumerate solutions → backtracking. Local choice provably safe → greedy.
 
 **Practise on.** Climbing Stairs, House Robber, House Robber II, Longest Palindromic Substring, Palindromic Substrings, Decode Ways, Coin Change, Maximum Product Subarray, Word Break, Longest Increasing Subsequence. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -381,7 +616,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Wrong combination for mismatch (max vs sum)
 - Trying 1-D when two indices are genuinely needed
 
-**Not this when.** Single sequence → 1-D DP. Palindromes in one string → expand-around-center is usually simpler than 2-D DP.
+**Use a different pattern when.** Single sequence → 1-D DP. Palindromes in one string → expand-around-center is usually simpler than 2-D DP.
 
 **Practise on.** Unique Paths, Longest Common Subsequence, Longest Palindromic Substring. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -416,7 +651,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Forgetting the visited map for cycles when cloning
 - Simulating from every source instead of reversing from the targets
 
-**Not this when.** Ordering constraints → topological sort. Weighted shortest path → Dijkstra. Only components count without traversal → union-find.
+**Use a different pattern when.** Ordering constraints → topological sort. Weighted shortest path → Dijkstra. Only components count without traversal → union-find.
 
 **Practise on.** Number of Islands, Clone Graph, Pacific Atlantic Water Flow, Word Search, Graph Valid Tree, Number of Connected Components In An Undirected Graph. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -450,7 +685,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Sorting by the wrong key
 - Confusing with the harder variant (Jump Game II, multiple transactions)
 
-**Not this when.** Choices interact and local optimum can be wrong → DP. Need all solutions → backtracking.
+**Use a different pattern when.** Choices interact and local optimum can be wrong → DP. Need all solutions → backtracking.
 
 **Practise on.** Maximum Subarray, Jump Game, Best Time to Buy And Sell Stock, Non Overlapping Intervals, Container With Most Water. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -484,7 +719,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Rebalancing direction in two-heap median
 - Using a heap when bucket counting gives O(n)
 
-**Not this when.** Value range small → bucket sort. Need arbitrary deletes or order statistics → balanced BST/sorted container. Only one pass extreme → single variable.
+**Use a different pattern when.** Value range small → bucket sort. Need arbitrary deletes or order statistics → balanced BST/sorted container. Only one pass extreme → single variable.
 
 **Practise on.** Top K Frequent Elements, Merge K Sorted Lists, Find Median From Data Stream, Meeting Rooms II. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -518,7 +753,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Greedy by wrong key (keep longest instead of earliest end)
 - Tie order in sweep line (end before start at equal time when touching is allowed)
 
-**Not this when.** Intervals on a tree/graph → different structure. Need dynamic insert/query of overlaps → interval tree / segment tree (rare in interviews).
+**Use a different pattern when.** Intervals on a tree/graph → different structure. Need dynamic insert/query of overlaps → interval tree / segment tree (rare in interviews).
 
 **Practise on.** Insert Interval, Merge Intervals, Non Overlapping Intervals, Meeting Rooms, Meeting Rooms II. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -552,7 +787,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Null checks on fast.next
 - Off-by-one in the gap for nth-from-end
 
-**Not this when.** Random access or sorting needed → arrays. Values (not structure) matter → hashing is acceptable when space is allowed.
+**Use a different pattern when.** Random access or sorting needed → arrays. Values (not structure) matter → hashing is acceptable when space is allowed.
 
 **Practise on.** Reverse Linked List, Merge Two Sorted Lists, Linked List Cycle, Reorder List, Remove Nth Node From End of List, Merge K Sorted Lists. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -586,7 +821,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Rotating counter-clockwise by accident
 - Layer-by-layer index errors when transpose+reverse was available
 
-**Not this when.** Grid connectivity → graph DFS/BFS. Counting paths → 2-D DP. Searching words → backtracking.
+**Use a different pattern when.** Grid connectivity → graph DFS/BFS. Counting paths → 2-D DP. Searching words → backtracking.
 
 **Practise on.** Rotate Image, Spiral Matrix, Set Matrix Zeroes, Word Search, Number of Islands. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -620,7 +855,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - For 'shortest' problems, forgetting to shrink while still valid
 - Windows over negative numbers break monotonicity (then prefix sums, not windows)
 
-**Not this when.** Elements not contiguous → DP/hashing. Condition not incrementally maintainable (e.g., median) → different structure. Negative numbers with sum constraint → prefix sums + hashing.
+**Use a different pattern when.** Elements not contiguous → DP/hashing. Condition not incrementally maintainable (e.g., median) → different structure. Negative numbers with sum constraint → prefix sums + hashing.
 
 **Practise on.** Best Time to Buy And Sell Stock, Longest Substring Without Repeating Characters, Longest Repeating Character Replacement, Minimum Window Substring. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -654,7 +889,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Storing values when indices are needed
 - Confusing which direction a monotonic stack should be monotonic
 
-**Not this when.** FIFO order needed → queue/BFS. Need min/max over a sliding window → deque. Random access needed → arrays.
+**Use a different pattern when.** FIFO order needed → queue/BFS. Need min/max over a sliding window → deque. Random access needed → arrays.
 
 **Practise on.** Valid Parentheses, Kth Smallest Element In a Bst, Serialize And Deserialize Binary Tree. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -689,7 +924,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Forgetting isolated nodes
 - Alien dictionary: prefix case ('abc' before 'ab') is invalid; multiple valid orders
 
-**Not this when.** Undirected graph → components/union-find. Need shortest path → BFS/Dijkstra. Order not constrained → sorting.
+**Use a different pattern when.** Undirected graph → components/union-find. Need shortest path → BFS/Dijkstra. Order not constrained → sorting.
 
 **Practise on.** Course Schedule, Alien Dictionary. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -722,7 +957,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Pushing None children
 - Using BFS when the problem is really per-subtree (DFS simpler)
 
-**Not this when.** Per-subtree values → DFS. Sorted order from BST → inorder DFS.
+**Use a different pattern when.** Per-subtree values → DFS. Sorted order from BST → inorder DFS.
 
 **Practise on.** Binary Tree Level Order Traversal, Serialize And Deserialize Binary Tree. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -756,7 +991,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Checking only immediate children for BST validity instead of propagated bounds
 - Recursion depth on skewed trees (use iterative if huge)
 
-**Not this when.** Need level-by-level order or shortest path in an unweighted tree → BFS. Need sorted order from a BST → inorder.
+**Use a different pattern when.** Need level-by-level order or shortest path in an unweighted tree → BFS. Need sorted order from a BST → inorder.
 
 **Practise on.** Invert Binary Tree, Maximum Depth of Binary Tree, Same Tree, Subtree of Another Tree, Binary Tree Maximum Path Sum, Validate Binary Search Tree, Construct Binary Tree From Preorder And Inorder Traversal, Serialize And Deserialize Binary Tree. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -790,7 +1025,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Duplicate results when a word is found via two paths
 - Recursion depth for long words is fine; grid DFS unmark is the usual bug
 
-**Not this when.** Single string matching → hashing/KMP. Suffix queries → suffix structures. Few words → a set is enough.
+**Use a different pattern when.** Single string matching → hashing/KMP. Suffix queries → suffix structures. Few words → a set is enough.
 
 **Practise on.** Implement Trie Prefix Tree, Design Add And Search Words Data Structure, Word Search II. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -824,7 +1059,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Off-by-one on the crossing condition
 - Forgetting to skip invalid characters (palindromes)
 
-**Not this when.** Need to consider a contiguous range with a running property → sliding window. Need arbitrary lookups in unsorted data → hashing.
+**Use a different pattern when.** Need to consider a contiguous range with a running property → sliding window. Need arbitrary lookups in unsorted data → hashing.
 
 **Practise on.** Valid Palindrome, 3Sum, Container With Most Water, Reorder List, Remove Nth Node From End of List. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
@@ -857,7 +1092,7 @@ One sentence with the source: "O(n log n) time: the sort dominates, then a singl
 - Forgetting the edge-count check for trees (n−1 edges AND connected)
 - Using it on directed graphs (wrong tool)
 
-**Not this when.** Directed dependencies → topological sort. Need the actual path → DFS/BFS. Need to un-union → offline tricks (rare).
+**Use a different pattern when.** Directed dependencies → topological sort. Need the actual path → DFS/BFS. Need to un-union → offline tricks (rare).
 
 **Practise on.** Graph Valid Tree, Number of Connected Components In An Undirected Graph, Number of Islands, Longest Consecutive Sequence. Read this card, then solve those in this order; each problem's own card names the leap that connects back here.
 
