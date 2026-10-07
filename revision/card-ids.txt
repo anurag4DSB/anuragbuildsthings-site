@@ -130,6 +130,13 @@ five-questions
 flow-50
 forcing-numbers
 functional-rule
+gb-choose
+gb-complexity
+gb-graph-five
+gb-idea
+gb-ladder-graphs
+gb-ladder-trees
+gb-traps
 layout-diagram-first
 layout-scale
 num-compression
