@@ -326,3 +326,7 @@ store-read-heavy-hot-path
 store-rule
 store-time-series-metrics-dashboards
 store-transactions-money-status-machines-metadata-with
+tree-five
+tree-maxpath
+tree-save
+tree-table

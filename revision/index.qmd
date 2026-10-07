@@ -16,7 +16,7 @@ Three pages, used differently.
 
 - [Daily](daily.html): 41 cards I recall every day with the answer closed first. The opening script, the two board layouts, the six lines and the numbers to keep in my head, then the numbers block and the diagram order of every board. About fifteen minutes.
 - [Reference](reference.html): all 220 design cards by topic, in the order of the original pages. I read one or two sections a day in rotation and open only the cards I cannot say.
-- [Coding](coding.html): 105 cards for the other interview. The question side shows the cues of a problem or a pattern, the answer side names the pattern, the leap, the complexity and the trap. One section before the day's two problems.
+- [Coding](coding.html): 109 cards for the other interview. The question side shows the cues of a problem or a pattern, the answer side names the pattern, the leap, the complexity and the trap. One section before the day's two problems.
 
 Marking a card hides nothing; it dims the card so the unknown ones stand out. The marks live in this browser only, and the Daily and Reference pages share them, because a card has one id wherever it appears.
 
