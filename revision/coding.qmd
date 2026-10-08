@@ -181,7 +181,7 @@ One idea runs through every problem here: **a traversal visits every node once, 
 | "is there a path", "connected", "count the islands or components", "all paths", "can be finished", anything computed from the children upward | DFS | recursion carries the path for free, and the return value carries what the children found |
 | a tree, and the answer depends on the subtrees | DFS with the five questions | hand up, empty, build, save, order |
 | "order the tasks", "prerequisites", "which comes first" | topological order | a DFS or a BFS with in-degrees, on a directed graph |
-| "is it a tree", "cycle", "connected and no cycle" | DFS with a parent, or union-find by name | an undirected cycle is an edge to a visited node that is not the parent |
+| "is it a tree", "cycle", "connected and no cycle" | DFS that carries the node it came from (the parent); union-find is the alternative to name, not to write | in an undirected graph every edge is stored twice, so from B the edge back to A looks like a visited neighbour; that one is the parent and is ignored; any other visited neighbour is a real cycle |
 
 If both work, say so and pick the one whose bookkeeping is smaller. BFS costs the width of a level in memory, DFS costs the depth of the recursion.
 
@@ -307,7 +307,7 @@ Graphs: Number of Islands, Clone Graph, Connected Components, Graph Valid Tree, 
 <div class="rev-a">
 
 - Marking visited on dequeue instead of enqueue in BFS: the same node enters the queue many times and the answer is still right, but the time is no longer O(V + E).
-- Forgetting the parent in an undirected cycle check: every edge looks like a cycle.
+- Forgetting to carry the parent in an undirected cycle check: the edge you just walked along points back at a visited node, so every edge looks like a cycle.
 - Using a visited set in a directed cycle check: a node visited by another path is not a cycle; only grey, on the current path, is.
 - Grid bounds and the already-flipped check in the wrong order: check bounds first, then the cell value.
 - Mutating the input grid when the problem forbids it: say it, then use a set.
