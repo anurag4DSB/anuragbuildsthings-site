@@ -96,9 +96,10 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 HAND UP   what one value does this node give its parent? (a number or bool, in words)
 EMPTY     what does a missing child hand up?
 BUILD     how does the node make its hand-up value from the two children's values?
-SAVE      is the real answer something the parent could not continue as one line,
-          because it uses both children? then compute it here and keep the best in a global;
-          the hand-up stays the straight-line version
+SAVE      a straight line is node -> child -> grandchild, one node per level, going down one side;
+          the parent can extend it by sitting on top. A path that uses BOTH children has this node
+          in its middle, so no parent can extend it: compute it here, keep the best in a global,
+          and hand up only the straight-line value
 ORDER     children first (post-order), almost always for trees
 ```
 
