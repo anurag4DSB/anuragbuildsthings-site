@@ -96,16 +96,15 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 HAND UP   what one value does this node give its parent? (a number or bool, in words)
 EMPTY     what does a missing child hand up?
 BUILD     how does the node make its hand-up value from the two children's values?
-SAVE      a straight line is node -> child -> grandchild, one node per level, going down one side;
-          the parent can extend it by sitting on top. A path that uses BOTH children has this node
-          in its middle, so no parent can extend it: compute it here, keep the best in a global,
-          and hand up only the straight-line value
+SAVE      can the answer use BOTH my sides at once (up one child, through me, down the other)?
+          the parent cannot extend such a path, so compute it here and keep the best in a global;
+          hand up only the straight line, node -> child -> grandchild down one side
 ORDER     children first (post-order), almost always for trees
 ```
 
 Everything rests on one fact: **a path is a single line, it never forks.** Each node hands one value up to its parent, and the parent can only use that value by continuing the line upward. So the hand-up value must describe a straight line that ends at the node.
 
-**Remember by.** five words asked of the node, in order: what goes up, what if empty, how to build it, can I be the middle, who goes first.
+**Remember by.** five words asked of the node, in order: what goes up, what if empty, how to build it, what to save (a path using both my sides at once), who goes first.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="tree-five">got it</button></p>
 
