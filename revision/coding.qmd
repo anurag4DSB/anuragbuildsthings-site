@@ -86,10 +86,10 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 
 ## Tree DFS: the five questions (6)
 
-<p class="rev-plan">The DP six lines for trees. Before any tree recursion, write HAND UP, EMPTY, BUILD, SAVE, ORDER as comments; the SAVE test decides whether a global exists.</p>
+<p class="rev-plan">The DP six lines for trees. Before any tree recursion, write HAND UP, EMPTY, BUILD, SAVE, ORDER as comments, and PASS DOWN as a sixth when the node needs something only its ancestors know; the SAVE test decides whether a global exists.</p>
 
 <details class="rev" data-card="tree-five" data-kind="say">
-<summary><span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">The five questions to answer as comments before any tree recursion?</span></span></summary>
+<summary><span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">The five questions, plus PASS DOWN when needed, to answer as comments before any tree recursion?</span></span></summary>
 <div class="rev-a">
 
 ```text
