@@ -1,6 +1,6 @@
 ---
 title: "Coding"
-description: "116 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side."
+description: "117 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side."
 toc: true
 ---
 
@@ -156,9 +156,9 @@ Diameter and Max Path Sum are the same problem with different weights, every edg
 </div>
 </details>
 
-## DFS and BFS: the system (7)
+## DFS and BFS: the system (8)
 
-<p class="rev-plan">The whole traversal family on seven cards: the one idea, how to choose, the five graph questions and the three shapes, the two ladders easy to hard, the traps, the complexity. Read the ladder card, then solve in that order.</p>
+<p class="rev-plan">The whole traversal family: the one idea, how to choose, the five graph questions with the three shapes, the order to solve in, the traps, the complexity. The two answer cards are marked read: open a row only after your own attempt, the way you check the six lines after a DP problem.</p>
 
 <details class="rev" data-card="gb-idea" data-kind="say">
 <summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">DFS and BFS in one idea: what is the only real choice?</span></span></summary>
@@ -243,8 +243,23 @@ while queue:
 </div>
 </details>
 
-<details class="rev" data-card="gb-ladder-trees" data-kind="say">
-<summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">The tree ladder, easy to hard: hand up, empty, build, save for all thirteen?</span></span></summary>
+<details class="rev" data-card="gb-order" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">The order to solve them in, trees then graphs, easy to hard?</span></span></summary>
+<div class="rev-a">
+
+Do them in this order. For each one: read nothing but the questions above, write your answers as comments, write the loop skeleton, then open that problem's row in section 5 to check. Ten minutes each.
+
+Trees: Invert Binary Tree, Maximum Depth, Same Tree, Balanced Binary Tree, Diameter, Level Order Traversal, Subtree of Another Tree, Validate BST, Kth Smallest in a BST, Lowest Common Ancestor in a BST, Build Tree from Preorder and Inorder, Maximum Path Sum, Serialize and Deserialize.
+
+Graphs: Number of Islands, Clone Graph, Connected Components, Graph Valid Tree, Course Schedule, Pacific Atlantic, Alien Dictionary.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="gb-order">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="gb-ladder-trees" data-kind="read">
+<summary><span class="rev-head"><span class="rev-tag">DFS / BFS · ANSWERS</span><span class="rev-q">Answers for the tree ladder: open only after your attempt at a problem.</span></span></summary>
 <div class="rev-a">
 
 | # | Problem | Hand up | Empty | Build | Save / pass down |
@@ -268,8 +283,8 @@ while queue:
 </div>
 </details>
 
-<details class="rev" data-card="gb-ladder-graphs" data-kind="say">
-<summary><span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">The graph ladder: nodes, visited, start, carry and shape for all seven?</span></span></summary>
+<details class="rev" data-card="gb-ladder-graphs" data-kind="read">
+<summary><span class="rev-head"><span class="rev-tag">DFS / BFS · ANSWERS</span><span class="rev-q">Answers for the graph ladder: open only after your attempt at a problem.</span></span></summary>
 <div class="rev-a">
 
 | # | Problem | Nodes | Visited | Start | Carry | Shape |
