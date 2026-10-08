@@ -517,11 +517,11 @@ got it
 <section id="tree-dfs-the-five-questions-6" class="level2">
 <h2 class="anchored" data-anchor-id="tree-dfs-the-five-questions-6">Tree DFS: the five questions (6)</h2>
 <p class="rev-plan">
-The DP six lines for trees. Before any tree recursion, write HAND UP, EMPTY, BUILD, SAVE, ORDER as comments; the SAVE test decides whether a global exists.
+The DP six lines for trees. Before any tree recursion, write HAND UP, EMPTY, BUILD, SAVE, ORDER as comments, and PASS DOWN as a sixth when the node needs something only its ancestors know; the SAVE test decides whether a global exists.
 </p>
 <details class="rev" data-card="tree-five" data-kind="say">
 <summary>
-<span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">The five questions to answer as comments before any tree recursion?</span></span>
+<span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">The five questions, plus PASS DOWN when needed, to answer as comments before any tree recursion?</span></span>
 </summary>
 <div class="rev-a">
 <pre class="text"><code>HAND UP   what one value does this node give its parent? (a number or bool, in words)
@@ -530,7 +530,9 @@ BUILD     how does the node make its hand-up value from the two children's value
 SAVE      can the answer use BOTH my sides at once (up one child, through me, down the other)?
           the parent cannot extend such a path, so compute it here and keep the best in a global;
           hand up only the straight line, node -&gt; child -&gt; grandchild down one side
-ORDER     children first (post-order), almost always for trees
+ORDER     post-order (left -&gt; right -&gt; node) when the node needs the children's values, almost always;
+          pre-order (node -&gt; left -&gt; right) when the node decides or passes something down first;
+          in-order (left -&gt; node -&gt; right) on a BST, which visits the values sorted
 PASS DOWN (the sixth line, only when needed) what must the parent tell the child?</code></pre>
 <p>Everything rests on one fact: <strong>a path is a single line, it never forks.</strong> Each node hands one value up to its parent, and the parent can only use that value by continuing the line upward. So the hand-up value must describe a straight line that ends at the node.</p>
 <p><strong>Remember by.</strong> five words asked of the node, in order: what goes up, what if empty, how to build it, what to save (a path using both my sides at once), who goes first.</p>
