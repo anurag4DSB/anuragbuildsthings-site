@@ -105,6 +105,8 @@ ORDER     children first (post-order), almost always for trees
 
 Everything rests on one fact: **a path is a single line, it never forks.** Each node hands one value up to its parent, and the parent can only use that value by continuing the line upward. So the hand-up value must describe a straight line that ends at the node.
 
+**Remember by.** five words asked of the node, in order: what goes up, what if empty, how to build it, can I be the middle, who goes first.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="tree-five">got it</button></p>
 
 </div>
