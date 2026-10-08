@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="117 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
+<meta name="description" content="119 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
 
 <title>Coding – anurag builds things</title>
 <style>
@@ -104,7 +104,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 
 <link rel="stylesheet" href="revision.css">
 <meta property="og:title" content="Coding – anurag builds things">
-<meta property="og:description" content="117 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
+<meta property="og:description" content="119 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
 <meta property="og:image" content="https://anuragbuildsthings.com/revision/og-default.png">
 <meta property="og:site_name" content="anurag builds things">
 </head>
@@ -302,7 +302,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
    
   <ul class="collapse">
   <li><a href="#dp-the-six-lines-4" id="toc-dp-the-six-lines-4" class="nav-link active" data-scroll-target="#dp-the-six-lines-4">DP: the six lines (4)</a></li>
-  <li><a href="#tree-dfs-the-five-questions-4" id="toc-tree-dfs-the-five-questions-4" class="nav-link" data-scroll-target="#tree-dfs-the-five-questions-4">Tree DFS: the five questions (4)</a></li>
+  <li><a href="#tree-dfs-the-five-questions-6" id="toc-tree-dfs-the-five-questions-6" class="nav-link" data-scroll-target="#tree-dfs-the-five-questions-6">Tree DFS: the five questions (6)</a></li>
   <li><a href="#dfs-and-bfs-the-system-8" id="toc-dfs-and-bfs-the-system-8" class="nav-link" data-scroll-target="#dfs-and-bfs-the-system-8">DFS and BFS: the system (8)</a></li>
   <li><a href="#complexity-where-it-comes-from-5" id="toc-complexity-where-it-comes-from-5" class="nav-link" data-scroll-target="#complexity-where-it-comes-from-5">Complexity: where it comes from (5)</a></li>
   <li><a href="#patterns-cues-to-name-21" id="toc-patterns-cues-to-name-21" class="nav-link" data-scroll-target="#patterns-cues-to-name-21">Patterns: cues to name (21)</a></li>
@@ -330,7 +330,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 
 <div>
   <div class="description">
-    117 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.
+    119 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.
   </div>
 </div>
 
@@ -514,8 +514,8 @@ got it
 </div>
 </details>
 </section>
-<section id="tree-dfs-the-five-questions-4" class="level2">
-<h2 class="anchored" data-anchor-id="tree-dfs-the-five-questions-4">Tree DFS: the five questions (4)</h2>
+<section id="tree-dfs-the-five-questions-6" class="level2">
+<h2 class="anchored" data-anchor-id="tree-dfs-the-five-questions-6">Tree DFS: the five questions (6)</h2>
 <p class="rev-plan">
 The DP six lines for trees. Before any tree recursion, write HAND UP, EMPTY, BUILD, SAVE, ORDER as comments; the SAVE test decides whether a global exists.
 </p>
@@ -527,12 +527,13 @@ The DP six lines for trees. Before any tree recursion, write HAND UP, EMPTY, BUI
 <pre class="text"><code>HAND UP   what one value does this node give its parent? (a number or bool, in words)
 EMPTY     what does a missing child hand up?
 BUILD     how does the node make its hand-up value from the two children's values?
-SAVE      a straight line is node -&gt; child -&gt; grandchild, one node per level, going down one side;
-          the parent can extend it by sitting on top. A path that uses BOTH children has this node
-          in its middle, so no parent can extend it: compute it here, keep the best in a global,
-          and hand up only the straight-line value
-ORDER     children first (post-order), almost always for trees</code></pre>
+SAVE      can the answer use BOTH my sides at once (up one child, through me, down the other)?
+          the parent cannot extend such a path, so compute it here and keep the best in a global;
+          hand up only the straight line, node -&gt; child -&gt; grandchild down one side
+ORDER     children first (post-order), almost always for trees
+PASS DOWN (the sixth line, only when needed) what must the parent tell the child?</code></pre>
 <p>Everything rests on one fact: <strong>a path is a single line, it never forks.</strong> Each node hands one value up to its parent, and the parent can only use that value by continuing the line upward. So the hand-up value must describe a straight line that ends at the node.</p>
+<p><strong>Remember by.</strong> five words asked of the node, in order: what goes up, what if empty, how to build it, what to save (a path using both my sides at once), who goes first.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="tree-five">
 got it
@@ -636,6 +637,103 @@ got it
 </ul>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="tree-maxpath">
+got it
+</button>
+</p>
+</div>
+</details>
+<details class="rev" data-card="tree-order" data-kind="say">
+<summary>
+<span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">Pre-order, in-order, post-order: where does the parent go, and which problems use each?</span></span>
+</summary>
+<div class="rev-a">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Order</th>
+<th>Visit sequence</th>
+<th>On the five questions</th>
+<th>Problems</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pre-order</td>
+<td>parent, left, right</td>
+<td>node first: the node decides or passes something down before recursing</td>
+<td>Same Tree, Invert, Validate BST with bounds, Serialize</td>
+</tr>
+<tr class="even">
+<td>In-order</td>
+<td>left, parent, right</td>
+<td>the BST special: visits the values in sorted order</td>
+<td>Kth Smallest in a BST, a validity check without bounds</td>
+</tr>
+<tr class="odd">
+<td>Post-order</td>
+<td>left, right, parent</td>
+<td>children first: the node needs the children’s values to build its own</td>
+<td>Max Depth, Balanced, Diameter, Max Path Sum</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Order</th>
+<th>Visit sequence</th>
+<th>On the five questions</th>
+<th>Problems</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pre-order</td>
+<td>parent, left, right</td>
+<td>node first: the node decides or passes something down before recursing</td>
+<td>Same Tree, Invert, Validate BST with bounds, Serialize</td>
+</tr>
+<tr class="even">
+<td>In-order</td>
+<td>left, parent, right</td>
+<td>the BST special: visits the values in sorted order</td>
+<td>Kth Smallest in a BST, a validity check without bounds</td>
+</tr>
+<tr class="odd">
+<td>Post-order</td>
+<td>left, right, parent</td>
+<td>children first: the node needs the children’s values to build its own</td>
+<td>Max Depth, Balanced, Diameter, Max Path Sum</td>
+</tr>
+</tbody>
+</table>
+<p class="rev-actions">
+<button type="button" class="rev-known" data-for="tree-order">
+got it
+</button>
+</p>
+</div>
+</details>
+<details class="rev" data-card="tree-passdown" data-kind="say">
+<summary>
+<span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">PASS DOWN, the sixth line: how do you know a problem needs it, and what travels down?</span></span>
+</summary>
+<div class="rev-a">
+<p><strong>When PASS DOWN exists.</strong> Ask: “to decide its own answer, does this node need something only its ancestors know?” If everything it needs is inside its own subtree, there is no sixth line (Max Depth, Same Tree, Diameter). If the answer depends on what is above, the parent hands it down: the allowed range in Validate BST, the remaining target in Path Sum, the largest value seen on the way down in Good Nodes, the path so far when all root-to-leaf paths are wanted. The cue in the wording is “ancestor”, “on the path from the root”, or a property that must hold against the whole tree rather than against the two children. The one-word reminder from Validate BST: range, not neighbours.</p>
+<p class="rev-actions">
+<button type="button" class="rev-known" data-for="tree-passdown">
 got it
 </button>
 </p>
