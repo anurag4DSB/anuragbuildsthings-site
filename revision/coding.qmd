@@ -258,7 +258,7 @@ def dfs(node):
             dfs(neighbour)
 ```
 
-**Shape B, order with dependencies (topological sort).** Directed graph. Either count in-degrees, put every zero-in-degree node in a queue, pop and lower the in-degree of its targets (Kahn's algorithm, a BFS); or DFS with three colors, white unseen, grey on the current path, black finished, where meeting grey means a cycle. If the order has fewer nodes than the graph, there was a cycle. Course Schedule, Alien Dictionary.
+**Shape B, order with dependencies (topological sort).** A topological order is a line-up of every node in which every arrow points forward, so each thing comes after everything it depends on: socks before shoes, shirt before jacket. It exists only when there is no cycle, several orders are usually valid, and nothing is sorted by size; the word sort only means line up. Directed graph. Either count in-degrees, put every zero-in-degree node in a queue, pop and lower the in-degree of its targets (Kahn's algorithm, a BFS); or DFS with three colors, white unseen, grey on the current path, black finished, where meeting grey means a cycle. If the order has fewer nodes than the graph, there was a cycle. Course Schedule, Alien Dictionary.
 
 **Shape C, fewest steps (BFS by levels).** A queue, a visited set that you mark **when you enqueue**, and a loop that drains one level per step. The level counter is the distance. Level Order in a tree, Word Ladder, Rotting Oranges, any grid "minimum moves".
 
