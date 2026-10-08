@@ -1,6 +1,6 @@
 ---
 title: "Coding"
-description: "117 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side."
+description: "118 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side."
 toc: true
 ---
 
@@ -84,7 +84,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </div>
 </details>
 
-## Tree DFS: the five questions (4)
+## Tree DFS: the five questions (5)
 
 <p class="rev-plan">The DP six lines for trees. Before any tree recursion, write HAND UP, EMPTY, BUILD, SAVE, ORDER as comments; the SAVE test decides whether a global exists.</p>
 
@@ -154,6 +154,27 @@ Diameter and Max Path Sum are the same problem with different weights, every edg
 - ORDER: children first.
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="tree-maxpath">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="tree-order" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">Pre-order, in-order, post-order: where does the parent go, and which problems use each?</span></span></summary>
+<div class="rev-a">
+
+| Order | Visit sequence | On the five questions | Problems |
+|---|---|---|---|
+| Pre-order | parent, left, right | node first: the node decides or passes something down before recursing | Same Tree, Invert, Validate BST with bounds, Serialize |
+| In-order | left, parent, right | the BST special: visits the values in sorted order | Kth Smallest in a BST, a validity check without bounds |
+| Post-order | left, right, parent | children first: the node needs the children's values to build its own | Max Depth, Balanced, Diameter, Max Path Sum |
+
+| Order | Visit sequence | On the five questions | Problems |
+|---|---|---|---|
+| Pre-order | parent, left, right | node first: the node decides or passes something down before recursing | Same Tree, Invert, Validate BST with bounds, Serialize |
+| In-order | left, parent, right | the BST special: visits the values in sorted order | Kth Smallest in a BST, a validity check without bounds |
+| Post-order | left, right, parent | children first: the node needs the children's values to build its own | Max Depth, Balanced, Diameter, Max Path Sum |
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="tree-order">got it</button></p>
 
 </div>
 </details>
