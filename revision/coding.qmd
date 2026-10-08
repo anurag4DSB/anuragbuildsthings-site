@@ -99,7 +99,9 @@ BUILD     how does the node make its hand-up value from the two children's value
 SAVE      can the answer use BOTH my sides at once (up one child, through me, down the other)?
           the parent cannot extend such a path, so compute it here and keep the best in a global;
           hand up only the straight line, node -> child -> grandchild down one side
-ORDER     children first (post-order), almost always for trees
+ORDER     post-order (left -> right -> node) when the node needs the children's values, almost always;
+          pre-order (node -> left -> right) when the node decides or passes something down first;
+          in-order (left -> node -> right) on a BST, which visits the values sorted
 PASS DOWN (the sixth line, only when needed) what must the parent tell the child?
 ```
 
