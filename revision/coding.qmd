@@ -1,6 +1,6 @@
 ---
 title: "Coding"
-description: "118 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side."
+description: "119 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side."
 toc: true
 ---
 
@@ -84,7 +84,7 @@ If `dp[i]` uses smaller indices, fill forward; if it uses larger (suffix DPs), f
 </div>
 </details>
 
-## Tree DFS: the five questions (5)
+## Tree DFS: the five questions (6)
 
 <p class="rev-plan">The DP six lines for trees. Before any tree recursion, write HAND UP, EMPTY, BUILD, SAVE, ORDER as comments; the SAVE test decides whether a global exists.</p>
 
@@ -100,6 +100,7 @@ SAVE      can the answer use BOTH my sides at once (up one child, through me, do
           the parent cannot extend such a path, so compute it here and keep the best in a global;
           hand up only the straight line, node -> child -> grandchild down one side
 ORDER     children first (post-order), almost always for trees
+PASS DOWN (the sixth line, only when needed) what must the parent tell the child?
 ```
 
 Everything rests on one fact: **a path is a single line, it never forks.** Each node hands one value up to its parent, and the parent can only use that value by continuing the line upward. So the hand-up value must describe a straight line that ends at the node.
@@ -175,6 +176,17 @@ Diameter and Max Path Sum are the same problem with different weights, every edg
 | Post-order | left, right, parent | children first: the node needs the children's values to build its own | Max Depth, Balanced, Diameter, Max Path Sum |
 
 <p class="rev-actions"><button type="button" class="rev-known" data-for="tree-order">got it</button></p>
+
+</div>
+</details>
+
+<details class="rev" data-card="tree-passdown" data-kind="say">
+<summary><span class="rev-head"><span class="rev-tag">TREE DFS</span><span class="rev-q">PASS DOWN, the sixth line: how do you know a problem needs it, and what travels down?</span></span></summary>
+<div class="rev-a">
+
+**When PASS DOWN exists.** Ask: "to decide its own answer, does this node need something only its ancestors know?" If everything it needs is inside its own subtree, there is no sixth line (Max Depth, Same Tree, Diameter). If the answer depends on what is above, the parent hands it down: the allowed range in Validate BST, the remaining target in Path Sum, the largest value seen on the way down in Good Nodes, the path so far when all root-to-leaf paths are wanted. The cue in the wording is "ancestor", "on the path from the root", or a property that must hold against the whole tree rather than against the two children. The one-word reminder from Validate BST: range, not neighbours.
+
+<p class="rev-actions"><button type="button" class="rev-known" data-for="tree-passdown">got it</button></p>
 
 </div>
 </details>
