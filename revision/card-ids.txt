@@ -132,6 +132,7 @@ forcing-numbers
 functional-rule
 gb-choose
 gb-complexity
+gb-examples
 gb-graph-five
 gb-idea
 gb-ladder-graphs
