@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="119 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
+<meta name="description" content="120 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
 
 <title>Coding – anurag builds things</title>
 <style>
@@ -104,7 +104,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 
 <link rel="stylesheet" href="revision.css">
 <meta property="og:title" content="Coding – anurag builds things">
-<meta property="og:description" content="119 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
+<meta property="og:description" content="120 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.">
 <meta property="og:image" content="https://anuragbuildsthings.com/revision/og-default.png">
 <meta property="og:site_name" content="anurag builds things">
 </head>
@@ -303,7 +303,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
   <ul class="collapse">
   <li><a href="#dp-the-six-lines-4" id="toc-dp-the-six-lines-4" class="nav-link active" data-scroll-target="#dp-the-six-lines-4">DP: the six lines (4)</a></li>
   <li><a href="#tree-dfs-the-five-questions-6" id="toc-tree-dfs-the-five-questions-6" class="nav-link" data-scroll-target="#tree-dfs-the-five-questions-6">Tree DFS: the five questions (6)</a></li>
-  <li><a href="#dfs-and-bfs-the-system-8" id="toc-dfs-and-bfs-the-system-8" class="nav-link" data-scroll-target="#dfs-and-bfs-the-system-8">DFS and BFS: the system (8)</a></li>
+  <li><a href="#dfs-and-bfs-the-system-9" id="toc-dfs-and-bfs-the-system-9" class="nav-link" data-scroll-target="#dfs-and-bfs-the-system-9">DFS and BFS: the system (9)</a></li>
   <li><a href="#complexity-where-it-comes-from-5" id="toc-complexity-where-it-comes-from-5" class="nav-link" data-scroll-target="#complexity-where-it-comes-from-5">Complexity: where it comes from (5)</a></li>
   <li><a href="#patterns-cues-to-name-21" id="toc-patterns-cues-to-name-21" class="nav-link" data-scroll-target="#patterns-cues-to-name-21">Patterns: cues to name (21)</a></li>
   <li><a href="#recognition-set-a-13" id="toc-recognition-set-a-13" class="nav-link" data-scroll-target="#recognition-set-a-13">Recognition set A (13)</a></li>
@@ -330,7 +330,7 @@ gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
 
 <div>
   <div class="description">
-    119 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.
+    120 cards: cues on the question side, the pattern, the leap, the complexity and the trap on the answer side.
   </div>
 </div>
 
@@ -742,8 +742,8 @@ got it
 </div>
 </details>
 </section>
-<section id="dfs-and-bfs-the-system-8" class="level2">
-<h2 class="anchored" data-anchor-id="dfs-and-bfs-the-system-8">DFS and BFS: the system (8)</h2>
+<section id="dfs-and-bfs-the-system-9" class="level2">
+<h2 class="anchored" data-anchor-id="dfs-and-bfs-the-system-9">DFS and BFS: the system (9)</h2>
 <p class="rev-plan">
 The whole traversal family: the one idea, how to choose, the five graph questions with the three shapes, the order to solve in, the traps, the complexity. The two answer cards are marked read: open a row only after your own attempt, the way you check the six lines after a DP problem.
 </p>
@@ -837,7 +837,7 @@ STOP       when am I done?
     for each neighbour of node:
         if neighbour not visited:
             dfs(neighbour)</code></pre>
-<p><strong>Shape B, order with dependencies (topological sort).</strong> Directed graph. Either count in-degrees, put every zero-in-degree node in a queue, pop and lower the in-degree of its targets (Kahn’s algorithm, a BFS); or DFS with three colors, white unseen, grey on the current path, black finished, where meeting grey means a cycle. If the order has fewer nodes than the graph, there was a cycle. Course Schedule, Alien Dictionary.</p>
+<p><strong>Shape B, order with dependencies (topological sort).</strong> A topological order is a line-up of every node in which every arrow points forward, so each thing comes after everything it depends on: socks before shoes, shirt before jacket. It exists only when there is no cycle, several orders are usually valid, and nothing is sorted by size; the word sort only means line up. Directed graph. Either count in-degrees, put every zero-in-degree node in a queue, pop and lower the in-degree of its targets (Kahn’s algorithm, a BFS); or DFS with three colors, white unseen, grey on the current path, black finished, where meeting grey means a cycle. If the order has fewer nodes than the graph, there was a cycle. Course Schedule, Alien Dictionary.</p>
 <p><strong>Shape C, fewest steps (BFS by levels).</strong> A queue, a visited set that you mark <strong>when you enqueue</strong>, and a loop that drains one level per step. The level counter is the distance. Level Order in a tree, Word Ladder, Rotting Oranges, any grid “minimum moves”.</p>
 <pre><code>queue = deque([start]); visited = {start}; steps = 0
 while queue:
@@ -851,6 +851,128 @@ while queue:
     steps += 1</code></pre>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="gb-graph-five">
+got it
+</button>
+</p>
+</div>
+</details>
+<details class="rev" data-card="gb-examples" data-kind="read">
+<summary>
+<span class="rev-head"><span class="rev-tag">DFS / BFS</span><span class="rev-q">Every option on the graph card, one tiny example each: read when an option means nothing to you.</span></span>
+</summary>
+<div class="rev-a">
+<p>Read this once when an option on the graph card means nothing to you. Each row is one option, one problem where it is the right answer, and what it looks like in code.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Option</th>
+<th>Where it is the answer</th>
+<th>What it looks like</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>NODES</td>
+<td>edges -&gt; adjacency list</td>
+<td>friendships given as pairs [0,1], [1,2]</td>
+<td><code>adj = {i: [] for i in range(n)}</code>, then for each pair a, b: <code>adj[a].append(b)</code> and <code>adj[b].append(a)</code>; the neighbours of 1 are <code>adj[1]</code></td>
+</tr>
+<tr class="even">
+<td>NODES</td>
+<td>a grid cell -&gt; the 4 cells around it</td>
+<td>Islands, Pacific Atlantic</td>
+<td>a node is (r, c); its neighbours are (r-1, c), (r+1, c), (r, c-1), (r, c+1), keeping only those inside the grid</td>
+</tr>
+<tr class="odd">
+<td>NODES</td>
+<td>a word -&gt; words one letter away</td>
+<td>Word Ladder</td>
+<td>“hit” has neighbours “hot”, “hat”, and so on: change one position to each letter and keep the results that are in the word list</td>
+</tr>
+<tr class="even">
+<td>VISITED</td>
+<td>a set of ids</td>
+<td>any graph given as nodes and edges</td>
+<td><code>seen = set()</code>; <code>seen.add(node)</code> on arrival; <code>if nb not in seen</code> before stepping</td>
+</tr>
+<tr class="odd">
+<td>VISITED</td>
+<td>write into the grid</td>
+<td>Islands</td>
+<td>when you land on a ‘1’, set <code>grid[r][c] = '0'</code>; the grid itself is the visited set and nothing extra is stored</td>
+</tr>
+<tr class="even">
+<td>START</td>
+<td>the given node once</td>
+<td>Clone Graph</td>
+<td>you receive one node; one run from it reaches every node that matters</td>
+</tr>
+<tr class="odd">
+<td>START</td>
+<td>every unvisited node</td>
+<td>counting groups: islands, components</td>
+<td><code>for i in range(n): if i not in seen: dfs(i); count += 1</code>; each launch is one new group</td>
+</tr>
+<tr class="even">
+<td>START</td>
+<td>every source at once</td>
+<td>Rotting Oranges, Pacific Atlantic</td>
+<td>put every rotten orange (or every border cell of one ocean) in the queue before the loop; they spread together, so each cell’s distance is to the nearest source</td>
+</tr>
+<tr class="odd">
+<td>CARRY</td>
+<td>nothing</td>
+<td>Islands, Components</td>
+<td><code>dfs(node)</code> and nothing else; the id is all a neighbour needs</td>
+</tr>
+<tr class="even">
+<td>CARRY</td>
+<td>the depth</td>
+<td>Word Ladder, any “minimum moves”</td>
+<td>the level counter in Shape C, or <code>queue.append((nb, d + 1))</code></td>
+</tr>
+<tr class="odd">
+<td>CARRY</td>
+<td>the parent, to allow one back edge</td>
+<td>Graph Valid Tree</td>
+<td><code>dfs(node, parent)</code>; inside, <code>if nb == parent: continue</code>, then <code>if nb in seen: cycle</code></td>
+</tr>
+<tr class="even">
+<td>CARRY</td>
+<td>the path so far</td>
+<td>All Paths From Source to Target</td>
+<td><code>dfs(node, path + [node])</code>; at the target, record the path</td>
+</tr>
+<tr class="odd">
+<td>STOP</td>
+<td>the queue or stack is empty</td>
+<td>every Shape A and Shape C run</td>
+<td>the while loop or the recursion simply ends; there is no check to write</td>
+</tr>
+<tr class="even">
+<td>STOP</td>
+<td>the target is found</td>
+<td>Word Ladder, shortest path in a grid</td>
+<td><code>if node == target: return steps</code> inside the loop</td>
+</tr>
+<tr class="odd">
+<td>STOP</td>
+<td>every node has an order</td>
+<td>Course Schedule, Alien Dictionary</td>
+<td>Kahn’s algorithm: when the queue is empty, <code>len(order) == n</code> means done; fewer means a cycle</td>
+</tr>
+</tbody>
+</table>
+<p><strong>“Every node has an order”, traced.</strong> Four courses: 0 needs nothing, 1 needs 0, 2 needs 0, 3 needs 1 and 2. In-degrees: 0 has 0, 1 has 1, 2 has 1, 3 has 2. The queue starts with 0. Pop 0, order = [0]; 1 and 2 drop to 0 and both join the queue. Pop 1, order = [0, 1]; 3 drops to 1. Pop 2, order = [0, 1, 2]; 3 drops to 0 and joins. Pop 3, order = [0, 1, 2, 3]. The queue is empty and 4 of 4 are placed: done, and that list is the order. Now also make 1 need 2 and 2 need 1. Their in-degrees become 2 and 2, they never reach 0, and the queue runs dry with order = [0] and 1 of 4 placed. Fewer than n placed means a cycle, so the courses cannot be finished.</p>
+<p class="rev-actions">
+<button type="button" class="rev-known" data-for="gb-examples">
 got it
 </button>
 </p>
