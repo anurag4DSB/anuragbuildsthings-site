@@ -527,9 +527,10 @@ The DP six lines for trees. Before any tree recursion, write HAND UP, EMPTY, BUI
 <pre class="text"><code>HAND UP   what one value does this node give its parent? (a number or bool, in words)
 EMPTY     what does a missing child hand up?
 BUILD     how does the node make its hand-up value from the two children's values?
-SAVE      is the real answer something the parent could not continue as one line,
-          because it uses both children? then compute it here and keep the best in a global;
-          the hand-up stays the straight-line version
+SAVE      a straight line is node -&gt; child -&gt; grandchild, one node per level, going down one side;
+          the parent can extend it by sitting on top. A path that uses BOTH children has this node
+          in its middle, so no parent can extend it: compute it here, keep the best in a global,
+          and hand up only the straight-line value
 ORDER     children first (post-order), almost always for trees</code></pre>
 <p>Everything rests on one fact: <strong>a path is a single line, it never forks.</strong> Each node hands one value up to its parent, and the parent can only use that value by continuing the line upward. So the hand-up value must describe a straight line that ends at the node.</p>
 <p class="rev-actions">
@@ -700,8 +701,8 @@ got it
 </tr>
 <tr class="odd">
 <td>“is it a tree”, “cycle”, “connected and no cycle”</td>
-<td>DFS with a parent, or union-find by name</td>
-<td>an undirected cycle is an edge to a visited node that is not the parent</td>
+<td>DFS that carries the node it came from (the parent); union-find is the alternative to name, not to write</td>
+<td>in an undirected graph every edge is stored twice, so from B the edge back to A looks like a visited neighbour; that one is the parent and is ignored; any other visited neighbour is a real cycle</td>
 </tr>
 </tbody>
 </table>
@@ -1014,7 +1015,7 @@ got it
 <div class="rev-a">
 <ul>
 <li>Marking visited on dequeue instead of enqueue in BFS: the same node enters the queue many times and the answer is still right, but the time is no longer O(V + E).</li>
-<li>Forgetting the parent in an undirected cycle check: every edge looks like a cycle.</li>
+<li>Forgetting to carry the parent in an undirected cycle check: the edge you just walked along points back at a visited node, so every edge looks like a cycle.</li>
 <li>Using a visited set in a directed cycle check: a node visited by another path is not a cycle; only grey, on the current path, is.</li>
 <li>Grid bounds and the already-flipped check in the wrong order: check bounds first, then the cell value.</li>
 <li>Mutating the input grid when the problem forbids it: say it, then use a set.</li>
