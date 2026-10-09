@@ -251,9 +251,9 @@ CARRY    what travels with the node, what extra argument does my function take?
          -> the parent, to allow one back edge: dfs(node, parent); if nb == parent: continue
          -> the path so far: dfs(node, path + [node])
 STOP     when am I done, which line, if any, ends the search early?
-         -> the queue or stack is empty: nothing to write, the loop or recursion simply ends, read the answer after it
-         -> the target is found: if node == target: return steps
-         -> every node has an order: after Kahn's loop, len(order) == n means done, fewer means a cycle
+         -> exploring everything reachable from the start, the queue or stack is empty: nothing to write, the loop or recursion simply ends, read the answer after it
+         -> searching for one specific node, the target is found: if node == target: return steps
+         -> ordering by dependencies, every node has an order: after Kahn's loop, len(order) == n means done, fewer means a cycle
 ```
 
 Three shapes cover the whole list:
@@ -310,9 +310,9 @@ Read this once when an option on the graph card means nothing to you. Each row i
 | CARRY | the depth | Word Ladder, any "minimum moves" | the level counter in Shape C, or `queue.append((nb, d + 1))` |
 | CARRY | the parent, to allow one back edge | Graph Valid Tree | `dfs(node, parent)`; inside, `if nb == parent: continue`, then `if nb in seen: cycle` |
 | CARRY | the path so far | All Paths From Source to Target | `dfs(node, path + [node])`; at the target, record the path |
-| STOP | the queue or stack is empty | every Shape A and Shape C run | the while loop or the recursion simply ends; there is no check to write |
-| STOP | the target is found | Word Ladder, shortest path in a grid | `if node == target: return steps` inside the loop |
-| STOP | every node has an order | Course Schedule, Alien Dictionary | Kahn's algorithm: when the queue is empty, `len(order) == n` means done; fewer means a cycle |
+| STOP | the queue or stack is empty | exploring everything reachable from the start: Shape A, or Shape C by levels | the while loop or the recursion simply ends; there is no check to write |
+| STOP | the target is found | searching for one specific node: Word Ladder, shortest path in a grid | `if node == target: return steps` inside the loop |
+| STOP | every node has an order | ordering by dependencies: Course Schedule, Alien Dictionary | Kahn's algorithm: when the queue is empty, `len(order) == n` means done; fewer means a cycle |
 
 **"Every node has an order", traced.** Four courses: 0 needs nothing, 1 needs 0, 2 needs 0, 3 needs 1 and 2. In-degrees: 0 has 0, 1 has 1, 2 has 1, 3 has 2. The queue starts with 0. Pop 0, order = [0]; 1 and 2 drop to 0 and both join the queue. Pop 1, order = [0, 1]; 3 drops to 1. Pop 2, order = [0, 1, 2]; 3 drops to 0 and joins. Pop 3, order = [0, 1, 2, 3]. The queue is empty and 4 of 4 are placed: done, and that list is the order. Now also make 1 need 2 and 2 need 1. Their in-degrees become 2 and 2, they never reach 0, and the queue runs dry with order = [0] and 1 of 4 placed. Fewer than n placed means a cycle, so the courses cannot be finished.
 
