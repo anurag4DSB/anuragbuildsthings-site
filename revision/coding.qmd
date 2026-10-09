@@ -234,8 +234,9 @@ If both work, say so and pick the one whose bookkeeping is smaller. BFS costs th
 A graph problem never says "graph". It says grid, friends, prerequisites, cities, words. Before any code, answer these as comments:
 
 ```
-NODES      what is a node, and how do I list its neighbours?
-           (edges -> adjacency list; a grid cell -> the 4 cells around it; a word -> words one letter away)
+NODES      what am I given, and how do I list a node's neighbours? Look at the input shape first:
+           pairs like [0, 1] are an edge list, and nothing can start until you build adj = {node: [its neighbours]};
+           a grid cell's neighbours are the 4 cells around it; a word's neighbours are the words one letter away
 VISITED    what marks a node as done, so I never visit it twice?
            (a set of ids; or write into the grid, for example flip '1' to '0')
 START      where do I start, and how many times?
