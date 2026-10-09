@@ -234,17 +234,26 @@ If both work, say so and pick the one whose bookkeeping is smaller. BFS costs th
 A graph problem never says "graph". It says grid, friends, prerequisites, cities, words. Before any code, answer these as comments:
 
 ```
-NODES      what am I given, and how do I list a node's neighbours? Look at the input shape first:
-           pairs like [0, 1] are an edge list, and nothing can start until you build adj = {node: [its neighbours]};
-           a grid cell's neighbours are the 4 cells around it; a word's neighbours are the words one letter away
-VISITED    what marks a node as done, so I never visit it twice?
-           (a set of ids; or write into the grid, for example flip '1' to '0')
-START      where do I start, and how many times?
-           (the given node once; every unvisited node, for components; every source at once, for multi-source)
-CARRY      what travels with the node?
-           (nothing; the depth; the parent, to allow one back edge; the path so far)
-STOP       when am I done?
-           (the queue or stack is empty; the target is found; every node has an order)
+NODES    what am I given, and how do I list a node's neighbours?
+         -> pairs like [0, 1] are an edge list: build adj = {node: [its neighbours]} before anything else
+         -> a grid: a node is (r, c), its neighbours are the 4 cells around it that are inside the grid
+         -> words: a word's neighbours are the words one letter away
+VISITED  what marks a node as done, so I never visit it twice?
+         -> seen = set(); seen.add(node) on arrival; if nb not in seen before stepping
+         -> or write into the grid: grid[r][c] = '0' on arrival, the grid is the set
+START    where do I start, and how many times?
+         -> the given node, once: dfs(start)
+         -> every unvisited node, to count groups: for i in range(n): if i not in seen: dfs(i); count += 1
+         -> every source at once: queue = deque(all the sources) before the loop
+CARRY    what travels with the node, what extra argument does my function take?
+         -> nothing: dfs(node)
+         -> the depth: the level counter, or queue.append((nb, d + 1))
+         -> the parent, to allow one back edge: dfs(node, parent); if nb == parent: continue
+         -> the path so far: dfs(node, path + [node])
+STOP     when am I done, which line, if any, ends the search early?
+         -> the queue or stack is empty: nothing to write, the loop or recursion simply ends, read the answer after it
+         -> the target is found: if node == target: return steps
+         -> every node has an order: after Kahn's loop, len(order) == n means done, fewer means a cycle
 ```
 
 Three shapes cover the whole list:
