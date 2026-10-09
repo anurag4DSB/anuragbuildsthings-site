@@ -256,9 +256,9 @@ STOP     when am I done, which line, if any, ends the search early?
          -> ordering by dependencies, every node has an order: after Kahn's loop, len(order) == n means done, fewer means a cycle
 ```
 
-Three shapes cover the whole list:
+Three shapes cover the whole list. A shape is a code skeleton you write from memory: A is the explore recursion, B is the prerequisite queue, C is the level queue.
 
-**Shape A, explore one component.** Start somewhere, mark it, visit every neighbour you have not marked. Count how many times you had to start, or what you found inside. Islands, Clone Graph, Connected Components, Graph Valid Tree, Pacific Atlantic.
+**Shape A, the explore recursion (explore one component).** Start somewhere, mark it, visit every neighbour you have not marked. Count how many times you had to start, or what you found inside. Islands, Clone Graph, Connected Components, Graph Valid Tree, Pacific Atlantic.
 
 ```
 def dfs(node):
@@ -268,9 +268,9 @@ def dfs(node):
             dfs(neighbour)
 ```
 
-**Shape B, order with dependencies (topological sort).** A topological order is a line-up of every node in which every arrow points forward, so each thing comes after everything it depends on: socks before shoes, shirt before jacket. It exists only when there is no cycle, several orders are usually valid, and nothing is sorted by size; the word sort only means line up. Directed graph. Either count in-degrees, put every zero-in-degree node in a queue, pop and lower the in-degree of its targets (Kahn's algorithm, a BFS); or DFS with three colors, white unseen, grey on the current path, black finished, where meeting grey means a cycle. If the order has fewer nodes than the graph, there was a cycle. Course Schedule, Alien Dictionary.
+**Shape B, the prerequisite queue (order with dependencies, topological sort).** A topological order is a line-up of every node in which every arrow points forward, so each thing comes after everything it depends on: socks before shoes, shirt before jacket. It exists only when there is no cycle, several orders are usually valid, and nothing is sorted by size; the word sort only means line up. Directed graph. Either count in-degrees, put every zero-in-degree node in a queue, pop and lower the in-degree of its targets (Kahn's algorithm, a BFS); or DFS with three colors, white unseen, grey on the current path, black finished, where meeting grey means a cycle. If the order has fewer nodes than the graph, there was a cycle. Course Schedule, Alien Dictionary.
 
-**Shape C, fewest steps (BFS by levels).** A queue, a visited set that you mark **when you enqueue**, and a loop that drains one level per step. The level counter is the distance. Level Order in a tree, Word Ladder, Rotting Oranges, any grid "minimum moves".
+**Shape C, the level queue (fewest steps, BFS by levels).** A queue, a visited set that you mark **when you enqueue**, and a loop that drains one level per step. The level counter is the distance. Level Order in a tree, Word Ladder, Rotting Oranges, any grid "minimum moves".
 
 ```
 queue = deque([start]); visited = {start}; steps = 0
@@ -307,10 +307,10 @@ Read this once when an option on the graph card means nothing to you. Each row i
 | START | every unvisited node | counting groups: islands, components | `for i in range(n): if i not in seen: dfs(i); count += 1`; each launch is one new group |
 | START | every source at once | Rotting Oranges, Pacific Atlantic | put every rotten orange (or every border cell of one ocean) in the queue before the loop; they spread together, so each cell's distance is to the nearest source |
 | CARRY | nothing | Islands, Components | `dfs(node)` and nothing else; the id is all a neighbour needs |
-| CARRY | the depth | Word Ladder, any "minimum moves" | the level counter in Shape C, or `queue.append((nb, d + 1))` |
+| CARRY | the depth | Word Ladder, any "minimum moves" | the level counter in Shape C, the level queue, or `queue.append((nb, d + 1))` |
 | CARRY | the parent, to allow one back edge | Graph Valid Tree | `dfs(node, parent)`; inside, `if nb == parent: continue`, then `if nb in seen: cycle` |
 | CARRY | the path so far | All Paths From Source to Target | `dfs(node, path + [node])`; at the target, record the path |
-| STOP | the queue or stack is empty | exploring everything reachable from the start: Shape A, or Shape C by levels | the while loop or the recursion simply ends; there is no check to write |
+| STOP | the queue or stack is empty | exploring everything reachable from the start: Shape A the explore recursion, or Shape C the level queue | the while loop or the recursion simply ends; there is no check to write |
 | STOP | the target is found | searching for one specific node: Word Ladder, shortest path in a grid | `if node == target: return steps` inside the loop |
 | STOP | every node has an order | ordering by dependencies: Course Schedule, Alien Dictionary | Kahn's algorithm: when the queue is empty, `len(order) == n` means done; fewer means a cycle |
 
