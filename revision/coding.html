@@ -820,25 +820,35 @@ got it
 </summary>
 <div class="rev-a">
 <p>A graph problem never says “graph”. It says grid, friends, prerequisites, cities, words. Before any code, answer these as comments:</p>
-<pre><code>NODES      what is a node, and how do I list its neighbours?
-           (edges -&gt; adjacency list; a grid cell -&gt; the 4 cells around it; a word -&gt; words one letter away)
-VISITED    what marks a node as done, so I never visit it twice?
-           (a set of ids; or write into the grid, for example flip '1' to '0')
-START      where do I start, and how many times?
-           (the given node once; every unvisited node, for components; every source at once, for multi-source)
-CARRY      what travels with the node?
-           (nothing; the depth; the parent, to allow one back edge; the path so far)
-STOP       when am I done?
-           (the queue or stack is empty; the target is found; every node has an order)</code></pre>
-<p>Three shapes cover the whole list:</p>
-<p><strong>Shape A, explore one component.</strong> Start somewhere, mark it, visit every neighbour you have not marked. Count how many times you had to start, or what you found inside. Islands, Clone Graph, Connected Components, Graph Valid Tree, Pacific Atlantic.</p>
+<pre><code>NODES    what am I given, and how do I list a node's neighbours?
+         -&gt; pairs like [0, 1] are an edge list: build adj = {node: [its neighbours]} before anything else
+         -&gt; a grid: a node is (r, c), its neighbours are the 4 cells around it that are inside the grid
+         -&gt; words: a word's neighbours are the words one letter away
+VISITED  what marks a node as done, so I never visit it twice?
+         -&gt; seen = set(); seen.add(node) on arrival; if nb not in seen before stepping
+         -&gt; or write into the grid: grid[r][c] = '0' on arrival, the grid is the set
+START    where do I start, and how many times?
+         -&gt; the given node, once: dfs(start)
+         -&gt; every unvisited node, to count groups: for i in range(n): if i not in seen: dfs(i); count += 1
+         -&gt; every source at once: queue = deque(all the sources) before the loop
+CARRY    what travels with the node, what extra argument does my function take?
+         -&gt; nothing: dfs(node)
+         -&gt; the depth: the level counter, or queue.append((nb, d + 1))
+         -&gt; the parent, to allow one back edge: dfs(node, parent); if nb == parent: continue
+         -&gt; the path so far: dfs(node, path + [node])
+STOP     when am I done, which line, if any, ends the search early?
+         -&gt; exploring everything reachable from the start, the queue or stack is empty: nothing to write, the loop or recursion simply ends, read the answer after it
+         -&gt; searching for one specific node, the target is found: if node == target: return steps
+         -&gt; ordering by dependencies, every node has an order: after Kahn's loop, len(order) == n means done, fewer means a cycle</code></pre>
+<p>Three shapes cover the whole list. A shape is a code skeleton you write from memory: A is the explore recursion, B is the prerequisite queue, C is the level queue.</p>
+<p><strong>Shape A, the explore recursion (explore one component).</strong> Start somewhere, mark it, visit every neighbour you have not marked. Count how many times you had to start, or what you found inside. Islands, Clone Graph, Connected Components, Graph Valid Tree, Pacific Atlantic.</p>
 <pre><code>def dfs(node):
     mark node visited
     for each neighbour of node:
         if neighbour not visited:
             dfs(neighbour)</code></pre>
-<p><strong>Shape B, order with dependencies (topological sort).</strong> A topological order is a line-up of every node in which every arrow points forward, so each thing comes after everything it depends on: socks before shoes, shirt before jacket. It exists only when there is no cycle, several orders are usually valid, and nothing is sorted by size; the word sort only means line up. Directed graph. Either count in-degrees, put every zero-in-degree node in a queue, pop and lower the in-degree of its targets (Kahn’s algorithm, a BFS); or DFS with three colors, white unseen, grey on the current path, black finished, where meeting grey means a cycle. If the order has fewer nodes than the graph, there was a cycle. Course Schedule, Alien Dictionary.</p>
-<p><strong>Shape C, fewest steps (BFS by levels).</strong> A queue, a visited set that you mark <strong>when you enqueue</strong>, and a loop that drains one level per step. The level counter is the distance. Level Order in a tree, Word Ladder, Rotting Oranges, any grid “minimum moves”.</p>
+<p><strong>Shape B, the prerequisite queue (order with dependencies, topological sort).</strong> A topological order is a line-up of every node in which every arrow points forward, so each thing comes after everything it depends on: socks before shoes, shirt before jacket. It exists only when there is no cycle, several orders are usually valid, and nothing is sorted by size; the word sort only means line up. Directed graph. Either count in-degrees, put every zero-in-degree node in a queue, pop and lower the in-degree of its targets (Kahn’s algorithm, a BFS); or DFS with three colors, white unseen, grey on the current path, black finished, where meeting grey means a cycle. If the order has fewer nodes than the graph, there was a cycle. Course Schedule, Alien Dictionary.</p>
+<p><strong>Shape C, the level queue (fewest steps, BFS by levels).</strong> A queue, a visited set that you mark <strong>when you enqueue</strong>, and a loop that drains one level per step. The level counter is the distance. Level Order in a tree, Word Ladder, Rotting Oranges, any grid “minimum moves”.</p>
 <pre><code>queue = deque([start]); visited = {start}; steps = 0
 while queue:
     for _ in range(len(queue)):          # exactly one level
@@ -936,7 +946,7 @@ got it
 <td>CARRY</td>
 <td>the depth</td>
 <td>Word Ladder, any “minimum moves”</td>
-<td>the level counter in Shape C, or <code>queue.append((nb, d + 1))</code></td>
+<td>the level counter in Shape C, the level queue, or <code>queue.append((nb, d + 1))</code></td>
 </tr>
 <tr class="odd">
 <td>CARRY</td>
@@ -953,19 +963,19 @@ got it
 <tr class="odd">
 <td>STOP</td>
 <td>the queue or stack is empty</td>
-<td>every Shape A and Shape C run</td>
+<td>exploring everything reachable from the start: Shape A the explore recursion, or Shape C the level queue</td>
 <td>the while loop or the recursion simply ends; there is no check to write</td>
 </tr>
 <tr class="even">
 <td>STOP</td>
 <td>the target is found</td>
-<td>Word Ladder, shortest path in a grid</td>
+<td>searching for one specific node: Word Ladder, shortest path in a grid</td>
 <td><code>if node == target: return steps</code> inside the loop</td>
 </tr>
 <tr class="odd">
 <td>STOP</td>
 <td>every node has an order</td>
-<td>Course Schedule, Alien Dictionary</td>
+<td>ordering by dependencies: Course Schedule, Alien Dictionary</td>
 <td>Kahn’s algorithm: when the queue is empty, <code>len(order) == n</code> means done; fewer means a cycle</td>
 </tr>
 </tbody>
