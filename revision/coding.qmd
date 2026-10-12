@@ -122,6 +122,8 @@ Some answers are not straight lines. They come up from one child, pass through t
 
 The test for SAVE is one sentence: "could my parent continue this value as a single line?" If yes, hand it up. If no, save it.
 
+The test for BUILD: the line must name a concrete rule, for example "root is preorder[0], split inorder at its index". If it only says "combine the children", the comments are a template, not a plan: stop, trace a five-node example by hand until the rule appears, then write it in.
+
 <p class="rev-actions"><button type="button" class="rev-known" data-for="tree-save">got it</button></p>
 
 </div>
