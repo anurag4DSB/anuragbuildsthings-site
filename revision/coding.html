@@ -550,6 +550,7 @@ got it
 <div class="rev-a">
 <p>Some answers are not straight lines. They come up from one child, pass through the node, and go down into the other child, like the shape ∧ with the node at the top. The parent cannot continue such a shape, because continuing it would mean entering the node twice. A node can therefore have two numbers: the straight-line value it hands up, and the full answer at this node, which it saves in a global because nobody above can use it.</p>
 <p>The test for SAVE is one sentence: “could my parent continue this value as a single line?” If yes, hand it up. If no, save it.</p>
+<p>The test for BUILD: the line must name a concrete rule, for example “root is preorder[0], split inorder at its index”. If it only says “combine the children”, the comments are a template, not a plan: stop, trace a five-node example by hand until the rule appears, then write it in.</p>
 <p class="rev-actions">
 <button type="button" class="rev-known" data-for="tree-save">
 got it
