@@ -1,0 +1,341 @@
+---
+title: "The Training Factory"
+description: "A full system design for a shared GPU training cluster: schedule, checkpoint, evaluate and ship. The prompt first, then a reference answer."
+toc: true
+mermaid:
+  theme: dark
+---
+
+::: {.callout-note}
+**One design, read on the go.** The prompt first; try your own outline before opening the answer. The board in section 0 is what goes on the whiteboard; sections 1 to 14 are the depth behind it.
+:::
+
+# The prompt
+
+
+**Prompt 4 of 9 · 60 minutes · interviewer mode.** ← CMP-03 · All prompts · Reference answer (after your self-grade) · CMP-05 →
+
+**Composite mock (unsolved). 60 minutes. Excalidraw: `system-design/composites/CMP-04-Training-Factory.excalidraw`.**
+
+Hundreds of researchers submit training and evaluation jobs to a shared cluster of 1,000 GPUs, soon 10,000. Jobs need gang scheduling (all requested GPUs or none), fair share by team, preemption, and checkpoint and resume. Results land in a model registry; a model is promoted through evaluation gates and rolled out to the serving fleet (CMP-02) region by region with rollback. Design the control plane.
+
+Clarify or assume yourself: job sizes (8 to 1,024 GPUs), job durations, node failure rate per day, checkpoint size for the largest model, how many teams and quotas, the evaluation suite's duration, regions in the serving fleet, and the rollout speed the business accepts.
+
+You must cover: the job submission API and queue; the scheduler (gang allocation, priorities, quotas, preemption, backfill); leader election and leases for the scheduler and for node ownership; a node dying mid-step (detection, restart from checkpoint, work lost); the checkpoint write path (a burst from 1,000 GPUs at once); recurring jobs (nightly evaluations); the registry (immutable artifacts with lineage: data manifest, code, configuration); promotion gates; rollout (canary percentage, regions, health signals, automatic rollback); estimation (checkpoint bytes for the largest model, write time, GPU-hours lost per failure × failures per day).
+
+Triage: pick two deep dives from: gang scheduling with preemption; the checkpoint write path; safe rollout with rollback. Say why.
+
+
+## After your attempt only: the designs this decomposes into, and the seams
+
+**Building blocks.** Lab prompt 5 multi-tenant GPU scheduler · Lab prompt 8 checkpoint storage and resume · Lab prompt 6 model registry and rollout · D14 Distributed job scheduler (job store, due-job polling, worker leases, at-least-once with idempotent jobs, retries with backoff, dead-letter queue, recurring schedules) · D14 Distributed lock manager (Chubby: leader election for scheduler high availability, lease-based locks with fencing tokens, consensus for the lock state) · D10 Code deployment (build to artifact store to staged rollout per region, health checks, rollback, artifact distribution to thousands of hosts) · D11 Amazon Lambda (worker pools, warm against cold, isolation by container image) · D4 Metrics and monitoring (the health signals that gate a rollout).
+
+**Seams.**
+
+1. Cron's one-worker lease does not gang-schedule: allocating N nodes atomically needs reserve-then-commit with a fencing token from the lock manager, and a timeout that releases partial reservations.
+2. A node dies mid-step: its lease expires, the job restarts from the last checkpoint on a replacement node; the checkpoint interval is chosen from the failure rate and the checkpoint cost, not by habit.
+3. The checkpoint burst is a storage-path problem (CMP-03): 1,000 GPUs write terabytes within minutes; write to local NVMe first and drain to the object store asynchronously.
+4. Rolling out a model is code deployment with a 100+ GB artifact: distribute peer to peer, warm the new version before shifting traffic, and keep the old version resident for instant rollback.
+5. Two schedulers must never both act: leader election plus fencing on every allocation write; a stale leader's writes are rejected by the token, not by hope.
+
+**Numbers to reuse.** 70B parameters in fp16 ≈ 140 GB of weights, ×3 to ×4 with optimizer state (the Sep 26 estimation drill) · D10 Code deployment 1,000 RPS, 500 GB artifacts, 8.3 GB/s distribution · D14 scheduler job rates and lease durations · D14 Chubby lease times in seconds · failures per day × GPUs per job × minutes since last checkpoint = GPU-hours lost.
+
+**Pushes to expect.** "Two schedulers both believe they are leader." · "A 512-GPU job is preempted by a higher-priority one; what happens to its state?" · "Rollout to region 3 degrades p99; automate the rollback." · "The nightly evaluation misses its slot; run late or skip, and who decides?"
+
+
+# Reference answer
+
+
+**Open only after your attempt and self-grade. One strong 60-minute answer in the lesson shape; a different pair of deep dives can be equally right if you say why.**
+
+**Covers 8 designs:** Lab prompt 5 GPU scheduler · Lab prompt 8 checkpoints · Lab prompt 6 registry and rollout · D14 Job scheduler · D14 Lock manager · D10 Code deployment · D11 Lambda · D4 Metrics. Section 14 says exactly what was reused from each.
+
+**Deep dives in this answer:** gang scheduling with preemption · the checkpoint write path. **Read the board first (section 0): it is what you actually write in 60 minutes, block by block with the minute budget; sections 1 to 14 are the depth you speak.** Sections: 1 frame · 2 estimate · 3 API · 4 data model · 5 design · 6 flow · 7-8 deep dives · 9 failures · 10 what breaks first · 11 pushes · 12 sixty seconds · 13 decisions · 14 blocks reused.
+
+
+
+
+## 0. The board (what you write in 60 minutes)
+
+Everything below fits on one whiteboard. Write it in this order at this pace, and say the rest; sections 1 to 14 are the depth behind each block.
+
+Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.
+
+**0-8 min · Requirements, top-left**
+```text
+FR   submit/cancel/watch train + eval jobs, one-off or nightly · gang: all GPUs or none, within team quota + priority
+     preempt lower priority (checkpoint before kill), backfill · auto checkpoint/resume after node failure
+     registry: immutable artifact + lineage (data manifest, commit, config) · promote through eval gates, roll out per region, auto-rollback
+NFR  never two leaders / zero double-allocated GPUs (fencing) · scheduler failover < 30 s, running jobs unaffected
+     work lost/failure avg 25 min, max 40 · checkpoint stall < 2 min (target 30 s) · goodput > 94% · rollback < 1 min
+OUT  training code + parallelism, object store internals (CMP-03), serving data plane (CMP-02), chargeback
+```
+**8-13 min · Numbers, top-right**
+```text
+125 nodes × 8 = 1,000 GPU; flagship 960 GPU on 120 nodes + 5 hot spares · 2,000 jobs/day = 0.02/s · heartbeats 12.5/s -> control plane idle
+70B fp16 = 140 GB; ×4 optimizer = 560 GB/checkpoint (≈ 1 TB with fp32 master weights) · every 30 min, keep 10 -> 5.6 TB/job
+sync to store in 2 min = 4.7 GB/s burst ✗ · per node 560 ÷ 120 = 4.7 GB -> NVMe 1.6 s + peer copy < 1 s ✓ · drain 1.5 GB/s -> durable in 6 min
+work lost = 960 × (15 + 10 restart) min ÷ 60 ≈ 400 GPU-h × 2/day ≈ 3.5% · Young: √(2 × 0.5 min × 720 min MTBF) ≈ 27 min -> 30 min
+rollout 250 hosts × 140 GB = 35 TB; origin 10 GB/s -> 1 h -> P2P
+-> 400 GPU-h per failure vs a 560 GB checkpoint forces: local commit in seconds, async drain, cadence from failure rate
+```
+**13-17 min · API, left**
+```text
+POST /jobs {team, priority, gpus, image_digest, dataset_manifest_id, config, max_runtime, preemptible, idempotency_key} -> 201 {job_id, QUEUED}
+GET  /jobs/{id}/events?stream (SSE): QUEUED RESERVING RUNNING CHECKPOINTING PREEMPTED RESTARTING SUCCEEDED FAILED
+POST /schedules {cron, job_template, missed_run_policy: run_late_within_4h|skip}
+POST /models/{name}/versions {checkpoint_uri, sha256, lineage} -> {version_id} (same digest -> same version)
+POST /rollouts {model, version, regions, steps [1,10,50,100], gates {p99, error, eval}} -> 202 · POST /rollouts/{id}/rollback
+```
+**17-21 min · Data, left under API**
+```text
+job(job_id) state machine, quota sums per team          -> Postgres
+allocation(node, gpu) -> job, written with epoch check   -> Postgres (1 row per GPU = double booking is a constraint violation)
+scheduler_epoch (single row, fencing token)             -> Postgres, SELECT FOR UPDATE in every allocation tx
+leader lease · node leases (10 s KeepAlive, 20 s TTL)   -> lock service, 5-node consensus
+checkpoint_manifest(job, step): LOCAL_COMMITTED|DURABLE, shards, checksums, holders -> Postgres; shards -> NVMe (writer + peer) -> object store
+model_version(model, id) + lineage -> Postgres; blob by sha256 -> object store · rollout(rollout_id, region, step) -> Postgres
+```
+**21-36 min · Diagram, center, in draw order**
+```text
+1 researchers/CLI -> job API (idempotent) -> Postgres (jobs, allocations, registry) · nightly trigger -> job API
+2 lock service -> scheduler leader (gang, quota, preempt, backfill) -> Postgres · leader -> node agents ×125 (lease 10 s) -> lock service
+3 agents -> local NVMe (writer + peer) -> object store (drain) -> registry (immutable versions)
+4 registry -> eval gates (64-GPU jobs via job API) -> rollout controller (canary per region) -> serving fleet (P2P pull) -> metrics -> controller
+```
+**36-52 min · Two deep dives, annotate the boxes**
+```text
+A gang + preempt: queues per team by deficit vs quota; prod > research > backfill · reserve N GPUs in one island -> commit all or release all, 60 s timeout
+  every allocation tx locks epoch row, compares fencing token, aborts if lower · preempt: fewest lowest-priority victims freeing an island, "checkpoint now", 5 min grace, kill
+  backfill jobs with max_runtime < time to next big reservation · anti-starvation: big job waiting > 2 h gets a reservation
+  REJECT pod-by-pod K8s (two 512 jobs each hold 400 forever); optimistic multi-scheduler (half-cluster jobs conflict with everything)
+B checkpoint path: GPU -> pinned host RAM (only stall) -> NVMe 1.6 s + peer NVMe -> LOCAL_COMMITTED ~10 s -> drain 1.5 GB/s -> DURABLE ~6 min
+  cadence Young √(2·cost·MTBF) = 27 -> 30 min · manifest lists shards+checksums+holders; partial step never resumed · resume from newest LOCAL_COMMITTED with live holders, else DURABLE
+  reshard on resume · keep 10 + milestones, GC after manifest expired · REJECT sync write to store (4.7 GB/s, slowest shard stalls all); PFS sized for burst (idle 28/30 min)
+```
+**52-57 min · Failures and trade-offs, bottom**
+```text
+node dies mid-step  -> lease 20 s + agent aborts collectives -> spare node, restart from LOCAL_COMMITTED -> RESTARTING, ≤ 30 + 10 min lost
+leader dies/pauses  -> session TTL 20 s, standby takes lock 1 s -> reads Postgres; stale writes fail epoch check -> queue waits ~21 s, jobs unaffected
+rollout degrades p99-> gate breach 2 min vs OLD version   -> flip pointer back (old resident), freeze, page  -> minutes of higher p99 for 1-10%
+chose: reserve->commit over pod-by-pod · one leader + epoch fencing · cadence from failure rate · LOCAL_COMMITTED then DURABLE · 960 + 5 spares · content-addressed versions, pointer flip · P2P weights
+```
+**57-60 min · Summary, said not written.** "The control plane of a 1,000-GPU cluster growing to 10,000. A 560 GB checkpoint and 400 GPU-hours per failure twice a day force the design: one leader with fencing on every allocation and reserve-then-commit gangs so no GPU is booked twice; checkpoints committed on writer plus peer NVMe in seconds with an async drain so the recovery point is fresh; immutable versions rolled out by pointer flip with the old version resident."
+
+
+## 1. Frame it (10 min)
+
+**Assumptions I fix, said aloud so they can be corrected.**
+
+- Cluster: 1,000 GPUs today in nodes of 8, so 125 nodes. 10,000 GPUs and 1,250 nodes within a year.
+- Job sizes: 8 to 1,024 GPUs. The flagship job today runs on 120 of the 125 nodes, 960 GPUs, and the other 5 nodes are hot spares; a full-cluster job would have no spare to restart on. At 10,000 GPUs the largest job is 1,024.
+- Durations: evaluations take hours, training takes days to weeks.
+- Largest model: 70B parameters in fp16, so 140 GB of weights. ×4 with bf16 optimizer state gives a 560 GB checkpoint (the Sep 26 drill); with fp32 master weights and Adam moments it is about 1 TB, which doubles every write figure below, and I say so.
+- Checkpoint cadence: every 30 minutes, keep the last 10, plus milestones kept forever (the Sep 26 drill).
+- Stall budget: at most 2 minutes of GPU pause per checkpoint (the Sep 26 drill).
+- Node failures: 2 per day across 125 nodes, about 1.6% of nodes per day. 20 per day at 1,250 nodes.
+- Restart cost after a failure: 10 minutes to replace the node, relaunch and load the checkpoint.
+- Teams: 20, each with a GPU quota that sums to the cluster. About 300 researchers.
+- Submissions: 2,000 jobs per day.
+- Evaluation suite: 2 hours on 64 GPUs, run nightly per candidate model.
+- Serving fleet (CMP-02): 3 regions, about 2,000 GPUs on 250 hosts of 8. The object store serves about 10 GB/s per region (assumed). A full rollout takes up to 1 business day. A rollback takes under 1 minute.
+
+**Functional requirements.**
+
+- Submit, cancel and watch training and evaluation jobs, one-off or recurring (nightly evaluations).
+- Gang-schedule: a job gets all requested GPUs at once or none, within team quotas and priorities.
+- Preempt lower-priority jobs, checkpoint before kill, resume them later, backfill short jobs into gaps.
+- Checkpoint and resume automatically after a node failure.
+- Register every result as an immutable artifact with lineage: data manifest, code commit, configuration.
+- Promote through evaluation gates and roll out region by region with automatic rollback.
+
+**Non-functional requirements.**
+
+- Never two leaders: zero double allocations of a GPU, enforced by fencing tokens.
+- Scheduler failover in under 30 seconds. Running jobs keep training while the scheduler is down.
+- Work lost per failure averages half a checkpoint interval plus restart, 25 minutes of the job, and is bounded by a full interval plus restart, 40 minutes.
+- Checkpoint stall under 2 minutes. Target under 30 seconds.
+- Goodput above 94% of allocated GPU-hours: 3.5% to failures plus 1.7% to stalls at a 30 s stall every 30 min. A 5 s stall would allow a 15-minute cadence and about 96%.
+- Rollback to the previous model in under 1 minute in any region.
+
+**Out of scope, said aloud.** The training code and its parallelism strategy. The object store internals (CMP-03). The serving data plane itself (CMP-02). Cost chargeback and invoicing.
+
+
+## 2. Estimate (5 min, six lines)
+
+1. **Objects and users.** 2,000 jobs per day ÷ 10⁵ s ≈ 0.02 submissions/s. 125 nodes heartbeating every 10 s = 12.5/s, and 125/s at 10,000 GPUs. The control plane is nearly idle, like D10's API.
+2. **The constraining op/s is bytes, not requests.** One checkpoint = 560 GB. Written straight to the object store inside the 2-minute budget: 560 GB ÷ 120 s ≈ 4.7 GB/s from one job, every 30 minutes.
+3. **Egress against ingress, and growth.** Writes: 48 checkpoints/day × 560 GB ≈ 27 TB/day for the flagship. Reads: about 2 resumes plus 1 evaluation load per day, so writes outnumber reads roughly 16:1. Retained: 10 × 560 GB = 5.6 TB per job plus milestones.
+4. **The hot set.** Only the latest checkpoint matters for resume: 560 GB ÷ 120 nodes ≈ 4.7 GB per node, which fits on each node's local NVMe many times over, with a second copy on one peer.
+5. **Capacity against IOPS device check.** Capacity is trivial: 5.6 TB is a fraction of one 20 TB disk. Throughput is not: 4.7 GB/s ÷ 200 MB/s per HDD ≈ 24 disks of pure write bandwidth for one burst. Locally, 4.7 GB ÷ 3 GB/s NVMe ≈ 1.6 s per node. The drain to the object store runs at about 1.5 GB/s aggregate, so a step is durable about 6 minutes after its snapshot and the drain has 24 minutes of slack before the next one.
+6. **Network ports.** Per node, 4.7 GB over a 100 GbE port (12.5 GB/s) is 0.4 s, and the peer copy the same. Rollout: 250 hosts × 140 GB of serving weights = 35 TB. From an origin at 10 GB/s per region that is 3,500 s ≈ 1 hour of pure download before any host can start, so peer-to-peer distribution is required.
+
+**Work lost.** One failure costs 960 GPUs × (15 min average since the last locally committed checkpoint + 10 min restart on a spare) ÷ 60 ≈ 400 GPU-hours. Two failures per day ≈ 800 of 23,000 GPU-hours, about 3.5%.
+
+The number that forced the design is 400 GPU-hours per failure against a 560 GB checkpoint: it sets the 30-minute cadence, forces local NVMe staging with a peer copy so a step is resumable in seconds, and an asynchronous drain that finishes well inside the interval.
+
+
+## 3. API
+
+- `POST /v1/jobs {team, priority: "prod|research|backfill", gpus: 512, gpu_type, image_digest, dataset_manifest_id, config_uri, max_runtime_h, preemptible: true, idempotency_key}` returns `201 {job_id, state: "QUEUED"}`. The same idempotency key returns the same job_id. A retried submit never creates a second job.
+- `GET /v1/jobs/{job_id}/events?stream=true` streams state changes over server-sent events: QUEUED, RESERVING, RUNNING, CHECKPOINTING, PREEMPTED, RESTARTING, SUCCEEDED, FAILED.
+- `POST /v1/schedules {cron: "0 2 * * *", job_template, missed_run_policy: "run_late_within_4h|skip", deadline}` returns `{schedule_id, next_run_at}`, as in D14's scheduler.
+- `POST /v1/models/{name}/versions {checkpoint_uri, content_sha256, lineage: {dataset_manifest_id, code_commit, config_sha256, parent_version}}` returns `{version_id}`. Immutable: the same digest returns the existing version.
+- `POST /v1/rollouts {model, version, regions: ["r1","r2","r3"], steps: [1, 10, 50, 100], gates: {p99_ms_max, error_rate_max, eval_score_min}}` returns `202 {rollout_id}`. Progress is asynchronous, and `POST /v1/rollouts/{id}/rollback` flips the pointer back.
+
+
+## 4. Data model
+
+| Record | Key | Store | Why that store |
+|---|---|---|---|
+| Job and its state machine | job_id | Postgres | Transactional state transitions and quota sums per team. |
+| Allocation (GPU to job) | node_id, gpu_index | Postgres, written in the same transaction as the epoch check | One row per GPU makes a double allocation a constraint violation. |
+| Scheduler leader and node leases | /sched/leader, /nodes/{id} | Lock service (Chubby-style, 5-node consensus) | Sessions, ephemeral nodes and fencing tokens. |
+| Recurring schedule | schedule_id, next_run_at | Postgres, index on next_run_at | D14's due-job scan at a tiny scale. |
+| Checkpoint manifest: state LOCAL_COMMITTED or DURABLE, shard list, checksums, holder nodes | job_id, step | Postgres row pointing at NVMe holders and object keys | LOCAL_COMMITTED once every shard sits on its writer's and one peer's NVMe, seconds after the snapshot; DURABLE after the drain. Resume uses the newest step whose holders are alive. |
+| Checkpoint shards | job_id/step/rank | Local NVMe on the writer and one peer, then object store | Bytes never touch the control plane. |
+| Scheduler epoch | single row | Postgres | The fencing token: every allocation transaction reads it with SELECT FOR UPDATE and aborts if its own token is lower. |
+| Model version and lineage | model, version_id | Postgres. Artifact in object store by sha256 | Metadata queries apart from blobs. Content addressing makes it immutable. |
+| Rollout state | rollout_id, region, step | Postgres | Resumable state machine, audit of every flip. |
+
+
+## 5. High-level design
+
+```{mermaid}
+flowchart LR
+  R["Researchers<br/>CLI and UI"] --> API["Job API<br/>idempotent submit"]
+  API --> PG["Postgres<br/>jobs, allocations, registry"]
+  CRON["Recurring trigger<br/>nightly evals"] --> API
+  LS["Lock service<br/>5-node consensus"] --> SCH["Scheduler leader<br/>gang, quota, preempt"]
+  SCH --> PG
+  SCH --> AG["Node agents x 125<br/>lease every 10 s"]
+  AG --> LS
+  AG --> NV["Local NVMe<br/>writer plus one peer"]
+  NV --> OS["Object store<br/>checkpoints, artifacts"]
+  OS --> REG["Registry<br/>immutable versions"]
+  REG --> GATE["Eval gates<br/>nightly suite"]
+  GATE -->|"eval jobs, 64 GPUs"| API
+  GATE --> RC["Rollout controller<br/>canary per region"]
+  RC --> FLEET["Serving fleet<br/>3 regions, P2P pull"]
+  FLEET --> MON["Metrics<br/>p99, errors, quality"]
+  MON --> RC
+```
+
+The **Job API** records intent and never talks to nodes. **Postgres** holds jobs, per-GPU allocations, recurring schedules, checkpoint manifests and the registry. The **recurring trigger** is D14's due-job scan that submits nightly evaluations through the same API. The **lock service** elects one scheduler leader and holds a lease per node, handing out fencing tokens. The **scheduler leader** runs the gang, quota, preemption and backfill loop. **Node agents** hold node leases, launch containers and stage checkpoints to **local NVMe** on the writer and one peer, which then drain to the **object store**. **Evaluation gates** submit their 64-GPU suites through the same job API. The **registry** turns a checkpoint into an immutable version with lineage. **Evaluation gates** run the suite. The **rollout controller** moves traffic region by region, fed by **metrics** from the fleet, which pulls weights peer to peer.
+
+
+## 6. One flow traced end to end
+
+A 512-GPU training job from submit to a rolled-out model.
+
+1. Researcher submits with an idempotency key. The API writes the job row as QUEUED in about 10 ms.
+2. The scheduler leader, on its next pass (every 1 s), orders queues by team deficit against quota. This team is under quota, so the job is next.
+3. It picks 64 nodes in one InfiniBand island and writes 512 allocation rows as RESERVED, with a 60 s reservation timeout, in a transaction that first locks the epoch row and checks that its fencing token is still the highest.
+4. It commits all 512 rows to ALLOCATED in one transaction with the same epoch check. Any row already taken aborts the whole gang and releases the rest.
+5. Agents on 64 nodes see the assignment on their next lease renewal (under 10 s), pull the image and start ranks: about 2 to 5 minutes.
+6. Every 30 minutes each rank copies its shard to host memory, a stall of seconds. A background thread writes the 560 GB checkpoint ÷ 64 nodes ≈ 8.75 GB per node to its NVMe in about 3 s and to one peer's NVMe over 100 GbE in under a second. When all 64 shards and their peer copies report checksums, the manifest row commits as LOCAL_COMMITTED, about 10 s after the snapshot.
+7. Each node drains its shard to the object store at about 1.5 GB/s aggregate, so the step is DURABLE about 6 minutes later, and the manifest flips. A resume uses the newest LOCAL_COMMITTED step whose holders are alive, else the newest DURABLE one.
+8. At the end, the final checkpoint is registered as a version with its dataset manifest, code commit and configuration digest.
+9. The nightly evaluation (2 hours, 64 GPUs) passes the gates. The rollout controller starts region 1 at 1%.
+10. Hosts pull 140 GB of weights peer to peer, the first few from the object store and the rest from each other, load them next to the old version, and go live. Each step waits 15 minutes of healthy metrics before the next.
+
+
+## 7. Deep dive A: gang scheduling with preemption
+
+**Why chosen.** Every idle or double-booked GPU is money. The failure modes are deadlocked partial gangs, two leaders and lost state on preemption.
+
+**The design.**
+
+- Queues per team. Order by deficit (used GPU-hours against quota share). Priority classes prod over research over backfill.
+- Gang allocation is reserve-then-commit: reserve N GPUs in one topology domain, commit all or release all. A reservation that has not committed in 60 s expires.
+- Every allocation transaction starts by locking the single scheduler-epoch row and comparing its own fencing token; a lower token aborts the transaction. Postgres has no native fencing, so the check and the write share one transaction, which closes the race a stale leader would otherwise win between check and write.
+- Preemption: pick the fewest, lowest-priority victims that free a whole island. Send "checkpoint now" with a 5-minute grace, then kill. The victim returns to its queue with its latest manifest.
+- Backfill: a job that declares max_runtime shorter than the time until the next big gang's reservation runs in the gap.
+- Anti-starvation: a big job waiting past 2 hours gets a reservation that stops new backfill on the nodes it needs.
+
+**Rejected.**
+
+- Kubernetes default scheduler, pod by pod: it places pods one at a time, so two 512-GPU jobs can each get 400 and both wait forever.
+- Optimistic multi-scheduler (Omega style) with conflict retry: one job that needs half the cluster conflicts with almost everything. At 0.02 submissions/s, one leader is fast enough.
+
+
+## 8. Deep dive B: the checkpoint write path
+
+**Why chosen.** It sets the 30-minute cadence, the 2-minute stall and 400 GPU-hours per failure. It is where the storage path of CMP-03 meets the scheduler.
+
+**The design.**
+
+- Cadence from the failure rate: Young's rule, interval ≈ √(2 × cost × MTBF). With a 30 s stall and a 12-hour MTBF for the flagship job, √(2 × 0.5 × 720) ≈ 27 minutes, so 30 minutes.
+- Two-tier write: GPU to pinned host memory (the only stall), then a background thread writes each rank's shard to local NVMe (about 1.6 s per node) and to one peer's NVMe.
+- Two-level commit: LOCAL_COMMITTED when every shard has its writer copy and its peer copy, about 10 s after the snapshot; DURABLE after the drain. The recovery point is therefore seconds old, not a drain behind. Without this, a step resumable only after a 30-minute drain would make the checkpoint 30 to 60 minutes old at failure and more than double the work lost.
+- Asynchronous drain to the object store at about 1.5 GB/s aggregate, done in about 6 minutes, throttled so it never competes with data loading and always finishes with slack before the next snapshot.
+- Consistency: a manifest lists every shard, its checksum and its holders. A partial step is never resumed from. A LOCAL_COMMITTED step is used only while a holder of every shard is alive; a double node death inside one 6-minute drain window falls back to the last DURABLE step.
+- Resume with a different world size: shards are saved with their tensor layout, and the loader reshards on read.
+- Retention: last 10 steps plus milestones. Garbage collection deletes shards only after the manifest row is marked expired.
+
+**Rejected.**
+
+- Synchronous write straight to the object store: 4.7 GB/s from one job for 2 minutes every 30 minutes, and the GPUs wait on the slowest shard.
+- A parallel file system sized for the burst: it works, but it buys peak bandwidth that sits idle 28 of every 30 minutes.
+
+
+## 9. Failures traced
+
+| Failure | Detection | Mitigation | What the user sees |
+|---|---|---|---|
+| Node dies mid-step | Node lease expires after 20 s; the agent watchdog aborts the ranks' collectives at once, because NCCL's own timeout is 10 to 30 minutes | Mark node bad, take one of the 5 hot spares, restart the gang from the newest LOCAL_COMMITTED manifest whose holders are alive | Job goes RESTARTING. Loses up to 30 minutes of steps plus 10 minutes of restart |
+| Scheduler leader dies or pauses | Lock service session expires after its 20 s TTL, then the standby acquires the lock in about 1 s | New leader reads state from Postgres. Stale leader's writes fail the epoch check | Queued jobs wait about 21 s longer. Running jobs unaffected |
+| Rollout degrades p99 in a region | Metrics gate breach for 2 consecutive minutes | Controller flips the region pointer back to the resident old version | A few minutes of higher latency for 1% to 10% of that region |
+
+
+## 10. What breaks first
+
+1. **Checkpoint drain at 10,000 GPUs.** Ten large jobs checkpointing at once need 3 GB/s sustained into the store. Stagger checkpoint times by job and add per-job drain quotas.
+2. **Fragmentation.** Small jobs scattered across islands block 512-GPU gangs. Pack small jobs onto the same nodes and defragment by preempting backfill.
+3. **Failure rate at 1,250 nodes.** The cluster sees 20 failures per day, but a 1,024-GPU job spans 128 of 1,250 nodes, so its own rate stays about 2 per day and the 30-minute cadence holds. A job that spanned the whole cluster would fail every 72 minutes, and Young's rule gives √(2 × 0.5 × 72) ≈ 8.5 minutes, so such a job moves to a 10-minute cadence, which the async path allows.
+4. **Rollout distribution.** 35 TB per rollout from a 10 GB/s origin is an hour before the first host is ready. Peer-to-peer pull and regional caches, as in D10.
+
+
+## 11. Interviewer pushes, with answers
+
+**"Two schedulers both believe they are leader."** Only one holds the lock service session, but a paused leader does not know it lost it. Every allocation transaction locks the epoch row and compares the fencing token from the election; a lower token aborts, in the same transaction as the write. The stale leader's writes fail. Correctness never depends on its clock or on timing.
+
+**"A 512-GPU job is preempted by a higher-priority one; what happens to its state?"** The scheduler sends checkpoint-now with a 5-minute grace. The job writes to host memory and NVMe in seconds, the manifest commits as LOCAL_COMMITTED, and the drain finishes within the grace so the step is DURABLE before the kill. The job goes back to its queue as PREEMPTED with that manifest, not as FAILED. If the grace expires, it resumes from its last periodic checkpoint and loses at most 30 minutes.
+
+**"Rollout to region 3 degrades p99; automate the rollback."** The gate compares canary p99 and error rate against the old version in the same region, not against a fixed number. Two consecutive breached minutes trigger the controller to flip the pointer back, which is instant because the old version stays loaded. The rollout freezes for all regions and pages the owner with the diff.
+
+**"The nightly evaluation misses its slot; run late or skip, and who decides?"** The schedule owner decides, in the schedule record: run late within 4 hours, else skip and alert. Evaluations that gate a release run late with prod priority. Exploratory ones skip. The job scheduler records the missed run either way, so nobody guesses later.
+
+
+## 12. Sixty-second summary (spoken)
+
+I built the control plane of a 1,000-GPU training cluster growing to 10,000: gang scheduling, checkpoints, a registry and a staged rollout. The numbers that forced it: a 560 GB checkpoint for the 70B model, and 400 GPU-hours lost each time a node fails under the 960-GPU flagship job, twice a day. My three decisions: one scheduler leader with fencing tokens and reserve-then-commit gangs, so no GPU is ever booked twice. Checkpoints to host memory and local NVMe on the writer and a peer, committed in seconds, with an asynchronous drain behind, which keeps the stall to seconds, keeps the recovery point fresh and lets the cadence follow the failure rate. And immutable, content-addressed versions rolled out by pointer flip, with the old version kept resident for rollback in under a minute. I watch goodput, queue wait per team, checkpoint drain lag, and canary p99 against the old version.
+
+
+## 13. The decisions that mattered
+
+| Decision | Alternative rejected | Why |
+|---|---|---|
+| Reserve-then-commit gang allocation with a 60 s timeout | Pod-by-pod placement | Partial gangs deadlock and waste GPUs |
+| One leader via a lock service, epoch check in every allocation transaction | Several optimistic schedulers | Conflicts dominate with half-cluster jobs. Submissions are 0.02/s |
+| LOCAL_COMMITTED on writer plus peer NVMe, DURABLE after the drain | Commit only after the drain | A step resumable only after a 30-minute drain doubles the work lost |
+| Flagship on 960 GPUs with 5 hot spares | Whole cluster to one job | Without a spare there is no 10-minute restart |
+| Cadence from failure rate, about 30 minutes | Fixed hourly checkpoints | Hourly doubles the work lost per failure |
+| Host copy, local NVMe, async drain | Synchronous write to object store | 4.7 GB/s bursts stall every GPU on the slowest shard |
+| Manifest commit per step | Resume from whatever shards exist | Mixed steps give silently corrupt training |
+| Content-addressed immutable versions, pointer flip | Overwrite a "latest" artifact | Rollback and lineage need the old bytes intact |
+| Peer-to-peer weight distribution | Every host pulls from origin | 35 TB from a 10 GB/s origin is an hour before the first host is ready |
+
+
+## 14. Building blocks reused
+
+- Lab prompt 5 GPU scheduler: gang scheduling, topology-aware placement, backfill, fair share by team, preemption with checkpoint before kill.
+- Lab prompt 8 checkpoint storage: sharded per-rank writes, asynchronous from host memory, manifest per step, resharding on resume, last N plus milestones.
+- Lab prompt 6 registry and rollout: content-addressed artifacts, lineage to dataset and run, pointer flip for rollback, canary gates.
+- D14 job scheduler: due-job scan on next_run_at for nightly evaluations, idempotent jobs, at-least-once triggering.
+- D14 lock manager: 10 s KeepAlive, 20 s session TTL, the lock service's own failover in 1 to 2 s, fencing tokens checked at the resource.
+- D10 code deployment: agents pull on heartbeat, its 500 GB in 60 s burst as the reason bytes never cross the control plane, peer-to-peer for large fleets, circuit breaker on a failing batch. The 10 GB/s origin figure here is my assumption.
+- D11 Lambda: warm against cold, applied as keeping the old model version resident so rollback costs no load.
+- D4 metrics and monitoring: alerts on the stream within about 1 minute, the signal that gates each rollout step.
+- Sep 26 estimation drill: 70B fp16, 140 GB weights, ×4 with optimizer state, 30-minute cadence, last 10, 2-minute stall budget.
+
