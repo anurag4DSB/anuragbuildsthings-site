@@ -1,9 +1,9 @@
 // Offline cache for the revision pack, scope /revision/.
 // Pages: network first, cache fallback; VERSION is stamped at build time so a deploy refreshes the precache.
 // Assets (site_libs, css, js, fonts): cache first, refreshed in the background; kept across versions.
-const VERSION = '20261011-1255';
+const VERSION = '20261022-0615';
 const PAGES = 'rev-pages-' + VERSION, ASSETS = 'rev-assets';
-const URLS = ['./', 'index.html', 'daily.html', 'reference.html', 'coding.html', 'data-paths.html'];
+const URLS = ['./', 'index.html', 'daily.html', 'reference.html', 'coding.html', 'data-paths.html', 'training-factory.html'];
 self.addEventListener('install', (e) => e.waitUntil(
   caches.open(PAGES).then((c) => c.addAll(URLS)).then(() => self.skipWaiting())));
 self.addEventListener('activate', (e) => e.waitUntil(

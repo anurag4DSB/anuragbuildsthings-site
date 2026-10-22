@@ -60,3 +60,4 @@ The compressed version. Every page every day, the slow treatment rotating throug
 - [Reference](reference.html)
 - [Coding](coding.html)
 - [Data-path diagrams](data-paths.html): the five flows the data-path cards describe, drawn out.
+- [The training factory](training-factory.html): one full design, a shared GPU training cluster, prompt then reference answer.
