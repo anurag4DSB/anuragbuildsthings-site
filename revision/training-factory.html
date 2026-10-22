@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="A full system design for a shared GPU training cluster: schedule, checkpoint, evaluate and ship. The prompt first, then a reference answer.">
+
+<title>The Training Factory – anurag builds things</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-96065478e3533de75074fd5e23a66a13.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-96065478e3533de75074fd5e23a66a13.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-96065478e3533de75074fd5e23a66a13.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-99294406a4eae9d93897e3b344f89ed2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dark-398343505b2a3300e3de77b55841c6ba.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-99294406a4eae9d93897e3b344f89ed2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2QD3FPQKQ8"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+ 
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'analytics_storage': 'denied'
+  });
+gtag('config', 'G-2QD3FPQKQ8', { 'anonymize_ip': true});
+</script>
+<meta name="mermaid-theme" content="dark">
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../favicon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="../favicon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@200..800&amp;family=Fraunces:opsz,wght,ital@9..144,300..800,0..1&amp;family=Inter+Tight:wght@300..700&amp;family=JetBrains+Mono:wght@400..600&amp;family=Newsreader:opsz,wght,ital@6..72,300..700,0..1&amp;display=optional">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0c0d0b">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="quarto:status" content="draft">
+
+
+<link rel="stylesheet" href="revision.css">
+<meta property="og:title" content="The Training Factory – anurag builds things">
+<meta property="og:description" content="A full system design for a shared GPU training cluster: schedule, checkpoint, evaluate and ship. The prompt first, then a reference answer.">
+<meta property="og:image" content="https://anuragbuildsthings.com/revision/og-default.png">
+<meta property="og:site_name" content="anurag builds things">
+</head>
+
+<body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">anurag builds things</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-wide tools-end">
+    <a href="https://github.com/anurag4dsb" title="" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-git"></i></a>
+    <a href="https://www.youtube.com/@AnuragBuildsThings" title="" class="quarto-navigation-tool px-1" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+    <a href="https://www.linkedin.com/in/mittalanu/" title="" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+    <a href="https://anuragbuildsthings.substack.com" title="" class="quarto-navigation-tool px-1" aria-label="Substack"><i class="bi bi-substack"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#the-prompt" id="toc-the-prompt" class="nav-link active" data-scroll-target="#the-prompt">The prompt</a>
+  <ul class="collapse">
+  <li><a href="#after-your-attempt-only-the-designs-this-decomposes-into-and-the-seams" id="toc-after-your-attempt-only-the-designs-this-decomposes-into-and-the-seams" class="nav-link" data-scroll-target="#after-your-attempt-only-the-designs-this-decomposes-into-and-the-seams">After your attempt only: the designs this decomposes into, and the seams</a></li>
+  </ul></li>
+  <li><a href="#reference-answer" id="toc-reference-answer" class="nav-link" data-scroll-target="#reference-answer">Reference answer</a>
+  <ul class="collapse">
+  <li><a href="#the-board-what-you-write-in-60-minutes" id="toc-the-board-what-you-write-in-60-minutes" class="nav-link" data-scroll-target="#the-board-what-you-write-in-60-minutes">0. The board (what you write in 60 minutes)</a></li>
+  <li><a href="#frame-it-10-min" id="toc-frame-it-10-min" class="nav-link" data-scroll-target="#frame-it-10-min">1. Frame it (10 min)</a></li>
+  <li><a href="#estimate-5-min-six-lines" id="toc-estimate-5-min-six-lines" class="nav-link" data-scroll-target="#estimate-5-min-six-lines">2. Estimate (5 min, six lines)</a></li>
+  <li><a href="#api" id="toc-api" class="nav-link" data-scroll-target="#api">3. API</a></li>
+  <li><a href="#data-model" id="toc-data-model" class="nav-link" data-scroll-target="#data-model">4. Data model</a></li>
+  <li><a href="#high-level-design" id="toc-high-level-design" class="nav-link" data-scroll-target="#high-level-design">5. High-level design</a></li>
+  <li><a href="#one-flow-traced-end-to-end" id="toc-one-flow-traced-end-to-end" class="nav-link" data-scroll-target="#one-flow-traced-end-to-end">6. One flow traced end to end</a></li>
+  <li><a href="#deep-dive-a-gang-scheduling-with-preemption" id="toc-deep-dive-a-gang-scheduling-with-preemption" class="nav-link" data-scroll-target="#deep-dive-a-gang-scheduling-with-preemption">7. Deep dive A: gang scheduling with preemption</a></li>
+  <li><a href="#deep-dive-b-the-checkpoint-write-path" id="toc-deep-dive-b-the-checkpoint-write-path" class="nav-link" data-scroll-target="#deep-dive-b-the-checkpoint-write-path">8. Deep dive B: the checkpoint write path</a></li>
+  <li><a href="#failures-traced" id="toc-failures-traced" class="nav-link" data-scroll-target="#failures-traced">9. Failures traced</a></li>
+  <li><a href="#what-breaks-first" id="toc-what-breaks-first" class="nav-link" data-scroll-target="#what-breaks-first">10. What breaks first</a></li>
+  <li><a href="#interviewer-pushes-with-answers" id="toc-interviewer-pushes-with-answers" class="nav-link" data-scroll-target="#interviewer-pushes-with-answers">11. Interviewer pushes, with answers</a></li>
+  <li><a href="#sixty-second-summary-spoken" id="toc-sixty-second-summary-spoken" class="nav-link" data-scroll-target="#sixty-second-summary-spoken">12. Sixty-second summary (spoken)</a></li>
+  <li><a href="#the-decisions-that-mattered" id="toc-the-decisions-that-mattered" class="nav-link" data-scroll-target="#the-decisions-that-mattered">13. The decisions that mattered</a></li>
+  <li><a href="#building-blocks-reused" id="toc-building-blocks-reused" class="nav-link" data-scroll-target="#building-blocks-reused">14. Building blocks reused</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The Training Factory</h1>
+</div>
+
+<div>
+  <div class="description">
+    A full system design for a shared GPU training cluster: schedule, checkpoint, evaluate and ship. The prompt first, then a reference answer.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>One design, read on the go.</strong> The prompt first; try your own outline before opening the answer. The board in section 0 is what goes on the whiteboard; sections 1 to 14 are the depth behind it.</p>
+</div>
+</div>
+<section id="the-prompt" class="level1">
+<h1>The prompt</h1>
+<p><strong>Prompt 4 of 9 · 60 minutes · interviewer mode.</strong> ← CMP-03 · All prompts · Reference answer (after your self-grade) · CMP-05 →</p>
+<p><strong>Composite mock (unsolved). 60 minutes. Excalidraw: <code>system-design/composites/CMP-04-Training-Factory.excalidraw</code>.</strong></p>
+<p>Hundreds of researchers submit training and evaluation jobs to a shared cluster of 1,000 GPUs, soon 10,000. Jobs need gang scheduling (all requested GPUs or none), fair share by team, preemption, and checkpoint and resume. Results land in a model registry; a model is promoted through evaluation gates and rolled out to the serving fleet (CMP-02) region by region with rollback. Design the control plane.</p>
+<p>Clarify or assume yourself: job sizes (8 to 1,024 GPUs), job durations, node failure rate per day, checkpoint size for the largest model, how many teams and quotas, the evaluation suite’s duration, regions in the serving fleet, and the rollout speed the business accepts.</p>
+<p>You must cover: the job submission API and queue; the scheduler (gang allocation, priorities, quotas, preemption, backfill); leader election and leases for the scheduler and for node ownership; a node dying mid-step (detection, restart from checkpoint, work lost); the checkpoint write path (a burst from 1,000 GPUs at once); recurring jobs (nightly evaluations); the registry (immutable artifacts with lineage: data manifest, code, configuration); promotion gates; rollout (canary percentage, regions, health signals, automatic rollback); estimation (checkpoint bytes for the largest model, write time, GPU-hours lost per failure × failures per day).</p>
+<p>Triage: pick two deep dives from: gang scheduling with preemption; the checkpoint write path; safe rollout with rollback. Say why.</p>
+<section id="after-your-attempt-only-the-designs-this-decomposes-into-and-the-seams" class="level2">
+<h2 class="anchored" data-anchor-id="after-your-attempt-only-the-designs-this-decomposes-into-and-the-seams">After your attempt only: the designs this decomposes into, and the seams</h2>
+<p><strong>Building blocks.</strong> Lab prompt 5 multi-tenant GPU scheduler · Lab prompt 8 checkpoint storage and resume · Lab prompt 6 model registry and rollout · D14 Distributed job scheduler (job store, due-job polling, worker leases, at-least-once with idempotent jobs, retries with backoff, dead-letter queue, recurring schedules) · D14 Distributed lock manager (Chubby: leader election for scheduler high availability, lease-based locks with fencing tokens, consensus for the lock state) · D10 Code deployment (build to artifact store to staged rollout per region, health checks, rollback, artifact distribution to thousands of hosts) · D11 Amazon Lambda (worker pools, warm against cold, isolation by container image) · D4 Metrics and monitoring (the health signals that gate a rollout).</p>
+<p><strong>Seams.</strong></p>
+<ol type="1">
+<li>Cron’s one-worker lease does not gang-schedule: allocating N nodes atomically needs reserve-then-commit with a fencing token from the lock manager, and a timeout that releases partial reservations.</li>
+<li>A node dies mid-step: its lease expires, the job restarts from the last checkpoint on a replacement node; the checkpoint interval is chosen from the failure rate and the checkpoint cost, not by habit.</li>
+<li>The checkpoint burst is a storage-path problem (CMP-03): 1,000 GPUs write terabytes within minutes; write to local NVMe first and drain to the object store asynchronously.</li>
+<li>Rolling out a model is code deployment with a 100+ GB artifact: distribute peer to peer, warm the new version before shifting traffic, and keep the old version resident for instant rollback.</li>
+<li>Two schedulers must never both act: leader election plus fencing on every allocation write; a stale leader’s writes are rejected by the token, not by hope.</li>
+</ol>
+<p><strong>Numbers to reuse.</strong> 70B parameters in fp16 ≈ 140 GB of weights, ×3 to ×4 with optimizer state (the Sep 26 estimation drill) · D10 Code deployment 1,000 RPS, 500 GB artifacts, 8.3 GB/s distribution · D14 scheduler job rates and lease durations · D14 Chubby lease times in seconds · failures per day × GPUs per job × minutes since last checkpoint = GPU-hours lost.</p>
+<p><strong>Pushes to expect.</strong> “Two schedulers both believe they are leader.” · “A 512-GPU job is preempted by a higher-priority one; what happens to its state?” · “Rollout to region 3 degrades p99; automate the rollback.” · “The nightly evaluation misses its slot; run late or skip, and who decides?”</p>
+</section>
+</section>
+<section id="reference-answer" class="level1">
+<h1>Reference answer</h1>
+<p><strong>Open only after your attempt and self-grade. One strong 60-minute answer in the lesson shape; a different pair of deep dives can be equally right if you say why.</strong></p>
+<p><strong>Covers 8 designs:</strong> Lab prompt 5 GPU scheduler · Lab prompt 8 checkpoints · Lab prompt 6 registry and rollout · D14 Job scheduler · D14 Lock manager · D10 Code deployment · D11 Lambda · D4 Metrics. Section 14 says exactly what was reused from each.</p>
+<p><strong>Deep dives in this answer:</strong> gang scheduling with preemption · the checkpoint write path. <strong>Read the board first (section 0): it is what you actually write in 60 minutes, block by block with the minute budget; sections 1 to 14 are the depth you speak.</strong> Sections: 1 frame · 2 estimate · 3 API · 4 data model · 5 design · 6 flow · 7-8 deep dives · 9 failures · 10 what breaks first · 11 pushes · 12 sixty seconds · 13 decisions · 14 blocks reused.</p>
+<section id="the-board-what-you-write-in-60-minutes" class="level2">
+<h2 class="anchored" data-anchor-id="the-board-what-you-write-in-60-minutes">0. The board (what you write in 60 minutes)</h2>
+<p>Everything below fits on one whiteboard. Write it in this order at this pace, and say the rest; sections 1 to 14 are the depth behind each block.</p>
+<p>Shorthand used on the boards: WS = WebSocket · GW = gateway · KV = key-value store · TTL = time to live · idem = idempotency key · SSE = server-sent events · DLQ = dead-letter queue · P2P = peer-to-peer · 2PC = two-phase commit · CDC = change data capture · WFQ = weighted fair queuing · LWW = last-writer-wins register · HLC = hybrid logical clock · OT = operational transformation · RRF = reciprocal rank fusion · SFU = selective forwarding unit (the media server) · RTCP = the RTP control channel that reports media health · EC = erasure coding · AFR = annual disk failure rate · IOPS = disk operations per second · PFS = parallel file system · TSDB = time-series database.</p>
+<p><strong>0-8 min · Requirements, top-left</strong></p>
+<pre class="text"><code>FR   submit/cancel/watch train + eval jobs, one-off or nightly · gang: all GPUs or none, within team quota + priority
+     preempt lower priority (checkpoint before kill), backfill · auto checkpoint/resume after node failure
+     registry: immutable artifact + lineage (data manifest, commit, config) · promote through eval gates, roll out per region, auto-rollback
+NFR  never two leaders / zero double-allocated GPUs (fencing) · scheduler failover &lt; 30 s, running jobs unaffected
+     work lost/failure avg 25 min, max 40 · checkpoint stall &lt; 2 min (target 30 s) · goodput &gt; 94% · rollback &lt; 1 min
+OUT  training code + parallelism, object store internals (CMP-03), serving data plane (CMP-02), chargeback</code></pre>
+<p><strong>8-13 min · Numbers, top-right</strong></p>
+<pre class="text"><code>125 nodes × 8 = 1,000 GPU; flagship 960 GPU on 120 nodes + 5 hot spares · 2,000 jobs/day = 0.02/s · heartbeats 12.5/s -&gt; control plane idle
+70B fp16 = 140 GB; ×4 optimizer = 560 GB/checkpoint (≈ 1 TB with fp32 master weights) · every 30 min, keep 10 -&gt; 5.6 TB/job
+sync to store in 2 min = 4.7 GB/s burst ✗ · per node 560 ÷ 120 = 4.7 GB -&gt; NVMe 1.6 s + peer copy &lt; 1 s ✓ · drain 1.5 GB/s -&gt; durable in 6 min
+work lost = 960 × (15 + 10 restart) min ÷ 60 ≈ 400 GPU-h × 2/day ≈ 3.5% · Young: √(2 × 0.5 min × 720 min MTBF) ≈ 27 min -&gt; 30 min
+rollout 250 hosts × 140 GB = 35 TB; origin 10 GB/s -&gt; 1 h -&gt; P2P
+-&gt; 400 GPU-h per failure vs a 560 GB checkpoint forces: local commit in seconds, async drain, cadence from failure rate</code></pre>
+<p><strong>13-17 min · API, left</strong></p>
+<pre class="text"><code>POST /jobs {team, priority, gpus, image_digest, dataset_manifest_id, config, max_runtime, preemptible, idempotency_key} -&gt; 201 {job_id, QUEUED}
+GET  /jobs/{id}/events?stream (SSE): QUEUED RESERVING RUNNING CHECKPOINTING PREEMPTED RESTARTING SUCCEEDED FAILED
+POST /schedules {cron, job_template, missed_run_policy: run_late_within_4h|skip}
+POST /models/{name}/versions {checkpoint_uri, sha256, lineage} -&gt; {version_id} (same digest -&gt; same version)
+POST /rollouts {model, version, regions, steps [1,10,50,100], gates {p99, error, eval}} -&gt; 202 · POST /rollouts/{id}/rollback</code></pre>
+<p><strong>17-21 min · Data, left under API</strong></p>
+<pre class="text"><code>job(job_id) state machine, quota sums per team          -&gt; Postgres
+allocation(node, gpu) -&gt; job, written with epoch check   -&gt; Postgres (1 row per GPU = double booking is a constraint violation)
+scheduler_epoch (single row, fencing token)             -&gt; Postgres, SELECT FOR UPDATE in every allocation tx
+leader lease · node leases (10 s KeepAlive, 20 s TTL)   -&gt; lock service, 5-node consensus
+checkpoint_manifest(job, step): LOCAL_COMMITTED|DURABLE, shards, checksums, holders -&gt; Postgres; shards -&gt; NVMe (writer + peer) -&gt; object store
+model_version(model, id) + lineage -&gt; Postgres; blob by sha256 -&gt; object store · rollout(rollout_id, region, step) -&gt; Postgres</code></pre>
+<p><strong>21-36 min · Diagram, center, in draw order</strong></p>
+<pre class="text"><code>1 researchers/CLI -&gt; job API (idempotent) -&gt; Postgres (jobs, allocations, registry) · nightly trigger -&gt; job API
+2 lock service -&gt; scheduler leader (gang, quota, preempt, backfill) -&gt; Postgres · leader -&gt; node agents ×125 (lease 10 s) -&gt; lock service
+3 agents -&gt; local NVMe (writer + peer) -&gt; object store (drain) -&gt; registry (immutable versions)
+4 registry -&gt; eval gates (64-GPU jobs via job API) -&gt; rollout controller (canary per region) -&gt; serving fleet (P2P pull) -&gt; metrics -&gt; controller</code></pre>
+<p><strong>36-52 min · Two deep dives, annotate the boxes</strong></p>
+<pre class="text"><code>A gang + preempt: queues per team by deficit vs quota; prod &gt; research &gt; backfill · reserve N GPUs in one island -&gt; commit all or release all, 60 s timeout
+  every allocation tx locks epoch row, compares fencing token, aborts if lower · preempt: fewest lowest-priority victims freeing an island, "checkpoint now", 5 min grace, kill
+  backfill jobs with max_runtime &lt; time to next big reservation · anti-starvation: big job waiting &gt; 2 h gets a reservation
+  REJECT pod-by-pod K8s (two 512 jobs each hold 400 forever); optimistic multi-scheduler (half-cluster jobs conflict with everything)
+B checkpoint path: GPU -&gt; pinned host RAM (only stall) -&gt; NVMe 1.6 s + peer NVMe -&gt; LOCAL_COMMITTED ~10 s -&gt; drain 1.5 GB/s -&gt; DURABLE ~6 min
+  cadence Young √(2·cost·MTBF) = 27 -&gt; 30 min · manifest lists shards+checksums+holders; partial step never resumed · resume from newest LOCAL_COMMITTED with live holders, else DURABLE
+  reshard on resume · keep 10 + milestones, GC after manifest expired · REJECT sync write to store (4.7 GB/s, slowest shard stalls all); PFS sized for burst (idle 28/30 min)</code></pre>
+<p><strong>52-57 min · Failures and trade-offs, bottom</strong></p>
+<pre class="text"><code>node dies mid-step  -&gt; lease 20 s + agent aborts collectives -&gt; spare node, restart from LOCAL_COMMITTED -&gt; RESTARTING, ≤ 30 + 10 min lost
+leader dies/pauses  -&gt; session TTL 20 s, standby takes lock 1 s -&gt; reads Postgres; stale writes fail epoch check -&gt; queue waits ~21 s, jobs unaffected
+rollout degrades p99-&gt; gate breach 2 min vs OLD version   -&gt; flip pointer back (old resident), freeze, page  -&gt; minutes of higher p99 for 1-10%
+chose: reserve-&gt;commit over pod-by-pod · one leader + epoch fencing · cadence from failure rate · LOCAL_COMMITTED then DURABLE · 960 + 5 spares · content-addressed versions, pointer flip · P2P weights</code></pre>
+<p><strong>57-60 min · Summary, said not written.</strong> “The control plane of a 1,000-GPU cluster growing to 10,000. A 560 GB checkpoint and 400 GPU-hours per failure twice a day force the design: one leader with fencing on every allocation and reserve-then-commit gangs so no GPU is booked twice; checkpoints committed on writer plus peer NVMe in seconds with an async drain so the recovery point is fresh; immutable versions rolled out by pointer flip with the old version resident.”</p>
+</section>
+<section id="frame-it-10-min" class="level2">
+<h2 class="anchored" data-anchor-id="frame-it-10-min">1. Frame it (10 min)</h2>
+<p><strong>Assumptions I fix, said aloud so they can be corrected.</strong></p>
+<ul>
+<li>Cluster: 1,000 GPUs today in nodes of 8, so 125 nodes. 10,000 GPUs and 1,250 nodes within a year.</li>
+<li>Job sizes: 8 to 1,024 GPUs. The flagship job today runs on 120 of the 125 nodes, 960 GPUs, and the other 5 nodes are hot spares; a full-cluster job would have no spare to restart on. At 10,000 GPUs the largest job is 1,024.</li>
+<li>Durations: evaluations take hours, training takes days to weeks.</li>
+<li>Largest model: 70B parameters in fp16, so 140 GB of weights. ×4 with bf16 optimizer state gives a 560 GB checkpoint (the Sep 26 drill); with fp32 master weights and Adam moments it is about 1 TB, which doubles every write figure below, and I say so.</li>
+<li>Checkpoint cadence: every 30 minutes, keep the last 10, plus milestones kept forever (the Sep 26 drill).</li>
+<li>Stall budget: at most 2 minutes of GPU pause per checkpoint (the Sep 26 drill).</li>
+<li>Node failures: 2 per day across 125 nodes, about 1.6% of nodes per day. 20 per day at 1,250 nodes.</li>
+<li>Restart cost after a failure: 10 minutes to replace the node, relaunch and load the checkpoint.</li>
+<li>Teams: 20, each with a GPU quota that sums to the cluster. About 300 researchers.</li>
+<li>Submissions: 2,000 jobs per day.</li>
+<li>Evaluation suite: 2 hours on 64 GPUs, run nightly per candidate model.</li>
+<li>Serving fleet (CMP-02): 3 regions, about 2,000 GPUs on 250 hosts of 8. The object store serves about 10 GB/s per region (assumed). A full rollout takes up to 1 business day. A rollback takes under 1 minute.</li>
+</ul>
+<p><strong>Functional requirements.</strong></p>
+<ul>
+<li>Submit, cancel and watch training and evaluation jobs, one-off or recurring (nightly evaluations).</li>
+<li>Gang-schedule: a job gets all requested GPUs at once or none, within team quotas and priorities.</li>
+<li>Preempt lower-priority jobs, checkpoint before kill, resume them later, backfill short jobs into gaps.</li>
+<li>Checkpoint and resume automatically after a node failure.</li>
+<li>Register every result as an immutable artifact with lineage: data manifest, code commit, configuration.</li>
+<li>Promote through evaluation gates and roll out region by region with automatic rollback.</li>
+</ul>
+<p><strong>Non-functional requirements.</strong></p>
+<ul>
+<li>Never two leaders: zero double allocations of a GPU, enforced by fencing tokens.</li>
+<li>Scheduler failover in under 30 seconds. Running jobs keep training while the scheduler is down.</li>
+<li>Work lost per failure averages half a checkpoint interval plus restart, 25 minutes of the job, and is bounded by a full interval plus restart, 40 minutes.</li>
+<li>Checkpoint stall under 2 minutes. Target under 30 seconds.</li>
+<li>Goodput above 94% of allocated GPU-hours: 3.5% to failures plus 1.7% to stalls at a 30 s stall every 30 min. A 5 s stall would allow a 15-minute cadence and about 96%.</li>
+<li>Rollback to the previous model in under 1 minute in any region.</li>
+</ul>
+<p><strong>Out of scope, said aloud.</strong> The training code and its parallelism strategy. The object store internals (CMP-03). The serving data plane itself (CMP-02). Cost chargeback and invoicing.</p>
+</section>
+<section id="estimate-5-min-six-lines" class="level2">
+<h2 class="anchored" data-anchor-id="estimate-5-min-six-lines">2. Estimate (5 min, six lines)</h2>
+<ol type="1">
+<li><strong>Objects and users.</strong> 2,000 jobs per day ÷ 10⁵ s ≈ 0.02 submissions/s. 125 nodes heartbeating every 10 s = 12.5/s, and 125/s at 10,000 GPUs. The control plane is nearly idle, like D10’s API.</li>
+<li><strong>The constraining op/s is bytes, not requests.</strong> One checkpoint = 560 GB. Written straight to the object store inside the 2-minute budget: 560 GB ÷ 120 s ≈ 4.7 GB/s from one job, every 30 minutes.</li>
+<li><strong>Egress against ingress, and growth.</strong> Writes: 48 checkpoints/day × 560 GB ≈ 27 TB/day for the flagship. Reads: about 2 resumes plus 1 evaluation load per day, so writes outnumber reads roughly 16:1. Retained: 10 × 560 GB = 5.6 TB per job plus milestones.</li>
+<li><strong>The hot set.</strong> Only the latest checkpoint matters for resume: 560 GB ÷ 120 nodes ≈ 4.7 GB per node, which fits on each node’s local NVMe many times over, with a second copy on one peer.</li>
+<li><strong>Capacity against IOPS device check.</strong> Capacity is trivial: 5.6 TB is a fraction of one 20 TB disk. Throughput is not: 4.7 GB/s ÷ 200 MB/s per HDD ≈ 24 disks of pure write bandwidth for one burst. Locally, 4.7 GB ÷ 3 GB/s NVMe ≈ 1.6 s per node. The drain to the object store runs at about 1.5 GB/s aggregate, so a step is durable about 6 minutes after its snapshot and the drain has 24 minutes of slack before the next one.</li>
+<li><strong>Network ports.</strong> Per node, 4.7 GB over a 100 GbE port (12.5 GB/s) is 0.4 s, and the peer copy the same. Rollout: 250 hosts × 140 GB of serving weights = 35 TB. From an origin at 10 GB/s per region that is 3,500 s ≈ 1 hour of pure download before any host can start, so peer-to-peer distribution is required.</li>
+</ol>
+<p><strong>Work lost.</strong> One failure costs 960 GPUs × (15 min average since the last locally committed checkpoint + 10 min restart on a spare) ÷ 60 ≈ 400 GPU-hours. Two failures per day ≈ 800 of 23,000 GPU-hours, about 3.5%.</p>
+<p>The number that forced the design is 400 GPU-hours per failure against a 560 GB checkpoint: it sets the 30-minute cadence, forces local NVMe staging with a peer copy so a step is resumable in seconds, and an asynchronous drain that finishes well inside the interval.</p>
+</section>
+<section id="api" class="level2">
+<h2 class="anchored" data-anchor-id="api">3. API</h2>
+<ul>
+<li><code>POST /v1/jobs {team, priority: "prod|research|backfill", gpus: 512, gpu_type, image_digest, dataset_manifest_id, config_uri, max_runtime_h, preemptible: true, idempotency_key}</code> returns <code>201 {job_id, state: "QUEUED"}</code>. The same idempotency key returns the same job_id. A retried submit never creates a second job.</li>
+<li><code>GET /v1/jobs/{job_id}/events?stream=true</code> streams state changes over server-sent events: QUEUED, RESERVING, RUNNING, CHECKPOINTING, PREEMPTED, RESTARTING, SUCCEEDED, FAILED.</li>
+<li><code>POST /v1/schedules {cron: "0 2 * * *", job_template, missed_run_policy: "run_late_within_4h|skip", deadline}</code> returns <code>{schedule_id, next_run_at}</code>, as in D14’s scheduler.</li>
+<li><code>POST /v1/models/{name}/versions {checkpoint_uri, content_sha256, lineage: {dataset_manifest_id, code_commit, config_sha256, parent_version}}</code> returns <code>{version_id}</code>. Immutable: the same digest returns the existing version.</li>
+<li><code>POST /v1/rollouts {model, version, regions: ["r1","r2","r3"], steps: [1, 10, 50, 100], gates: {p99_ms_max, error_rate_max, eval_score_min}}</code> returns <code>202 {rollout_id}</code>. Progress is asynchronous, and <code>POST /v1/rollouts/{id}/rollback</code> flips the pointer back.</li>
+</ul>
+</section>
+<section id="data-model" class="level2">
+<h2 class="anchored" data-anchor-id="data-model">4. Data model</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Record</th>
+<th>Key</th>
+<th>Store</th>
+<th>Why that store</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Job and its state machine</td>
+<td>job_id</td>
+<td>Postgres</td>
+<td>Transactional state transitions and quota sums per team.</td>
+</tr>
+<tr class="even">
+<td>Allocation (GPU to job)</td>
+<td>node_id, gpu_index</td>
+<td>Postgres, written in the same transaction as the epoch check</td>
+<td>One row per GPU makes a double allocation a constraint violation.</td>
+</tr>
+<tr class="odd">
+<td>Scheduler leader and node leases</td>
+<td>/sched/leader, /nodes/{id}</td>
+<td>Lock service (Chubby-style, 5-node consensus)</td>
+<td>Sessions, ephemeral nodes and fencing tokens.</td>
+</tr>
+<tr class="even">
+<td>Recurring schedule</td>
+<td>schedule_id, next_run_at</td>
+<td>Postgres, index on next_run_at</td>
+<td>D14’s due-job scan at a tiny scale.</td>
+</tr>
+<tr class="odd">
+<td>Checkpoint manifest: state LOCAL_COMMITTED or DURABLE, shard list, checksums, holder nodes</td>
+<td>job_id, step</td>
+<td>Postgres row pointing at NVMe holders and object keys</td>
+<td>LOCAL_COMMITTED once every shard sits on its writer’s and one peer’s NVMe, seconds after the snapshot; DURABLE after the drain. Resume uses the newest step whose holders are alive.</td>
+</tr>
+<tr class="even">
+<td>Checkpoint shards</td>
+<td>job_id/step/rank</td>
+<td>Local NVMe on the writer and one peer, then object store</td>
+<td>Bytes never touch the control plane.</td>
+</tr>
+<tr class="odd">
+<td>Scheduler epoch</td>
+<td>single row</td>
+<td>Postgres</td>
+<td>The fencing token: every allocation transaction reads it with SELECT FOR UPDATE and aborts if its own token is lower.</td>
+</tr>
+<tr class="even">
+<td>Model version and lineage</td>
+<td>model, version_id</td>
+<td>Postgres. Artifact in object store by sha256</td>
+<td>Metadata queries apart from blobs. Content addressing makes it immutable.</td>
+</tr>
+<tr class="odd">
+<td>Rollout state</td>
+<td>rollout_id, region, step</td>
+<td>Postgres</td>
+<td>Resumable state machine, audit of every flip.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="high-level-design" class="level2">
+<h2 class="anchored" data-anchor-id="high-level-design">5. High-level design</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  R["Researchers&lt;br/&gt;CLI and UI"] --&gt; API["Job API&lt;br/&gt;idempotent submit"]
+  API --&gt; PG["Postgres&lt;br/&gt;jobs, allocations, registry"]
+  CRON["Recurring trigger&lt;br/&gt;nightly evals"] --&gt; API
+  LS["Lock service&lt;br/&gt;5-node consensus"] --&gt; SCH["Scheduler leader&lt;br/&gt;gang, quota, preempt"]
+  SCH --&gt; PG
+  SCH --&gt; AG["Node agents x 125&lt;br/&gt;lease every 10 s"]
+  AG --&gt; LS
+  AG --&gt; NV["Local NVMe&lt;br/&gt;writer plus one peer"]
+  NV --&gt; OS["Object store&lt;br/&gt;checkpoints, artifacts"]
+  OS --&gt; REG["Registry&lt;br/&gt;immutable versions"]
+  REG --&gt; GATE["Eval gates&lt;br/&gt;nightly suite"]
+  GATE --&gt;|"eval jobs, 64 GPUs"| API
+  GATE --&gt; RC["Rollout controller&lt;br/&gt;canary per region"]
+  RC --&gt; FLEET["Serving fleet&lt;br/&gt;3 regions, P2P pull"]
+  FLEET --&gt; MON["Metrics&lt;br/&gt;p99, errors, quality"]
+  MON --&gt; RC
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The <strong>Job API</strong> records intent and never talks to nodes. <strong>Postgres</strong> holds jobs, per-GPU allocations, recurring schedules, checkpoint manifests and the registry. The <strong>recurring trigger</strong> is D14’s due-job scan that submits nightly evaluations through the same API. The <strong>lock service</strong> elects one scheduler leader and holds a lease per node, handing out fencing tokens. The <strong>scheduler leader</strong> runs the gang, quota, preemption and backfill loop. <strong>Node agents</strong> hold node leases, launch containers and stage checkpoints to <strong>local NVMe</strong> on the writer and one peer, which then drain to the <strong>object store</strong>. <strong>Evaluation gates</strong> submit their 64-GPU suites through the same job API. The <strong>registry</strong> turns a checkpoint into an immutable version with lineage. <strong>Evaluation gates</strong> run the suite. The <strong>rollout controller</strong> moves traffic region by region, fed by <strong>metrics</strong> from the fleet, which pulls weights peer to peer.</p>
+</section>
+<section id="one-flow-traced-end-to-end" class="level2">
+<h2 class="anchored" data-anchor-id="one-flow-traced-end-to-end">6. One flow traced end to end</h2>
+<p>A 512-GPU training job from submit to a rolled-out model.</p>
+<ol type="1">
+<li>Researcher submits with an idempotency key. The API writes the job row as QUEUED in about 10 ms.</li>
+<li>The scheduler leader, on its next pass (every 1 s), orders queues by team deficit against quota. This team is under quota, so the job is next.</li>
+<li>It picks 64 nodes in one InfiniBand island and writes 512 allocation rows as RESERVED, with a 60 s reservation timeout, in a transaction that first locks the epoch row and checks that its fencing token is still the highest.</li>
+<li>It commits all 512 rows to ALLOCATED in one transaction with the same epoch check. Any row already taken aborts the whole gang and releases the rest.</li>
+<li>Agents on 64 nodes see the assignment on their next lease renewal (under 10 s), pull the image and start ranks: about 2 to 5 minutes.</li>
+<li>Every 30 minutes each rank copies its shard to host memory, a stall of seconds. A background thread writes the 560 GB checkpoint ÷ 64 nodes ≈ 8.75 GB per node to its NVMe in about 3 s and to one peer’s NVMe over 100 GbE in under a second. When all 64 shards and their peer copies report checksums, the manifest row commits as LOCAL_COMMITTED, about 10 s after the snapshot.</li>
+<li>Each node drains its shard to the object store at about 1.5 GB/s aggregate, so the step is DURABLE about 6 minutes later, and the manifest flips. A resume uses the newest LOCAL_COMMITTED step whose holders are alive, else the newest DURABLE one.</li>
+<li>At the end, the final checkpoint is registered as a version with its dataset manifest, code commit and configuration digest.</li>
+<li>The nightly evaluation (2 hours, 64 GPUs) passes the gates. The rollout controller starts region 1 at 1%.</li>
+<li>Hosts pull 140 GB of weights peer to peer, the first few from the object store and the rest from each other, load them next to the old version, and go live. Each step waits 15 minutes of healthy metrics before the next.</li>
+</ol>
+</section>
+<section id="deep-dive-a-gang-scheduling-with-preemption" class="level2">
+<h2 class="anchored" data-anchor-id="deep-dive-a-gang-scheduling-with-preemption">7. Deep dive A: gang scheduling with preemption</h2>
+<p><strong>Why chosen.</strong> Every idle or double-booked GPU is money. The failure modes are deadlocked partial gangs, two leaders and lost state on preemption.</p>
+<p><strong>The design.</strong></p>
+<ul>
+<li>Queues per team. Order by deficit (used GPU-hours against quota share). Priority classes prod over research over backfill.</li>
+<li>Gang allocation is reserve-then-commit: reserve N GPUs in one topology domain, commit all or release all. A reservation that has not committed in 60 s expires.</li>
+<li>Every allocation transaction starts by locking the single scheduler-epoch row and comparing its own fencing token; a lower token aborts the transaction. Postgres has no native fencing, so the check and the write share one transaction, which closes the race a stale leader would otherwise win between check and write.</li>
+<li>Preemption: pick the fewest, lowest-priority victims that free a whole island. Send “checkpoint now” with a 5-minute grace, then kill. The victim returns to its queue with its latest manifest.</li>
+<li>Backfill: a job that declares max_runtime shorter than the time until the next big gang’s reservation runs in the gap.</li>
+<li>Anti-starvation: a big job waiting past 2 hours gets a reservation that stops new backfill on the nodes it needs.</li>
+</ul>
+<p><strong>Rejected.</strong></p>
+<ul>
+<li>Kubernetes default scheduler, pod by pod: it places pods one at a time, so two 512-GPU jobs can each get 400 and both wait forever.</li>
+<li>Optimistic multi-scheduler (Omega style) with conflict retry: one job that needs half the cluster conflicts with almost everything. At 0.02 submissions/s, one leader is fast enough.</li>
+</ul>
+</section>
+<section id="deep-dive-b-the-checkpoint-write-path" class="level2">
+<h2 class="anchored" data-anchor-id="deep-dive-b-the-checkpoint-write-path">8. Deep dive B: the checkpoint write path</h2>
+<p><strong>Why chosen.</strong> It sets the 30-minute cadence, the 2-minute stall and 400 GPU-hours per failure. It is where the storage path of CMP-03 meets the scheduler.</p>
+<p><strong>The design.</strong></p>
+<ul>
+<li>Cadence from the failure rate: Young’s rule, interval ≈ √(2 × cost × MTBF). With a 30 s stall and a 12-hour MTBF for the flagship job, √(2 × 0.5 × 720) ≈ 27 minutes, so 30 minutes.</li>
+<li>Two-tier write: GPU to pinned host memory (the only stall), then a background thread writes each rank’s shard to local NVMe (about 1.6 s per node) and to one peer’s NVMe.</li>
+<li>Two-level commit: LOCAL_COMMITTED when every shard has its writer copy and its peer copy, about 10 s after the snapshot; DURABLE after the drain. The recovery point is therefore seconds old, not a drain behind. Without this, a step resumable only after a 30-minute drain would make the checkpoint 30 to 60 minutes old at failure and more than double the work lost.</li>
+<li>Asynchronous drain to the object store at about 1.5 GB/s aggregate, done in about 6 minutes, throttled so it never competes with data loading and always finishes with slack before the next snapshot.</li>
+<li>Consistency: a manifest lists every shard, its checksum and its holders. A partial step is never resumed from. A LOCAL_COMMITTED step is used only while a holder of every shard is alive; a double node death inside one 6-minute drain window falls back to the last DURABLE step.</li>
+<li>Resume with a different world size: shards are saved with their tensor layout, and the loader reshards on read.</li>
+<li>Retention: last 10 steps plus milestones. Garbage collection deletes shards only after the manifest row is marked expired.</li>
+</ul>
+<p><strong>Rejected.</strong></p>
+<ul>
+<li>Synchronous write straight to the object store: 4.7 GB/s from one job for 2 minutes every 30 minutes, and the GPUs wait on the slowest shard.</li>
+<li>A parallel file system sized for the burst: it works, but it buys peak bandwidth that sits idle 28 of every 30 minutes.</li>
+</ul>
+</section>
+<section id="failures-traced" class="level2">
+<h2 class="anchored" data-anchor-id="failures-traced">9. Failures traced</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Failure</th>
+<th>Detection</th>
+<th>Mitigation</th>
+<th>What the user sees</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Node dies mid-step</td>
+<td>Node lease expires after 20 s; the agent watchdog aborts the ranks’ collectives at once, because NCCL’s own timeout is 10 to 30 minutes</td>
+<td>Mark node bad, take one of the 5 hot spares, restart the gang from the newest LOCAL_COMMITTED manifest whose holders are alive</td>
+<td>Job goes RESTARTING. Loses up to 30 minutes of steps plus 10 minutes of restart</td>
+</tr>
+<tr class="even">
+<td>Scheduler leader dies or pauses</td>
+<td>Lock service session expires after its 20 s TTL, then the standby acquires the lock in about 1 s</td>
+<td>New leader reads state from Postgres. Stale leader’s writes fail the epoch check</td>
+<td>Queued jobs wait about 21 s longer. Running jobs unaffected</td>
+</tr>
+<tr class="odd">
+<td>Rollout degrades p99 in a region</td>
+<td>Metrics gate breach for 2 consecutive minutes</td>
+<td>Controller flips the region pointer back to the resident old version</td>
+<td>A few minutes of higher latency for 1% to 10% of that region</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-breaks-first" class="level2">
+<h2 class="anchored" data-anchor-id="what-breaks-first">10. What breaks first</h2>
+<ol type="1">
+<li><strong>Checkpoint drain at 10,000 GPUs.</strong> Ten large jobs checkpointing at once need 3 GB/s sustained into the store. Stagger checkpoint times by job and add per-job drain quotas.</li>
+<li><strong>Fragmentation.</strong> Small jobs scattered across islands block 512-GPU gangs. Pack small jobs onto the same nodes and defragment by preempting backfill.</li>
+<li><strong>Failure rate at 1,250 nodes.</strong> The cluster sees 20 failures per day, but a 1,024-GPU job spans 128 of 1,250 nodes, so its own rate stays about 2 per day and the 30-minute cadence holds. A job that spanned the whole cluster would fail every 72 minutes, and Young’s rule gives √(2 × 0.5 × 72) ≈ 8.5 minutes, so such a job moves to a 10-minute cadence, which the async path allows.</li>
+<li><strong>Rollout distribution.</strong> 35 TB per rollout from a 10 GB/s origin is an hour before the first host is ready. Peer-to-peer pull and regional caches, as in D10.</li>
+</ol>
+</section>
+<section id="interviewer-pushes-with-answers" class="level2">
+<h2 class="anchored" data-anchor-id="interviewer-pushes-with-answers">11. Interviewer pushes, with answers</h2>
+<p><strong>“Two schedulers both believe they are leader.”</strong> Only one holds the lock service session, but a paused leader does not know it lost it. Every allocation transaction locks the epoch row and compares the fencing token from the election; a lower token aborts, in the same transaction as the write. The stale leader’s writes fail. Correctness never depends on its clock or on timing.</p>
+<p><strong>“A 512-GPU job is preempted by a higher-priority one; what happens to its state?”</strong> The scheduler sends checkpoint-now with a 5-minute grace. The job writes to host memory and NVMe in seconds, the manifest commits as LOCAL_COMMITTED, and the drain finishes within the grace so the step is DURABLE before the kill. The job goes back to its queue as PREEMPTED with that manifest, not as FAILED. If the grace expires, it resumes from its last periodic checkpoint and loses at most 30 minutes.</p>
+<p><strong>“Rollout to region 3 degrades p99; automate the rollback.”</strong> The gate compares canary p99 and error rate against the old version in the same region, not against a fixed number. Two consecutive breached minutes trigger the controller to flip the pointer back, which is instant because the old version stays loaded. The rollout freezes for all regions and pages the owner with the diff.</p>
+<p><strong>“The nightly evaluation misses its slot; run late or skip, and who decides?”</strong> The schedule owner decides, in the schedule record: run late within 4 hours, else skip and alert. Evaluations that gate a release run late with prod priority. Exploratory ones skip. The job scheduler records the missed run either way, so nobody guesses later.</p>
+</section>
+<section id="sixty-second-summary-spoken" class="level2">
+<h2 class="anchored" data-anchor-id="sixty-second-summary-spoken">12. Sixty-second summary (spoken)</h2>
+<p>I built the control plane of a 1,000-GPU training cluster growing to 10,000: gang scheduling, checkpoints, a registry and a staged rollout. The numbers that forced it: a 560 GB checkpoint for the 70B model, and 400 GPU-hours lost each time a node fails under the 960-GPU flagship job, twice a day. My three decisions: one scheduler leader with fencing tokens and reserve-then-commit gangs, so no GPU is ever booked twice. Checkpoints to host memory and local NVMe on the writer and a peer, committed in seconds, with an asynchronous drain behind, which keeps the stall to seconds, keeps the recovery point fresh and lets the cadence follow the failure rate. And immutable, content-addressed versions rolled out by pointer flip, with the old version kept resident for rollback in under a minute. I watch goodput, queue wait per team, checkpoint drain lag, and canary p99 against the old version.</p>
+</section>
+<section id="the-decisions-that-mattered" class="level2">
+<h2 class="anchored" data-anchor-id="the-decisions-that-mattered">13. The decisions that mattered</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Decision</th>
+<th>Alternative rejected</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reserve-then-commit gang allocation with a 60 s timeout</td>
+<td>Pod-by-pod placement</td>
+<td>Partial gangs deadlock and waste GPUs</td>
+</tr>
+<tr class="even">
+<td>One leader via a lock service, epoch check in every allocation transaction</td>
+<td>Several optimistic schedulers</td>
+<td>Conflicts dominate with half-cluster jobs. Submissions are 0.02/s</td>
+</tr>
+<tr class="odd">
+<td>LOCAL_COMMITTED on writer plus peer NVMe, DURABLE after the drain</td>
+<td>Commit only after the drain</td>
+<td>A step resumable only after a 30-minute drain doubles the work lost</td>
+</tr>
+<tr class="even">
+<td>Flagship on 960 GPUs with 5 hot spares</td>
+<td>Whole cluster to one job</td>
+<td>Without a spare there is no 10-minute restart</td>
+</tr>
+<tr class="odd">
+<td>Cadence from failure rate, about 30 minutes</td>
+<td>Fixed hourly checkpoints</td>
+<td>Hourly doubles the work lost per failure</td>
+</tr>
+<tr class="even">
+<td>Host copy, local NVMe, async drain</td>
+<td>Synchronous write to object store</td>
+<td>4.7 GB/s bursts stall every GPU on the slowest shard</td>
+</tr>
+<tr class="odd">
+<td>Manifest commit per step</td>
+<td>Resume from whatever shards exist</td>
+<td>Mixed steps give silently corrupt training</td>
+</tr>
+<tr class="even">
+<td>Content-addressed immutable versions, pointer flip</td>
+<td>Overwrite a “latest” artifact</td>
+<td>Rollback and lineage need the old bytes intact</td>
+</tr>
+<tr class="odd">
+<td>Peer-to-peer weight distribution</td>
+<td>Every host pulls from origin</td>
+<td>35 TB from a 10 GB/s origin is an hour before the first host is ready</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="building-blocks-reused" class="level2">
+<h2 class="anchored" data-anchor-id="building-blocks-reused">14. Building blocks reused</h2>
+<ul>
+<li>Lab prompt 5 GPU scheduler: gang scheduling, topology-aware placement, backfill, fair share by team, preemption with checkpoint before kill.</li>
+<li>Lab prompt 8 checkpoint storage: sharded per-rank writes, asynchronous from host memory, manifest per step, resharding on resume, last N plus milestones.</li>
+<li>Lab prompt 6 registry and rollout: content-addressed artifacts, lineage to dataset and run, pointer flip for rollback, canary gates.</li>
+<li>D14 job scheduler: due-job scan on next_run_at for nightly evaluations, idempotent jobs, at-least-once triggering.</li>
+<li>D14 lock manager: 10 s KeepAlive, 20 s session TTL, the lock service’s own failover in 1 to 2 s, fencing tokens checked at the resource.</li>
+<li>D10 code deployment: agents pull on heartbeat, its 500 GB in 60 s burst as the reason bytes never cross the control plane, peer-to-peer for large fleets, circuit breaker on a failing batch. The 10 GB/s origin figure here is my assumption.</li>
+<li>D11 Lambda: warm against cold, applied as keeping the old model version resident so rollback costs no load.</li>
+<li>D4 metrics and monitoring: alerts on the stream within about 1 minute, the signal that gates each rollout step.</li>
+<li>Sep 26 estimation drill: 70B fp16, 140 GB weights, ×4 with optimizer state, 30-minute cadence, last 10, 2-minute stall budget.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script src="../post-enhance.js" defer=""></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var t = document.querySelector('.navbar-title');
+    if (t) t.textContent = 'anurag builds things';
+
+    // External social links open in a new tab. Exclude the dark-mode toggle
+    // - Quarto renders it with an http href pointing at the current page.
+    document.querySelectorAll('.navbar .quarto-navigation-tool[href^="http"]:not(.quarto-color-scheme-toggle)').forEach(function (a) {
+      if (!a.getAttribute('target')) {
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
+
+    // Wrap tools + search in one flex item so they wrap to the next line
+    // as a group when the navbar row can't fit them beside the brand.
+    var tools = document.querySelector('.quarto-navbar-tools');
+    var search = document.querySelector('#quarto-search');
+    var group = null;
+    if (tools && search && tools.parentElement === search.parentElement &&
+        !tools.closest('.navbar-icon-group')) {
+      group = document.createElement('div');
+      group.className = 'navbar-icon-group';
+      tools.parentElement.insertBefore(group, tools);
+      group.appendChild(tools);
+      group.appendChild(search);
+    } else {
+      group = document.querySelector('.navbar-icon-group');
+    }
+
+    // Inject a hamburger button that shows the icon group on narrow screens.
+    // CSS hides the group + shows the hamburger below the 576px breakpoint;
+    // clicking toggles .is-open on the group, which CSS reveals as a small
+    // dropdown panel anchored to the navbar right edge.
+    if (group && !document.querySelector('.navbar-hamburger')) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'navbar-hamburger';
+      btn.setAttribute('aria-label', 'Menu');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML = '<i class="bi bi-list" aria-hidden="true"></i>';
+      group.parentElement.insertBefore(btn, group);
+
+      var close = function () {
+        group.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+      };
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = group.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      document.addEventListener('click', function (e) {
+        if (!group.classList.contains('is-open')) return;
+        if (group.contains(e.target) || btn.contains(e.target)) return;
+        close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && group.classList.contains('is-open')) {
+          close();
+          btn.focus();
+        }
+      });
+    }
+  });
+</script>
+<div id="cmd-palette" class="palette-overlay" data-open="false" aria-hidden="true">
+  <div class="palette" role="dialog" aria-modal="true" aria-label="Search and commands">
+    <div class="palette-head">
+      <svg class="palette-icon" viewbox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true">
+        <path d="M16.041 15.856c-0.034 0.026-0.067 0.055-0.099 0.087s-0.060 0.064-0.087 0.099c-1.258 1.213-2.969 1.958-4.855 1.958-1.933 0-3.682-0.782-4.95-2.050s-2.050-3.017-2.050-4.95 0.782-3.682 2.050-4.95 3.017-2.050 4.95-2.050 3.682 0.782 4.95 2.050 2.050 3.017 2.050 4.95c0 1.886-0.745 3.597-1.959 4.856zM21.707 20.293l-3.675-3.675c1.231-1.54 1.968-3.493 1.968-5.618 0-2.485-1.008-4.736-2.636-6.364s-3.879-2.636-6.364-2.636-4.736 1.008-6.364 2.636-2.636 3.879-2.636 6.364 1.008 4.736 2.636 6.364 3.879 2.636 6.364 2.636c2.125 0 4.078-0.737 5.618-1.968l3.675 3.675c0.391 0.391 1.024 0.391 1.414 0s0.391-1.024 0-1.414z"></path>
+      </svg>
+      <input id="palette-input" type="text" placeholder="Search posts, jump anywhere..." autocomplete="off" spellcheck="false">
+      <span class="kbd">⌘K</span>
+    </div>
+    <div class="palette-scopes" role="tablist">
+      <button class="on" data-scope="all" role="tab">All <span class="count">0</span></button>
+      <button data-scope="posts" role="tab">Posts <span class="count">0</span></button>
+      <button data-scope="sections" role="tab">Sections <span class="count">0</span></button>
+      <button data-scope="actions" role="tab">Actions <span class="count">0</span></button>
+    </div>
+    <div class="palette-list" id="palette-list" role="listbox"></div>
+    <div class="palette-foot">
+      <div class="keys">
+        <span><kbd>↑↓</kbd>navigate</span>
+        <span><kbd>↩</kbd>open</span>
+        <span><kbd>⌘↩</kbd>new tab</span>
+        <span><kbd>esc</kbd>close</span>
+      </div>
+      <div>search</div>
+    </div>
+  </div>
+</div>
+<script src="../palette.js" defer=""></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/anuragbuildsthings\.com\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<div class="footer-col">
+<p>
+For the next person figuring things out by building - <a href="mailto:anuragbuildsthings@gmail.com">anuragbuildsthings@gmail.com</a>
+</p>
+</div>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<div class="footer-col">
+<p>
+<a href="#top"><span class="back-to-top-arrow">⬆</span>Back to top</a>
+</p>
+</div>
+</div>
+  </div>
+</footer>
+<script>
+(function () {
+  var KEY = 'rev:known:';
+  function store() { try { return window.localStorage; } catch (e) { return null; } }
+  function known(id) { var s = store(); if (!s) return false; try { return s.getItem(KEY + id) === '1'; } catch (e) { return false; } }
+  function setKnown(id, v) { var s = store(); if (!s) return; try { if (v) s.setItem(KEY + id, '1'); else s.removeItem(KEY + id); } catch (e) {} }
+  function cards() { return Array.prototype.slice.call(document.querySelectorAll('details.rev')); }
+  function say(msg) { var p = document.getElementById('rev-progress'); if (p) p.textContent = msg; }
+  var ONCE = 'rev:once:', DRAWN = 'rev:drawn:';
+  function today() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function get(k) { var s = store(); if (!s) return null; try { return s.getItem(k); } catch (e) { return null; } }
+  function set(k, v) { var s = store(); if (!s) return; try { if (v === null) s.removeItem(k); else s.setItem(k, v); } catch (e) {} }
+  function counts(d) { var k = d.getAttribute('data-kind') || 'say'; return k === 'say' || k === 'name'; }
+  function paint() {
+    var all = cards(), n = 0, total = 0;
+    all.forEach(function (d) {
+      var id = d.getAttribute('data-card'), k = known(id), once = get(ONCE + id);
+      d.classList.toggle('is-known', k);
+      d.classList.toggle('is-once', !k && !!once);
+      var b = d.querySelector('.rev-known');
+      if (b) b.textContent = k ? 'unmark' : (once ? (once === today() ? 'got it (again tomorrow)' : 'got it again') : 'got it');
+      var dr = d.querySelector('.rev-drawn');
+      if (dr) { var when = get(DRAWN + id); dr.textContent = when ? 'drawn ' + when + ' (draw again)' : 'drawn today'; d.setAttribute('data-drawn', when || ''); var tg = d.querySelector('.rev-tag'); if (tg) tg.setAttribute('data-drawn', when || ''); }
+      if (counts(d)) { total++; if (k) n++; }
+    });
+    say(total ? 'Known ' + n + ' of ' + total + ' recall cards.' : '');
+    document.querySelectorAll('section.level2 > h2').forEach(function (h) {
+      var sec = h.parentNode, cs = Array.prototype.filter.call(sec.querySelectorAll('details.rev'), counts);
+      var span = h.querySelector('.rev-sec');
+      if (!cs.length) { if (span) span.remove(); return; }
+      var k = cs.filter(function (d) { return d.classList.contains('is-known'); }).length;
+      if (!span) { span = document.createElement('span'); span.className = 'rev-sec'; h.appendChild(span); }
+      span.textContent = k + ' of ' + cs.length + ' known';
+    });
+  }
+  function mark(id) {
+    if (known(id)) { setKnown(id, false); set(ONCE + id, null); return; }
+    var once = get(ONCE + id);
+    if (once && once !== today()) { setKnown(id, true); set(ONCE + id, null); return; }
+    set(ONCE + id, today());
+  }
+  function nextUnknown() {
+    var y = window.scrollY, open = cards().filter(function (d) { return d.open; });
+    var list = cards().filter(function (d) { return counts(d) && !d.classList.contains('is-known'); });
+    var d = null;
+    for (var i = 0; i < list.length; i++) {
+      var top = list[i].getBoundingClientRect().top + window.scrollY;
+      if (top > y + 24 && open.indexOf(list[i]) < 0) { d = list[i]; break; }
+    }
+    if (!d) d = list[0];
+    if (!d) { say('Every card on this page is marked known.'); return; }
+    open.forEach(function (x) { x.open = false; });
+    d.open = true;
+    d.scrollIntoView({ block: 'start' });
+  }
+  function setAll(open) { cards().forEach(function (d) { d.open = open; }); }
+  function exportMarks() {
+    var ids = cards().filter(function (d) { return d.classList.contains('is-known'); }).map(function (d) { return d.getAttribute('data-card'); });
+    var url = location.origin + location.pathname + '#marks=' + encodeURIComponent(ids.join(','));
+    var done = function () { say('Link with ' + ids.length + ' marks copied. Open it in the other browser.'); };
+    var show = function () { var p = document.getElementById('rev-progress'); if (p) { p.textContent = ''; var a = document.createElement('a'); a.href = url; a.textContent = 'marks link (' + ids.length + ')'; p.appendChild(a); } };
+    if (navigator.share) { navigator.share({ title: 'Revision marks', url: url }).then(done, show); return; }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, show); else show();
+  }
+  function importMarks() {
+    var m = /[#&]marks=([^&]*)/.exec(location.hash);
+    if (!m) return;
+    var ids = decodeURIComponent(m[1]).split(',').filter(Boolean);
+    ids.forEach(function (id) { setKnown(id, true); });
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.rev-known');
+    if (b) { mark(b.getAttribute('data-for')); paint(); return; }
+    var dr = e.target.closest && e.target.closest('.rev-drawn');
+    if (dr) { set(DRAWN + dr.getAttribute('data-for'), today()); paint(); return; }
+    var cl = e.target.closest && e.target.closest('.rev-close');
+    if (cl) { var dd = cl.closest('details.rev'); dd.open = false; dd.scrollIntoView({ block: 'start' }); return; }
+    var t = e.target.closest && e.target.closest('[data-rev]');
+    if (!t) return;
+    var a = t.getAttribute('data-rev');
+    if (a === 'next') nextUnknown();
+    else if (a === 'expand') setAll(true);
+    else if (a === 'collapse') setAll(false);
+    else if (a === 'export') exportMarks();
+    else if (a === 'reset') { cards().forEach(function (d) { var id = d.getAttribute('data-card'); setKnown(id, false); set(ONCE + id, null); }); paint(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    if (e.key === 'j') nextUnknown();
+  });
+  if ('serviceWorker' in navigator) { try { navigator.serviceWorker.register('sw.js'); } catch (e) {} }
+  function stackTables() {
+    document.querySelectorAll('main table').forEach(function (t) {
+      var heads = Array.prototype.map.call(t.querySelectorAll('thead th'), function (th) { return th.textContent.trim(); });
+      if (heads.length < 4) return;
+      t.classList.add('rev-stack');
+      t.querySelectorAll('tbody tr').forEach(function (tr) {
+        Array.prototype.forEach.call(tr.cells, function (td, j) { td.setAttribute('data-label', heads[j] || ''); });
+      });
+    });
+  }
+  function wrapLines() {
+    document.querySelectorAll('.rev-a pre > code').forEach(function (c) {
+      if (c.querySelector('.ln')) return;
+      var lines = c.textContent.replace(/\n$/, '').split('\n'); c.textContent = '';
+      lines.forEach(function (l) { var sp = document.createElement('span'); sp.className = 'ln'; sp.textContent = l; c.appendChild(sp); });
+    });
+  }
+  function closeButtons() {
+    document.querySelectorAll('.rev-actions').forEach(function (p) {
+      if (p.querySelector('.rev-close')) return;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'rev-close'; b.textContent = 'close'; p.appendChild(b);
+    });
+  }
+  function diagrams() {
+    document.querySelectorAll('.cell-output-display svg.flowchart').forEach(function (svg) {
+      var vb = svg.viewBox.baseVal;
+      if (window.innerWidth < 600 && vb && vb.width) svg.style.width = Math.round(vb.width * 0.6) + 'px';
+      var a = document.createElement('a'); a.className = 'rev-full'; a.href = '#'; a.textContent = 'open full size';
+      a.addEventListener('click', function (e) {
+        e.preventDefault(); var c = svg.cloneNode(true);
+        c.setAttribute('width', Math.round(vb.width)); c.setAttribute('height', Math.round(vb.height)); c.removeAttribute('style');
+        window.open(URL.createObjectURL(new Blob(['<!doctype html><meta name="viewport" content="width=device-width"><body style="margin:0;background:#0c0d0b">' + c.outerHTML], { type: 'text/html' })));
+      });
+      var host = svg.closest('.cell-output-display'); if (host) host.before(a);
+    });
+  }
+  function init() { importMarks(); stackTables(); wrapLines(); closeButtons(); paint(); setTimeout(diagrams, 800); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>
+
+
+
+
+</body></html>
