@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>anurag builds things — UI kit</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="stylesheet" href="tokens.css">
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="Navbar.jsx"></script>
+<script type="text/babel" src="Footer.jsx"></script>
+<script type="text/babel" src="ListingEntry.jsx"></script>
+<script type="text/babel" src="HomePage.jsx"></script>
+<script type="text/babel" src="PostPage.jsx"></script>
+<script type="text/babel" src="NotFoundPage.jsx"></script>
+
+<script type="text/babel">
+function App() {
+  const [route, setRoute] = React.useState({ page: 'home', slug: null });
+
+  const navigate = (page, slug = null) => {
+    setRoute({ page, slug });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  // Tiny demo router: home → post → 404
+  let body;
+  if (route.page === 'home') {
+    body = <HomePage onOpenPost={(slug) => navigate('post', slug)} />;
+  } else if (route.page === 'post') {
+    body = <PostPage slug={route.slug} onNavigate={navigate} />;
+  } else {
+    body = <NotFoundPage onNavigate={navigate} />;
+  }
+
+  return (
+    <>
+      <Navbar onNavigate={navigate} currentPage={route.page} />
+      {body}
+      {/* Tiny footer demo-router so reviewers can jump to the 404 */}
+      <div style={{maxWidth: 1200, margin: '64px auto 0', padding: '0 24px', fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--ink-4)', borderTop: '1px solid var(--rule)', paddingTop: 12, display: 'flex', gap: 16}}>
+        <span>UI KIT DEMO ·</span>
+        <a href="#" onClick={(e) => { e.preventDefault(); navigate('home'); }} style={{color: route.page==='home' ? 'var(--signal)' : 'var(--ink-3)', borderBottom: 0}}>HOME</a>
+        <a href="#" onClick={(e) => { e.preventDefault(); navigate('post', 'augmentations-are-the-model'); }} style={{color: route.page==='post' ? 'var(--signal)' : 'var(--ink-3)', borderBottom: 0}}>POST</a>
+        <a href="#" onClick={(e) => { e.preventDefault(); navigate('404'); }} style={{color: route.page==='404' ? 'var(--signal)' : 'var(--ink-3)', borderBottom: 0}}>404</a>
+      </div>
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

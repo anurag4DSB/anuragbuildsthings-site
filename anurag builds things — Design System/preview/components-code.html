@@ -1,0 +1,17 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Components · Code Block" subtitle="JetBrains Mono on paper-up — github-dark colors" viewport="700x200" --><html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css"><style>
+body { padding: 22px 26px; }
+.note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; }
+.code { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--paper-up); border: 1px solid var(--rule); padding: 14px 16px; color: var(--ink); line-height: 1.55; }
+.code .c { color: var(--ink-3); }
+.code .k { color: #c8e25c; }
+.code .s { color: #e68a56; }
+.code .n { color: #7aa0d6; }
+</style></head><body>
+<div class="note">Code · JetBrains Mono · GitHub Dark highlight · paper-up bg · 1px rule</div>
+<div class="code"><span class="c"># minimal vs full augmentation</span><br>
+<span class="k">def</span> <span class="n">contrast</span>(x):<br>
+&nbsp;&nbsp;v1, v2 = <span class="n">augment</span>(x), <span class="n">augment</span>(x)<br>
+&nbsp;&nbsp;<span class="k">return</span> <span class="n">nt_xent</span>(v1, v2, t=<span class="s">0.5</span>)
+</div>
+</body></html>

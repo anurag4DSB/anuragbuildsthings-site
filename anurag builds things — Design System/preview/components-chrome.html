@@ -1,0 +1,31 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Components · Site Chrome" subtitle="Navbar + footer specimen" viewport="700x160" --><html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"><style>
+body { padding: 0; }
+.nav { display: flex; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--rule); background: var(--paper); font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.brand { font-family: 'Fraunces', serif; font-weight: 500; font-size: 22px; letter-spacing: -0.005em; text-transform: none; color: var(--ink); }
+.brand em { color: #c8e25c; font-style: italic; }
+.spacer { flex: 1; }
+.tools { display: flex; align-items: center; gap: 4px; }
+.tools a { color: var(--ink-2); border-bottom: 0; padding: 6px 10px; display: inline-flex; align-items: center; transition: color 120ms ease; }
+.tools a .bi { font-size: 22px; line-height: 1; width: 28px; text-align: center; }
+.tools a:hover { color: #c8e25c; }
+.tools a.yt:hover { color: #FF0000; }
+.tools a.li:hover { color: #0A66C2; }
+.tools a.git:hover { color: var(--ink); }
+.foot { padding: 14px 24px; background: var(--surface); display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+.foot a { color: var(--ink-2); border-bottom: 1px solid transparent; }
+</style></head><body>
+<div class="nav">
+  <span class="brand">anurag builds <em>things</em></span>
+  <span class="spacer"></span>
+  <span class="tools">
+    <a aria-label="Search"><i class="bi bi-search"></i></a>
+    <a aria-label="RSS"><i class="bi bi-rss"></i></a>
+    <a class="git" aria-label="GitHub"><i class="bi bi-git"></i></a>
+    <a class="yt" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+    <a class="li" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+  </span>
+</div>
+<div style="height: 32px; background: var(--paper);"></div>
+<div class="foot"><span>For the next person figuring things out by building — <a>anuragbuildsthings@gmail.com</a></span><span><a>⬆ BACK TO TOP</a></span></div>
+</body></html>

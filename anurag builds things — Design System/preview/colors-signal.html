@@ -1,0 +1,22 @@
+<!doctype html>
+<!-- @dsCard group="Colors" name="Colors · Signal & Tints" subtitle="Lime accent + warm/cool callout tints" viewport="700x268" --><html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css"><style>
+body { padding: 0; }
+.row { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; height: 220px; }
+.cell { padding: 18px 20px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--rule); font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; }
+.cell:last-child { border-right: 0; }
+.signal { background: #c8e25c; color: #0c0d0b; }
+.signal .nm { font-size: 22px; font-family: var(--display); font-style: italic; font-weight: 300; letter-spacing: -0.01em; text-transform: none; }
+.warm { background: #0c0d0b; color: #e68a56; }
+.cool { background: #0c0d0b; color: #7aa0d6; }
+.sigink { background: #0c0d0b; color: #ecece4; }
+.cell .hex { color: inherit; opacity: 0.75; }
+.cell .nm { text-transform: uppercase; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+</style></head><body>
+<div class="row">
+  <div class="cell signal"><div><div class="nm" style="text-transform:none">signal</div><div style="font-family:var(--mono);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;opacity:0.6;margin-top:2px">the accent · use sparingly</div></div><div class="hex">#c8e25c</div></div>
+  <div class="cell sigink"><div class="dot" style="background:#c8e25c;box-shadow:0 0 0 6px rgba(200,226,92,0.18)"></div><div><div class="nm">signal-ink</div><div class="hex">#0c0d0b</div></div></div>
+  <div class="cell warm"><div class="dot" style="background:#e68a56"></div><div><div class="nm">tint-warm</div><div class="hex">#e68a56</div></div></div>
+  <div class="cell cool"><div class="dot" style="background:#7aa0d6"></div><div><div class="nm">tint-cool</div><div class="hex">#7aa0d6</div></div></div>
+</div>
+</body></html>

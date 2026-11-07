@@ -1,0 +1,193 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "reference/**",
+              "ui_kits/website/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Atkinson Hyperlegible Mono|Fraunces|Inter Tight|JetBrains Mono|Newsreader))/i]",
+        "message": "Font not provided by the design system. Available: Atkinson Hyperlegible Mono, Fraunces, Inter Tight, JetBrains Mono, Newsreader."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {},
+    "tokens": [
+      "--display",
+      "--dur-fast",
+      "--dur-mid",
+      "--dur-slow",
+      "--ease",
+      "--ease-pulse",
+      "--frame-max",
+      "--fs-base",
+      "--fs-body",
+      "--fs-dek",
+      "--fs-h2",
+      "--fs-h3",
+      "--fs-hero",
+      "--fs-lede",
+      "--fs-list",
+      "--fs-listing",
+      "--fs-mono-cat",
+      "--fs-mono-code",
+      "--fs-mono-lbl",
+      "--fs-mono-meta",
+      "--fs-prevnext",
+      "--fs-small",
+      "--fs-title-home",
+      "--fs-title-post",
+      "--fs-ui",
+      "--fs-ui-s",
+      "--fw-light",
+      "--fw-medium",
+      "--fw-regular",
+      "--gutter",
+      "--halo-signal",
+      "--ink",
+      "--ink-2",
+      "--ink-3",
+      "--ink-4",
+      "--lh-display",
+      "--lh-prose",
+      "--lh-tight",
+      "--lh-title",
+      "--lh-ui",
+      "--ls-display",
+      "--ls-hero",
+      "--ls-mono-cat",
+      "--ls-mono-loose",
+      "--ls-mono-mid",
+      "--ls-mono-tight",
+      "--ls-tight-display",
+      "--mono",
+      "--mono-code",
+      "--paper",
+      "--paper-up",
+      "--paper-up-2",
+      "--radius",
+      "--rhythm",
+      "--rule",
+      "--rule-hi",
+      "--signal",
+      "--signal-ink",
+      "--surface",
+      "--text",
+      "--tint-cool",
+      "--tint-warm",
+      "--ui"
+    ],
+    "tokenKinds": {
+      "--paper": "color",
+      "--paper-up": "color",
+      "--paper-up-2": "color",
+      "--surface": "color",
+      "--ink": "color",
+      "--ink-2": "color",
+      "--ink-3": "color",
+      "--ink-4": "color",
+      "--rule": "color",
+      "--rule-hi": "color",
+      "--signal": "color",
+      "--signal-ink": "color",
+      "--tint-warm": "color",
+      "--tint-cool": "color",
+      "--display": "other",
+      "--text": "font",
+      "--ui": "other",
+      "--mono": "other",
+      "--mono-code": "other",
+      "--fs-hero": "other",
+      "--fs-title-home": "other",
+      "--fs-title-post": "other",
+      "--fs-h2": "spacing",
+      "--fs-h3": "spacing",
+      "--fs-listing": "spacing",
+      "--fs-prevnext": "spacing",
+      "--fs-dek": "spacing",
+      "--fs-lede": "spacing",
+      "--fs-body": "spacing",
+      "--fs-base": "spacing",
+      "--fs-list": "spacing",
+      "--fs-small": "spacing",
+      "--fs-ui": "spacing",
+      "--fs-ui-s": "spacing",
+      "--fs-mono-lbl": "spacing",
+      "--fs-mono-meta": "spacing",
+      "--fs-mono-cat": "spacing",
+      "--fs-mono-code": "spacing",
+      "--fw-light": "other",
+      "--fw-regular": "other",
+      "--fw-medium": "other",
+      "--lh-tight": "other",
+      "--lh-display": "other",
+      "--lh-title": "other",
+      "--lh-prose": "other",
+      "--lh-ui": "other",
+      "--ls-tight-display": "spacing",
+      "--ls-display": "spacing",
+      "--ls-hero": "spacing",
+      "--ls-mono-loose": "spacing",
+      "--ls-mono-mid": "spacing",
+      "--ls-mono-tight": "spacing",
+      "--ls-mono-cat": "spacing",
+      "--frame-max": "spacing",
+      "--gutter": "spacing",
+      "--rhythm": "spacing",
+      "--radius": "radius",
+      "--dur-fast": "other",
+      "--dur-mid": "other",
+      "--dur-slow": "other",
+      "--ease": "other",
+      "--ease-pulse": "other",
+      "--halo-signal": "shadow"
+    },
+    "fontFamilies": [
+      "Atkinson Hyperlegible Mono",
+      "Fraunces",
+      "Inter Tight",
+      "JetBrains Mono",
+      "Newsreader"
+    ]
+  }
+}

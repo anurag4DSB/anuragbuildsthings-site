@@ -1,0 +1,25 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Components · TOC" subtitle="Post sidebar — hairline rules + signal active" viewport="700x240" --><html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css"><style>
+body { padding: 24px 28px; }
+.note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; }
+nav { display: flex; flex-direction: column; gap: 0; }
+.toc-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); border-top: 1px solid var(--rule); padding-top: 8px; margin-bottom: 12px; }
+.toc a { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-2); padding: 6px 0 6px 10px; border-top: 1px solid var(--rule); border-left: 2px solid transparent; transition: color 120ms; text-decoration: none; }
+.toc a:hover { color: #c8e25c; }
+.toc a.active { color: var(--ink); border-left-color: #c8e25c; }
+.row { display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: start; }
+.demo { padding-top: 8px; font-family: 'Newsreader', serif; font-size: 16px; color: var(--ink-2); line-height: 1.55; }
+</style></head><body>
+<div class="note">TOC · post sidebar · 200px wide · active = signal left rule</div>
+<div class="row">
+  <nav class="toc">
+    <div class="toc-title">ON THIS PAGE</div>
+    <a>The question</a>
+    <a class="active">Setup</a>
+    <a>Results</a>
+    <a>The cleaner framing</a>
+    <a>Takeaway</a>
+  </nav>
+  <div class="demo">Active item: <em style="color:#c8e25c;font-style:italic">Setup</em>. Hairline rule on every entry, 2px lime left rule on the active one. No fills, no chevrons.</div>
+</div>
+</body></html>

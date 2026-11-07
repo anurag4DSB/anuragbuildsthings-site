@@ -1,0 +1,23 @@
+<!doctype html>
+<!-- @dsCard group="Spacing" name="Spacing · Motion" subtitle="Pulse, blink, hover swaps — the only animations" viewport="700x320" --><html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css"><style>
+body { padding: 22px 26px; }
+.note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; }
+.row { display: flex; align-items: center; gap: 20px; padding: 14px 0; border-top: 1px solid var(--rule); }
+.row:first-of-type { border-top: 0; }
+.lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); width: 130px; flex-shrink: 0; }
+.dot-pulse { width: 10px; height: 10px; border-radius: 50%; background: #c8e25c; animation: ip 2s infinite cubic-bezier(.16,1,.3,1); }
+@keyframes ip { 0%{box-shadow:0 0 0 0 rgba(200,226,92,.35)} 70%{box-shadow:0 0 0 8px rgba(200,226,92,0)} 100%{box-shadow:0 0 0 0 rgba(200,226,92,0)} }
+.cur { display: inline-block; width: 2px; height: 22px; background: #c8e25c; vertical-align: -3px; margin-left: 4px; animation: bl 1s step-end infinite; }
+@keyframes bl { 50% { opacity: 0.3; } }
+.t-link { color: #c8e25c; font-family: 'Newsreader', serif; font-size: 18px; border-bottom: 1px solid rgba(200,226,92,0.3); transition: border-bottom-color 120ms; }
+.t-link:hover { border-bottom-color: #c8e25c; }
+.h-row { color: var(--ink-2); transition: color 120ms; font-family: 'Fraunces', serif; font-size: 18px; cursor: pointer; }
+.h-row:hover { color: #c8e25c; }
+.desc { font-family: var(--mono); font-size: 10px; color: var(--ink-3); letter-spacing: 0.06em; }
+</style></head><body>
+<div class="note">Motion · the only animations in the system</div>
+<div class="row"><div class="lbl">signal pulse</div><div class="dot-pulse"></div><div class="desc">2s · cubic-bezier(.16, 1, .3, 1) · halo expansion</div></div>
+<div class="row"><div class="lbl">cursor blink</div><div>typing<span class="cur"></span></div><div class="desc">1s step-end infinite · 50% opacity</div></div>
+<div class="row"><div class="lbl">link hover</div><a class="t-link">color stays · border strengthens</a><div class="desc">120ms ease · border-bottom only</div></div>
+<div class="row"><div class="lbl">row hover</div><div class="h-row">augmentations are the model →</div><div class="desc">120ms · ink-2 → signal lime</div></div>
+</body></html>

@@ -1,0 +1,88 @@
+---
+title: "anurag builds things"
+title-block-banner: false
+include-in-header:
+  - text: |
+      <style>
+        #title-block-header { display: none !important; }
+        .anchorjs-link { display: none !important; }
+        .quarto-listing .list .quarto-post:nth-child(odd),
+        .quarto-listing .list .quarto-post:nth-child(even) {
+          background: transparent !important;
+        }
+      </style>
+listing:
+  id: log
+  contents: posts
+  type: default
+  image-align: right
+  image-height: "158px"
+  sort: "date desc"
+  sort-ui: false
+  filter-ui: false
+  categories: false
+  feed: true
+  fields: [image, date, title, description, categories]
+page-layout: custom
+toc: false
+---
+
+```{=html}
+
+<!-- ── Hero standfirst ────────────────────────────────────── -->
+<h1 class="hero-standfirst">
+  anurag builds <span class="rotator accent" aria-live="polite" aria-label="rotating phrase">
+    <span class="ghost" aria-hidden="true">intelligent systems</span>
+    <span class="stage" aria-hidden="true"><span class="typed"></span><span class="cursor"></span></span>
+  </span>
+</h1>
+
+<script>
+  (function () {
+    var WORDS = ['things', 'RAG', 'intelligent systems', 'systems', 'world models'];
+    var TYPE_MS = 75, BACK_MS = 42, HOLD_MS = 2500, EMPTY_MS = 380;
+
+    var typed = document.querySelector('.hero-standfirst .rotator .typed');
+    if (!typed) return;
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      typed.textContent = WORDS[0];
+      return;
+    }
+
+    var idx = 0;
+    function later(fn, ms) { setTimeout(fn, ms); }
+    function typeIn(word, done) {
+      var i = 0;
+      (function step() {
+        typed.textContent = word.slice(0, i);
+        if (i < word.length) { i++; later(step, TYPE_MS); }
+        else later(done, HOLD_MS);
+      })();
+    }
+    function backspace(done) {
+      var cur = typed.textContent, i = cur.length;
+      (function step() {
+        typed.textContent = cur.slice(0, i);
+        if (i > 0) { i--; later(step, BACK_MS); }
+        else later(done, EMPTY_MS);
+      })();
+    }
+    (function loop() {
+      typeIn(WORDS[idx], function () {
+        backspace(function () { idx = (idx + 1) % WORDS.length; loop(); });
+      });
+    })();
+  })();
+</script>
+
+<p class="hero-dek">
+  I build things to understand how they actually work.
+  A question, a system built to answer it, a comparison against real data.
+  Just the code, the curves, and what they actually mean.
+</p>
+
+```
+
+::: {#log}
+:::

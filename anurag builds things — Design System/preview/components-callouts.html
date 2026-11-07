@@ -1,0 +1,14 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Components · Callouts" subtitle="Note (cool), Caution (warm), Tip (signal)" viewport="700x280" --><html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css"><style>
+body { padding: 22px 26px; display: flex; flex-direction: column; gap: 14px; }
+.callout { border-left: 2px solid; background: var(--paper-up); padding: 12px 16px; }
+.title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 400; margin-bottom: 6px; }
+.body { font-family: 'Newsreader', serif; font-size: 15px; color: var(--ink); margin: 0; }
+.note { border-left-color: #7aa0d6; } .note .title { color: #7aa0d6; }
+.warn { border-left-color: #e68a56; } .warn .title { color: #e68a56; }
+.tip { border-left-color: #c8e25c; } .tip .title { color: #c8e25c; }
+</style></head><body>
+<div class="callout note"><div class="title">NOTE</div><p class="body">Standard SimCLR protocol — frozen encoder, linear probe, top-1 accuracy.</p></div>
+<div class="callout warn"><div class="title">CAUTION</div><p class="body">Aggressive augmentation breaks the positive pair. There's a ceiling.</p></div>
+<div class="callout tip"><div class="title">TIP</div><p class="body">Pick augmentations the way you'd pick labels. They <em style="color:#c8e25c;font-style:italic">are</em> your labels.</p></div>
+</body></html>
